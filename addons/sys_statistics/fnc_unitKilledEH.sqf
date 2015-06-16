@@ -69,6 +69,7 @@ if (GVAR(ENABLED)) then {
 		_killedtype = getText (configFile >> "cfgVehicles" >> (typeof _killed) >> "displayName");
 		_killertype = getText (configFile >> "cfgVehicles" >> (typeof _killer) >> "displayName");
 		_killerCfg = typeOf _killer;
+		_killedCfg = typeOf _killed;
 
 		switch (true) do {
 			case (_killed isKindof "LandVehicle"): {_killedVehicleClass = "Vehicle";};
@@ -106,7 +107,7 @@ if (GVAR(ENABLED)) then {
 		_killerGeoPos = position _killer;
 
 		// Log data
-		_data = [ ["Event","Kill"] , ["KilledSide",_sideKilled] , ["Killedfaction",_factionKilled] , ["KilledType", _killedType] , ["KilledClass",_killedVehicleClass] , ["KilledPos",_killedPos] , ["KilledGeoPos",_killedGeoPos] ,  ["KillerSide",_sideKiller] , ["Killerfaction",_factionKiller] , ["KillerType",_killerType] , ["KillerClass",_killerVehicleClass] , ["KillerPos",_killerPos] , ["KillerGeoPos",_killerGeoPos] , ["Weapon",_killerweapon] , ["WeaponType",_killerweaponType] , ["Distance",_distance] , ["Killed",_killed] , ["Killer",_killer], ["KillerConfig",_killerCfg] ];
+		_data = [ ["Event","Kill"] , ["KilledSide",_sideKilled] , ["Killedfaction",_factionKilled] , ["KilledType", _killedType] , ["KilledClass",_killedVehicleClass] , ["KilledPos",_killedPos] , ["KilledGeoPos",_killedGeoPos] ,  ["KillerSide",_sideKiller] , ["Killerfaction",_factionKiller] , ["KillerType",_killerType] , ["KillerClass",_killerVehicleClass] , ["KillerPos",_killerPos] , ["KillerGeoPos",_killerGeoPos] , ["Weapon",_killerweapon] , ["WeaponType",_killerweaponType] , ["Distance",_distance] , ["Killed",_killed] , ["Killer",_killer], ["KillerConfig",_killerCfg], ["KilledConfig",_killedCfg]  ];
 
 		if (player == _killed) exitWith { // Player was killed
 

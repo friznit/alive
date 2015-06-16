@@ -35,6 +35,8 @@ ADDON = false;
 
 TRACE_2("SYS_STATS",isDedicated,GVAR(ENABLED));
 
+
+
 if (isDedicated && GVAR(ENABLED)) then {
 
 	// Setup data handler
@@ -139,6 +141,9 @@ if (isDedicated && GVAR(ENABLED)) then {
 
 	// diag_log format["TimeStarted: %1", GVAR(timeStarted)];
 
+	// Create shotsFired hash on both server
+	GVAR(shotsFired) = [] call ALIVE_fnc_hashCreate;
+
 	/* Test Live Feed
 	[] spawn {
 		// Thread running on server to report state of every unit every 3 seconds
@@ -191,7 +196,7 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 	if (isNil "_puid" || _puid == "") exitWith {};
 
 	// Set player shotsFired
-	player setVariable [QGVAR(shotsFired), [[primaryweapon player, 0, primaryweapon player, getText (configFile >> "cfgWeapons" >> primaryweapon player >> "displayName")]]];
+	GVAR(playerShotsFired) = [[primaryweapon player, 0, primaryweapon player, getText (configFile >> "cfgWeapons" >> primaryweapon player >> "displayName")]];
 
 	// Player eventhandlers
 

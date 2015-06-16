@@ -62,6 +62,9 @@ if (GVAR(ENABLED)) then {
 		_unitVehicleClass = "Infantry";
 		_vehicleVehicleClass = "None";
 
+		_unitCfg = typeOf _unit;
+		_vehicleCfg = typeOf _vehicle;
+
 		switch true do {
 			case (_vehicle isKindof "LandVehicle"): {_vehicleVehicleClass = "Vehicle";};
 			case (_vehicle isKindof "Air"): {_vehicleVehicleClass = "Aircraft";};
@@ -76,7 +79,7 @@ if (GVAR(ENABLED)) then {
 		_vehiclePos = mapgridposition _vehicle;
 
 		// Log data
-		_data = [ ["Event","GetIn"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitClass",_unitVehicleClass] , ["unitPos",_unitPos] , ["unitGeoPos",_unitGeoPos] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehicleClass",_vehicleVehicleClass] , ["vehiclePos",_position] , ["unit",str(_unit)] , ["vehicle",_vehicle] , ["vehiclePosition",_vehiclePos] ];
+		_data = [ ["Event","GetIn"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitClass",_unitVehicleClass] , ["unitPos",_unitPos] , ["unitGeoPos",_unitGeoPos] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehicleClass",_vehicleVehicleClass] , ["vehiclePos",_position] , ["unit",str(_unit)] , ["vehicle",_vehicle] , ["vehiclePosition",_vehiclePos], ["vehicleConfig",_vehicleCfg], ["unitConfig",_unitCfg]   ];
 
 		_data = _data + [ ["Player",getplayeruid _unit],["playerGroup", [_unit] call ALiVE_fnc_getPlayerGroup] , ["PlayerName",name _unit] ];
 

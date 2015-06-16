@@ -28,7 +28,7 @@ if (GVAR(ENABLED)) then {
 
 		//diag_log format["playerFired: type:%1, vehicle:%2, %3", typeof _player, typeof vehicle _player, _this];
 
-		_shotsfired = player getvariable [QGVAR(shotsFired),[]];
+		_shotsfired = GVAR(playerShotsFired);
 
 		// Find weapon in array
 		_i = 0;
@@ -60,7 +60,7 @@ if (GVAR(ENABLED)) then {
 
 		// diag_log format["SF: %1", _shotsfired];
 
-		player setVariable [QGVAR(shotsFired), _shotsfired, true];
+		GVAR(playerShotsFired) = _shotsfired;
 	};
 };
 // ====================================================================================

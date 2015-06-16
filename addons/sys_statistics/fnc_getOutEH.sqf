@@ -62,6 +62,8 @@ if (GVAR(ENABLED)) then {
 		_unitVehicleClass = "Infantry";
 		_vehicleVehicleClass = "None";
 
+		_unitCfg = typeOf _unit;
+
 		switch true do {
 			case (_vehicle isKindof "LandVehicle"): {_vehicleVehicleClass = "Vehicle";};
 			case (_vehicle isKindof "Air"): {_vehicleVehicleClass = "Aircraft";};
@@ -84,7 +86,7 @@ if (GVAR(ENABLED)) then {
 		_height = (getposATL _unit) select 2;
 		if ( (_vehicle isKindof "Air") && (_height > 100) ) then {
 
-			_data = [ ["Event","ParaJump"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitClass",_unitVehicleClass] , ["unitPos",_unitPos] , ["unitGeoPos",_unitGeoPos] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehicleClass",_vehicleVehicleClass] , ["vehiclePos",_position] , ["unit",str(_unit)] , ["vehicle",_vehicle] , ["vehiclePosition",_vehiclePos] , ["vehicleMinutes", _vehMinutes], ["vehicleConfig",_vehiclecfg] , ["jumpHeight",_height] ];
+			_data = [ ["Event","ParaJump"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitClass",_unitVehicleClass] , ["unitPos",_unitPos] , ["unitGeoPos",_unitGeoPos] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehicleClass",_vehicleVehicleClass] , ["vehiclePos",_position] , ["unit",str(_unit)] , ["vehicle",_vehicle] , ["vehiclePosition",_vehiclePos] , ["vehicleMinutes", _vehMinutes], ["vehicleConfig",_vehiclecfg] , ["jumpHeight",_height], ["unitConfig",_unitCfg]   ];
 
 			_data = _data + [ ["Player",getplayeruid _unit], ["playerGroup", _unit getvariable [QGVAR(playerGroup), "Unknown"]] , ["PlayerName",name _unit] ];
 
@@ -93,7 +95,7 @@ if (GVAR(ENABLED)) then {
 			publicVariableServer QGVAR(UPDATE_EVENTS);
 		} else {
 			// Log data
-			_data = [ ["Event","GetOut"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitClass",_unitVehicleClass] , ["unitPos",_unitPos] , ["unitGeoPos",_unitGeoPos] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehicleClass",_vehicleVehicleClass] , ["vehiclePos",_position] , ["unit",_unit] , ["vehicle",_vehicle] , ["vehiclePosition",_vehiclePos] , ["vehicleMinutes",_vehMinutes], ["vehicleConfig",_vehiclecfg]  ];
+			_data = [ ["Event","GetOut"] , ["unitSide",_sideunit] , ["unitfaction",_factionunit] , ["unitType",_unitType] , ["unitClass",_unitVehicleClass] , ["unitPos",_unitPos] , ["unitGeoPos",_unitGeoPos] , ["vehicleSide",_sidevehicle] , ["vehiclefaction",_factionvehicle] , ["vehicleType",_vehicleType] , ["vehicleClass",_vehicleVehicleClass] , ["vehiclePos",_position] , ["unit",_unit] , ["vehicle",_vehicle] , ["vehiclePosition",_vehiclePos] , ["vehicleMinutes",_vehMinutes], ["vehicleConfig",_vehiclecfg], ["unitConfig",_unitCfg]   ];
 
 			_data = _data + [ ["Player",getplayeruid _unit], ["playerGroup", [_unit] call ALiVE_fnc_getPlayerGroup] , ["PlayerName",name _unit] ];
 

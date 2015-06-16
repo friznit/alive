@@ -78,7 +78,7 @@ if (GVAR(ENABLED)) then {
 
 		// Calculate Minutes Played
 		private "_playertime";
-		_playertime = [GVAR(PlayerStartTime), getPlayerUID _unit, GVAR(timeStarted)] call ALIVE_fnc_hashGet;
+		_playertime = [GVAR(PlayerStartTime), _uid, GVAR(timeStarted)] call ALIVE_fnc_hashGet;
 		_minutesPlayed = round((diag_tickTime - _playertime)/60);
 
 		//_minutesPlayed = floor( ( (dateToNumber date) - ( dateToNumber ([GVAR(PlayerStartTime), getPlayerUID _unit, GVAR(timeStarted)] call ALIVE_fnc_hashGet) )) * 525600);
@@ -89,7 +89,7 @@ if (GVAR(ENABLED)) then {
 		_rank = rank _unit;
 
 		// Grab shots fired data
-		_shotsFired = _unit getvariable [QGVAR(shotsFired),[]];
+		_shotsfired = [GVAR(shotsFired), _uid, [] call ALiVE_fnc_hashCreate] call ALiVE_fnc_hashGet;
 
 		_shotsFiredData = [];
 		{
