@@ -109,6 +109,7 @@ JSON_fnc_parse = {
                 while {!_done} do {
 					private ["_char"];
 					_char = _charArray select _pos;
+					if (isNil "_char") exitWith {diag_log format["PARSE JSON: ERROR charArray = %1 and pos = %2",_charArray, _pos];_done = true; _return = true;};
 					switch (_char) do {
 						case JSON_OBJECT_START:{
 							private "_retval";
