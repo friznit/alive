@@ -54,9 +54,9 @@ switch (_taskState) do {
         _task call ALIVE_fnc_inspectArray;
 
         // establish the location for the pickup task
-        // get friendly military cluster
+        // get friendly cluster
 
-        _pickupPosition = [_taskLocation,_taskLocationType,_taskSide,"MIL"] call ALIVE_fnc_taskGetSideCluster;
+        _pickupPosition = [_taskLocation,_taskLocationType,_taskSide] call ALIVE_fnc_taskGetSideCluster;
 
         if(count _pickupPosition == 0) then {
 
@@ -67,14 +67,15 @@ switch (_taskState) do {
 
             // spawn a populated composition
 
-            [_targetPosition, "objectives", _taskFaction, 2] call ALIVE_fnc_spawnRandomPopulatedComposition;
+			_pickupPosition = [_pickupPosition, 250] call ALIVE_fnc_findFlatArea;
+            [_pickupPosition, "objectives", _taskFaction, 2] call ALIVE_fnc_spawnRandomPopulatedComposition;
 
         };
 
         // establish the location for the insertion task
-        // get enemy military cluster
+        // get enemy cluster
 
-        _insertionPosition = [_taskLocation,_taskLocationType,_taskEnemySide,"MIL"] call ALIVE_fnc_taskGetSideCluster;
+        _insertionPosition = [_taskLocation,_taskLocationType,_taskEnemySide] call ALIVE_fnc_taskGetSideCluster;
 
         if(count _insertionPosition == 0) then {
 
@@ -84,8 +85,8 @@ switch (_taskState) do {
             _insertionPosition = [_taskLocation,_taskLocationType,_taskEnemySide] call ALIVE_fnc_taskGetSideSectorCompositionPosition;
 
             // spawn a populated composition
-
-            [_targetPosition, "objectives", _taskEnemyFaction, 2] call ALIVE_fnc_spawnRandomPopulatedComposition;
+			_insertionPosition = [_insertionPosition, 250] call ALIVE_fnc_findFlatArea;
+            [_insertionPosition, "objectives", _taskEnemyFaction, 2] call ALIVE_fnc_spawnRandomPopulatedComposition;
 
         };
 
