@@ -1464,7 +1464,7 @@ class FSM
        "			[_profile,""busy"",true] call ALiVE_fnc_HashSet;" \n
        "			[_profile, ""clearWaypoints""] call ALIVE_fnc_profileEntity;" \n
        "			[_profile, ""clearActiveCommands""] call ALIVE_fnc_profileEntity;" \n
-       "			[_profile, ""setActiveCommand"", [""ALIVE_fnc_garrison"",""spawn"",30]] call ALIVE_fnc_profileEntity;" \n
+       "			[_profile, ""setActiveCommand"", [""ALIVE_fnc_garrison"",""spawn"",[30,true]]] call ALIVE_fnc_profileEntity;" \n
        "" \n
        "			_guards pushback  _profileID;" \n
        "		};" \n

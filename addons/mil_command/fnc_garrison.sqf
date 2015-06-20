@@ -8,8 +8,8 @@ Description:
 Garrison command for active units, run on spawn of profiles for guarding of objectives via placement modules
 
 Parameters:
-Profile - profile
-Args - array
+Array - Virtual Profile
+Number/Array - Radius or [_radius, only Profiles]
 
 Returns:
 
@@ -24,10 +24,18 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_type","_unit","_profile","_pos","_radius","_assignments","_group"];
+private ["_type","_unit","_profile","_args","_pos","_radius","_onlyProfiles","_assignments","_group"];
 
 _profile = [_this, 0, ["",[],[],nil], [[]]] call BIS_fnc_param;
-_radius = [_this, 1, 200, [-1]] call BIS_fnc_param;
+_args = [_this, 1, 200, [-1,[]]] call BIS_fnc_param;
+
+_radius = _args;
+_onlyProfiles = false;
+
+if (typeName _args == "ARRAY") then {
+    _radius = [_args, 0, 200, [-1]] call BIS_fnc_param;
+    _onlyProfiles = [_args, 1, false, [true]] call BIS_fnc_param;
+};
 
 _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
 _type = [_profile,"type",""] call ALiVE_fnc_HashGet;
@@ -44,6 +52,6 @@ if (_type == "entity" && {count (_assignments select 1) == 0}) then {
 
     _group = _profile select 2 select 13;
 
-    [_group,_pos,_radius,true] call ALIVE_fnc_groupGarrison;
+    [_group,_pos,_radius,true,_onlyProfiles] call ALIVE_fnc_groupGarrison;
 
 };

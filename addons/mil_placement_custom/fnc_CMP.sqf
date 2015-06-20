@@ -487,7 +487,7 @@ switch(_operation) do {
                     //ARJay, here we could place the default patrols/garrisons instead of the static garrisson if you like to (same is in CIV MP)
                     {
                         if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                            [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",200]] call ALIVE_fnc_profileEntity;
+                            [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",[200,true]]] call ALIVE_fnc_profileEntity;
                         };
                     } foreach _guards;
                 };
@@ -496,12 +496,15 @@ switch(_operation) do {
                 private ["_profiles","_command","_position","_garrisonPos"];
 
                 _command = "ALIVE_fnc_ambientMovement";
+                _radius = 200;
+                
 	            _readiness = parseNumber([_logic, "readinessLevel"] call MAINCLASS);
 	            _readiness = (1 - _readiness) * _groupCount;
 
                 if (_totalCount < _readiness ) then {
                     _command = "ALIVE_fnc_garrison";
                     _garrisonPos = [position _logic, 50] call CBA_fnc_RandPos;
+                    _radius = [200,true];
                 };
 
                 for "_i" from 0 to _groupCount -1 do {
@@ -520,7 +523,7 @@ switch(_operation) do {
 
 						{
 							if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-								[_x, "setActiveCommand", [_command,"spawn",200]] call ALIVE_fnc_profileEntity;
+								[_x, "setActiveCommand", [_command,"spawn",_radius]] call ALIVE_fnc_profileEntity;
 							};
 						} foreach _profiles;
 
