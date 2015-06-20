@@ -12,9 +12,9 @@ Group - group
 Array - position
 Scalar - radius
 Boolean - move to position instantly (no animation)
+Boolean - optional, only profiled vehicles (to avoid garrisoning player vehicles)
 
 Returns:
-
 
 Examples:
 (begin example)
@@ -27,12 +27,13 @@ Author:
 ARJay, Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_group","_position","_radius","_moveInstantly","_units","_file","_leader","_units","_armedCars"];
+private ["_group","_position","_radius","_moveInstantly","_onlyProfiled","_units","_file","_leader","_units","_armedCars"];
 
 _group = _this select 0;
 _position = _this select 1;
 _radius = _this select 2;
 _moveInstantly = _this select 3;
+_onlyProfiled = if (count _this > 4) then {_this select 4} else {false};
 
 _units = units _group;
 _leader = leader (group (_units select 0));
@@ -59,10 +60,10 @@ private ["_staticWeapons","_weapon","_positionCount","_unit"];
 
 _staticWeapons = nearestObjects [_position, ["StaticWeapon"], _radius];
 
-// Find any cars that are armed
+// Find any cars that are armed or optionally are vehicle profiles
 _armedCars = nearestObjects [_position, ["Car"], _radius];
 {
-    if !([_x] call ALiVE_fnc_isArmed) then {_armedCars = _armedCars - [_x]};
+    if (!([_x] call ALiVE_fnc_isArmed) || {_onlyProfiled && {isnil {_x getvariable "profileID"}}}) then {_armedCars = _armedCars - [_x]};
 } foreach _armedCars;
 
 _staticWeapons = _staticWeapons + _armedCars;
