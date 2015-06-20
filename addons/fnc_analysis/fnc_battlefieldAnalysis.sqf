@@ -492,6 +492,9 @@ switch(_operation) do {
 	            {
 	                _owner = [_x,"owner"] call ALIVE_fnc_hashGet;
 	                _clusterType = [_x,"type"] call ALIVE_fnc_hashGet;
+                    
+                    if (str(_owner) == "GUER") then {_owner = "INDEP"};
+
 	                if(_owner == _side && _type == _clusterType) then {
 	                    _clustersOwnedBySide set [count _clustersOwnedBySide, _x];
 	                };
