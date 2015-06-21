@@ -1,0 +1,57 @@
+[CENTER][URL="http://alivemod.com/"][IMG]http://alivemod.com/img/alive_logo_bif.jpg[/IMG][/URL]
+[B][URL="http://alivemod.com/"]alivemod.com[/URL]
+[SIZE=4]The next generation dynamic persistent mission addon for ArmA3
+Release 0.9.8[/SIZE][/B][/CENTER]
+
+[B][U]Background Stuff![/U][/B]
+We're continuing to fix bugs, refine features and focus on performance in preparation for the official 1.0 release.  There has been quite a lot of activity in the background that you won't necessarily notice in game - things like optimised code for low priority modules, automated topography export which has allowed us to upload raster maps the War Room rapidly.  We're slowly refining the indexing process which will hopefully reduce the effort required to index maps so we can get more done in future.  We've also added the option to save custom variable to the War Room database, which I'm sure some people will enjoy playing with.  See the [url=http://alivemod.com/wiki/index.php/Database]ALiVE Wiki[/url] for details.
+
+[CENTER]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
+
+[SIZE=4][B][U][url=http://alivemod.com/#Download]Download[/url][/U][/B][/SIZE]
+Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+Also available from PlayWithSix and ArmAholic.
+
+Note for server admins that this build requires the new @ALiVEServer package. 
+
+[img]http://i.imgur.com/E2Cg58w.jpg[/img][/CENTER]
+
+[CENTER][SIZE=4][B][url=http://alivemod.com/#ALiVEWarRoom]Join the War Room Now![/url][/B][/SIZE][/CENTER]
+
+[B][U]Manual[/U][/B]
+Please refer to the [URL="http://www.alivemod.com/wiki"]ALiVE Wiki[/URL].  All the info you need should is there.  If anything is missing or unclear, please let us know by submitting a ticket on our [URL="http://dev.withsix.com/projects/alive/issues"]Development Tracker[/URL] and we'll look to fix it.
+
+[B][U]Support Forum[/U][/B]
+For direct support and feedback from the ALiVE dev team, join us on our forum at [URL="http://alivemod.com/forum/"]http://alivemod.com/forum/[/URL]
+
+[B][U]Release Highlights[/U][/B]
+[LIST]
+[*] Optimisation enhancements to various modules
+[*] Add option for saving and retrieving custom variables to War Room.
+[*] Added support for Al Rayak (preliminary index - some villages are missing still).
+[*] AI will no longer man the turrets of non-profiled player vehicles placed near objectives.
+[*] Updated demo missions on the ALiVE website.
+[/LIST]
+
+[B][U]Changelog[/U][/B]
+[SPOILER]
+- Build 0.9.9
+
+
+[/SPOILER]
+
+[B][U]Want to join our team?[/U][/B]
+We are still recruiting people that are interested in being part of the dev team. We welcome anyone who fancies a go at SQF scripting, Javascript/PHP development (for War Room) and C++/C# development for our ALiVE extension. ALiVE is an opportunity to build your experience of any of these technologies in a fun mod development environment.
+
+[B][U]Disclaimer[/U][/B]
+ALiVE is still in BETA and subject to change.  We may need to clear persistent database data from the War Room before major updates but we will try to let you know well in advance if this happens.  We have done our best to ensure backward compatibility for your missions. However, in case you get a new error with an existing mission, please delete and replace the offending module in the editor and you should be good to go again.  As usual, please post any issues or feature requests on our tracker.
+
+[B][U]Work In Progress[/U][/B]
+We're now on the final sprint in the run up to the official 1.0 release.  There are a lot of features we would like to enhance but it's clear we won't achieve all of them in the time frame we've set ourselves.  We still have a lot to do and many more ideas besides, so the 1.0 release will certainly not be the last.
+
+[B][U]ALiVE has transformed my Arma 3 experience, how can I thank you?[/U][/B]
+Please feel free to donate! It costs us about $65 per month to run our War Room website and ALiVE Database servers. Donate here http://www.alivemod.com/#Donate 
+
+Special thanks to everyone here for supporting us with donations to the ALiVE mod development effort. 
+
+Have fun!
