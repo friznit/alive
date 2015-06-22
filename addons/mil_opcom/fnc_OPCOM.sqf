@@ -1075,8 +1075,8 @@ switch(_operation) do {
 					
 					// Get civilian factions from Amb Civs
 					If (!isnil "ALiVE_Agenthandler") then {
-						_agents = [ALiVE_Agenthandler,"agents",["",[],[],nil]] call ALiVE_fnc_HashGet;
-						if (count (_agents select 2) > 0) exitwith {_civFactions = _civFactions + [[(_agents select 2 select 0),"faction","CIV_F"] call ALiVE_fnc_HashGet]};
+						_AllAgents = [ALiVE_Agenthandler,"agents",["",[],[],nil]] call ALiVE_fnc_HashGet;
+						if (count (_AllAgents select 2) > 0) exitwith {_civFactions = _civFactions + [[(_AllAgents select 2 select 0),"faction","CIV_F"] call ALiVE_fnc_HashGet]};
 					};
                     
                     [time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"suicide",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,_civFactions] spawn ALiVE_fnc_INS_suicide;
