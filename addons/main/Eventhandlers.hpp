@@ -11,9 +11,13 @@ class Extended_PostInit_EventHandlers {
 	};
 };
 
-//To be enabled when ZEUS is stable
-class Extended_Init_EventHandlers {
-	class AllVehicles {
-		init = "_this call ALiVE_fnc_ZeusRegister";
+class Extended_Init_EventHandlers
+{
+	class AllVehicles
+	{
+		class ADDON
+		{
+			init = "_this spawn ALiVE_fnc_ZeusRegister";
+		};
 	};
 };
