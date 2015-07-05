@@ -47,31 +47,48 @@ switch (_taskState) do {
         _taskCurrent = _task select 9;
         _taskApplyType = _task select 10;
 
+        if (_taskID == "") exitwith {["C2ISTAR - Task TransportInsertion - Wrong input for _taskID!"] call ALiVE_fnc_Dump};
+        if (_requestPlayerID == "") exitwith {["C2ISTAR - Task TransportInsertion - Wrong input for _requestPlayerID!"] call ALiVE_fnc_Dump};
+        if (_taskFaction == "") exitwith {["C2ISTAR - Task TransportInsertion - Wrong input for _taskFaction!"] call ALiVE_fnc_Dump};
+        if (_taskLocationType == "") exitwith {["C2ISTAR - Task TransportInsertion - Wrong input for _taskLocationType!"] call ALiVE_fnc_Dump};
+        if (count _taskLocation == 0) exitwith {["C2ISTAR - Task TransportInsertion - Wrong input for _taskLocation!"] call ALiVE_fnc_Dump};
+        if (count _taskPlayers == 0) exitwith {["C2ISTAR - Task TransportInsertion - Wrong input for _taskPlayers!"] call ALiVE_fnc_Dump};
+        if (_taskEnemyFaction == "") exitwith {["C2ISTAR - Task TransportInsertion - Wrong input for _taskEnemyFaction!"] call ALiVE_fnc_Dump};
+        if (_taskApplyType == "") exitwith {["C2ISTAR - Task TransportInsertion - Wrong input for _taskApplyType!"] call ALiVE_fnc_Dump};
+
         _taskEnemySide = _taskEnemyFaction call ALiVE_fnc_factionSide;
         _taskEnemySide = [_taskEnemySide] call ALIVE_fnc_sideObjectToNumber;
         _taskEnemySide = [_taskEnemySide] call ALIVE_fnc_sideNumberToText;
 
-        _task call ALIVE_fnc_inspectArray;
-
         // establish the location for the pickup task
         // get friendly cluster
-
         _pickupPosition = [_taskLocation,_taskLocationType,_taskSide] call ALIVE_fnc_taskGetSideCluster;
 
         if(count _pickupPosition == 0) then {
 
             // no enemy occupied cluster found
             // try to get a position containing enemy
-
             _pickupPosition = [_taskLocation,_taskLocationType,_taskSide] call ALIVE_fnc_taskGetSideSectorCompositionPosition;
 
             // spawn a populated composition
-
+            if (count _pickupPosition == 0) then {
+				_pickupPosition = [
+					_pickupPosition, 
+					500, 
+					1500,
+					1, 
+					0, 
+					100,
+					0, 
+					[], 
+					[_pickupPosition]
+				] call BIS_fnc_findSafePos;
+			};
+            
 			_pickupPosition = [_pickupPosition, 250] call ALIVE_fnc_findFlatArea;
             [_pickupPosition, "objectives", _taskFaction, 2] call ALIVE_fnc_spawnRandomPopulatedComposition;
-
         };
-
+        
         // establish the location for the insertion task
         // get enemy cluster
 
@@ -81,16 +98,28 @@ switch (_taskState) do {
 
             // no enemy occupied cluster found
             // try to get a position containing enemy
-
             _insertionPosition = [_taskLocation,_taskLocationType,_taskEnemySide] call ALIVE_fnc_taskGetSideSectorCompositionPosition;
 
-            // spawn a populated composition
-			_insertionPosition = [_insertionPosition, 250] call ALIVE_fnc_findFlatArea;
-            [_insertionPosition, "objectives", _taskEnemyFaction, 2] call ALIVE_fnc_spawnRandomPopulatedComposition;
+			// spawn a populated composition
+            if (count _insertionPosition == 0) then {
+				_insertionPosition = [
+					_insertionPosition, 
+					500, 
+					1500,
+					1, 
+					0, 
+					100,
+					0, 
+					[], 
+					[_insertionPosition]
+				] call BIS_fnc_findSafePos;
+			};
 
+			_insertionPosition = [_insertionPosition, 250] call ALIVE_fnc_findFlatArea;
+			[_insertionPosition, "objectives", _taskEnemyFaction, 2] call ALIVE_fnc_spawnRandomPopulatedComposition;
         };
 
-        if(!(isNil "_pickupPosition") && !(isNil "_insertionPosition")) then {
+        if (count _pickupPosition > 0 && {count _insertionPosition > 0}) then {
 
             private["_stagingPosition","_dialogOptions","_dialogOption","_group","_profile","_profileID"];
 

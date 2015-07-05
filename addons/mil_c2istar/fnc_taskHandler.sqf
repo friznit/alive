@@ -471,16 +471,13 @@ switch(_operation) do {
             if((_taskLocationType == "Short") || (_taskLocationType == "Medium") || (_taskLocationType == "Long")) then {
                 _player = [_requestPlayerID] call ALIVE_fnc_getPlayerByUID;
 
-                if!(isNull _player) then {
-                    _position = position _player;
-                    _taskData set [6,_position];
-                }else{
+                if (isNull _player) then {
                     _player = (_taskPlayers select 0) call BIS_fnc_selectRandom;
                     _player = [_player] call ALIVE_fnc_getPlayerByUID;
-                    _position = position _player;
-                    _taskData set [6,_position];
                 };
-
+                
+	            _position = position _player;
+	            _taskData set [6,_position];
             };
 
             _taskSet = ["init", _taskID, _taskData, [], _debug] call (call compile format["ALIVE_fnc_task%1",_taskType]);

@@ -2923,16 +2923,15 @@ switch(_operation) do {
         private ["_taskingState","_currentTask","_selectedPlayerListOptions","_selectedPlayerListValues"];
 
         _taskingState = [_logic,"taskingState"] call MAINCLASS;
-
         _currentTask = [_taskingState,"currentTaskListSelectedValue"] call ALIVE_fnc_hashGet;
-
+        
         [_logic,"taskSource",_currentTask select 12] call MAINCLASS;
-
         [_logic,"taskEditingDisabled",_currentTask select 13] call MAINCLASS;
 
-        [_logic,"taskRevision",_currentTask select 14] call MAINCLASS;
-
-        [_logic,"taskID",_currentTask select 15] call MAINCLASS;
+		if (count _currentTask > 14) then {
+	        [_logic,"taskRevision",_currentTask select 14] call MAINCLASS;
+	        [_logic,"taskID",_currentTask select 15] call MAINCLASS;
+        };
 
         _selectedPlayerListOptions = _currentTask select 7 select 1;
         _selectedPlayerListValues = _currentTask select 7 select 0;

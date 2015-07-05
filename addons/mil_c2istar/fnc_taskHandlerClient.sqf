@@ -146,8 +146,13 @@ switch(_operation) do {
 
             if(_parent != "None") then {
                 _parentTask = [_logic,"getTask",_parent] call MAINCLASS;
-                _parentTaskObject = _parentTask select 10;
-                _taskObject = player createSimpleTask [_title,_parentTaskObject];
+                
+                if !(isnil "_parentTask") then {
+	                _parentTaskObject = _parentTask select 10;
+	                _taskObject = player createSimpleTask [_title,_parentTaskObject];
+                } else {
+                    _taskObject = player createSimpleTask [_title];
+                };
             }else{
                 _taskObject = player createSimpleTask [_title];
             };

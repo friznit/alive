@@ -47,7 +47,7 @@ _composition = _compositions call BIS_fnc_selectRandom;
 _composition = [_composition] call ALIVE_fnc_findComposition;
 
 if(count _composition > 0) then {
-    [_composition, _targetPosition, random 360] call ALIVE_fnc_spawnComposition;
+    [_composition, _position, random 360] call ALIVE_fnc_spawnComposition;
 };
 
 // Assign groups

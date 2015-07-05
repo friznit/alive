@@ -47,6 +47,15 @@ switch (_taskState) do {
         _taskCurrent = _taskData select 9;
         _taskApplyType = _taskData select 10;
 
+        if (_taskID == "") exitwith {["C2ISTAR - Task Mil Defence - Wrong input for _taskID!"] call ALiVE_fnc_Dump};
+        if (_requestPlayerID == "") exitwith {["C2ISTAR - Task Mil Defence - Wrong input for _requestPlayerID!"] call ALiVE_fnc_Dump};
+        if (_taskFaction == "") exitwith {["C2ISTAR - Task Mil Defence - Wrong input for _taskFaction!"] call ALiVE_fnc_Dump};
+        if (_taskLocationType == "") exitwith {["C2ISTAR - Task Mil Defence - Wrong input for _taskLocationType!"] call ALiVE_fnc_Dump};
+        if (count _taskLocation == 0) exitwith {["C2ISTAR - Task Mil Defence - Wrong input for _taskLocation!"] call ALiVE_fnc_Dump};
+        if (count _taskPlayers == 0) exitwith {["C2ISTAR - Task Mil Defence - Wrong input for _taskPlayers!"] call ALiVE_fnc_Dump};
+        if (_taskEnemyFaction == "") exitwith {["C2ISTAR - Task Mil Defence - Wrong input for _taskEnemyFaction!"] call ALiVE_fnc_Dump};
+        if (_taskApplyType == "") exitwith {["C2ISTAR - Task Mil Defence - Wrong input for _taskApplyType!"] call ALiVE_fnc_Dump};
+
         _taskEnemySide = _taskEnemyFaction call ALiVE_fnc_factionSide;
         _taskEnemySide = [_taskEnemySide] call ALIVE_fnc_sideObjectToNumber;
         _taskEnemySide = [_taskEnemySide] call ALIVE_fnc_sideNumberToText;
@@ -59,10 +68,22 @@ switch (_taskState) do {
         if(count _targetPosition == 0 || {_taskLocationType == "Map" && {_targetPosition distance _taskLocation > 1000}}) then {
             // no friendly occupied cluster found
             // try to get a position containing friendlies
-            //_targetPosition = [_taskLocation,_taskLocationType,_taskSide] call ALIVE_fnc_taskGetSideSectorCompositionPosition;
+            _targetPosition = [_taskLocation,_taskLocationType,_taskSide] call ALIVE_fnc_taskGetSideSectorCompositionPosition;
             
-            // use selected map location
-            _targetPosition = _taskLocation;
+			// use selected map location or default player position
+            if (count _targetPosition == 0) then {            
+		        _targetPosition = [
+					_targetPosition, 
+					500, 
+					1500,
+					1, 
+					0, 
+					100,
+					0, 
+					[], 
+					[_targetPosition]
+				] call BIS_fnc_findSafePos;
+            };
 
             // spawn a populated composition
             _targetPosition = [_targetPosition, 250] call ALIVE_fnc_findFlatArea;
