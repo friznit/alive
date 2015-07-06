@@ -455,6 +455,10 @@ switch(_operation) do {
         _side = _args select 0;
         _clustersOwnedBySide = [];
 
+        _side = if (typeName _side == "SIDE") then {str(_side)} else {_side};
+        
+        if (_side == "GUER") then {_side = "INDEP"};
+
         _activeSectors = [_logic, "activeSectors"] call ALIVE_fnc_hashGet;
 
         {
@@ -464,8 +468,11 @@ switch(_operation) do {
 	            _clusters = [_sectorData,"activeClusters"] call ALIVE_fnc_hashGet;
 	
 	            {
-	                _owner = [_x,"owner"] call ALIVE_fnc_hashGet;
-	                if(_owner == _side) then {
+	                _owner = str([_x,"owner"] call ALIVE_fnc_hashGet);
+                    
+                    if (_owner == "GUER") then {_owner = "INDEP"};
+                    
+	                if (_owner == _side) then {
 	                    _clustersOwnedBySide set [count _clustersOwnedBySide, _x];
 	                };
 	            } forEach (_clusters select 2);
@@ -480,6 +487,10 @@ switch(_operation) do {
         _side = _args select 0;
         _type = _args select 1;
         _clustersOwnedBySide = [];
+        
+        _side = if (typeName _side == "SIDE") then {str(_side)} else {_side};
+        
+        if (_side == "GUER") then {_side = "INDEP"};
 
         _activeSectors = [_logic, "activeSectors"] call ALIVE_fnc_hashGet;
 
@@ -490,12 +501,12 @@ switch(_operation) do {
 	            _clusters = [_sectorData,"activeClusters"] call ALIVE_fnc_hashGet;
 	
 	            {
-	                _owner = [_x,"owner"] call ALIVE_fnc_hashGet;
+	                _owner = str([_x,"owner"] call ALIVE_fnc_hashGet);
 	                _clusterType = [_x,"type"] call ALIVE_fnc_hashGet;
                     
-                    if (str(_owner) == "GUER") then {_owner = "INDEP"};
+                    if (_owner == "GUER") then {_owner = "INDEP"};
 
-	                if(_owner == _side && _type == _clusterType) then {
+	                if (_owner == _side && {_type == _clusterType}) then {
 	                    _clustersOwnedBySide set [count _clustersOwnedBySide, _x];
 	                };
 	            } forEach (_clusters select 2);

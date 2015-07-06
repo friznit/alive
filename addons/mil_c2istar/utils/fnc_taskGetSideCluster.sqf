@@ -30,9 +30,9 @@ _side = _this select 2;
 _type = if(count _this > 3) then {_this select 3} else {""};
 
 if(_type != "") then {
-    _sideClusters = [ALIVE_battlefieldAnalysis,"getClustersOwnedBySideAndType",[_side,_type]] call ALIVE_fnc_battlefieldAnalysis;
+    _sideClusters = [ALIVE_battlefieldAnalysis,"getClustersOwnedBySideAndType",[[_side] call ALIVE_fnc_sideTextToObject,_type]] call ALIVE_fnc_battlefieldAnalysis;
 }else{
-    _sideClusters = [ALIVE_battlefieldAnalysis,"getClustersOwnedBySide",[_side]] call ALIVE_fnc_battlefieldAnalysis;
+    _sideClusters = [ALIVE_battlefieldAnalysis,"getClustersOwnedBySide",[[_side] call ALIVE_fnc_sideTextToObject]] call ALIVE_fnc_battlefieldAnalysis;
 };
 
 
