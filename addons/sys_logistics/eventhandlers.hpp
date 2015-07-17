@@ -10,21 +10,21 @@ class Extended_Init_EventHandlers
 	{
 		class ADDON 
 		{
-			ServerInit = "[nil,'setEH',_this] call ALiVE_fnc_Logistics";
+			ServerInit = "[nil,'setEH',_this] spawn ALiVE_fnc_Logistics";
 		};
 	};
 	class AIR
 	{
 		class ADDON 
 		{
-			ServerInit = "[nil,'setEH',_this] call ALiVE_fnc_Logistics";
+			ServerInit = "[nil,'setEH',_this] spawn ALiVE_fnc_Logistics";
 		};
 	};
 	class SHIP
 	{
 		class ADDON 
 		{
-			ServerInit = "[nil,'setEH',_this] call ALiVE_fnc_Logistics";
+			ServerInit = "[nil,'setEH',_this] spawn ALiVE_fnc_Logistics";
 		};
 	};
 };

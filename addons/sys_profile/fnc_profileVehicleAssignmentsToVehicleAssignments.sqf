@@ -6,6 +6,9 @@ Function: ALIVE_fnc_profileVehicleAssignmentsToVehicleAssignments
 
 Description:
 Takes profile vehicle assignments and creates real vehicle assignments
+Needs to be run in unscheduled with delay to avoid freezes as it may trigger
+creation of multiple vehicles / groups in one frame.
+TBD: Move to unscheduled and split creation to several frames.
 
 Parameters:
 Array - Profile vehicle assignments
@@ -32,5 +35,6 @@ _profile = _this select 1;
 if(count (_vehicleAssignments select 1) > 0) then {
 	{
 		[_x, _profile] call ALIVE_fnc_profileVehicleAssignmentToVehicleAssignment;
+        sleep 0.2;
 	} forEach (_vehicleAssignments select 2);
 };

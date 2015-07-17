@@ -836,7 +836,7 @@ switch(_operation) do {
 		case "spawn": {
 				private ["_debug","_side","_sideObject","_unitClasses","_unitClass","_position","_positions","_damage","_damages","_ranks","_rank",
 				"_profileID","_active","_waypoints","_waypointsCompleted","_vehicleAssignments","_activeCommands","_inactiveCommands","_group","_unitPosition","_eventID",
-				"_waypointCount","_unitCount","_units","_unit","_vehiclesInCommandOf","_vehiclesInCargoOf","_paraDrop","_parachute","_soundFlyover","_formations","_formation"];
+				"_waypointCount","_unitCount","_units","_unit","_vehiclesInCommandOf","_vehiclesInCargoOf","_paraDrop","_parachute","_soundFlyover","_formations","_formation","_locked"];
 				
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_profileID = _logic select 2 select 4; //[_profile,"profileID"] call ALIVE_fnc_hashGet;
@@ -855,12 +855,16 @@ switch(_operation) do {
 				_inactiveCommands = _logic select 2 select 27; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				_vehiclesInCommandOf = _logic select 2 select 8; //[_profile,"vehiclesInCommandOf",[]] call ALIVE_fnc_hashSet;
                 _vehiclesInCargoOf = _logic select 2 select 9; //[_profile,"vehiclesInCargoOf",[]] call ALIVE_fnc_hashSet;
-				
+                _locked = [_logic, "locked",false] call ALIVE_fnc_HashGet;
+                
 				_unitCount = 0;
 				_units = [];
 
-				// not already active
-				if!(_active) then {
+				// not already active and spawning has not yet been triggered
+				if (!_active && !_locked) then {
+                    
+                	// Indicate profile has been despawned and unlock for asynchronous waits
+                    [_logic, "locked",true] call ALIVE_fnc_HashSet;
 
 				    _group = createGroup _sideObject;
 
@@ -892,8 +896,16 @@ switch(_operation) do {
 							_damage = _damages select _unitCount;
 							_rank = _ranks select _unitCount;
 							_unit = _group createUnit [_x, _unitPosition, [], 0 , "NONE"];
-							_unit setPos formationPosition _unit;
+							
+                            //Set name 
 							//_unit setVehicleVarName format["%1_%2",_profileID, _unitCount];
+
+		                    // select a random formation
+							_formations = ["COLUMN","STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE"];
+							_formation = _formations call BIS_fnc_selectRandom;
+							_group setFormation _formation;
+                                                        
+							_unit setPos formationPosition _unit;
 							_unit setDamage _damage;
 							_unit setRank _rank;
 							
@@ -933,6 +945,7 @@ switch(_operation) do {
                                 };
                             };
                         };
+                        sleep 0.2;
 					} forEach _unitClasses;
 					//[] call ALIVE_fnc_timer;
 
@@ -942,11 +955,6 @@ switch(_operation) do {
 					[_logic,"group", _group] call ALIVE_fnc_hashSet;
 					[_logic,"units", _units] call ALIVE_fnc_hashSet;
 					[_logic,"active", true] call ALIVE_fnc_hashSet;
-
-                    // select a random formation
-					_formations = ["COLUMN","STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE"];
-					_formation = _formations call BIS_fnc_selectRandom;
-					_group setFormation _formation;
 
                     //["Profile [%1] Spawn - Create Waypoints",_profileID] call ALIVE_fnc_dump;
                     //[true] call ALIVE_fnc_timer;
@@ -1081,7 +1089,10 @@ switch(_operation) do {
 						// store the profile id on the in active profiles index
 						[ALIVE_profileHandler,"setInActive",[_profileID,_side,_logic]] call ALIVE_fnc_profileHandler;
 						[ALIVE_profileHandler,"setEntityInActive",_profileID] call ALIVE_fnc_profileHandler;
-						
+
+	                    // Indicate profile has been despawned and unlock for asynchronous waits
+	                    [_logic, "locked",false] call ALIVE_fnc_HashSet;            
+                                                						
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {
 							//["Profile [%1] Despawn - pos: %2",_profileID,_position] call ALIVE_fnc_dump;

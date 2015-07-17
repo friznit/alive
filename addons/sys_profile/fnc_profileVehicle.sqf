@@ -432,7 +432,7 @@ switch(_operation) do {
 		case "spawn": {
 				private ["_debug","_side","_vehicleClass","_vehicleType","_position","_side","_direction","_damage",
 				"_fuel","_ammo","_engineOn","_profileID","_active","_vehicleAssignments","_cargo","_cargoItems","_special","_vehicle","_eventID",
-				"_speed","_velocity","_paraDrop","_parachute","_soundFlyover"];
+				"_speed","_velocity","_paraDrop","_parachute","_soundFlyover","_locked"];
 
 				_debug = _logic select 2 select 0; //[_logic,"debug"] call ALIVE_fnc_hashGet;
 				_vehicleClass = _logic select 2 select 11; //[_logic,"vehicleClass"] call ALIVE_fnc_hashGet;
@@ -449,17 +449,24 @@ switch(_operation) do {
 				_vehicleAssignments = _logic select 2 select 7; //[_logic,"vehicleAssignments"] call ALIVE_fnc_hashGet;
 				_cargo = _logic select 2 select 27; //[_logic,"cargo"] call ALIVE_fnc_hashGet;
 				_paraDrop = false;
+                
+                _locked = [_logic, "locked",false] call ALIVE_fnc_HashGet;
 
-				// not already active
-				if!(_active) then {
+				// not already active and spawning has not yet been triggered
+				if (!_active && !_locked) then {
+                    
+                    //Indicate spawn has been triggered and lock profile during spawn in case it is an asynchronous call
+                    [_logic, "locked",true] call ALIVE_fnc_HashSet;
 
 					// determine a suitable spawn position
 					//["Profile [%1] Spawn - Get good spawn position",_profileID] call ALIVE_fnc_dump;
 					//[true] call ALIVE_fnc_timer;
 					[_logic] call ALIVE_fnc_profileGetGoodSpawnPosition;
 					_position = _logic select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
+                    _special = "NONE";
 					//[] call ALIVE_fnc_timer;
-
+                    
+                    _position = [_position, 0, 20, 3, 0, 100, 0, [], [_position]] call BIS_fnc_findSafePos;
 
 					//["SPAWN VEHICLE [%1] pos: %2",_profileID,_position] call ALIVE_fnc_dump;
 
@@ -467,6 +474,7 @@ switch(_operation) do {
 					if (_vehicleType == "Helicopter" || {_vehicleType == "Plane"}) then {
 					    if(_engineOn) then {
 					        _special = "FLY";
+
                             if ((_position select 2) < 50) then {_position set [2,50]};
 					    }else{
 					        _special = "CAN_COLLIDE";
@@ -476,7 +484,7 @@ switch(_operation) do {
 						
 						if ((_position select 2) > 300) then {
 						    _paraDrop = true;
-                            _special = "NONE";
+                            
 						}else{
 						    _position set [2,0];
                             _special = "CAN_COLLIDE";
@@ -622,6 +630,9 @@ switch(_operation) do {
 
 						// store the profile id on the in active profiles index
 						[ALIVE_profileHandler,"setInActive",[_profileID,_side,_logic]] call ALIVE_fnc_profileHandler;
+
+	                    // Indicate profile has been despawned and unlock for asynchronous waits
+	                    [_logic, "locked",false] call ALIVE_fnc_HashSet;
 
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {

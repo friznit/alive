@@ -17,7 +17,7 @@ item12[] = {"ITERATE",4,218,95.820595,358.710358,185.820602,408.710419,1.000000,
 item13[] = {"END__LOOP",4,218,-31.355610,433.665924,58.644455,483.665924,0.000000,"END " \n "LOOP"};
 item14[] = {"WAIT",4,218,-318.101746,-18.262732,-228.101776,31.737242,4.000000,"WAIT"};
 item15[] = {"COMPLETE",4,218,-419.532806,358.389832,-329.532654,408.389679,0.000000,"COMPLETE"};
-item16[] = {"CHECK",2,4346,-192.264313,52.674805,-102.264297,102.674797,0.000000,"CHECK"};
+item16[] = {"CHECK",2,250,-192.264313,52.674805,-102.264297,102.674797,0.000000,"CHECK"};
 item17[] = {"HAS__INACTIVE",4,218,-30.842457,123.296127,59.157623,173.296127,1.000000,"HAS " \n "INACTIVE"};
 item18[] = {"HAS__INACTIVE_CL",4,218,-190.356888,592.674255,-100.357147,642.674255,1.000000,"HAS " \n "INACTIVE" \n "CLUSTERS"};
 item19[] = {"WAIT",4,218,-317.030487,-94.616402,-227.030457,-44.616344,1.000000,"WAIT"};
@@ -27,9 +27,9 @@ item22[] = {"ANALYSE_INACTIVE",2,250,-30.795383,198.355576,59.204765,248.355774,
 item23[] = {"ANALYSE_AGENTS",2,250,-29.551029,510.704590,60.449181,560.704712,0.000000,"ANALYSE" \n "AGENTS"};
 item24[] = {"DO__SPAWN",4,218,-27.457310,584.677979,62.542732,634.677979,0.000000,"DO " \n "SPAWN"};
 item25[] = {"ITERATE",4,218,95.492104,512.907166,185.492233,562.907166,2.000000,"ITERATE"};
-item26[] = {"NO__SPAWN",4,218,74.478180,583.534302,164.478195,633.534424,0.000000,"NO " \n "SPAWN"};
+item26[] = {"NO__SPAWN",4,218,77.947395,582.377930,167.947418,632.378052,0.000000,"NO " \n "SPAWN"};
 item27[] = {"SPAWN_LOOP",2,250,-26.313786,655.072144,63.686340,705.072205,0.000000,"SPAWN" \n "LOOP"};
-item28[] = {"ITERATE",4,218,98.309441,654.881897,188.309525,704.881958,1.000000,"ITERATE"};
+item28[] = {"ITERATE",4,4314,98.309441,654.881897,188.309525,704.881958,1.000000,"ITERATE"};
 item29[] = {"END_LOOP",4,218,-25.952183,727.873047,64.047829,777.873047,0.000000,"END" \n "LOOP"};
 item30[] = {"ANALYSE_ACTIVE_A",2,250,-528.949524,199.181198,-438.949554,249.181137,0.000000,"ANALYSE" \n "ACTIVE" \n "AGENTS"};
 item31[] = {"DO__DESPAWN",4,218,-528.647400,278.651703,-438.647552,328.651764,1.000000,"DO " \n "DESPAWN"};
@@ -131,8 +131,8 @@ link63[] = {47,41};
 link64[] = {48,41};
 link65[] = {49,15};
 link66[] = {49,18};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,160,6316128,1,-849.937683,327.282013,879.731506,-312.536194,1017,1030,1};
-window[] = {2,-1,-1,-1,-1,1158,-1660,-37,260,3,1035};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,160,6316128,1,-849.937683,327.282013,1053.484375,-20.815279,1018,929,1};
+window[] = {2,-1,-1,-1,-1,1008,110,1733,110,3,1035};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -589,13 +589,15 @@ class FSM
     class ANALYSE_AGENTS
     {
       name = "ANALYSE_AGENTS";
-      init = /*%FSM<STATEINIT""">*/"private [""_agent"",""_agentActive""];" \n
+      init = /*%FSM<STATEINIT""">*/"private [""_agent"",""_agentActive"",""_spawnDelay""];" \n
        "" \n
-       "_block = [ALIVE_arrayBlockHandler,""getNextBlock"",[""inactiveAgents"",_inactiveAgents,30]] call ALIVE_fnc_arrayBlockHandler;" \n
+       "_block = [ALIVE_arrayBlockHandler,""getNextBlock"",[""inactiveAgents"",_inactiveAgents,1]] call ALIVE_fnc_arrayBlockHandler;" \n
+       "_spawnDelay = 0;" \n
        "" \n
        "{" \n
        "" \n
        "	_agent = _x;" \n
+       "	_spawnDelay = 0;" \n
        "" \n
        "	if!(isnil ""_agent"") then {" \n
        "" \n
@@ -613,7 +615,9 @@ class FSM
        "				if(_countAgentsActive >= _activeLimiter) then {" \n
        "					//[""ACTIVE AGENT LIMIT HIT NO MORE!!!!!""] call ALIVE_fnc_dump;" \n
        "				}else{" \n
-       "					[_agent, ""spawn""] call ALIVE_fnc_civilianAgent;" \n
+       "					[_agent, ""spawn""] spawn ALIVE_fnc_civilianAgent;" \n
+       "" \n
+       "					_spawnDelay = time;" \n
        "				};" \n
        "			}else{" \n
        "				_agentsToSpawn set [count _agentsToSpawn, _agent];" \n
@@ -623,7 +627,7 @@ class FSM
        "" \n
        "} forEach _block;" \n
        "" \n
-       "_agentAnalysisCount = _agentAnalysisCount + 30;" \n
+       "_agentAnalysisCount = _agentAnalysisCount + 1;" \n
        "" \n
        "" \n
        "if(_agentAnalysisCount >= count _inactiveAgents) then {" \n
@@ -650,7 +654,7 @@ class FSM
         {
           priority = 2.000000;
           to="ANALYSE_AGENTS";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"time - _spawnDelay > 0.5"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_agentAnalysisCount < count _inactiveAgents"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
@@ -691,20 +695,22 @@ class FSM
        "*/" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
-       "private [""_agent"",""_agentID"",""_clusterAgents"",""_type""];" \n
+       "private [""_agent"",""_agentID"",""_clusterAgents"",""_type"",""_spawnDelay""];" \n
        "" \n
        "_agent = _agentsToSpawn select _spawnCount;" \n
+       "_spawnDelay = 0;" \n
        "" \n
        "if!(isnil ""_agent"") then {" \n
        "	_agentID = _agent select 2 select 3;" \n
        "	_type = _agent select 2 select 4;" \n
        "" \n
        "	if(_type == ""agent"") then {" \n
-       "		[_agent, ""spawn""] call ALIVE_fnc_civilianAgent;	" \n
+       "		[_agent, ""spawn""] spawn ALIVE_fnc_civilianAgent;	" \n
        "	}else{" \n
-       "		[_agent, ""spawn""] call ALIVE_fnc_civilianVehicle;	" \n
+       "		[_agent, ""spawn""] spawn ALIVE_fnc_civilianVehicle;	" \n
        "	};" \n
        "" \n
+       "	_spawnDelay = time;" \n
        "};" \n
        "" \n
        "_spawnCount = _spawnCount + 1;"/*%FSM</STATEINIT""">*/;
@@ -716,7 +722,7 @@ class FSM
         {
           priority = 1.000000;
           to="SPAWN_LOOP";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"time - _spawnDelay > 0.5"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_spawnCount < _countToSpawn"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };

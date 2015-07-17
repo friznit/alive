@@ -9,10 +9,10 @@ item4[] = {"END",1,250,43.372803,-89.655373,133.372833,-39.655460,0.000000,"END"
 item5[] = {"TIMER",2,250,-191.784912,-93.250328,-101.784897,-43.250317,0.000000,"TIMER"};
 item6[] = {"COMPLETE",4,218,116.471710,355.902557,206.472076,405.902588,0.000000,"COMPLETE"};
 item7[] = {"START",4,218,-192.425964,-19.086315,-102.425903,30.913666,2.000000,"START"};
-item8[] = {"ANALYSE",2,4346,-121.637917,195.866745,-31.637772,245.866928,0.000000,"ANALYSE"};
+item8[] = {"ANALYSE",2,250,-121.637917,195.866745,-31.637772,245.866928,0.000000,"ANALYSE"};
 item9[] = {"DO_SPAWN",4,218,-123.076942,274.904297,-33.076859,324.904358,0.000000,"DO" \n "SPAWN"};
 item10[] = {"DONE",2,250,-120.598183,507.647278,-33.938690,554.306946,0.000000,"DONE"};
-item11[] = {"SPAWN_LOOP",2,250,-122.133957,356.411804,-32.133873,406.411865,0.000000,"SPAWN" \n "LOOP"};
+item11[] = {"SPAWN_LOOP",2,4346,-122.133957,356.411804,-32.133873,406.411865,0.000000,"SPAWN" \n "LOOP"};
 item12[] = {"ITERATE",4,218,4.978054,356.221527,94.978058,406.221588,1.000000,"ITERATE"};
 item13[] = {"END__LOOP",4,218,-122.198143,431.177094,-32.198082,481.177094,0.000000,"END " \n "LOOP"};
 item14[] = {"WAIT",4,218,-318.101746,-18.262732,-228.101776,31.737242,3.000000,"WAIT"};
@@ -85,8 +85,8 @@ link36[] = {27,21};
 link37[] = {28,10};
 link38[] = {29,15};
 link39[] = {30,8};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,123,6316128,1,-784.846313,480.727020,817.802002,-463.948730,1017,1040,1};
-window[] = {2,-1,-1,-1,-1,924,-1894,-271,26,3,1035};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,123,6316128,1,-664.444519,360.324585,915.253906,-19.923319,1018,929,1};
+window[] = {2,-1,-1,-1,-1,1118,220,1843,220,3,1035};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -335,13 +335,19 @@ class FSM
        "*/" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
-       "private [""_profile"",""_profileType"",""_profileID"",""_vehiclesInCommandOf"",""_vehicleProfile""];" \n
+       "private [""_profile"",""_profileType"",""_profileID"",""_vehiclesInCommandOf"",""_vehicleProfile"",""_spawnDelay"",""_locked""];" \n
        "" \n
        "_profile = _toSpawn select _spawnCount;" \n
+       "_spawnDelay = 0;" \n
+       "_script = [] spawn {};" \n
        "" \n
        "if!(isnil ""_profile"") then {" \n
        "	_profileType = _profile select 2 select 5;" \n
        "	_profileID = _profile select 2 select 4;" \n
+       "	_position = _profile select 2 select 2;" \n
+       "" \n
+       "	// Check if profile spawn has been triggered" \n
+       "	_locked = [_profile,""locked"",false] call ALiVE_fnc_HashGet;" \n
        "" \n
        "	// spawn limiter" \n
        "	if(_activeEntityCount > _activeLimiter) then {" \n
@@ -369,6 +375,10 @@ class FSM
        "			[ALIVE_profileHandler, ""unregisterProfile"", _profile] call ALIVE_fnc_profileHandler;" \n
        "		};" \n
        "	}else{" \n
+       "" \n
+       "		// Only spawn if no spawn has been triggered yet" \n
+       "		if (_locked) exitwith {};" \n
+       "" \n
        "		_activeEntityCount = _activeEntityCount + 1;" \n
        "" \n
        "		// DEBUG -------------------------------------------------------------------------------------" \n
@@ -381,12 +391,14 @@ class FSM
        "        " \n
        "		switch(_profileType) do {" \n
        "			case ""entity"": {" \n
-       "				[_profile, ""spawn""] call ALIVE_fnc_profileEntity;" \n
+       "				[_profile, ""spawn""] spawn ALIVE_fnc_profileEntity;" \n
        "			};" \n
        "			case ""vehicle"": {" \n
-       "				[_profile, ""spawn""] call ALIVE_fnc_profileVehicle;" \n
+       "				[_profile, ""spawn""] spawn ALIVE_fnc_profileVehicle;" \n
        "			};" \n
        "		};" \n
+       "" \n
+       "		_spawnDelay = time;" \n
        "	};" \n
        "};" \n
        "" \n
@@ -399,9 +411,24 @@ class FSM
         {
           priority = 1.000000;
           to="SPAWN_LOOP";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"_spawnCount < _countToSpawn"/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"_timeout = time - _spawnDelay > 1; _timeoutFull = time - _spawnDelay > 10;" \n
+           "_timeout;"/*%FSM</CONDPRECONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"//_spawnCount < _countToSpawn" \n
+           "" \n
+           "_spawnCount < _countToSpawn && " \n
+           "{" \n
+           "	isnil ""_profile"" ||" \n
+           "	{[_profile,""active"",false] call ALiVE_fnc_HashGet} || " \n
+           "	{!([_position, _spawnDistance, _spawnTypeJetRadius, _spawnTypeHeliRadius] call ALiVE_fnc_anyPlayersInRangeIncludeAir)} || " \n
+           "	{_timeoutFull}" \n
+           "};"/*%FSM</CONDITION""">*/;
+          action=/*%FSM<ACTION""">*/"// DEBUG -------------------------------------------------------------------------------------" \n
+           "		/*" \n
+           "		if(_debug) then {" \n
+           "			[""ALIVE Profile spawner - Timeout exceeded on spawning [%1]"",_profileID] call ALIVE_fnc_dump;			" \n
+           "		};" \n
+           "		*/" \n
+           "// DEBUG -------------------------------------------------------------------------------------		"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "END__LOOP">*/
