@@ -1,4 +1,4 @@
-#include "script_component.hpp"	
+#include "script_component.hpp"
 SCRIPT(getServerIP);
 
 /* ----------------------------------------------------------------------------
@@ -25,6 +25,10 @@ Peer Reviewed:
 ---------------------------------------------------------------------------- */
 private ["_response"];
 
-_response = ["ServerAddress"] call ALIVE_fnc_sendToPlugIn;
-
+if (isNil QGVAR(ServerIP)) then {
+	_response = ["ServerAddress"] call ALIVE_fnc_sendToPlugIn;
+	GVAR(ServerIP) = _response;
+} else {
+	_response = GVAR(ServerIP);
+};
 _response;

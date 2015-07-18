@@ -47,14 +47,14 @@ if (_rev == "MISSING" || _rev == "") exitWith {false};
 
 if (_uid != "") then {
 	// use doc id to grab document
-	_cmd = format ["SendJSONAsync [""DELETE"", ""%1/%2?rev=%3"", """" ", _module, _uid, _rev];
+	_cmd = format ["SendJSONAsync ['DELETE','%1/%2?rev=%3',''", _module, _uid, _rev];
 };
 
 // Add databaseName
-_db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
+//_db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
 
 // Append cmd with db
-_json = _cmd + format[", ""%1""]", _db];
+_json = _cmd + "]";
 
 if(ALiVE_SYS_DATA_DEBUG_ON) then {
     ["ALiVE SYS_DATA_COUCHDB - DELETE DATA: %1",_json] call ALIVE_fnc_dump;

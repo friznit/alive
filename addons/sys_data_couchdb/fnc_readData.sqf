@@ -44,17 +44,17 @@ _uid = _args select 2;
 
 if (_uid != "") then {
 	// use doc id to grab document
-	_cmd = format ["SendJSON [""GET"", ""%1/%2"", """" ", _module, _uid];
+	_cmd = format ["SendJSON ['GET','%1/%2',''", _module, _uid];
 } else {
 	// use keys to grab one or more documents
-	_cmd = format ["SendJSON [""GET"", ""%1/_all_docs?startkey=%2&endkey=%3&include_docs=true"", """" ", _module, str(_keys select 0), str(_keys select 1)];
+	_cmd = format ["SendJSON ['GET','%1/_all_docs?startkey=%2&endkey=%3&include_docs=true',''", _module, str(_keys select 0), str(_keys select 1)];
 };
 
 // Add databaseName
-_db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
+// _db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
 
 // Append cmd with db
-_json = _cmd + format[", ""%1""]", _db];
+_json = _cmd + "]";
 
 TRACE_1("COUCH READ DATA", _json);
 

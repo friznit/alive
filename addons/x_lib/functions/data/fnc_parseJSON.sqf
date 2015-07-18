@@ -62,8 +62,13 @@ JSON_fnc_parse = {
 	_key = "";
 	_return = false;
 
-	 TRACE_2("Starting at", _pos, _charArray select _pos);
+	_check = _charArray select _pos;
+	if (isNil "_check") exitWith {
+		diag_log format["Error charArray too small: %1, %2", _pos, _charArray];
+		_return;
+	};
 
+		TRACE_2("Starting at", _pos, _charArray select _pos);
 	switch (_type) do {
 		case JSON_TYPE_OBJECT: {
 			_tmpHash = [] call CBA_fnc_hashCreate;
@@ -88,6 +93,7 @@ JSON_fnc_parse = {
 					private ["_char"];
 					_char = 0;
 					_char = _charArray select _pos;
+					if (isNil "_char") exitWith {diag_log format["PARSE JSON: ERROR charArray = %1 and pos = %2",_charArray, _pos];_done = true; _return = true;};
 					if (_char == ASCII_COLON) then {
 						// End of Key
 						//TRACE_1("Setting Key", toString _tmpKey);

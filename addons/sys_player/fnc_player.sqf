@@ -307,6 +307,7 @@ switch(_operation) do {
                         // Save gear on the client and server
                         _gearHash = [MOD(sys_player), "setGear", [player]] call MAINCLASS;
                         [[MOD(sys_player), "updateGear", [player, _gearHash]], "ALiVE_fnc_player", false, false] call BIS_fnc_MP;
+
                         //[0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [player, _gearHash] ] call CBA_fnc_globalExecute;
                         //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", _this] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
 
@@ -387,7 +388,7 @@ switch(_operation) do {
                     // Save all players to external DB
                     private ["_ondisconnect","_check"];
                     _ondisconnect = _args select 0;
-                    _check = _logic getVariable "storeToDB";
+                    _check = _logic getVariable ["storeToDB", false];
                     TRACE_1("STORE TO DB",_check);
                     if (_check) then {
                         TRACE_1("",GVAR(player_data));

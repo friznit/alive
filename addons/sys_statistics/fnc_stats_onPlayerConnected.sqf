@@ -51,12 +51,14 @@ if (GVAR(ENABLED) && isDedicated) then {
 
 			// CRAZY CALL TO GET STATS
 
-			_call = format["events/_design/playerPage/_view/playerTotals?group_level=1&key=""""%1""""&stale=ok",_uid];
-			_cmd = format ["SendJSON [""GET"", ""%1"", """" ", _call] + ", ""arma3live""]";
+			_call = format["events/_design/playerPage/_view/playerTotals?group_level=1&key=""%1""&stale=ok",_uid];
+			_cmd = format ["SendJSON ['GET','%1','']", _call];
 
 			_stats = [_cmd] call ALIVE_fnc_sendToPlugIn;
 
 			_data = ((([nil,"decode", _stats] call ALIVE_fnc_JSON) select 1) select 0) select 3;
+
+			// diag_log str(_data);
 
 			if (!isNil "_data") then {
 

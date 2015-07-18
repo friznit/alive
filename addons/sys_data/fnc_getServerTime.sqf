@@ -1,4 +1,4 @@
-#include "script_component.hpp"	
+#include "script_component.hpp"
 SCRIPT(getServerTime);
 
 /* ----------------------------------------------------------------------------
@@ -25,8 +25,6 @@ Peer Reviewed:
 ---------------------------------------------------------------------------- */
 private ["_response"];
 
-_response = ["DateTime ['utcnow','dd/MM/yyyy HH:mm:ss']"] call ALIVE_fnc_sendToPlugIn;
-
-_response = call compile _response;
+_response = ["DateTime ['%d/%m/%Y %H:%M:%S']"] call ALIVE_fnc_sendToPlugIn;
 
 _response;

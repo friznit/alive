@@ -88,32 +88,32 @@ _convert = {
 		case "BOOL": {
 			private["_tmp"];
 			_tmp = if(_data) then {"true"} else {"false"};
-			_result = format["""""%1""""", _tmp]; // double quotes around string
+			_result = format["""%1""", _tmp]; // double quotes around string
 		};
 		case "GROUP": {
-			_result = format["""""%1""""", _data];
+			_result = format["""%1""", _data];
 		};
 		case "HASH" : {
 			_result = [_logic, "convert", [_data]] call ALIVE_fnc_Data;
 		};
 		case "OBJECT": {
-			_result = format["""""%1""""", _data];
+			_result = format["""%1""", _data];
 		};
 		case "SCALAR": {
 			_result = str(_data);
 		};
 		case "SIDE": {
-			_result = format["""""%1""""", _data]; // double quotes around string
+			_result = format["""%1""", _data]; // double quotes around string
 		};
 		case "TEXT": {
-			_result = format["""""%1""""", _data];
+			_result = format["""%1""", _data];
 		};
 
 		default {
 			if ([_data] call CBA_fnc_strLen == 0) then {
 				_data = "";
 			};
-			_result = format["""""%1""""", _data]; // double quotes around string
+			_result = format["""%1""", _data]; // double quotes around string
 		};
 	};
 	_result;
@@ -124,11 +124,11 @@ _convertHash = {
 	private ["_convertedValue"];
 	if (isNil "_value") then {
 		["NULL VALUE! For the key %1", _key] call ALiVE_fnc_dump;
-		_convertedValue = """""""""";
+		_convertedValue = """";
 	} else {
 		_convertedValue = [_key, _value] call _convert;
 	};
-	_string = _string + "," + """""" +_key + """""" + ":" + _convertedValue;
+	_string = _string + "," + """" +_key + """" + ":" + _convertedValue;
 };
 
 // --------------------------------------------------------

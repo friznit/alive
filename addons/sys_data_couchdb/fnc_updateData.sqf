@@ -81,20 +81,20 @@ _string = "";
 // ["SendJSON ['POST', 'events', '{key:value,key:value}', 'arma3live'];
 
 if (!_async) then {
-	_cmd = format ["SendJSON [""%2"", ""%1""", _module, _method];
+	_cmd = format ["SendJSON ['%2','%1'", _module, _method];
 } else {
-	_cmd = format ["SendJSONAsync [""%2"", ""%1""", _module, _method];
+	_cmd = format ["SendJSONAsync ['%2','%1'", _module, _method];
 };
 
 _json = [_logic, "convert", [_data]] call ALIVE_fnc_Data;
 
-_string = _cmd + ", """ + _json + """";
+_string = _cmd + ",'" + _json + "'";
 
 // Add databaseName
-_db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
+//_db = [_logic, "databaseName", "arma3live"] call ALIVE_fnc_hashGet;
 
 // Append cmd with db
-_string = _string + format[", ""%1""]", _db];
+_string = _string + "]";
 
 TRACE_1("COUCH UPDATE DATA", _string);
 
