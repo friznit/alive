@@ -107,6 +107,11 @@ if !(_logic getVariable ["ALIVE_DISABLEMARKERS", false]) then {
     [] spawn ALiVE_fnc_markerInit;
 };
 
+// Pause Modules
+if (_logic getVariable ["ALIVE_PAUSEMODULES", false]) then {
+	call ALiVE_fnc_pauseModulesAuto;
+};
+
 // Garbage Collector
 private "_GC";
 _GC = [nil, "create"] call ALiVE_fnc_GC;

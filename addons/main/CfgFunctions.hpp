@@ -46,6 +46,11 @@ class cfgFunctions {
                 file = "\x\alive\addons\main\fnc_unPauseModule.sqf";
 				recompile = RECOMPILE;
 			};
+			class pauseModulesAuto {
+                description = "Adds EHs to pause all main modules if no players are on server";
+                file = "\x\alive\addons\main\fnc_pauseModulesAuto.sqf";
+				recompile = RECOMPILE;
+			};
 			class ZEUSinit {
 				description = "Initialises Zeus for ALiVE";
 				file = "\x\alive\addons\main\fnc_ZEUSinit.sqf";

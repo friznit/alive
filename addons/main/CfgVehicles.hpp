@@ -135,6 +135,26 @@ class CfgVehicles {
 	                        };
 	                };
 	        };
+	        class ALiVE_PAUSEMODULES
+	        {
+	                displayName = "$STR_ALiVE_PAUSEMODULES";
+	                description = "$STR_ALiVE_PAUSEMODULES_COMMENT";
+	                typeName = "BOOL";
+	                class Values
+	                {
+	                        class Yes
+	                        {
+	                                name = "Yes";
+	                                value = 1;
+	                        };
+	                        class No
+	                        {
+	                                name = "No";
+	                                value = 0;
+	                                default = 1;	                                
+	                        };
+	                };
+	        };	        
 			class ALiVE_GC_INTERVAL
             {
                     displayName = "$STR_ALIVE_GC_INTERVAL";

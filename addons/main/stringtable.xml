@@ -43,6 +43,12 @@
 <Key ID="STR_ALIVE_DISABLEMARKERS_COMMENT">
 	<Original>Disable persistent Advanced Markers.</Original>
 </Key>
+<Key ID="STR_ALiVE_PAUSEMODULES">
+	<Original>Auto Pause:</Original>
+</Key>
+<Key ID="STR_ALiVE_PAUSEMODULES_COMMENT">
+	<Original>Auto pauses modules like vAIs, vAI Commander, CQB, ambCIVs if no players are on server</Original>
+</Key>
 <Key ID="STR_ALIVE_DISABLEADMINACTIONS">
 	<Original>Disable Admin Actions:</Original>
 </Key>
