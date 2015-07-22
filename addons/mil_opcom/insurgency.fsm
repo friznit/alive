@@ -5,7 +5,7 @@ item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.00000
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"INIT_INFO",2,250,-720.879761,-873.838257,-630.879761,-823.838257,0.000000,"INIT INFO"};
 item3[] = {"",7,210,-52.802883,324.913116,-44.802883,332.913116,0.000000,""};
-item4[] = {"ANALYZE_OBJECTIV",2,4346,-720.879822,-549.151001,-630.879822,-499.151001,0.000000,"ANALYZE" \n "OBJECTIVE"};
+item4[] = {"ANALYZE_OBJECTIV",2,250,-720.879822,-549.151001,-630.879822,-499.151001,0.000000,"ANALYZE" \n "OBJECTIVE"};
 item5[] = {"ATTACK",4,218,-928.976746,-250.825409,-838.976746,-200.825378,1.000000,"ATTACK"};
 item6[] = {"DEFEND",4,218,-806.225098,-252.264771,-716.225098,-202.264740,2.000000,"DEFEND"};
 item7[] = {"TERRORIZE",4,218,-650.359680,-253.024353,-560.359680,-203.024323,3.000000,"TERRORIZE"};
@@ -30,7 +30,7 @@ item25[] = {"FAIL",4,218,45.247391,594.838806,135.247589,644.838501,0.000000,"FA
 item26[] = {"",7,210,-1047.392578,-149.660080,-1039.392578,-141.660049,0.000000,""};
 item27[] = {"NO_GROUPS",4,218,-978.413635,72.215881,-888.414001,122.215843,0.000000,"NO" \n "GROUPS"};
 item28[] = {"RESET",2,250,-858.935120,-677.046692,-768.935242,-627.046387,0.000000,"RESET"};
-item29[] = {"DELAY",4,218,-721.785156,-677.785828,-631.785156,-627.785828,0.000000,"DELAY"};
+item29[] = {"DELAY",4,4314,-721.785156,-677.785828,-631.785156,-627.785828,0.000000,"DELAY"};
 item30[] = {"RESET_1",2,250,-557.855774,-676.293335,-467.856445,-626.293030,0.000000,"RESET"};
 item31[] = {"ACTIONS_EXECUTIN",4,218,-969.264343,432.824890,-879.264343,482.824890,0.000000,"ACTIONS" \n "EXECUTING"};
 item32[] = {"IDLE",4,218,-920.655945,-363.002319,-830.655945,-313.002289,20.000000,"IDLE"};
@@ -75,8 +75,8 @@ link37[] = {29,4};
 link38[] = {30,29};
 link39[] = {31,26};
 link40[] = {32,26};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1313.629395,-57.126904,408.656860,-1416.207520,414,777,1};
-window[] = {0,-1,-1,-1,-1,1040,132,1684,132,1,431};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,135,6316128,1,-1031.152222,-339.604828,80.179443,-1217.724609,414,777,1};
+window[] = {0,-1,-1,-1,-1,930,22,1574,22,1,431};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -229,7 +229,7 @@ class FSM
            "    	_troopsAnalysis = [_OPCOM_HANDLER] spawn {[_this select 0,""scantroops""] call ALiVE_fnc_OPCOM};" \n
            "    	_agentClusterData = if (!isnil ""ALIVE_agentHandler"") then {[ALIVE_agentHandler,""agentsByCluster"",["""",[],[],""""]] call ALiVE_fnc_hashGet} else {["""",[],[],""""]};" \n
            "    };"/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"time - _time > _delay && {time - _time > _cycle};"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"time - _time > _delay && {time - _time > _cycle} && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_time = time; _cycle = 0;" \n
            "" \n
            "//[""FSM state: %1"",""ITERATION DELAY""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
@@ -1610,7 +1610,7 @@ class FSM
            "    	_troopsAnalysis = [_OPCOM_HANDLER] spawn {[_this select 0,""scantroops""] call ALiVE_fnc_OPCOM};" \n
            "    	_agentClusterData = if (!isnil ""ALIVE_agentHandler"") then {[ALIVE_agentHandler,""agentsByCluster"",["""",[],[],""""]] call ALiVE_fnc_hashGet} else {["""",[],[],""""]};" \n
            "    };"/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"time - _time > _delay && {time - _time > _cycle};"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"time - _time > _delay && {time - _time > _cycle} && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_time = time; _cycle = 0;" \n
            "" \n
            "//[""FSM state: %1"",""ITERATION DELAY""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
@@ -1641,7 +1641,7 @@ class FSM
            "    	_troopsAnalysis = [_OPCOM_HANDLER] spawn {[_this select 0,""scantroops""] call ALiVE_fnc_OPCOM};" \n
            "    	_agentClusterData = if (!isnil ""ALIVE_agentHandler"") then {[ALIVE_agentHandler,""agentsByCluster"",["""",[],[],""""]] call ALiVE_fnc_hashGet} else {["""",[],[],""""]};" \n
            "    };"/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"time - _time > _delay && {time - _time > _cycle};"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"time - _time > _delay && {time - _time > _cycle} && {!_pause};"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_time = time; _cycle = 0;" \n
            "" \n
            "//[""FSM state: %1"",""ITERATION DELAY""] call ALIVE_fnc_dumpR;"/*%FSM</ACTION""">*/;
