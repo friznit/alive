@@ -26,6 +26,12 @@
 <Key ID="STR_ALIVE_OPCOM_CONTROLTYPE_COMMENT">
 	<English>Type of AI Commander control</English>
 </Key>
+<Key ID="STR_ALIVE_OPCOM_OCCUPATION">
+	<English>Installations (asymm.):</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_OCCUPATION_COMMENT">
+	<English>Amount of pre-placed installations like IED factories, HQ (asymmetric mode only)</English>
+</Key>
 <Key ID="STR_ALIVE_OPCOM_SIDE">
 	<English>Side:</English>
 </Key>

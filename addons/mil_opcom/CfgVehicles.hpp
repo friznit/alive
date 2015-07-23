@@ -105,13 +105,48 @@ class CfgVehicles {
                                                 name = "Occupation";
                                                 value = "occupation";
                                         };
-					class asymmetric
+										class asymmetric
                                         {
                                                 name = "Asymmetric";
                                                 value = "asymmetric";
                                         };
                                 };
                         };
+                        class asym_occupation
+                        {
+                                displayName = "$STR_ALIVE_OPCOM_OCCUPATION";
+                                description = "$STR_ALIVE_OPCOM_OCCUPATION_COMMENT";
+                                typeName = "NUMBER";
+                                class Values
+                                {
+                                        class unused
+                                        {
+                                                name = "Unused";
+                                                value = -100;
+                                                default = 1;
+                                        };
+                                        class low
+                                        {
+                                                name = "Low";
+                                                value = 25;
+                                        };
+										class medium
+                                        {
+                                                name = "Medium";
+                                                value = 50;
+                                        };
+										class high
+                                        {
+                                                name = "High";
+                                                value = 75;
+                                        };
+										class extreme
+                                        {
+                                                name = "Extreme";
+                                                value = 100;
+                                        };                                                                                 
+                                };
+                        };                        
                         class reinforcements
                         {
                                 displayName = "$STR_ALIVE_OPCOM_REINFORCEMENTS";
