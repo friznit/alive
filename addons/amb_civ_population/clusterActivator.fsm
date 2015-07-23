@@ -18,7 +18,7 @@ item13[] = {"END__LOOP",4,218,-122.198143,431.177094,-32.198082,481.177094,0.000
 item14[] = {"WAIT",4,218,-318.101746,-18.262732,-228.101776,31.737242,0.000000,"WAIT"};
 item15[] = {"ANALYSE_CLUSTERS",2,250,-273.843933,196.692368,-183.843842,246.692383,0.000000,"ANALYSE" \n "CLUSTERS"};
 item16[] = {"DO__DESPAWN",4,218,-273.541809,276.163025,-183.541779,326.163147,1.000000,"DO " \n "DESPAWN"};
-item17[] = {"CHECK",2,4346,-192.264313,52.674805,-102.264297,102.674797,0.000000,"CHECK"};
+item17[] = {"CHECK",2,250,-192.264313,52.674805,-102.264297,102.674797,0.000000,"CHECK"};
 item18[] = {"DESPAWN_LOOP",2,250,-273.384827,357.735229,-183.384796,407.735413,0.000000,"DESPAWN" \n "LOOP"};
 item19[] = {"ITERATE",4,218,-396.179871,358.161102,-306.179688,408.161163,1.000000,"ITERATE"};
 item20[] = {"END__LOOP",4,218,-273.217529,432.999023,-183.217529,482.999084,0.000000,"END " \n "LOOP"};
@@ -38,7 +38,7 @@ item33[] = {"DO__SPAWN",4,218,-121.772469,581.031616,-31.772430,631.031616,0.000
 item34[] = {"ITERATE",4,218,4.649569,510.418335,94.649704,560.418335,2.000000,"ITERATE"};
 item35[] = {"NO__SPAWN",4,218,-16.364359,581.045471,73.635651,631.045593,0.000000,"NO " \n "SPAWN"};
 item36[] = {"SPAWN_LOOP",2,250,-117.156311,652.583313,-27.156197,702.583374,0.000000,"SPAWN" \n "LOOP"};
-item37[] = {"ITERATE",4,218,7.466900,652.393066,97.466995,702.393127,1.000000,"ITERATE"};
+item37[] = {"ITERATE",4,4314,7.466900,652.393066,97.466995,702.393127,1.000000,"ITERATE"};
 item38[] = {"END_LOOP",4,218,-116.794708,725.384216,-26.794708,775.384216,0.000000,"END" \n "LOOP"};
 item39[] = {"ANALYSE_AGENTS_1",2,250,-273.456940,508.215698,-183.456741,558.215820,0.000000,"ANALYSE" \n "AGENTS"};
 item40[] = {"DO__SPAWN",4,218,-274.835846,581.031555,-184.835770,631.031555,0.000000,"DO " \n "SPAWN"};
@@ -120,8 +120,8 @@ link56[] = {43,44};
 link57[] = {43,45};
 link58[] = {44,43};
 link59[] = {45,21};
-globals[] = {0.000000,0,0,0,16777215,640,480,1,139,6316128,1,-784.846313,480.727020,976.868286,-304.882446,1017,1030,1};
-window[] = {2,-1,-1,-32000,-32040,1132,-1686,-63,234,3,1035};
+globals[] = {0.000000,0,0,0,16777215,640,480,1,139,6316128,1,-784.846313,480.727020,1117.633057,-37.295876,1018,929,1};
+window[] = {2,-1,-1,-1,-1,1140,242,1865,242,3,1035};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -822,9 +822,10 @@ class FSM
        "};" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "" \n
-       "private [""_agent"",""_agentID"",""_clusterAgents""];" \n
+       "private [""_agent"",""_agentID"",""_clusterAgents"",""_spawnDelay""];" \n
        "" \n
        "_agent = _agentsToSpawn select _spawnCount;" \n
+       "_spawnDelay = 0;" \n
        "" \n
        "if!(isnil ""_agent"") then {" \n
        "	_agentID = _agent select 2 select 3;" \n
@@ -833,11 +834,11 @@ class FSM
        "	//[""TYPE: %1"",_type] call ALIVE_fnc_dump;" \n
        "" \n
        "	if(_type == ""agent"") then {" \n
-       "		[_agent, ""spawn""] call ALIVE_fnc_civilianAgent;	" \n
+       "		[_agent, ""spawn""] spawn ALIVE_fnc_civilianAgent;	" \n
        "	}else{" \n
-       "		[_agent, ""spawn""] call ALIVE_fnc_civilianVehicle;	" \n
+       "		[_agent, ""spawn""] spawn ALIVE_fnc_civilianVehicle;	" \n
        "	};" \n
-       "" \n
+       "	_spawnDelay = time;" \n
        "};" \n
        "" \n
        "_spawnCount = _spawnCount + 1;"/*%FSM</STATEINIT""">*/;
@@ -849,7 +850,7 @@ class FSM
         {
           priority = 1.000000;
           to="SPAWN_LOOP";
-          precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+          precondition = /*%FSM<CONDPRECONDITION""">*/"time - _spawnDelay > 0.5;"/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_spawnCount < _countToSpawn"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
