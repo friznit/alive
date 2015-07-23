@@ -117,7 +117,7 @@ _id = _object addAction [
 
 _text = "Arrest";
 _params = [];
-_code = {_object = _this select 0; _caller = _this select 1; _params = _this select 3; [_object] joinsilent (group _caller); _object setvariable ['detained',true,true]};
+_code = {_object = _this select 0; _caller = _this select 1; _params = _this select 3; _group = group _object; [_object] joinsilent (group _caller); _object setvariable ['detained',true,true]; deleteGroup _group};
 _condition = "alive _target" + "&&" + "!(_target getvariable ['detained',false])";
 
 _id = _object addAction [
@@ -133,7 +133,7 @@ _id = _object addAction [
 
 _text = "Release";
 _params = [];
-_code = {_object = _this select 0; _caller = _this select 1; _params = _this select 3; [_object] joinsilent grpNull; _object setvariable ['detained',false,true]};
+_code = {_object = _this select 0; _caller = _this select 1; _params = _this select 3; _group = createGroup Civilian; [_object] joinsilent _group; _object setvariable ['detained',false,true]};
 _condition = "alive _target" + "&&" + "_target getvariable ['detained',false]";
 
 _id = _object addAction [
