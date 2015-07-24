@@ -933,19 +933,51 @@ switch(_operation) do {
                 
                 switch (_type) do {
                             //by distance
-                            case ("distance") : {_objectives = [_objectives,[_logic],{([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1)},"ASCEND"] call BIS_fnc_sortBy};
+                            case ("distance") : {
+                                _objectives = [_objectives,[_logic],{
+                                    _final = ([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1);
+                                    
+                                    //["ALiVE OPCOM Priority calculated %1",_final] call ALiVE_fnc_DumpR;
+                                    
+                                    _final = _final*(1-(random 0.33));
+                                    
+                                    //["ALiVE OPCOM Priority randomized with a variety of one third in relation to distance %1 ",_final] call ALiVE_fnc_DumpR;
+                                    
+                                    _final
+                                },"ASCEND"] call BIS_fnc_sortBy;
+							};
                             
                             //by size and height
-                            case ("strategic") : {_objectives = [_objectives,[_logic],{_height = (ATLtoASL [(_x select 2 select 1) select 0,(_x select 2 select 1) select 1,0]) select 2; ((_x select 2 select 2) + (_x select 2 select 4) + (_height/2)) - ((([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))/10)},"DESCEND"] call BIS_fnc_sortBy};
+                            case ("strategic") : {
+                                _objectives = [_objectives,[_logic],{
+	                                _height = (ATLtoASL [(_x select 2 select 1) select 0,(_x select 2 select 1) select 1,0]) select 2;
+	                                _value1 = (_x select 2 select 2);
+	                                _value2 = (_x select 2 select 4);
+	                                _value3 = (_height/2);
+	                                _value4 = ((([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))/10);
+
+	                            	_final = (_value1 + _value2 + _value3) - _value4;
+                                    
+                                    //["ALiVE OPCOM Priority calculated %1",_final] call ALiVE_fnc_DumpR;
+                                    
+                                    _final = _final*(1-(random 0.33));
+                                    
+                                    //["ALiVE OPCOM Priority randomized with a variety of one third in relation to size, height, distance, cluster priority %1",_final] call ALiVE_fnc_DumpR;
+                                    
+                                    _final
+                            	},"DESCEND"] call BIS_fnc_sortBy;
+                            };
                             case ("asymmetric") : {
                                 
                                 _objectivesCiv = +_objectives;
                                 _objectivesMil = +_objectives;
                                 
-                                _objectivesFilteredCiv = [_objectivesCiv,[_logic],{([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1)},"ASCEND",{(_x select 2 select 3) == "CIV"}] call BIS_fnc_sortBy;
-                                _objectivesFilteredMil = [_objectivesMil,[_logic],{([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1)},"ASCEND",{(_x select 2 select 3) == "MIL"}] call BIS_fnc_sortBy;
-
+                                _objectivesFilteredCiv = [_objectivesCiv,[_logic],{(([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))*(1-(random 0.20))},"ASCEND",{(_x select 2 select 3) == "CIV"}] call BIS_fnc_sortBy;
+                                _objectivesFilteredMil = [_objectivesMil,[_logic],{(([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))*(1-(random 0.20))},"ASCEND",{(_x select 2 select 3) == "MIL"}] call BIS_fnc_sortBy;
+                                
                                 _objectives = _objectivesFilteredCiv + _objectivesFilteredMil;
+
+                                //["ALiVE OPCOM Asymmetric Priority randomized with a variety of one fifth in relation to distance"] call ALiVE_fnc_DumpR;
 
 		                    	if (_asym_occupation <= 0) exitwith {};
 		
@@ -1046,6 +1078,17 @@ switch(_operation) do {
                             default {};
                 };
                 [_logic,"objectives",_objectives] call ALiVE_fnc_HashSet;
+                
+				// Create additional debug markers
+				if (_debug) then {
+	                {
+	                	_center = [_x,"center"] call ALiVE_fnc_HashGet;
+	                	_id = [_x,"objectiveID"] call ALiVE_fnc_HashGet;
+	                     
+	                	[format[MTEMPLATE, _id], _center,"ICON", [0.5,0.5],"COLORGREY",format["ALiVE - vAI COM PRIO %1",_foreachIndex],"mil_dot","FDiagonal",0,1] call ALIVE_fnc_createMarkerGlobal;
+	                } foreach _objectives;
+				};
+                
                 _args = _objectives;
             };
             _result = _args;
@@ -1788,12 +1831,12 @@ switch(_operation) do {
 						_m setMarkerTypeLocal "mil_dot";
 						_m setMarkerColorLocal "ColorYellow";
                         
-                        /*
+                        ///*
                         switch (_side) do {
-                            case "EAST" : {_m setMarkerTextLocal format["Objective %2 Priority %1",_foreachIndex,_side]};
-                            case "WEST" : {_m setMarkerTextLocal format["Objective                 %2 Priority %1",_foreachIndex,_side]};
+                            //case "EAST" : {_m setMarkerTextLocal format["Objective %2 Global Priority %1",_foreachIndex,_side]};
+                            //case "WEST" : {_m setMarkerTextLocal format["Objective %2 Global Priority %1",_foreachIndex,_side]};
                         };
-                        */
+                        //*/
 					};
                     
                     _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
@@ -1852,10 +1895,10 @@ switch(_operation) do {
                                 
                                 [_logic,"addObjective",[_id,_pos,_size,_type,_priority,_opcom_state,_clusterID,_opcomID]] call ALiVE_fnc_OPCOM;
 					 } foreach _objectives_unsorted;
+                     
                      [_logic,"sortObjectives",_typeOp] call ALiVE_fnc_OPCOM;
-
+                     
                     _args = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
-			
 				};
                 
                 ASSERT_TRUE(typeName _args == "ARRAY",str _args);
