@@ -4469,6 +4469,209 @@ if(_worldName == "bootcamp_acr") then {
 
 };
 
+// Australia down under shrimps on the barbie mate
+if(_worldName == "australia") then {
+
+    ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
+    	"ss_hangar",
+		"hangar_f"
+    ];
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+    	"bunker",
+    	"cargo_house_v",
+    	"cargo_patrol_",
+    	"research",
+		"airport",
+        "fortified",
+		"army",
+        "vez",
+        "budova"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+    	"barracks",
+    	"cargo_hq_",
+    	"miloffices",
+    	"cargo_house_v",
+    	"cargo_patrol_",
+    	"research",
+        "fortified"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+    	"barrack",
+    	"cargo_hq_",
+    	"miloffices"
+    ];
+
+    ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
+		"ss_hangar"
+    ];
+
+    ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
+    	"ss_hangar",
+		"hangar_f",
+    	"runway_beton",
+    	"runway_main",
+    	"runway_end",
+		"runway_poj",
+		"runway_pojdraha"
+    ];
+
+    ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
+    	"helipads",
+		"helipadcircle",
+		"heli_h_army"
+    ];
+
+    ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
+    	"helipads",
+		"heli_h_civil",
+		"heli_h_cross",
+		"heli_h_rescue"
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+    	"airport_tower",
+		"ammostore2",
+    	"radar",
+    	"cargo_house_v",
+    	"cargo_patrol_",
+    	"research",
+    	"mil_wall",
+    	"fortification",
+    	"razorwire",
+    	"dome",
+        "hbarrier",
+		"bighbarrier",
+        "vez",
+        "fortified",
+        "hlaska",
+        "budova",
+        "posed",
+		"scrapyard"
+    ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianPopulationBuildingTypes + [
+        "house_",
+		"shop",
+        "shop_",
+        "stone_",
+		"pub",
+		"residential_a",
+		"housedoubleal",
+		"market",
+		"garaz",
+		"letistni_hala",
+		"hospital"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+    	"offices",
+		"a_office",
+		"a_municipaloffice"
+    ];
+
+    ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
+    	"dp_main",
+		"dp_small",
+		"wpp_",
+    	"spp_t",
+		"pec_",
+        "trafostanica",
+		"ind_coltan_mine",
+		"ind_pipes"
+    ];
+
+    ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
+    	"communication_f",
+		"com_tower",
+    	"transmitter_tower",
+        "vysilac_fm",
+        "telek",
+        "tvtower"
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+    	"crane",
+    	"lighthouse",
+    	"nav_pier",
+		"molo_",
+    	"pier_",
+		"sea_wall_",
+		"najezd",
+        "cargo",
+        "nabrezi",
+        "podesta",
+		"nav_boathouse"
+    ];
+
+    ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+    ];
+
+    ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
+    	"fuelstation",
+		"indpipe",
+    	"dp_bigtank",
+        "expedice",
+        "komin",
+        "fuel_tank_big",
+		"ind_tank"
+    ];
+
+    ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
+    	"wip",
+		"ind_coltan_mine",
+		"factory",
+		"torvana",
+		"workshop",
+		"ind_quarry",
+		"ind_sawmill",
+		"ind_cementworks",
+		"dam_conc"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+		"barn",
+		"bouda",
+		"bozi",
+		"carservice",
+		"church",
+		"commonwealthbank",
+		"deutshe",
+		"dum",
+		"garaz",
+		"generalstore",
+		"ghosthotel",
+		"hangar_2",
+		"helfenburk",
+		"hospital",
+		"hotel",
+		"housedoubleal",
+		"households",
+		"hut",
+		"kasna",
+		"kostel2",
+		"kostelik",
+		"kulna",
+		"market",
+		"panelak",
+		"policestation",
+		"postb",
+		"prison",
+		"pub",
+		"repair_center",
+		"residential_a",
+		"shed",
+		"shop",
+		"shops",
+		"stadium",
+		"stanek",
+		"statek"
+    ];
+
+};
 
 /*
  * Custom mappings for unit mods
