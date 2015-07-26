@@ -4484,9 +4484,7 @@ if(_worldName == "australia") then {
     	"research",
 		"airport",
         "fortified",
-		"army",
-        "vez",
-        "budova"
+		"army"
     ];
 
     ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
@@ -4500,7 +4498,6 @@ if(_worldName == "australia") then {
     ];
 
     ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
-    	"barrack",
     	"cargo_hq_",
     	"miloffices"
     ];
@@ -4545,16 +4542,15 @@ if(_worldName == "australia") then {
     	"dome",
         "hbarrier",
 		"bighbarrier",
-        "vez",
         "fortified",
         "hlaska",
-        "budova",
         "posed",
 		"scrapyard"
     ];
 
     ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianPopulationBuildingTypes + [
         "house_",
+		"budova",
 		"shop",
         "shop_",
         "stone_",
@@ -4629,13 +4625,16 @@ if(_worldName == "australia") then {
 		"ind_quarry",
 		"ind_sawmill",
 		"ind_cementworks",
-		"dam_conc"
+		"dam_conc",
+		"vez"
     ];
 
     ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+		"barrack",
 		"barn",
 		"bouda",
 		"bozi",
+		"budova",
 		"carservice",
 		"church",
 		"commonwealthbank",
