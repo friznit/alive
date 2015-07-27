@@ -1422,145 +1422,148 @@ if(_worldName == "panthera3") then {
     ];
 };
 
-// Isla Duala A3
+// Isla Duala A3 v3.33
 if(_worldName == "isladuala3") then {
-
-    ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
-        "hangar"
-    ];
-
-    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
-        "barrack",
-        "mil_house",
+ 
+	ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
+		"hangar"
+	];
+ 
+	ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+		"barrack",
+		"mil_house",
 		"fort_",
 		"mil_",
-        "mil_controltower",
-        "mil_guardhouse",
+		"mil_controltower",
+		"mil_guardhouse",
 		"misc_deerstand",
-        "deerstand"
-    ];
-
-    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
-        "barrack",
-        "mil_house",
-        "mil_controltower",
-        "mil_guardhouse"
-    ];
-
-    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
-        "barrack",
+		"deerstand"
+	];
+ 
+	ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+		"barrack",
+		"mil_house",
+		"mil_controltower",
+		"mil_guardhouse"
+	];
+ 
+	ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+		"barrack",
 		"barracks",
 		"tent_",
-        "mil_house",
-        "mil_controltower"
-    ];
-
-    ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
-
-    ];
-
-    ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
-        "ss_hangar",
+		"mil_house",
+		"mil_controltower"
+	];
+ 
+	ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
+	];
+ 
+	ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
+		"ss_hangar",
 		"airport",
-        "hangar_2",
-        "hangar",
-        "runway_beton",
-        "runway_end",
+		"hangar",
+		"runway_beton",
+		"runway_end",
 		"runway_",
-        "runway_main",
-        "runway_secondary"
-    ];
-
-    ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
-    ];
-
-    ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
-    ];
-
-    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
-        "deerstand",
-        "vez",
-        "army_hut",
+		"runway_main",
+		"runway_secondary"
+	];
+ 
+	ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
+	];
+ 
+	ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
+	];
+ 
+	ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+		"deerstand",
+		"vez",
+		"army_hut",
 		"tents",
 		"fort_",
-        "barrack",
+		"barrack",
 		"mil_",
-        "mil_house",
-        "mil_controltower",
-        "mil_guardhouse",
+		"mil_house",
+		"mil_controltower",
+		"mil_guardhouse",
 		"misc_deerstand",
-        "deerstand"
-    ];
-
-    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
-        "a_office01"
-    ];
-
-    ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
-        "pec_",
-        "powerstation",
-        "trafostanica"
-    ];
-
-    ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
-        "illuminanttower",
-        "vysilac_fm",
-        "telek",
+		"deerstand"
+	];
+ 
+	ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+		"a_office01"
+	];
+ 
+	ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
+		"pec_",
+		"powerstation",
+		"trafostanica"
+	];
+ 
+	ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
+		"illuminanttower",
+		"vysilac_fm",
+		"telek",
 		"telek1",
-        "tvtower"
-    ];
-
-    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
-        "crane",
-        "lighthouse",
+		"tvtower"
+	];
+ 
+	ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+		"crane",
+		"lighthouse",
 		"nav_",
-        "nav_pier",
-        "pier_",
-        "pier"
-    ];
-
-    ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
-    ];
-
-    ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
-        "fuelstation",
-        "expedice",
-        "indpipe",
-        "komin",
-        "ind_tankbig"
-    ];
-
-    ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
-        "wip",
+		"nav_pier",
+		"pier_",
+		"pier"
+	];
+ 
+	ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+		 "rail_loco"
+	];
+ 
+	ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
+		"fuelstation",
+		"expedice",
+		"indpipe",
+		"komin",
+		"ind_tankbig"
+	];
+ 
+	ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
+		"wip",
 		"ind_",
 		"a_cranecon",
 		"a_buildingwip",
-        "sawmillpen",
-        "workshop"
-    ];
-
-    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
-        "generalstore",
+		"sawmillpen",
+		"workshop"
+	];
+ 
+	ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+		"generalstore",
+		"budova",
 		"shed_",
 		"chapels",
-        "house",
+		"house",
 		"plot_",
 		"households",
 		"housea",
+		"housebt",
 		"housec",
 		"housek",
+		"housel",
 		"housev",
-        "domek",
+		"domek",
 		"slums",
 		"a_castle_",
-        "dum_",
-        "hut0"
-    ];
-
-    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
-
+		"dum_",
+		"hut0",
+		"misc_market",
+		"barn_",
+		"hut_"
 	];
-
+ 
+	ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+		]; 
 };
 
 // Fallujah
@@ -3909,7 +3912,7 @@ if(_worldName == "utes") then {
 
 };
 
-// FSF - Nziwasogo etc
+// FSF - Nziwasogo (5), Kalu Khan (6), Dariyah (7)
 if(_worldName == "pja305" || _worldName == "pja306" || _worldName == "pja307") then {
 
     ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
@@ -3930,6 +3933,7 @@ if(_worldName == "pja305" || _worldName == "pja306" || _worldName == "pja307") t
     ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
         "barrack",
         "mil_house",
+		"mil_guardhouse",
         "mil_controltower"
     ];
 
@@ -3999,7 +4003,8 @@ if(_worldName == "pja305" || _worldName == "pja306" || _worldName == "pja307") t
         "ind_pec_01",
         "wip",
         "sawmillpen",
-        "workshop"
+        "workshop",
+		"coltan"
     ];
 
     ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
@@ -4007,7 +4012,9 @@ if(_worldName == "pja305" || _worldName == "pja306" || _worldName == "pja307") t
         "dum",
         "shed",
         "hut",
-        "house"
+        "house",
+		"minaret",
+		"mosque"
     ];
 
     ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
