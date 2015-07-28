@@ -27,7 +27,7 @@ class CfgVehicles {
                                     {
                                             name = "No";
                                             value = false;
-                                            default = true;
+                                            default = 1;
                                     };
                             };
                     };
@@ -188,7 +188,7 @@ class CfgVehicles {
                                     {
                                             name = "No";
                                             value = false;
-                                            default = true;
+                                            default = 1;
                                     };
                             };
                     };
@@ -217,7 +217,7 @@ class CfgVehicles {
                                     {
                                             name = "$STR_ALIVE_C2ISTAR_INTEL_CHANCE_TOTAL";
                                             value = "1";
-                                            default = true;
+                                            default = 1;
                                     };
                             };
                     };
@@ -236,7 +236,7 @@ class CfgVehicles {
                                     {
                                             name = "No";
                                             value = false;
-                                            default = true;
+                                            default = 1;
                                     };
                             };
                     };
@@ -261,7 +261,7 @@ class CfgVehicles {
                                     {
                                             name = "No";
                                             value = false;
-                                            default = true;
+                                            default = 1;
                                     };
                             };
                     };
@@ -280,7 +280,7 @@ class CfgVehicles {
                                     {
                                             name = "No";
                                             value = false;
-                                            default = true;
+                                            default = 1;
                                     };
                             };
                     };
