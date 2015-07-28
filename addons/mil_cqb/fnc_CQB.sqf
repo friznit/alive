@@ -307,11 +307,11 @@ switch(_operation) do {
 
 				// Create CQB instance
 				_logic setVariable ["class", ALiVE_fnc_CQB];
-                _logic setVariable ["id",_id];
-				_logic setVariable ["instancetype",_type];
+                _logic setVariable ["id",_id,true];
+				_logic setVariable ["instancetype",_type,true];
 				_logic setVariable ["UnitsBlackList",_UnitsBlackList,true];
 				_logic setVariable ["locality",_locality,true];
-			    _logic setVariable ["amount",_amount];
+			    _logic setVariable ["amount",_amount,true];
 				_logic setVariable ["debugColor",_debugColor,true];
 				_logic setVariable ["debugPrefix",_type,true];
 				[_logic, "houses",_result] call ALiVE_fnc_CQB;
