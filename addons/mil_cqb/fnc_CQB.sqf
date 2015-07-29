@@ -1150,7 +1150,13 @@ switch(_operation) do {
                 default {_side = EAST};
             };
 
-			_grp = [getPosATL _house,_side, _units] call BIS_fnc_spawnGroup;
+			//["CQB spawning %1 AI",count _units] call ALiVE_fnc_DumpH;
+            //_grp = [getPosATL _house,_side, _units] call BIS_fnc_spawnGroup;
+            
+            _grp = createGroup _side;
+            
+            {if !(isnil "_x") then {_unit = _grp createUnit [_x, getPosATL _house, [], 0 , "NONE"]}; sleep 0.5} foreach _units;
+
 
 			if (count units _grp == 0) exitWith {
 				if (_debug) then {

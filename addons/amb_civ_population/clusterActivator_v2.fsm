@@ -29,7 +29,7 @@ item24[] = {"DO__SPAWN",4,218,-27.457310,584.677979,62.542732,634.677979,0.00000
 item25[] = {"ITERATE",4,218,95.492104,512.907166,185.492233,562.907166,2.000000,"ITERATE"};
 item26[] = {"NO__SPAWN",4,218,77.947395,582.377930,167.947418,632.378052,0.000000,"NO " \n "SPAWN"};
 item27[] = {"SPAWN_LOOP",2,250,-26.313786,655.072144,63.686340,705.072205,0.000000,"SPAWN" \n "LOOP"};
-item28[] = {"ITERATE",4,4314,98.309441,654.881897,188.309525,704.881958,1.000000,"ITERATE"};
+item28[] = {"ITERATE",4,218,98.309441,654.881897,188.309525,704.881958,1.000000,"ITERATE"};
 item29[] = {"END_LOOP",4,218,-25.952183,727.873047,64.047829,777.873047,0.000000,"END" \n "LOOP"};
 item30[] = {"ANALYSE_ACTIVE_A",2,250,-528.949524,199.181198,-438.949554,249.181137,0.000000,"ANALYSE" \n "ACTIVE" \n "AGENTS"};
 item31[] = {"DO__DESPAWN",4,218,-528.647400,278.651703,-438.647552,328.651764,1.000000,"DO " \n "DESPAWN"};
@@ -132,7 +132,7 @@ link64[] = {48,41};
 link65[] = {49,15};
 link66[] = {49,18};
 globals[] = {0.000000,0,0,0,16777215,640,480,1,160,6316128,1,-849.937683,327.282013,1053.484375,-20.815279,1018,929,1};
-window[] = {2,-1,-1,-1,-1,1008,110,1733,110,3,1035};
+window[] = {2,-1,-1,-1,-1,964,66,1689,66,3,1035};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -530,7 +530,7 @@ class FSM
       name = "ANALYSE_INACTIVE";
       init = /*%FSM<STATEINIT""">*/"private [""_cluster"",""_position"",""_size"",""_countToSpawn""];" \n
        "" \n
-       "_block = [ALIVE_arrayBlockHandler,""getNextBlock"",[""inactiveClusters"",_inactiveClusters,30]] call ALIVE_fnc_arrayBlockHandler;" \n
+       "_block = [ALIVE_arrayBlockHandler,""getNextBlock"",[""inactiveClusters"",_inactiveClusters,1]] call ALIVE_fnc_arrayBlockHandler;" \n
        "" \n
        "{" \n
        "" \n
@@ -552,7 +552,7 @@ class FSM
        "" \n
        "} forEach _block;" \n
        "" \n
-       "_analysisCount = _analysisCount + 30;" \n
+       "_analysisCount = _analysisCount + 1;" \n
        "" \n
        "// DEBUG -------------------------------------------------------------------------------------" \n
        "/*" \n

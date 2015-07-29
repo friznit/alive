@@ -867,6 +867,11 @@ switch(_operation) do {
                     [_logic, "locked",true] call ALIVE_fnc_HashSet;
 
 				    _group = createGroup _sideObject;
+                    
+                    // select a random formation
+					_formations = ["COLUMN","STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE"];
+					_formation = _formations call BIS_fnc_selectRandom;
+					_group setFormation _formation; 
 
 					// determine a suitable spawn position
 					//["Profile [%1] Spawn - Get good spawn position",_profileID] call ALIVE_fnc_dump;
@@ -899,12 +904,7 @@ switch(_operation) do {
 							
                             //Set name 
 							//_unit setVehicleVarName format["%1_%2",_profileID, _unitCount];
-
-		                    // select a random formation
-							_formations = ["COLUMN","STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE"];
-							_formation = _formations call BIS_fnc_selectRandom;
-							_group setFormation _formation;
-                                                        
+                                                       
 							_unit setPos formationPosition _unit;
 							_unit setDamage _damage;
 							_unit setRank _rank;
@@ -945,7 +945,7 @@ switch(_operation) do {
                                 };
                             };
                         };
-                        sleep 0.2;
+                        sleep 0.5;
 					} forEach _unitClasses;
 					//[] call ALIVE_fnc_timer;
 

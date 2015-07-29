@@ -465,8 +465,6 @@ switch(_operation) do {
 					_position = _logic select 2 select 2; //[_entityProfile,"position"] call ALIVE_fnc_hashGet;
                     _special = "NONE";
 					//[] call ALIVE_fnc_timer;
-                    
-                    _position = [_position, 0, 20, 3, 0, 100, 0, [], [_position]] call BIS_fnc_findSafePos;
 
 					//["SPAWN VEHICLE [%1] pos: %2",_profileID,_position] call ALIVE_fnc_dump;
 
@@ -486,6 +484,8 @@ switch(_operation) do {
 						    _paraDrop = true;
                             
 						}else{
+                            _position = [_position, 0, 50, 5, 0, 5 , 0, [], [_position]] call BIS_fnc_findSafePos;
+
 						    _position set [2,0];
                             _special = "CAN_COLLIDE";
 						};
