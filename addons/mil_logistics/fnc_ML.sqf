@@ -4512,6 +4512,9 @@ switch(_operation) do {
             "_destination","_completionRadius","_distance"];
 
             _group = _entityProfile select 2 select 13;
+            
+            if !(!isnil "_group" && {typeName _group == "GROUP"}) exitwith {_waypointCompleted = true};
+            
             _leader = leader _group;
             _currentPosition = position _leader;
             _currentWaypoint = currentWaypoint _group;
