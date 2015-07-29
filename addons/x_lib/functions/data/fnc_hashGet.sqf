@@ -37,7 +37,7 @@ _hash = _this select 0;
 _key = _this select 1;
 
 //Avoid passing a non-existing hash or key to the CBA function
-if ((isnil "_hash") || (isnil "_key")) exitwith {};
+if (isnil "_hash" || {isnil "_key"} || {!(typeName _hash == "ARRAY")}) exitwith {["ALiVE_fnc_HashGet retrieved wrong input!"] call ALiVE_fnc_Dump};
 
 if(count _this > 2) then {
 	_default = _this select 2;
