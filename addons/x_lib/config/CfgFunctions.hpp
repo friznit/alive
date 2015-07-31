@@ -1643,3 +1643,15 @@ class vehicleSetDamage
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
+class getArtyRounds
+{
+	file = "\x\alive\addons\x_lib\functions\config\fnc_getArtyRounds.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+class getArtyMagazineType
+{
+	file = "\x\alive\addons\x_lib\functions\config\fnc_getArtyMagazineType.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
