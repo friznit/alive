@@ -480,7 +480,8 @@ switch(_operation) do {
                                 default {_side = EAST};
                             };
 
-                            _roundsUnit = _class call NEO_fnc_artyUnitAvailableRounds;
+                              _roundsUnit = _class call ALiVE_fnc_GetArtyRounds;
+
                             _roundsAvailable = [];
                             _canMove = if (_class in ["B_MBT_01_arty_F", "O_MBT_02_arty_F", "B_MBT_01_mlrs_F","O_Mortar_01_F", "B_Mortar_01_F","I_Mortar_01_F","BUS_Support_Mort","BUS_MotInf_MortTeam","OIA_MotInf_MortTeam","OI_support_Mort","HAF_MotInf_MortTeam","HAF_Support_Mort"]) then { true } else { false };
                             _units = [];
@@ -563,6 +564,7 @@ switch(_operation) do {
                                     _roundsAvailable set [count _roundsAvailable, _x];
                                 };
                             } forEach _rounds;
+
 
                             leader _grp setVariable ["NEO_radioArtyBatteryRounds", _roundsAvailable, true];
 

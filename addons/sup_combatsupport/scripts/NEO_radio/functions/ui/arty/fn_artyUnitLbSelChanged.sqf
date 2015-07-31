@@ -2,10 +2,10 @@ private ["_display", "_map"];
 _display = findDisplay 655555;
 _map = _display displayCtrl 655560;
 
-private 
+private
 [
-	"_artyArray", "_artyUnitLb", "_artyUnitText", "_artyHelpUnitText", "_artyConfirmButton", "_artyBaseButton", "_artyOrdnanceTypeText", 
-	"_artyOrdnanceTypeLb", "_artyRateOfFireText", "_artyRateOfFireLb", "_artyRoundCountText", "_artyRoundCountLb", "_artyMoveButton", 
+	"_artyArray", "_artyUnitLb", "_artyUnitText", "_artyHelpUnitText", "_artyConfirmButton", "_artyBaseButton", "_artyOrdnanceTypeText",
+	"_artyOrdnanceTypeLb", "_artyRateOfFireText", "_artyRateOfFireLb", "_artyRoundCountText", "_artyRoundCountLb", "_artyMoveButton",
 	"_artyDontMoveButton", "_artyDispersionText", "_artyDispersionSlider", "_artyRateDelayText", "_artyRateDelaySlider",
 	"_supportMarker", "_artyMarkers", "_battery", "_status", "_class", "_ord"
 ];
@@ -78,18 +78,19 @@ if (!(_status in ["KILLED", "MISSION", "RTB", "MOVE", "RESPONSE", "NOAMMO"]) && 
 		if ((_x select 1) >= 1) then
 		{
 			_artyOrdnanceTypeLb lbAdd (_x select 0);
+
 		};
 	} forEach _ord;
-	
+
 	//Arty Markers
-	/*{
+	{
 		private ["_radius"];
 		_radius = _class call NEO_fnc_artyUnitFiringDistance;
-		
+
 		_x setMarkerPosLocal getPosATL _battery;
 		_x setMarkerShapeLocal "ELLIPSE";
 		_x setMarkerBrushlocal "SolidBorder";
-		
+
 		if (_forEachIndex == 0) then
 		{
 			_x setMarkerAlphaLocal 0.8;
@@ -102,13 +103,13 @@ if (!(_status in ["KILLED", "MISSION", "RTB", "MOVE", "RESPONSE", "NOAMMO"]) && 
 			_x setMarkerSizeLocal [_radius select 1, _radius select 1];
 			_x setMarkerColorLocal "ColorGreen";
 		};
-	} forEach _artyMarkers;*/
-	
+	} forEach _artyMarkers;
+
 	//Map Anim
 	ctrlMapAnimClear _map;
 	_map ctrlMapAnimAdd [0.5, 1, position _battery];
 	ctrlMapAnimCommit _map;
-	
+
 	//EventHandlers
 	_artyOrdnanceTypeLb ctrlSetEventHandler ["LBSelChanged", "_this call NEO_fnc_artyConfirmButtonEnable; _this call NEO_fnc_artyOrdLbSelChanged"];
 	_map ctrlSetEventHandler ["MouseButtonDown", "_this call NEO_fnc_radioMapEvent"];
