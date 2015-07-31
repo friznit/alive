@@ -2,12 +2,11 @@ private ["_class","_weapon","_weaponClass","_mags""_result"];
 
 _class = _this;
 _weapon = [configfile >> "CfgVehicles" >> _class >> "Turrets" >> "MainTurret" >> "weapons"] call ALiVE_fnc_getConfigValue;
-
+["_weapon: %1", _weapon] call ALIVE_fnc_dumpR;
 _weaponClass = _weapon select 0;
 
 _mags =[];
 _mags = _weaponClass call ALIVE_fnc_configGetWeaponMagazines;
-
 
 _roundsAvail =[];
 
@@ -71,6 +70,8 @@ _roundsAvail =[];
  				 _roundsAvail =  _roundsAvail + ["ILLUM"];
  			};
      } forEach _mags;
+
+
 
 _result = _roundsAvail;
 

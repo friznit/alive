@@ -38,6 +38,7 @@ _weaponClass = _weapon select 0;
 _mags =[];
 _mags = _weaponClass call ALIVE_fnc_configGetWeaponMagazines;
 
+_ords=[];
 _ord="";
 
 
@@ -49,9 +50,9 @@ switch(_type) do {
 							_he = ["he", _x] call BIS_fnc_inString;
 									};
 						if (_he) then {
- 						_ord =  _x;
+ 						_ords = [_ords, _x] call ALIVE_fnc_push;
 
-};
+							};
 					} forEach _mags;
 				};
 	case "SMOKE": {
@@ -61,7 +62,7 @@ switch(_type) do {
 						_smoke = ["smoke", _x] call BIS_fnc_inString;
 									};
 						if (_smoke) then {
- 						_ord =  _x;
+ 							_ords = [_ords, _x] call ALIVE_fnc_push;
  					};
 
 					} forEach _mags;
@@ -70,7 +71,7 @@ switch(_type) do {
 					{
 						_guided = ["Mo_guided", _x] call BIS_fnc_inString;
 						if (_guided) then {
- 						_ord =  _x;
+ 							_ords = [_ords, _x] call ALIVE_fnc_push;
  						};
 
 					} forEach _mags;
@@ -79,7 +80,7 @@ switch(_type) do {
 					{
 						_cluster = ["Mo_Cluster", _x] call BIS_fnc_inString;
 						if (_cluster) then {
- 						_ord =  _x;
+ 							_ords = [_ords, _x] call ALIVE_fnc_push;
  						};
 
 					} forEach _mags;
@@ -92,7 +93,7 @@ switch(_type) do {
 						_lg = ["laser", _x] call BIS_fnc_inString;
 								};
 						if (_lg) then {
- 						_ord =  _x;
+ 							_ords = [_ords, _x] call ALIVE_fnc_push;
  						};
 
 					} forEach _mags;
@@ -101,7 +102,7 @@ switch(_type) do {
 					{
 						_mine = ["Mo_mine", _x] call BIS_fnc_inString;
 						if (_mine) then {
- 						_ord =  _x;
+ 							_ords = [_ords, _x] call ALIVE_fnc_push;
  						};
 
 					} forEach _mags;
@@ -110,7 +111,7 @@ switch(_type) do {
 					{
 						_atmine = ["Mo_AT_mine", _x] call BIS_fnc_inString;
 						if (_atmine) then {
- 						_ord =  _x;
+ 						_ords = [_ords, _x] call ALIVE_fnc_push;
  						};
 
 					} forEach _mags;
@@ -119,7 +120,7 @@ switch(_type) do {
 					{
 						 _rockets = ["rockets", _x] call BIS_fnc_inString;
 						if (_rockets) then {
- 						_ord =  _x;
+ 							_ords = [_ords, _x] call ALIVE_fnc_push;
  						};
 
 					} forEach _mags;
@@ -132,7 +133,7 @@ switch(_type) do {
 						_illum = ["flare", _x] call BIS_fnc_inString;
 						};
 						if (_illum) then {
- 						_ord =  _x;
+ 							_ords = [_ords, _x] call ALIVE_fnc_push;
  						};
 
 					} forEach _mags;
@@ -141,6 +142,9 @@ switch(_type) do {
 					_ord="";
 				};
 };
+;
+_ord = _ords select 0;
+
 
 
 _ord;
