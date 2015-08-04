@@ -36,6 +36,16 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sup_combatsupport\fnc_unpackMortar.sqf";
                                 recompile = RECOMPILE;
                         };
+                          class combatSupportAdd {
+                                description = "Adds Combat Support unit via script";
+                                file = "\x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_supportAdd.sqf";
+                                recompile = RECOMPILE;
+                        };
+                           class combatSupportRemove{
+                                description = "Removes Combat Support unit via script";
+                                file = "\x\alive\addons\sup_combatsupport\scripts\NEO_radio\functions\misc\fn_supportRemove.sqf";
+                                recompile = RECOMPILE;
+                        };
                 };
         };
 };
