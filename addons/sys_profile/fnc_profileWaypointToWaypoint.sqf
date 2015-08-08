@@ -32,6 +32,8 @@ _profileWaypoint = _this select 0;
 _group = _this select 1;
 _setCurrent = if(count _this > 2) then {_this select 2} else {false};
 
+if (isnil "_profileWaypoint" || {!(typeName _profileWaypoint == "ARRAY")}) exitwith {["ALiVE - ALiVE_fnc_ProfileWaypointToWaypoint retrieved wrong input: %1!",_this] call ALiVE_fnc_Dump};
+
 _position = [_profileWaypoint,"position"] call ALIVE_fnc_hashGet;
 _radius = [_profileWaypoint,"radius"] call ALIVE_fnc_hashGet;
 _type = [_profileWaypoint,"type"] call ALIVE_fnc_hashGet;
