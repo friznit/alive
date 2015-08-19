@@ -985,6 +985,10 @@ switch(_operation) do {
 					// store the profile id on the active profiles index
 					[ALIVE_profileHandler,"setActive",[_profileID,_side,_logic]] call ALIVE_fnc_profileHandler;
 					[ALIVE_profileHandler,"setEntityActive",_profileID] call ALIVE_fnc_profileHandler;
+                    
+                    // Indicate profile has been spawned and unlock for asynchronous waits
+                    [_logic, "locked",false] call ALIVE_fnc_HashSet;                       
+                    
 					//[] call ALIVE_fnc_timer;
 
                     //["Profile [%1] Spawn - Debug",_profileID] call ALIVE_fnc_dump;
@@ -1088,10 +1092,7 @@ switch(_operation) do {
 						
 						// store the profile id on the in active profiles index
 						[ALIVE_profileHandler,"setInActive",[_profileID,_side,_logic]] call ALIVE_fnc_profileHandler;
-						[ALIVE_profileHandler,"setEntityInActive",_profileID] call ALIVE_fnc_profileHandler;
-
-	                    // Indicate profile has been despawned and unlock for asynchronous waits
-	                    [_logic, "locked",false] call ALIVE_fnc_HashSet;            
+						[ALIVE_profileHandler,"setEntityInActive",_profileID] call ALIVE_fnc_profileHandler;         
                                                 						
 						// DEBUG -------------------------------------------------------------------------------------
 						if(_debug) then {

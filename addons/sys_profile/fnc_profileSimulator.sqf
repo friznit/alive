@@ -58,6 +58,7 @@ _engaged = [0,0,0];
 		_side = _entityProfile select 2 select 3; //[_entityProfile, "side"] call ALIVE_fnc_hashGet;
 		_positions = _entityProfile select 2 select 18; //[_entityProfile, "positions"] call ALIVE_fnc_hashGet;
 		_isPlayer = _entityProfile select 2 select 30; //[_entityProfile, "isPlayer"] call ALIVE_fnc_hashGet;
+        _locked = [_entityProfile, "locked",false] call ALIVE_fnc_HashGet;
         _vehicleCommander = false;
 		_vehicleCargo = false;
         _isAir = nil;
@@ -115,7 +116,7 @@ _engaged = [0,0,0];
 		};
              
 		// entity has waypoints assigned and entity is not in cargo of a vehicle
-		if(count _waypoints > 0 && !(_vehicleCargo) && !(_isPlayer)) then {
+		if(count _waypoints > 0 && {!_locked} && {!(_vehicleCargo)} && {!(_isPlayer)}) then {
 						
 			// entity is not spawned, simulate
 			if!(_active) then {
@@ -164,8 +165,8 @@ _engaged = [0,0,0];
 								_direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
 								_newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;
 								_handleWPcomplete = {
-								_waypoints = _waypoints + _waypointsCompleted;
-								_waypointsCompleted = [];
+									_waypoints = _waypoints + _waypointsCompleted;
+									_waypointsCompleted = [];
 								};
 							};
 							default {
