@@ -167,15 +167,23 @@ switch(_type) do {
 						_spawnPosition = [_position] call ALIVE_fnc_getClosestLand;
 					};
 
+					//Set position on ground
 					_spawnPosition set [2,0];
-                    _roads = _spawnPosition nearRoads 50;
                     
-                    if (count _roads > 1) then {
-                    	_direction = [_roads select 0, _roads select 1] call BIS_fnc_DirTo;
+                    //Check direction of street
+                    _roads = _spawnPosition nearRoads 50;
+                    _roadsConnected = roadsConnectedTo (_roads select 0);
+                    
+                    if (count _roadsConnected > 1) then {
+                        _roads = _roadsConnected;
+                        _direction = [_roads select 0, _roads select 1] call BIS_fnc_DirTo;
+                    } else {
+                        if (count _roads > 1) then {
+                            _direction = [_roads select 0, _roads select 1] call BIS_fnc_DirTo;
+                        };
                     };
 
 					//["GGSP [%1] - road position: %2 road direction: %3",_profileID,_spawnPosition,_direction] call ALIVE_fnc_dump;
-
 					//[_spawnPosition,"ROAD",_profileID] call _createMarker;
 				};
 
@@ -206,13 +214,16 @@ switch(_type) do {
 							};
 						};
 
-						//Remove Leader
-						_vehicles set [0,"x"]; _vehicles = _vehicles - ["x"];
-
 						//["LEAD POS: %1",_spawnPosition] call ALIVE_fnc_dump;
 						//[_spawnPosition,"LEAD",_profileID] call _createMarker;
+                        
+						//Remove Leader
+						_vehicles set [0,"x"]; _vehicles = _vehicles - ["x"];           
 
 						{
+                            
+							_vehicleProfile = _x;
+                            _vehicleClass = _vehicleProfile select 2 select 11; //[_vehicleProfile,"vehicleClass"] call ALIVE_fnc_hashGet;                            
 
 						    if(_inAir) then {
 						        _position = [_spawnPosition, (100 * ((_forEachIndex)+1)), _direction] call BIS_fnc_relPos;
@@ -220,10 +231,22 @@ switch(_type) do {
                                 _position = [_spawnPosition, (20 * ((_forEachIndex)+1)), _direction] call BIS_fnc_relPos;
 						    };
 
-							//["GROUP POS: %1",_position] call ALIVE_fnc_dump;
-							//[_position,"GROUP",_profileID] call _createMarker;
+                            //["GROUP POS: %1",_position] call ALIVE_fnc_dump;
+							//[_position,"GROUP",_profileID] call _createMarker;                            
+                            
+                            _isFlat = _position isflatempty [
+					    		3,								//--- Minimal distance from another object
+					    		0,								//--- If 0, just check position. If >0, select new one
+					    		0.7,							//--- Max gradient
+					    		5,								//--- Gradient area
+					    		0,								//--- 0 for restricted water, 2 for required water,
+					    		false							//--- True if some water can be in 25m radius
+					    	];
+                            
+							if !(count _isFlat > 0) then {_position = [_position, 0, 50, 5, 0, 5 , 0, [], [_position]] call BIS_fnc_findSafePos};
 
-							_vehicleProfile = _x;
+                            //["GROUP POS FINAL: %1",_position] call ALIVE_fnc_dump;
+							//[_position,"GROUP FINAL",_profileID] call _createMarker;         
                             
                             [_vehicleProfile,"direction",_direction] call ALIVE_fnc_profileVehicle;
 							[_vehicleProfile,"position",_position] call ALIVE_fnc_profileVehicle;

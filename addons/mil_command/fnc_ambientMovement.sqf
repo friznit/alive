@@ -26,7 +26,7 @@ Highhead
 
 private ["_args","_debug","_waypoints","_unit","_profile","_vehiclesInCommandOf","_vehiclesInCargoOf","_obj",
 "_leader","_pos","_radius","_positions","_assignments","_profileWaypoint","_savepos","_type","_speed","_formation",
-"_behaviour","_type","_objs","_parkedAir","_locations","_vehicleProfile","_vehicleObjectType"];
+"_behaviour","_type","_objs","_parkedAir","_locations","_vehicleProfile","_vehicleObjectType","_roads"];
 
 _profile = _this select 0;
 _params = _this select 1;
@@ -39,11 +39,12 @@ if (typename _params == "SCALAR") then {
     _behaviour = _params select 1;
 };
 
-_debug = true;
-
 _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
 _waypoints = [_profile,"waypoints",[]] call ALiVE_fnc_HashGet;
 _vehiclesInCommandOf = [_profile,"vehiclesInCommandOf",[]] call ALIVE_fnc_HashGet;
+
+_debug = true;
+_roads = false;
 
 if (count _vehiclesInCommandOf > 0) then {
 	{
@@ -56,10 +57,12 @@ if (count _vehiclesInCommandOf > 0) then {
                 case ("Car") : {
                     _radius = 800;
                     _locations = true;
+                    _roads = true;
                 };
                 case ("Tank") : {
                     _radius = 1000;
                     _locations = true;
+                    _roads = true;
                 };
                 case ("Helicopter") : {
 	                if (_pos select 2 < 5) then {
@@ -98,26 +101,22 @@ if ((count _waypoints == 0) && {isnil "_parkedAir"}) then {
             _locations = _locations - [_location];
             _pos = position _location;
         } else {
-            _pos = [_pos,_radius] call CBA_fnc_RandPos;
+            _pos = [_startPos,_radius] call CBA_fnc_RandPos;
+        };
+        
+        if (_roads) then {
+        	_roadsArray = _pos nearRoads 200;
+            
+            if (count _roadsArray > 0) then {
+                _pos = getposATL (_roadsArray call BIS_fnc_SelectRandom);
+            };    
         };
         
         //Loop last Waypoint
         if (_i == 4) then {_pos = _startPos; _type = "CYCLE"};
 
-		//Prepare Waypoint Data
-        /*
-        _profileWaypoint = [_pos, 50] call ALIVE_fnc_createProfileWaypoint;
-        [_profileWaypoint,"type",_type] call ALIVE_fnc_hashSet;
-        [_profileWaypoint,"speed",_speed] call ALIVE_fnc_hashSet;
-        [_profileWaypoint,"formation",_formation] call ALIVE_fnc_hashSet;
-        [_profileWaypoint,"behaviour",_behaviour] call ALIVE_fnc_hashSet;
-        */
-        
         _profileWaypoint = [_pos, 20, _type, _speed, 50, [], _formation, "NO CHANGE", _behaviour] call ALIVE_fnc_createProfileWaypoint;
         [_profileWaypoint,"statements",["true","_disableSimulation = true;"]] call ALIVE_fnc_hashSet;
-
-		//Add Waypoint
         [_profile, "addWaypoint", _profileWaypoint] call ALIVE_fnc_profileEntity;
-        sleep 0.2;
 	};
 };
