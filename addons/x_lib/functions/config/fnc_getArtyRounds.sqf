@@ -1,6 +1,11 @@
 private ["_class","_weapon","_weaponClass","_mags""_result"];
 
 _class = _this;
+
+if(_class isEqualTo "BUS_MotInf_MortTeam") then {
+_class	= "B_MBT_01_arty_F"
+};
+
 _weapon = [configfile >> "CfgVehicles" >> _class >> "Turrets" >> "MainTurret" >> "weapons"] call ALiVE_fnc_getConfigValue;
 
 _weaponClass = _weapon select 0;

@@ -28,6 +28,10 @@ Gunny
 private ["_class","_type","_weaponClass","_mags""_result"];
 
 _class = _this select 0;
+
+if(_class isEqualTo "BUS_MotInf_MortTeam") then {
+_class	= "B_MBT_01_arty_F"
+};
 _type = _this select 1;
 _weaponType = typeof(vehicle _class);
 
