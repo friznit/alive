@@ -34,7 +34,7 @@ switch (_taskState) do {
 	case "init":{
 
 	    private["_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskLocationType","_taskLocation","_taskEnemyFaction","_taskCurrent",
-	    "_taskApplyType","_taskEnemySide","_targetSector","_targetEntity","_taskPlayers","_targetBuilding"];
+	    "_taskApplyType","_taskEnemySide","_targetSector","_targetEntity","_taskPlayers","_targetBuilding","_targetBuildings","_targetTypes"];
 
         _taskID = [_task, 0, "", [""]] call BIS_fnc_param;
         _requestPlayerID = [_task, 1, "", [""]] call BIS_fnc_param;
@@ -86,7 +86,7 @@ switch (_taskState) do {
 			if (!isnil "OPCOM_instances") then {
                 
 	            //["Selecting Task location from OPCOMs"] call ALiVE_fnc_DumpR;
-	            _triggerStates = ["defend","defending","reserve","reserving","idle"];
+	            _triggerStates = ["defend","defending","reserve","reserving","idle","unassigned"];
 	            _objectives = [];
 				{
 				    _OPCOM = _x;
@@ -137,21 +137,70 @@ switch (_taskState) do {
 					};
                     
 	                _taskLocation = [_objectives select _index,"center"] call ALiVE_fnc_HashGet;
-	                ["C2ISTAR - Task SabotageBuilding - OPCOM index %2 selected as objective at position %1 of ",_position,_index] call ALiVE_fnc_Dump;
+                    _clusterID = [_objectives select _index,"clusterID",""] call ALiVE_fnc_HashGet;
+                    _type = [_objectives select _index,"type",""] call ALiVE_fnc_HashGet;
+                    
+                    _targetTypes = [];
+                    
+                    switch _type do {
+                        case ("CIV") : {
+                            _targetTypes =  [
+                        		"ALIVE_clustersCiv",
+								"ALIVE_clustersCivConstruction",
+								"ALIVE_clustersCivFuel",
+								"ALIVE_clustersCivHQ",
+								"ALIVE_clustersCivMarine",
+								"ALIVE_clustersCivPower",
+								"ALIVE_clustersCivRail",
+								"ALIVE_clustersCivSettlement",
+                                "ALIVE_clustersCivComms"
+                        	];
+                        };
+                        default {
+                            _targetTypes = [
+                            	"ALIVE_clustersMil",
+								"ALIVE_clustersMilAir",
+								"ALIVE_clustersMilHeli",
+								"ALIVE_clustersMilHQ"
+                            ];
+                        };
+                    };
+
+			        {
+			            _clusters = _x;
+			            
+			            if (!(isnil {call compile _clusters}) && {_clusterID in ((call compile _clusters) select 1)}) then {
+                            
+                            _cluster = [call compile _clusters,_clusterID] call ALiVE_fnc_HashGet;
+                            _clusterLocation = [_cluster,"center"] call ALiVE_fnc_HashGet;
+                            
+                            _clusterLocation resize 2;
+                            _taskLocation resize 2;
+                            
+                            if (str(_clusterLocation) == str(_taskLocation)) exitwith {
+                                
+								_targetBuildings = [_cluster,"nodes",[]] call ALiVE_fnc_HashGet;
+                            };
+			            };
+                        
+                        if (!isnil "_targetBuildings") exitwith {};
+			        } foreach _targetTypes;
+                                        
+	                ["C2ISTAR - Task SabotageBuilding - OPCOM index %2 selected as objective at position %1",_taskLocation,_index] call ALiVE_fnc_Dump;
+                    ["C2ISTAR - Task SabotageBuilding - Buildings in %3 cluster %2: %1",_targetBuildings,_clusterID,_type] call ALiVE_fnc_Dump;
 	            } else {
-                    ["C2ISTAR - Task SabotageBuilding - Currently there are no OPCOM positions to select the target from available!"] call ALiVE_fnc_Dump;
+                    ["C2ISTAR - Task SabotageBuilding - Currently there are no OPCOM objectives available, using map locations!"] call ALiVE_fnc_Dump;
                     
                     _taskLocation = position ((nearestLocations [getArray (configFile >> "CfgWorlds" >> worldName >> "centerPosition"), ["NameVillage","NameCity","NameCityCapital","NameLocal","CityCenter","Airport"], 30000]) call BIS_fnc_SelectRandom);
                 };
 	        };
         };
 
-        //["Calling NearestObjects..."] call ALiVE_fnc_DumpR;
-        
+   
         if (isnil "_taskLocation") exitwith {["C2ISTAR - Task SabotageBuilding - No location selected!"] call ALiVE_fnc_Dump};
-        
-        _targetBuildings = nearestObjects [_taskLocation,["House_F"],500];
-        
+
+        if (isnil "_targetBuildings" || {(count _targetBuildings) == 0}) then {_targetBuildings = nearestObjects [_taskLocation,["House_F"],500]};        
+		
         if (count _targetBuildings == 0) exitwith {["C2ISTAR - Task SabotageBuilding - There are no strategically relevant buildings to attack at the target area!"] call ALiVE_fnc_Dump};
 
 		//["Sorting buildings by height..."] call ALiVE_fnc_DumpR;
@@ -177,6 +226,8 @@ switch (_taskState) do {
         _targetPosition = getposATL _targetBuilding;
         _targetID = str(floor(_targetPosition select 0)) + str(floor(_targetPosition select 1)); 
 		_targetDisplayType = getText(configfile >> "CfgVehicles" >> (typeOf _targetBuilding) >> "displayName");
+        
+        ["C2ISTAR - Task SabotageBuilding - Building: %1 | Type: %2 | Pos: %3!",_targetBuilding,_targetDisplayType,_targetPosition] call ALiVE_fnc_Dump;
 
         private["_stagingPosition","_dialogOptions","_dialogOption","_buildingType","_reward"];
 
@@ -228,9 +279,6 @@ switch (_taskState) do {
 				];
             };
 	    } foreach [_targetBuilding];
-
-
-
 
         // select the random text
         _dialogOptions = [ALIVE_generatedTasks,"SabotageBuilding"] call ALIVE_fnc_hashGet;

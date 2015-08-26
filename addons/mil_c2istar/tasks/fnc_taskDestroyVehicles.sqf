@@ -34,7 +34,7 @@ switch (_taskState) do {
 	case "init":{
 
 	    private["_taskID","_requestPlayerID","_taskSide","_taskFaction","_taskLocationType","_taskLocation","_taskEnemyFaction","_taskCurrent",
-	    "_taskApplyType","_taskEnemySide","_targetSector","_targetVehicles","_taskPlayers"];
+	    "_taskApplyType","_taskEnemySide","_targetSector","_targetVehicles","_taskPlayers","_targets"];
 
         _taskID = _task select 0;
         _requestPlayerID = _task select 1;
@@ -64,14 +64,36 @@ switch (_taskState) do {
         // establish the location for the task
         // get enemy vehicles
 
-        _targetSector = [_taskLocation,_taskLocationType,_taskEnemySide] call ALIVE_fnc_taskGetSideSectorVehicles;
-        _targetVehicles = [_targetSector,_taskEnemySide] call ALIVE_fnc_taskGetRandomSideVehicleFromSector;
+		//Freezes game for a few seconds
+        //_targetSector = [_taskLocation,_taskLocationType,_taskEnemySide] call ALIVE_fnc_taskGetSideSectorVehicles;
+        //_targetVehicles = [_targetSector,_taskEnemySide] call ALIVE_fnc_taskGetRandomSideVehicleFromSector;
 
+		_targets = +([ALiVE_profileHandler, "getProfilesByType", "vehicle"] call ALIVE_fnc_profileHandler);
+		
+        _targets = [_targets,[_taskLocation,_taskEnemySide],{
+            private ["_profile","_pos"];
+            
+            _profile = [ALiVE_ProfileHandler, "getProfile",_x] call ALIVE_fnc_ProfileHandler;
+            _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
+			
+            _pos distance _Input0
+		},"ASCEND",{
+            private ["_profile","_side"];
+            
+            _profile = [ALiVE_ProfileHandler, "getProfile",_x] call ALIVE_fnc_ProfileHandler;
+            _side = [_profile,"side"] call ALiVE_fnc_HashGet;
+            
+            count ([_profile,"entitiesInCommandOf",[]] call ALiVE_fnc_HashGet) > 0 && {_side == _Input1};
+        }] call BIS_fnc_sortBy;
+        
+        _targetVehicles = [_targets select 0];
+        
         if(count _targetVehicles > 0) then {
 
             private["_targetVehicle","_vehicleProfile","_vehiclePosition","_vehicleType","_vehicleName"];
 
             _targetVehicle = _targetVehicles select 0;
+            
             _vehicleProfile = [ALIVE_profileHandler, "getProfile", _targetVehicle] call ALIVE_fnc_profileHandler;
             _vehicleProfile call ALIVE_fnc_inspectHash;
             _vehiclePosition = _vehicleProfile select 2 select 2;
