@@ -1291,17 +1291,21 @@ switch(_operation) do {
 				    _state = [_x,"opcom_state",""] call ALiVE_fnc_HashGet;
 				   
 				    if (_orders in ["attack","defend"]) then {_AO pushback _x} else {
-				        if (_state in ["idle"]) then {
+				        if (_state in ["reserving","idle"]) then {
 				        	_FOB pushback _x;
 				        };
 				    };
 				} foreach ([_logic,"objectives",[]] call ALiVE_fnc_HashGet);
 				
-				if (count _FOB == 0 || {count _AO == 0}) exitwith {};
-				
-				_FOB = [_FOB,[[_AO select 0,"center",[0,0,0]] call ALiVE_fnc_HashGet],{_input0 distance ([_x,"center",[0,0,0]] call ALiVE_fnc_HashGet)},"ASCEND"] call BIS_fnc_sortBy;
-       
-	            _result = _FOB select 0;
+				if (count _FOB > 0 && {count _AO > 0}) then {
+					_FOB = [_FOB,[[_AO select 0,"center",[0,0,0]] call ALiVE_fnc_HashGet],{_input0 distance ([_x,"center",[0,0,0]] call ALiVE_fnc_HashGet)},"ASCEND"] call BIS_fnc_sortBy;
+					
+                    _result = _FOB select 0;
+                } else {
+                    if (count _FOB > 0) then {
+                        _result = _FOB select 0;
+                    };
+                };
         };
 
         case "addTask": {
