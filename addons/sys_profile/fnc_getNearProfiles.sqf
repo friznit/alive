@@ -85,7 +85,7 @@ if(count _categorySelector > 0) then {
 			
 				_profilePosition = _x select 2 select 2;
 	            
-	            diag_log format ["NearEntitiescheck: _profilePosition by select %1 | _pos by hash %2",_profilePosition,([_x,"position"] call ALIVE_fnc_hashGet)];
+	            //diag_log format ["NearEntitiescheck: _profilePosition by select %1 | _pos by hash %2",_profilePosition,([_x,"position"] call ALIVE_fnc_hashGet)];
 				
 				if(_position distance _profilePosition < _radius) then {
 					_result pushback _x;

@@ -174,7 +174,7 @@ switch(_type) do {
                     _roads = _spawnPosition nearRoads 50;
                     _roadsConnected = roadsConnectedTo (_roads select 0);
                     
-                    if (count _roadsConnected > 1) then {
+                    if (!isnil "_roadsConnected" && {count _roadsConnected > 1}) then {
                         _roads = _roadsConnected;
                         _direction = [_roads select 0, _roads select 1] call BIS_fnc_DirTo;
                     } else {

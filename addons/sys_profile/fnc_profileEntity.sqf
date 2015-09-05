@@ -986,9 +986,12 @@ switch(_operation) do {
 					[ALIVE_profileHandler,"setActive",[_profileID,_side,_logic]] call ALIVE_fnc_profileHandler;
 					[ALIVE_profileHandler,"setEntityActive",_profileID] call ALIVE_fnc_profileHandler;
                     
-                    // Indicate profile has been spawned and unlock for asynchronous waits
-                    [_logic, "locked",false] call ALIVE_fnc_HashSet;                       
+                    //Remove combat flag
+                    [_logic, "combat"] call ALIVE_fnc_HashRem;
                     
+                    // Indicate profile has been spawned and unlock for asynchronous waits
+                    [_logic, "locked",false] call ALIVE_fnc_HashSet;   
+
 					//[] call ALIVE_fnc_timer;
 
                     //["Profile [%1] Spawn - Debug",_profileID] call ALIVE_fnc_dump;
