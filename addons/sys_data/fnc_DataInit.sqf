@@ -119,7 +119,7 @@ if (isDedicated) then {
 	// Global config overrides module settings
 	if ([_config, "PerfData","false"] call ALIVE_fnc_hashGet != "none") then {
 		if ([_config, "PerfData","false"] call ALIVE_fnc_hashGet == "true") then {
-			["CONNECTED TO DATABASE AND PERFDATA HAS BEEN TURNED ON"] call ALIVE_fnc_logger;
+			["CONNECTED TO DATABASE AND PERFDATA IS ALLOWED"] call ALIVE_fnc_logger;
 //			MOD(sys_data) setvariable ["disablePerf", "false"];
 //			ALIVE_sys_perf_ENABLED = true;
 		} else {
@@ -267,6 +267,9 @@ if (isDedicated) then {
 	// Start the perf monitoring module
 	if (MOD(sys_data) getvariable ["disablePerf", "true"] == "false") then {
 		[MOD(sys_data)] call ALIVE_fnc_perfInit;
+	} else {
+		ALIVE_sys_perf_ENABLED = false;
+		ALIVE_sys_perf_DISABLED = true;
 	};
 
 	// AAR system - should prob be its own module

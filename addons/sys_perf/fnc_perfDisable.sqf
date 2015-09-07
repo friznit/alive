@@ -2,9 +2,9 @@
 SCRIPT(perfDisable);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_statisticsDisable
+Function: ALIVE_fnc_perfDisable
 Description:
-Disables the Statistics Module
+Disables the Perf Module
 
 Parameters:
 None
