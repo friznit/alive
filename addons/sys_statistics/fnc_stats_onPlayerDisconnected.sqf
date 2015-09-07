@@ -89,7 +89,7 @@ if (GVAR(ENABLED)) then {
 		_rank = rank _unit;
 
 		// Grab shots fired data
-		_shotsfired = [GVAR(shotsFired), _uid, [] call ALiVE_fnc_hashCreate] call ALiVE_fnc_hashGet;
+		_shotsfired = [GVAR(shotsFired), _uid, []] call ALiVE_fnc_hashGet;
 
 		_shotsFiredData = [];
 		{
