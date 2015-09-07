@@ -100,6 +100,15 @@ class CfgVehicles {
                                     };
                             };
                     };
+                    
+                    class pr_restrictionBlacklist
+                    {
+                                displayName = "$STR_ALIVE_PR_RESTRICTION_BLACKLIST";
+                                description = "$STR_ALIVE_PR_RESTRICTION_BLACKLIST_COMMENT";
+                                typeName = "STRING";
+                                defaultValue = "";
+                    };
+                    
                 };
 
         };

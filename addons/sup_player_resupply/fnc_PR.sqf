@@ -36,6 +36,7 @@ Peer Reviewed:
 #define MTEMPLATE "ALiVE_PR_%1"
 #define DEFAULT_PR_ITEM "LaserDesignator"
 #define DEFAULT_RESTRICTION_TYPE "SIDE"
+#define DEFAULT_RESTRICTION_BLACKLIST []
 #define DEFAULT_SELECTED_INDEX 0
 #define DEFAULT_SELECTED_VALUE ""
 #define DEFAULT_SELECTED_OPTIONS []
@@ -289,6 +290,35 @@ switch(_operation) do {
         _result = [_logic,_operation,_args,DEFAULT_REQUEST_STATUS] call ALIVE_fnc_OOsimpleOperation;
     };
 
+	case "blacklist": {
+	    if !(isnil "_args") then {
+			if(typeName _args == "STRING") then {
+	            if !(_args == "") then {
+					_args = [_args, " ", ""] call CBA_fnc_replace;
+	                _args = [_args, "[", ""] call CBA_fnc_replace;
+	                _args = [_args, "]", ""] call CBA_fnc_replace;
+	                _args = [_args, "'", ""] call CBA_fnc_replace;
+	                _args = [_args, """", ""] call CBA_fnc_replace;
+					_args = [_args, ","] call CBA_fnc_split;
+	
+					if(count _args > 0) then {
+						_logic setVariable [_operation, _args];
+					};
+	            } else {
+	                _logic setVariable [_operation, []];
+	            };
+			} else {
+				if(typeName _args == "ARRAY") then {
+					_logic setVariable [_operation, _args];
+				};
+	        };
+	    };
+        
+	    _args = _logic getVariable [_operation, DEFAULT_RESTRICTION_BLACKLIST];
+        
+        _result = _args;
+	};
+
 	case "init": {
 
         //Only one init per instance is allowed
@@ -303,20 +333,22 @@ switch(_operation) do {
         _logic setVariable ["startupComplete", false];
 
         ALIVE_SUP_PLAYER_RESUPPLY = _logic;
+        
+        // load static data
+        if(isNil "ALiVE_STATIC_DATA_LOADED") then {
+            _file = "\x\alive\addons\main\static\staticData.sqf";
+            call compile preprocessFileLineNumbers _file;
+        };
+
+		// Set final blacklist
+        ALiVE_PR_BLACKLIST = ([_logic, "blacklist", _logic getVariable ["pr_restrictionBlacklist", DEFAULT_RESTRICTION_BLACKLIST]] call MAINCLASS) + ALiVE_PR_BLACKLIST + ALiVE_PLACEMENT_VEHICLEBLACKLIST;
 
         [_logic, "start"] call MAINCLASS;
-
 
 		// The machine has an interface? Must be a MP client, SP client or a client that acts as host!
         if (hasInterface) then {
 
             _logic setVariable ["startupComplete", true];
-
-            // load static data
-            if(isNil "ALiVE_STATIC_DATA_LOADED") then {
-                _file = "\x\alive\addons\main\static\staticData.sqf";
-                call compile preprocessFileLineNumbers _file;
-            };
 
             // set the player side
 
@@ -1708,7 +1740,7 @@ switch(_operation) do {
                                 _values = ["<< Back"];
 
                                 _vehicleClasses = [_sortedVehicles,_selectedValue] call ALIVE_fnc_hashGet;
-                                _vehicleClasses = _vehicleClasses - ALiVE_PLACEMENT_VEHICLEBLACKLIST;
+                                _vehicleClasses = _vehicleClasses - ALiVE_PR_BLACKLIST;
 
                                 {
                                     _displayName = getText(configFile >> "CfgVehicles" >> _x >> "displayname");

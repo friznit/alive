@@ -9,13 +9,13 @@
     <English>Resupply players with logistics requests</English>
 </Key>
 <Key ID="STR_ALIVE_PR_ALLOW">
-    <English>Call in Logistics Support with:</English>
+    <English>Call Log. Support with</English>
 </Key>
 <Key ID="STR_ALIVE_PR_ALLOW_COMMENT">
     <English>Define the item the player must have to be able to use Player Resupply i.e "LaserDesignator"</English>
 </Key>
 <Key ID="STR_ALIVE_PR_RESTRICTION_TYPE">
-    <English>Restrict to:</English>
+    <English>Restrict to</English>
 </Key>
 <Key ID="STR_ALIVE_PR_RESTRICTION_TYPE_COMMENT">
     <English>Restrict the player selection to items from own side, or own faction</English>
@@ -43,5 +43,11 @@
 </Key>
 <Key ID="STR_ALIVE_PR_RESTRICTION_DELIVERY_CONVOY_COMMENT">
     <English>Allow players to request supplies via Convoy</English>
+</Key>
+<Key ID="STR_ALIVE_PR_RESTRICTION_BLACKLIST">
+    <English>Blacklist</English>
+</Key>
+<Key ID="STR_ALIVE_PR_RESTRICTION_BLACKLIST_COMMENT">
+    <English>Excluded config classes (f.e. Box_IND_Ammo_F,B_Soldier_diver_base_F,B_MRAP_01_F,...)! Caution: case sensitive!</English>
 </Key>
 </Container></Package></Project>
