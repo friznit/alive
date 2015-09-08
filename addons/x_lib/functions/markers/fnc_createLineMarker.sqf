@@ -69,4 +69,4 @@ _dir = atan (_difX / _difY);
 _pos = [_lx,_ly,0];
 */
 
-[_mkrname, _pos, "RECTANGLE", [_width, _length/2], "ColorBlack", "", "", "Solid", _angle, _alpha] call ALiVE_fnc_createMarker;
+[_mkrname, _pos, "RECTANGLE", [_width, _length/2], _color, "", "", "Solid", _angle, _alpha] call ALiVE_fnc_createMarker;
