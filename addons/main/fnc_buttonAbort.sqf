@@ -70,18 +70,19 @@ _savePlayer = {
 
 // FUNCTION THAT HANDLES PLAYERS EXITING
 _exitPlayer = {
-		private ["_name","_uid","_id","_shotsFired"];
+	private ["_name","_uid","_id","_shotsFired"];
 	_id = _this select 0;
 	_name = name (_this select 0);
 	_uid = getPlayerUID (_this select 0);
 
 	["ALiVE Exit - Exit Player id: %1 name: %2 uid: %3",_id,_name,_uid] call ALIVE_fnc_dump;
 
-	if !(isNil QMOD(sys_statistics)) then {
+    //diag_log format["STATS ENABLED: %1",MOD(sys_statistics_ENABLED)];
+
+    if (!isNil QMOD(sys_statistics) && (MOD(sys_statistics_ENABLED))) then {
 	    ["ALiVE Exit - Player Stats OPD"] call ALIVE_fnc_dump;
 
-        diag_log str(ALIVE_sys_statistics_playerShotsFired);
-
+        // diag_log str(ALIVE_sys_statistics_playerShotsFired);
         _shotsFired = ALIVE_sys_statistics_playerShotsFired;
 
         // Send the player's shots fired data to the server and add it to the hash
@@ -89,14 +90,15 @@ _exitPlayer = {
 
 		// Stats module onPlayerDisconnected call
 		[[_id, _name, _uid],"ALIVE_fnc_stats_onPlayerDisconnected", false, false] call BIS_fnc_MP;
-		//["server",QMOD(sys_statistics),[[_id, _name, _uid],{call ALIVE_fnc_stats_onPlayerDisconnected}]] call ALIVE_fnc_BUS;
+
 	};
 
 	if (["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable) then {
+
 	    ["ALiVE Exit - Player Profile Handler OPD"] call ALIVE_fnc_dump;
         // Profiles module onPlayerDisconnected call
         [[_id, _name, _uid],"ALIVE_fnc_profile_onPlayerDisconnected", false, false] call BIS_fnc_MP;
-        //["server","ALIVE_profileHandler",[[_id, _name, _uid],{call ALIVE_fnc_profile_onPlayerDisconnected}]] call ALIVE_fnc_BUS;
+
     };
 };
 
@@ -413,6 +415,15 @@ _saveServer = {
     ["serversaved","BIS_fnc_endMission",_admin,false,false] spawn BIS_fnc_MP;
 };
 
+if (_mode == "SAVESERVERYO" && isDedicated && ALiVE_sys_data_DISABLED) then {
+
+    ["ALiVE Data is disabled, so server save will not occur, aborting..."] call ALIVE_fnc_dump;
+    ["--------------------------------------------------------------"] call ALIVE_fnc_dump;
+
+    _mode = "SERVERABORTYO";
+
+};
+
 // Function run on server
 if (_mode == "SAVESERVERYO" && isDedicated) exitWith {
     // Save server data
@@ -443,20 +454,43 @@ if (_mode == "SERVERABORTYO" && isDedicated) exitwith {
 };
 
 // Function run on client
-if ((_mode == "SAVE" || _mode == "REMSAVE") && !isDedicated) then {
-    // Save player data
-	[player] call _savePlayer;
-	[player] call _exitPlayer;
+if (_mode == "ABORT" && !isDedicated) then {
+    // Exit player without saving
+    [player] call _exitPlayer;
 };
 
 // Function run on client
-if (_mode == "ABORT" && !isDedicated) then {
-	// Exit player without saving
+if ((_mode == "SAVE" || _mode == "REMSAVE") && !isDedicated) then {
+    // Save player data
+    if (!ALiVE_sys_data_DISABLED) then {
+        [player] call _savePlayer;
+    } else {
+        ["ALiVE Data is disabled, so player save will not occur, aborting..."] call ALIVE_fnc_dump;
+        ["--------------------------------------------------------------"] call ALIVE_fnc_dump;
+        _mode = "ABORT";
+    };
 	[player] call _exitPlayer;
 };
 
+
 // Check client for admin
 if (call ALiVE_fnc_isServerAdmin) then {
+
+    if (_mode == "SERVERABORT") then {
+
+        ["ALiVE Exit - Abort by Admin"] call ALIVE_fnc_dump;
+
+        ["ALiVE Exit - Broadcasting abort call to all players"] call ALIVE_fnc_dump;
+
+        // abort all players
+        [["ABORT"],"ALiVE_fnc_buttonAbort",true,false] call BIS_fnc_MP;
+
+        ["ALiVE Exit - Trigger Server abort call"] call ALIVE_fnc_dump;
+
+        // exit server
+        [["SERVERABORTYO"],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
+
+    };
 
 	if (_mode == "SERVERSAVE") then {
 
@@ -472,24 +506,9 @@ if (call ALiVE_fnc_isServerAdmin) then {
 		// Save server data
 		//[] call _saveServer;
         [["SAVESERVERYO",getPlayerUID player],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
-		//["server",QMOD(main),[["SAVESERVERYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
 
 	};
-	if (_mode == "SERVERABORT") then {
 
-	    ["ALiVE Exit - Abort by Admin"] call ALIVE_fnc_dump;
-
-		["ALiVE Exit - Broadcasting abort call to all players"] call ALIVE_fnc_dump;
-
-		// abort all players
-		[["ABORT"],"ALiVE_fnc_buttonAbort",true,false] call BIS_fnc_MP;
-
-		["ALiVE Exit - Trigger Server abort call"] call ALIVE_fnc_dump;
-
-		// exit server
-        [["SERVERABORTYO"],"ALiVE_fnc_buttonAbort",false,false] call BIS_fnc_MP;
-		//["server",QMOD(main),[["SERVERABORTYO"],{call ALiVE_fnc_buttonAbort}]] call ALIVE_fnc_BUS;
-	};
 };
 
 switch (_mode) do {

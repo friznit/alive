@@ -35,7 +35,7 @@ Tupolov
 
 private ["_uid","_shots"];
 
-diag_log str(_this);
+// diag_log str(_this);
 
 _uid = _this select 0;
 _shots = _this select 1;

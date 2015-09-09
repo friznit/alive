@@ -101,6 +101,10 @@ if (isDedicated) then {
 		publicVariable QGVAR(DISABLED);
 		MOD(sys_data) setvariable ["disableStats", "true"];
 		ALIVE_sys_statistics_ENABLED = false;
+		publicVariable "ALIVE_sys_statistics_ENABLED";
+		MOD(sys_data) setvariable ["disablePerf", "true"];
+		ALIVE_sys_perf_ENABLED = false;
+		publicVariable "ALIVE_sys_perf_ENABLED";
 	};
 
 	// Check to see if the service is off
@@ -110,8 +114,10 @@ if (isDedicated) then {
 		publicVariable QGVAR(DISABLED);
 		MOD(sys_data) setvariable ["disablePerf", "true"];
 		ALIVE_sys_perf_ENABLED = false;
+		publicVariable "ALIVE_sys_perf_ENABLED";
 		MOD(sys_data) setvariable ["disableStats", "true"];
 		ALIVE_sys_statistics_ENABLED = false;
+		publicVariable "ALIVE_sys_statistics_ENABLED";
 	};
 
 	["CONNECTED TO DATABASE OK"] call ALIVE_fnc_logger;
@@ -126,12 +132,14 @@ if (isDedicated) then {
 			["CONNECTED TO DATABASE, BUT PERFDATA HAS BEEN TURNED OFF"] call ALIVE_fnc_logger;
 			MOD(sys_data) setvariable ["disablePerf", "true"];
 			ALIVE_sys_perf_ENABLED = false;
+			publicVariable "ALIVE_sys_perf_ENABLED";
 		};
 	};
 
 	if ([_config, "EventData","false"] call ALIVE_fnc_hashGet == "false") then {
 		["CONNECTED TO DATABASE, BUT STAT DATA HAS BEEN TURNED OFF"] call ALIVE_fnc_logger;
 		ALIVE_sys_statistics_ENABLED = false;
+		publicVariable "ALIVE_sys_statistics_ENABLED";
 	};
 
 	if ([_config, "AAR","false"] call ALIVE_fnc_hashGet == "false") then {
