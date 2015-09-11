@@ -42,11 +42,12 @@ _ret = [_this select 0, _this select 1, _this select 2] spawn {
 
 	_result = "INCOMPLETE";
 
-	_result = "ALiVEClient" callExtension format["SendMap~C:\%1.emf,%2,%3", worldName, _user, _pwd];
+	_result = "ALiVEClient" callExtension format["SendMap~C:\%1.emf,%2,%3", worldname, _user, _pwd];
 
 	hint _result;
 
-	if (_result == "FILE DOES NOT EXIST") exitWith {_result = "File does not exist";};
+	if (_result == "FILE DOES NOT EXIST") exitWith {_result = "File does not exist"; 	hint _result;};
+	if (_result == "IMAGE TOO BIG") exitWith {_result = "File is too big, try converting the EMF with emftopng.exe manually and rerun function.";	hint _result;};
 
 	waitUntil {
 		sleep 1;
