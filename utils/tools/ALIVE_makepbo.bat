@@ -49,6 +49,25 @@ FOR /F "tokens=1* delims=," %%A in ('dir %source% /ad /b') do (
 del /Y %target%\*.pbo
 move /Y %source%\*.pbo %target%\
 
+rem Optional PBOs
+set source=P:\x\alive\optional
+set target="%_ARMA3PATH%\@alive\optional"
+
+IF NOT EXIST %target% (
+	MD %target%
+)
+
+FOR /F "tokens=1* delims=," %%A in ('dir %source% /ad /b') do (
+	%exe% "%source%\%%A"
+	if ERRORLEVEL 1 goto err
+)
+
+ echo %exeuncommpressed% %uncommpressedsource%
+ %exeuncommpressed% "%uncommpressedsource%"
+
+del /Y %target%\*.pbo
+move /Y %source%\*.pbo %target%\
+
 goto end
 
 :err
