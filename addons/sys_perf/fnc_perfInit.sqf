@@ -121,7 +121,7 @@ if (isDedicated && GVAR(ENABLED)) then {
 
 	// Get custom perf code
 	private "_customCode";
-	_customCode = _logic getVariable ["customPerfMonCode","[]"];
+	_customCode = _logic getVariable ["customPerfMonCode","[['entities',150],['vehicles',300],['agents',450],['allDead',600],['objects',750],['triggers',900]]"];
 	_customCode = call compile _customCode;
 
 	// Start FSM now

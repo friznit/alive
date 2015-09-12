@@ -14,7 +14,7 @@ class CfgVehicles {
                 {
                         description = "This module allows you to persist mission data to an external database as well as enabling data storage for all other modules. This module is required for statistics too."; // Short description, will be formatted as structured text
                 };
-                 class Arguments
+                class Arguments
                 {
                         class debug
                         {

@@ -273,7 +273,7 @@ if (isDedicated) then {
 
 	TRACE_2("SYS_DATA PERF VAR", MOD(sys_data) getVariable "disablePerf", ALIVE_sys_perf_ENABLED);
 	// Start the perf monitoring module
-	if (MOD(sys_data) getvariable ["disablePerf", "true"] == "false") then {
+	if (MOD(sys_data) getvariable ["disablePerf", "false"] == "false") then {
 		[MOD(sys_data)] call ALIVE_fnc_perfInit;
 	} else {
 		ALIVE_sys_perf_ENABLED = false;
