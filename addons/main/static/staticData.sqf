@@ -7,6 +7,7 @@ if (isnil "ALiVE_MIL_CQB_CUSTOM_UNITBLACKLIST") then {ALiVE_MIL_CQB_CUSTOM_UNITB
 if (isnil "ALiVE_PLACEMENT_CUSTOM_UNITBLACKLIST") then {ALiVE_PLACEMENT_CUSTOM_UNITBLACKLIST = []};
 if (isnil "ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST") then {ALiVE_PLACEMENT_CUSTOM_VEHICLEBLACKLIST = []};
 if (isnil "ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST") then {ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST = []};
+if (isnil "ALiVE_PR_CUSTOM_BLACKLIST") then {ALiVE_PR_CUSTOM_BLACKLIST = []};
 
 /*
  * CQB houses
@@ -225,6 +226,15 @@ ALiVE_PLACEMENT_GROUPBLACKLIST = ALiVE_PLACEMENT_CUSTOM_GROUPBLACKLIST +
 	"BUS_TankPlatoon_AA", // BUG in CfgGroups vehicle name wrong
 	"BUS_MechInf_AA" // BUG in CfgGroups vehicle name wrong
 ];
+
+/*
+ * Player resupply custom blacklist
+ */
+
+ALiVE_PR_BLACKLIST = ALiVE_PR_CUSTOM_BLACKLIST + [
+	// empty for now
+];
+
 
 /*
  * Custom transport,support, and ammo classes for factions
