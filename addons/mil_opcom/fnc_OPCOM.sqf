@@ -871,10 +871,11 @@ switch(_operation) do {
             _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
             if !(isnil "_profile") then {
                _active = [_profile, "active", false] call ALIVE_fnc_HashGet;
+               _activeCommands = [_profile, "activeCommands", []] call ALIVE_fnc_HashGet;
 
-               if !(_active) then {
+               if (!_active && {count _activeCommands == 0}) then {
 	            	[_profile, "clearActiveCommands"] call ALIVE_fnc_profileEntity;
-					[_profile, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",200]] call ALIVE_fnc_profileEntity;
+					[_profile, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",[200,"SAFE",[0,0,0]]]] call ALIVE_fnc_profileEntity;
                };
             };
             

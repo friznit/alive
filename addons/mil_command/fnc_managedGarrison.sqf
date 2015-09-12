@@ -15,7 +15,7 @@ Returns:
 
 Examples:
 (begin example)
-[_profile, "setActiveCommand", ["ALIVE_fnc_managedGarrison","managed",[_eventPosition,200]]] call ALIVE_fnc_profileEntity;
+[_profile, "setActiveCommand", ["ALIVE_fnc_managedGarrison","managed",[200,"false",_eventPosition]]] call ALIVE_fnc_profileEntity;
 (end)
 
 See Also:
@@ -42,8 +42,8 @@ _units = _profile select 2 select 21;
 _nextState = _state;
 _nextStateArgs = [];
 
-_garrisonPosition = _args select 0;
-_garrisonRadius = _args select 1;
+_garrisonRadius = _args select 0;
+_garrisonPosition = _args select 2;
 
 switch (_state) do {
 	case "init":{

@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, insurgency">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"INIT",0,250,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
+item0[] = {"INIT",0,4346,-717.630066,-1005.371277,-627.630066,-955.371338,0.000000,"INIT"};
 item1[] = {"INIT_COMPLETE",4,218,-720.395935,-937.944458,-630.395935,-887.944458,0.000000,"INIT" \n "COMPLETE"};
 item2[] = {"INIT_INFO",2,250,-720.879761,-873.838257,-630.879761,-823.838257,0.000000,"INIT INFO"};
 item3[] = {"",7,210,-52.802883,324.913116,-44.802883,332.913116,0.000000,""};
@@ -30,7 +30,7 @@ item25[] = {"FAIL",4,218,45.247391,594.838806,135.247589,644.838501,0.000000,"FA
 item26[] = {"",7,210,-1047.392578,-149.660080,-1039.392578,-141.660049,0.000000,""};
 item27[] = {"NO_GROUPS",4,218,-978.413635,72.215881,-888.414001,122.215843,0.000000,"NO" \n "GROUPS"};
 item28[] = {"RESET",2,250,-858.935120,-677.046692,-768.935242,-627.046387,0.000000,"RESET"};
-item29[] = {"DELAY",4,4314,-721.785156,-677.785828,-631.785156,-627.785828,0.000000,"DELAY"};
+item29[] = {"DELAY",4,218,-721.785156,-677.785828,-631.785156,-627.785828,0.000000,"DELAY"};
 item30[] = {"RESET_1",2,250,-557.855774,-676.293335,-467.856445,-626.293030,0.000000,"RESET"};
 item31[] = {"ACTIONS_EXECUTIN",4,218,-969.264343,432.824890,-879.264343,482.824890,0.000000,"ACTIONS" \n "EXECUTING"};
 item32[] = {"IDLE",4,218,-920.655945,-363.002319,-830.655945,-313.002289,20.000000,"IDLE"};
@@ -121,7 +121,7 @@ class FSM
        "_simultan = [];" \n
        "_civFactions = [];" \n
        "" \n
-       "// Get all controlled profiles initially and pass ambient movement command in case there is no command given" \n
+       "// Get all controlled profiles initially and pass ambient movement command in case there is no garrison command given" \n
        "_all = []; {_all append ([_OPCOM_HANDLER,_x,[]] call ALiVE_fnc_HashGet)} foreach [""infantry"",""motorized"",""mechanized"",""armored"",""artillery"",""AAA"",""air"",""sea""];" \n
        "{" \n
        "	private [""_profile"",""_range""];" \n
@@ -131,7 +131,7 @@ class FSM
        "	if !(isnil ""_profile"") then {" \n
        "		_commands = [_profile,""activeCommands"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
-       "		if ({(_x select 0) == ""ALIVE_fnc_garrison""} count _commands == 0) then {[_profile, ""setActiveCommand"", [""ALIVE_fnc_ambientMovement"",""spawn"",[300,""STEALTH""]]] call ALIVE_fnc_profileEntity};" \n
+       "		if ({(_x select 0) == ""ALIVE_fnc_garrison""} count _commands == 0) then {[_profile, ""setActiveCommand"", [""ALIVE_fnc_ambientMovement"",""spawn"",[300,""STEALTH"",[0,0,0]]]] call ALIVE_fnc_profileEntity};" \n
        "	};" \n
        "} foreach _all;" \n
        "" \n
@@ -499,7 +499,7 @@ class FSM
        "" \n
        "	_behaviour = ""COMBAT"";" \n
        "	_speed = ""FULL"";" \n
-       "	_command = [""ALIVE_fnc_ambientMovement"",[300,_behaviour]];" \n
+       "	_command = [""ALIVE_fnc_ambientMovement"",[300,_behaviour,[0,0,0]]];" \n
        "	_types = [""infantry"",""motorized"",""mechanized"",""armored""];" \n
        "	_guard = 0;" \n
        "	_groupsize = 3;" \n
@@ -538,7 +538,7 @@ class FSM
        "			};" \n
        "" \n
        "			//Override destination if there is an explosive factory" \n
-       "			if (alive _road) then {_pos = getposATL _road; _command =  [""ALIVE_fnc_ambush"",[getposATL _road]]};" \n
+       "			if (alive _road) then {_pos = getposATL _road; _command =  [""ALIVE_fnc_ambush"",[-1,""none"",getposATL _road]]};" \n
        "" \n
        "			//Convert" \n
        "			_road = [[],""convertObject"",_road] call ALiVE_fnc_OPCOM;" \n
@@ -641,7 +641,7 @@ class FSM
        "" \n
        "	_behaviour = ""COMBAT"";" \n
        "	_speed = ""FULL"";" \n
-       "	_command = [""ALIVE_fnc_ambientMovement"",[300,_behaviour]];" \n
+       "	_command = [""ALIVE_fnc_ambientMovement"",[300,_behaviour,[0,0,0]]];" \n
        "	_types = [""infantry"",""motorized"",""mechanized"",""armored""];" \n
        "	_guard = 0;" \n
        "	_groupsize = -1;" \n
@@ -759,7 +759,7 @@ class FSM
        "" \n
        "	_behaviour = ""STEALTH"";" \n
        "	_speed = ""NORMAL"";" \n
-       "	_command = [""ALIVE_fnc_ambientMovement"",[300,_behaviour]];" \n
+       "	_command = [""ALIVE_fnc_ambientMovement"",[300,_behaviour,[0,0,0]]];" \n
        "	_types = [""infantry""];" \n
        "	_guard = 0;" \n
        "	_groupsize = 1;" \n
@@ -986,7 +986,7 @@ class FSM
        "" \n
        "	_behaviour = ""AWARE"";" \n
        "	_speed = ""NORMAL"";" \n
-       "	_command = [""ALIVE_fnc_ambientMovement"",300];" \n
+       "	_command = [""ALIVE_fnc_ambientMovement"",[300,""SAFE"",[0,0,0]]];" \n
        "	_types = [""infantry"",""motorized"",""mechanized"",""armored""];" \n
        "	_guard = 0;" \n
        "	_groupsize = -1;" \n
@@ -1464,7 +1464,7 @@ class FSM
        "			[_profile,""busy"",true] call ALiVE_fnc_HashSet;" \n
        "			[_profile, ""clearWaypoints""] call ALIVE_fnc_profileEntity;" \n
        "			[_profile, ""clearActiveCommands""] call ALIVE_fnc_profileEntity;" \n
-       "			[_profile, ""setActiveCommand"", [""ALIVE_fnc_garrison"",""spawn"",[30,true]]] call ALIVE_fnc_profileEntity;" \n
+       "			[_profile, ""setActiveCommand"", [""ALIVE_fnc_garrison"",""spawn"",[30,""true"",[0,0,0]]]] call ALIVE_fnc_profileEntity;" \n
        "" \n
        "			_guards pushback  _profileID;" \n
        "		};" \n

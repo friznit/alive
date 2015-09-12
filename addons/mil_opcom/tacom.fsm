@@ -146,7 +146,7 @@ class FSM
        "	_vehiclesInCommandOf = [_profile,""vehiclesInCommandOf"",[]] call ALiVE_fnc_HashGet;" \n
        "" \n
        "	if (count _vehiclesInCommandOf > 0) then {" \n
-       "		if !(isnil ""_profile"") then {[_profile, ""setActiveCommand"", [""ALIVE_fnc_ambientMovement"",""spawn"",1000]] call ALIVE_fnc_profileEntity};" \n
+       "		if !(isnil ""_profile"") then {[_profile, ""setActiveCommand"", [""ALIVE_fnc_ambientMovement"",""spawn"",[1000,""SAFE"",[0,0,0]]]] call ALIVE_fnc_profileEntity};" \n
        "	};" \n
        "} foreach _profiles;" \n
        "" \n
@@ -385,7 +385,7 @@ class FSM
        "" \n
        "					//Command to garrison" \n
        "					[_profile, ""clearActiveCommands""] call ALIVE_fnc_profileEntity;" \n
-       "					[_profile, ""setActiveCommand"", [""ALIVE_fnc_garrison"",""spawn"",[200,true]]] call ALIVE_fnc_profileEntity;" \n
+       "					[_profile, ""setActiveCommand"", [""ALIVE_fnc_garrison"",""spawn"",[200,""true"",[0,0,0]]]] call ALIVE_fnc_profileEntity;" \n
        "" \n
        "					//transmit to OPCOM as objective was completed" \n
        "					[_objective,""opcom_state"",""idle""] call AliVE_fnc_HashSet;" \n

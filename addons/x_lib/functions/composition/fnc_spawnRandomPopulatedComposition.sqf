@@ -122,7 +122,7 @@ if(_groupCount > 0) then {
 
         {
             if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",200]] call ALIVE_fnc_profileEntity;
+                [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",[200,"false",[0,0,0]]]] call ALIVE_fnc_profileEntity;
             };
         } foreach _guards;
     };

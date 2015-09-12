@@ -1224,7 +1224,7 @@ switch(_operation) do {
                             "units",
                             /*"hasSimulated",*/
                             "isCycling",
-                            "activeCommands",
+                            /*"activeCommands",*/
                             "inactiveCommands",
                             "debugMarkers",
                             "speedPerSecond",
@@ -1480,6 +1480,9 @@ switch(_operation) do {
                             _profileEntity call ALIVE_fnc_inspectHash;
                         };
 
+                        if("activeCommands" in (_profile select 1)) then {
+                            [_profileEntity, "activeCommands", [_profile,"activeCommands"] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
+                        };
 
                         [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 

@@ -34,14 +34,15 @@ _onlyProfiles = false;
 
 if (typeName _args == "ARRAY") then {
     _radius = [_args, 0, 200, [-1]] call BIS_fnc_param;
-    _onlyProfiles = [_args, 1, false, [true]] call BIS_fnc_param;
+    _onlyProfiles = call compile ([_args, 1, "false", [""]] call BIS_fnc_param);
 };
 
 _pos = [_profile,"position"] call ALiVE_fnc_HashGet;
 _type = [_profile,"type",""] call ALiVE_fnc_HashGet;
+_waypoints = [_profile,"waypoints",[]] call ALiVE_fnc_HashGet;
 _assignments = [_profile,"vehicleAssignments",["",[],[],nil]] call ALIVE_fnc_HashGet;
 
-if (isnil "_pos") exitwith {};
+if (isnil "_pos" || {count _waypoints > 0}) exitwith {};
 
 [_profile,_radius/3] call ALiVE_fnc_ambientMovement;
 

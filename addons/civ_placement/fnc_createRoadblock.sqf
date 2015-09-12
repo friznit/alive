@@ -123,7 +123,7 @@ for "_j" from 1 to (count _roadpoints) do {
 
         {
             if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",30]] call ALIVE_fnc_profileEntity;
+                [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",[30,"false",[0,0,0]]]] call ALIVE_fnc_profileEntity;
                 [_x,"busy",true] call ALIVE_fnc_hashSet;
             };
         } foreach _guards;
