@@ -14,6 +14,18 @@
 <Key ID="STR_ALIVE_IED_DEBUG_COMMENT">
 	<English>Enables debug</English>
 </Key>
+<Key ID="STR_ALIVE_ied_IED_Detection">
+	<English>IED Detection Alert:</English>
+</Key>
+<Key ID="STR_ALIVE_ied_IED_Detection_COMMENT">
+	<English>Choose the type of notification a player will recieve when detecting an IED</English>
+</Key>
+<Key ID="STR_ALIVE_IED_IED_Detection_Device">
+	<English>IED Detector Class:</English>
+</Key>
+<Key ID="STR_ALIVE_IED_IED_Detection_Device_COMMENT">
+	<English>Enter the class name of the device used to detect IEDs</English>
+</Key>
 <Key ID="STR_ALIVE_IED_TAOR">
 	<English>TAOR Marker:</English>
 </Key>

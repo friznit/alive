@@ -80,7 +80,38 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                      class Bomber_Threat
+                        class IED_Detection
+                        {
+                                displayName = "$STR_ALIVE_ied_IED_Detection";
+                                description = "$STR_ALIVE_ied_IED_Detection_COMMENT";
+                                typeName = "NUMBER";
+                                class Values
+                                {
+                                        class None
+                                        {
+                                                name = "None";
+                                                value = 0;
+                                        };
+                                        class Text
+                                        {
+                                                name = "Text";
+                                                value = 1;
+                                                default = 1;
+                                        };
+                                        class Audio
+                                        {
+                                                name = "Audio";
+                                                value = 2;
+                                        };
+                                };
+                        };
+                        class IED_Detection_Device
+                        {
+                                displayName = "$STR_ALIVE_IED_IED_Detection_Device";
+                                description = "$STR_ALIVE_IED_IED_Detection_Device_COMMENT";
+                                defaultValue = "MineDetector";
+                        };
+                        class Bomber_Threat
                         {
                                 displayName = "$STR_ALIVE_ied_Bomber_Threat";
                                 description = "$STR_ALIVE_ied_Bomber_Threat_COMMENT";
@@ -214,9 +245,9 @@ class CfgVehicles {
                 };
         };
 
-        class ThingX;
+        class Thing;
         class Land_Sack_F;
-        class ALiVE_IED : ThingX {
+        class ALiVE_IED : Thing {
             author = "ALiVE Mod Team";
             _generalMacro = "ALiVE_IED";
             model = "\A3\Weapons_F\empty.p3d";
