@@ -4033,8 +4033,8 @@ if(_worldName == "utes") then {
 
 };
 
-// FSF - Nziwasogo (5), Kalu Khan (6), Dariyah (7)
-if(_worldName == "pja305" || _worldName == "pja306" || _worldName == "pja307") then {
+// FSF - Nziwasogo (5), Dariyah (7)
+if(_worldName == "pja305" || _worldName == "pja307") then {
 
     ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
         "hangar"
@@ -4136,6 +4136,90 @@ if(_worldName == "pja305" || _worldName == "pja306" || _worldName == "pja307") t
         "house",
 		"minaret",
 		"mosque"
+    ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
+
+};
+
+// FSF - Kalu Khan (6)
+if(_worldName == "pja306") then {
+
+    ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
+        
+    ];
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+        "fortified"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+        "mil_barracks",
+        "mil_house",
+        "fortified"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+        "mil_barracks",
+        "mil_house",
+		"mil_guardhouse"
+    ];
+
+    ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
+
+    ];
+
+    ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
+
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+        "vez",
+        "fortified"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
+        "fuelstation",
+        "indpipe",
+		"garage",
+        "ind_tankbig"
+    ];
+
+    ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
+		"coltan"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+        "shed",
+        "house"
     ];
 
     ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
