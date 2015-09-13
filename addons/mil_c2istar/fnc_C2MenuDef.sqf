@@ -112,7 +112,7 @@ if (_menuName == "C2ISTAR") then {
                      true,
                      _result
                 ],
-				["Plans",
+				["Tasks",
 					{["OPEN",[]] call ALIVE_fnc_C2TabletOnAction},
 	                "",
 					localize "STR_ALIVE_C2ISTAR_COMMENT",
