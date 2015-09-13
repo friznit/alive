@@ -47,9 +47,9 @@ _groups = allGroups;
 	        _labels = [];
 
 	        _labels pushback (format['%1',_x]);
-	        _labels pushback ('----------------------------------------------------------------------------------------');
-	        _labels pushback ('-----------------------------------');
-	        _labels pushback ('-----------');
+	        _labels pushback ('----------------------');
+	        _labels pushback ('----------');
+	        _labels pushback ('----');
 
 	        _row pushback (_labels);
 

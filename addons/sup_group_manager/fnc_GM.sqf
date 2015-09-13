@@ -135,7 +135,7 @@ switch(_operation) do {
 
         _debug = [_logic, "debug"] call MAINCLASS;
 
-        ALIVE_SUP_GM = _logic;
+        ALIVE_SUP_GROUP_MANAGER = _logic;
 
         if (isServer) then {
 
@@ -174,6 +174,7 @@ switch(_operation) do {
 
             [_logic,"faction",_playerFaction] call MAINCLASS;
 
+            // set the group state
 
             private ["_groupState"];
 
@@ -183,8 +184,10 @@ switch(_operation) do {
             [_groupState,"groupListValues",[]] call ALIVE_fnc_hashSet;
             [_groupState,"groupListLeftSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_groupState,"groupListLeftSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+            [_groupState,"groupListLeftSelectedType",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
             [_groupState,"groupListRightSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_groupState,"groupListRightSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+            [_groupState,"groupListRightSelectedType",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
 
             _groupState call ALIVE_fnc_inspectHash;
 
@@ -373,8 +376,6 @@ switch(_operation) do {
                     _list = _args select 0 select 0;
                     _selectedIndex = _args select 0 select 1;
 
-                    ["GM111 LEFT SELECT: %1 IND: %2",_list,_selectedIndex] call ALIVE_fnc_dump;
-
                     _listOptions = [_groupState,"groupListOptions"] call ALIVE_fnc_hashGet;
                     _listValues = [_groupState,"groupListValues"] call ALIVE_fnc_hashGet;
                     _selectedOption = _listOptions select _selectedIndex;
@@ -383,9 +384,17 @@ switch(_operation) do {
                     [_groupState,"groupListLeftSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
                     [_groupState,"groupListLeftSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
 
+                    if(typeName _selectedValue == 'GROUP') then {
+                        [_groupState,"groupListLeftSelectedType","GROUP"] call ALIVE_fnc_hashSet;
+                    }else{
+                        [_groupState,"groupListLeftSelectedType","UNIT"] call ALIVE_fnc_hashSet;
+                    };
+
                     [_logic,"groupState",_groupState] call MAINCLASS;
 
                     _groupState call ALIVE_fnc_inspectHash;
+
+                    [_logic,"handleGroupSelection"] call MAINCLASS;
 
                 };
 
@@ -398,8 +407,6 @@ switch(_operation) do {
                     _list = _args select 0 select 0;
                     _selectedIndex = _args select 0 select 1;
 
-                    ["GM222 RIGHT SELECT: %1 IND: %2",_list,_selectedIndex] call ALIVE_fnc_dump;
-
                     _listOptions = [_groupState,"groupListOptions"] call ALIVE_fnc_hashGet;
                     _listValues = [_groupState,"groupListValues"] call ALIVE_fnc_hashGet;
                     _selectedOption = _listOptions select _selectedIndex;
@@ -408,9 +415,17 @@ switch(_operation) do {
                     [_groupState,"groupListRightSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
                     [_groupState,"groupListRightSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
 
+                    if(typeName _selectedValue == 'GROUP') then {
+                        [_groupState,"groupListRightSelectedType","GROUP"] call ALIVE_fnc_hashSet;
+                    }else{
+                        [_groupState,"groupListRightSelectedType","UNIT"] call ALIVE_fnc_hashSet;
+                    };
+
                     [_logic,"groupState",_groupState] call MAINCLASS;
 
                     _groupState call ALIVE_fnc_inspectHash;
+
+                    [_logic,"handleGroupSelection"] call MAINCLASS;
 
                 };
 
@@ -419,9 +434,155 @@ switch(_operation) do {
         };
 
     };
+
+    case "handleGroupSelection": {
+
+        private ["_groupState","_leftSelectedType","_rightSelectedType","_leftSelected","_rightSelected","_leftGroup","_rightGroup","_leaderLeftGroup","_leaderRightGroup",
+        "_buttonL1","_buttonL2","_buttonL3","_buttonR1","_buttonR2","_buttonR3"];
+
+        _groupState = [_logic,"groupState"] call MAINCLASS;
+
+        _groupState call ALIVE_fnc_inspectHash;
+
+        _leftSelectedType = [_groupState,"groupListLeftSelectedType"] call ALIVE_fnc_hashGet;
+        _rightSelectedType = [_groupState,"groupListRightSelectedType"] call ALIVE_fnc_hashGet;
+
+        _leftSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
+        _rightSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
+
+
+        if(_leftSelectedType != '')then {
+
+            if(_leftSelectedType == 'UNIT')then {
+                _leftGroup = group _leftSelected;
+                _leaderLeftGroup = leader _leftGroup;
+
+                if(_leaderLeftGroup != _leftSelected) then {
+
+                    _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
+                    _buttonL1 ctrlShow true;
+                    _buttonL1 ctrlSetText "Promote to Leader";
+                    _buttonL1 ctrlSetEventHandler ["MouseButtonClick", "['LEADER_PROMOTE_LEFT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+                }else{
+
+                    _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
+                    _buttonL1 ctrlShow false;
+
+                };
+
+                _buttonL2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL2);
+                _buttonL2 ctrlShow true;
+                _buttonL2 ctrlSetText "Leave Group";
+                _buttonL2 ctrlSetEventHandler ["MouseButtonClick", "['LEAVE_GROUP_LEFT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+            }else{
+                _leftGroup = _leftSelected;
+                _leaderLeftGroup = leader _leftGroup;
+
+                _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
+                _buttonL1 ctrlShow true;
+                _buttonL1 ctrlSetText "Show Group Details";
+                _buttonL1 ctrlSetEventHandler ["MouseButtonClick", "['SHOW_GROUP_LEFT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+                _buttonL2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL2);
+                _buttonL2 ctrlShow false;
+            };
+
+        };
+
+        if(_rightSelectedType != '')then {
+
+            if(_rightSelectedType == 'UNIT')then {
+                _rightGroup = group _rightSelected;
+                _leaderRightGroup = leader _rightGroup;
+
+                if(_leaderRightGroup != _rightSelected) then {
+
+                    _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
+                    _buttonR1 ctrlShow true;
+                    _buttonR1 ctrlSetText "Promote to Leader";
+                    _buttonR1 ctrlSetEventHandler ["MouseButtonClick", "['LEADER_PROMOTE_LEFT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+                }else{
+
+                    _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
+                    _buttonR1 ctrlShow false;
+
+                };
+
+                _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
+                _buttonR2 ctrlShow true;
+                _buttonR2 ctrlSetText "Leave Group";
+                _buttonR2 ctrlSetEventHandler ["MouseButtonClick", "['LEAVE_GROUP_RIGHT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+            }else{
+                _rightGroup = _rightSelected;
+                _leaderRightGroup = leader _rightGroup;
+
+                _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
+                _buttonR1 ctrlShow true;
+                _buttonR1 ctrlSetText "Show Group Details";
+                _buttonR1 ctrlSetEventHandler ["MouseButtonClick", "['SHOW_GROUP_RIGHT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+                _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
+                _buttonR2 ctrlShow false;
+            };
+
+        };
+
+        if(_leftSelectedType == 'UNIT' && _rightSelectedType == 'GROUP')then {
+
+            _buttonL3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL3);
+            _buttonL3 ctrlShow true;
+            _buttonL3 ctrlSetText "Join Group >";
+            _buttonL3 ctrlSetEventHandler ["MouseButtonClick", "['JOIN_GROUP_LEFT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        }else{
+
+            _buttonL3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL3);
+            _buttonL3 ctrlShow false;
+
+        };
+
+        if(_rightSelectedType == 'UNIT' && _leftSelectedType == 'GROUP')then {
+
+            _buttonR3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR3);
+            _buttonR3 ctrlShow true;
+            _buttonR3 ctrlSetText "Join Group <";
+            _buttonR3 ctrlSetEventHandler ["MouseButtonClick", "['JOIN_GROUP_RIGHT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
+
+        }else{
+
+            _buttonR3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR3);
+            _buttonR3 ctrlShow false;
+
+        };
+
+
+        /*
+        _buttonL2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL2);
+        _buttonL2 ctrlShow true;
+
+        _buttonL3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL3);
+        _buttonL3 ctrlShow true;
+
+        _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
+        _buttonR1 ctrlShow true;
+
+        _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
+        _buttonR2 ctrlShow true;
+
+        _buttonR3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR3);
+        _buttonR3 ctrlShow true;
+        */
+
+
+    };
+
     case "loadInitialData": {
 
-        private ["_side","_playerID","_event"];
+        private ["_side","_playerID","_event","_groupState","_dataSource","_rows","_values"];
 
         _side = [_logic,"side"] call MAINCLASS;
         _playerID = getPlayerUID player;
@@ -442,7 +603,6 @@ switch(_operation) do {
 
     case "disableAll": {
 
-        [_logic,"disableMainMenu"] call MAINCLASS;
         [_logic,"disableGroupManager"] call MAINCLASS;
 
     };
@@ -458,8 +618,10 @@ switch(_operation) do {
         _abortButton = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow true;
 
+        /*
         _mainList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MainList);
-        _mainList ctrlShow false;
+        _mainList ctrlShow true;
+        */
 
         _leftList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_LeftList);
         _leftList ctrlShow true;
@@ -468,22 +630,22 @@ switch(_operation) do {
         _rightList ctrlShow true;
 
         _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
-        _buttonL1 ctrlShow true;
+        _buttonL1 ctrlShow false;
 
         _buttonL2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL2);
-        _buttonL2 ctrlShow true;
+        _buttonL2 ctrlShow false;
 
         _buttonL3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL3);
-        _buttonL3 ctrlShow true;
+        _buttonL3 ctrlShow false;
 
         _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
-        _buttonR1 ctrlShow true;
+        _buttonR1 ctrlShow false;
 
         _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
-        _buttonR2 ctrlShow true;
+        _buttonR2 ctrlShow false;
 
         _buttonR3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR3);
-        _buttonR3 ctrlShow true;
+        _buttonR3 ctrlShow false;
 
         [_logic,"resetGroupMananger"] call MAINCLASS;
 
@@ -497,7 +659,6 @@ switch(_operation) do {
 
         _leftList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_LeftList);
         _rightList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_RightList);
-
 
         _dataSource = [_side] call ALiVE_fnc_getGroupsDataSource;
         _rows = _dataSource select 0;
@@ -553,7 +714,7 @@ switch(_operation) do {
 
             _rightList lnbAddRow _row;
 
-            if((_row select 3) == '-----------') then {
+            if((_row select 3) == '----') then {
                 _leftList lnbSetColor [[_forEachIndex,0], [0.384,0.439,0.341,1]];
                 _leftList lnbSetColor [[_forEachIndex,1], [0.384,0.439,0.341,1]];
                 _leftList lnbSetColor [[_forEachIndex,2], [0.384,0.439,0.341,1]];
@@ -573,7 +734,7 @@ switch(_operation) do {
     };
     case "disableGroupManager": {
 
-        private ["_title","_backButton","_abortButton","_mainList","_leaveGroupButton","_joinGroupButton"];
+        private ["_title","_backButton","_abortButton","_leftList","_rightList","_joinGroupButton","_buttonL1","_buttonL2","_buttonL3","_buttonR1","_buttonR2","_buttonR3"];
 
         _title = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_Title);
         _title ctrlShow false;
@@ -581,19 +742,29 @@ switch(_operation) do {
         _backButton = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_SubMenuBack);
         _backButton ctrlShow false;
 
-        /*
-        _abortButton = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_SubMenuAbort);
-        _abortButton ctrlShow false;
+        _leftList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_LeftList);
+        _leftList ctrlShow false;
 
-        _mainList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MainList);
-        _mainList ctrlShow false;
+        _rightList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_RightList);
+        _rightList ctrlShow false;
 
-        _leaveGroupButton = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_LeaveGroup);
-        _leaveGroupButton ctrlShow false;
+        _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
+        _buttonL1 ctrlShow false;
 
-        _joinGroupButton = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_JoinGroup);
-        _joinGroupButton ctrlShow false;
-        */
+        _buttonL2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL2);
+        _buttonL2 ctrlShow false;
+
+        _buttonL3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL3);
+        _buttonL3 ctrlShow false;
+
+        _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
+        _buttonR1 ctrlShow false;
+
+        _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
+        _buttonR2 ctrlShow false;
+
+        _buttonR3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR3);
+        _buttonR3 ctrlShow false;
 
     };
 };
