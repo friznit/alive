@@ -361,6 +361,7 @@ switch(_operation) do {
         _logic setVariable ["initGlobal", false];
 
         // Call SITREP and PATROLREP
+        [] spawn ALIVE_fnc_GMInit;
         [] spawn ALIVE_fnc_sitrepInit;
         [] spawn ALIVE_fnc_patrolrepInit;
 

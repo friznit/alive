@@ -103,6 +103,15 @@ if (_menuName == "C2ISTAR") then {
 	                 true,
 	                 _result
 				],
+				["Manage Groups",
+                    {["OPEN",[]] call ALIVE_fnc_GMTabletOnAction},
+                    "",
+                    localize "STR_ALIVE_GM_COMMENT",
+                     "",
+                     -1,
+                     true,
+                     _result
+                ],
 				["Send SITREP",
 					{createDialog "RscDisplayALIVESITREP"},
 					"",

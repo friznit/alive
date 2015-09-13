@@ -377,6 +377,20 @@ class configGetWeaponMagazines
 	recompile = RECOMPILE;
 };
 
+class getArtyMagazineType
+{
+	file = "\x\alive\addons\x_lib\functions\config\fnc_getArtyMagazineType.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class getArtyRounds
+{
+	file = "\x\alive\addons\x_lib\functions\config\fnc_getArtyRounds.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class getConfigValue
 {
 	file = "\x\alive\addons\x_lib\functions\config\fnc_getConfigValue.sqf";
@@ -1091,6 +1105,13 @@ class roundDecimal
 	recompile = RECOMPILE;
 };
 
+class addActionGlobal
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_addActionGlobal.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class allSides
 {
 	file = "\x\alive\addons\x_lib\functions\misc\fnc_allSides.sqf";
@@ -1150,13 +1171,6 @@ class exportMapWarRoom
 class factionSide
 {
 	file = "\x\alive\addons\x_lib\functions\misc\fnc_factionSide.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class addActionGlobal
-{
-	file = "\x\alive\addons\x_lib\functions\misc\fnc_addActionGlobal.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -1374,6 +1388,13 @@ class anyPlayersInRangeIncludeAir
 class chooseRandomUnits
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_chooseRandomUnits.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class getGroupsDataSource
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_getGroupsDataSource.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
@@ -1640,18 +1661,6 @@ class vehicleSetAmmo
 class vehicleSetDamage
 {
 	file = "\x\alive\addons\x_lib\functions\vehicles\fnc_vehicleSetDamage.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-class getArtyRounds
-{
-	file = "\x\alive\addons\x_lib\functions\config\fnc_getArtyRounds.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-class getArtyMagazineType
-{
-	file = "\x\alive\addons\x_lib\functions\config\fnc_getArtyMagazineType.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
