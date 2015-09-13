@@ -23,7 +23,7 @@ if (_detection == 1) exitWith {
 if (_detection == 2) then {
 	{
 		if (_device in (items _x)) then {
-			[_x, "Alive_IED_Detection"] call CBA_fnc_globalSay3D;
+			[_x, format["Alive_IED_Detection%1", ceil(random(4))]] call CBA_fnc_globalSay3D;
 		};
 
 	} foreach _players;
