@@ -25,17 +25,31 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_waypoints","_group"];
+private ["_waypoints","_group","_cycleWaypoints"];
 	
 _waypoints = _this select 0;
 _group = _this select 1;
 
-if(count _waypoints > 0) then {
-	{
+_cycleWaypoints = [];
+
+//Add all waypoints but cycle first
+{
+    if !(([_x,"type",""] call ALiVE_fnc_HashGet) == "CYCLE") then {
 		if(_forEachIndex == 0) then {
 			[_x, _group, true] call ALIVE_fnc_profileWaypointToWaypoint;
 		} else {
 			[_x, _group] call ALIVE_fnc_profileWaypointToWaypoint;
 		};
-	} forEach _waypoints;
-};
+    } else {
+        _cycleWaypoints pushback _x;
+    };
+} forEach _waypoints;
+
+//Add cycle waypoints at the end to avoid stuck groups
+{
+	if(_forEachIndex == 0) then {
+		[_x, _group, true] call ALIVE_fnc_profileWaypointToWaypoint;
+	} else {
+		[_x, _group] call ALIVE_fnc_profileWaypointToWaypoint;
+	};
+} forEach _cycleWaypoints;
