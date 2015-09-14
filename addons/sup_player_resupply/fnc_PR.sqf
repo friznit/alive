@@ -37,6 +37,7 @@ Peer Reviewed:
 #define DEFAULT_PR_ITEM "LaserDesignator"
 #define DEFAULT_RESTRICTION_TYPE "SIDE"
 #define DEFAULT_RESTRICTION_BLACKLIST []
+#define DEFAULT_RESTRICTION_WHITELIST []
 #define DEFAULT_SELECTED_INDEX 0
 #define DEFAULT_SELECTED_VALUE ""
 #define DEFAULT_SELECTED_OPTIONS []
@@ -318,6 +319,35 @@ switch(_operation) do {
 
         _result = _args;
 	};
+    
+	case "whitelist": {
+	    if !(isnil "_args") then {
+			if(typeName _args == "STRING") then {
+	            if !(_args == "") then {
+					_args = [_args, " ", ""] call CBA_fnc_replace;
+	                _args = [_args, "[", ""] call CBA_fnc_replace;
+	                _args = [_args, "]", ""] call CBA_fnc_replace;
+	                _args = [_args, "'", ""] call CBA_fnc_replace;
+	                _args = [_args, """", ""] call CBA_fnc_replace;
+					_args = [_args, ","] call CBA_fnc_split;
+
+					if(count _args > 0) then {
+						_logic setVariable [_operation, _args];
+					};
+	            } else {
+	                _logic setVariable [_operation, []];
+	            };
+			} else {
+				if(typeName _args == "ARRAY") then {
+					_logic setVariable [_operation, _args];
+				};
+	        };
+	    };
+
+	    _args = _logic getVariable [_operation, DEFAULT_RESTRICTION_WHITELIST];
+
+        _result = _args;
+	};    
 
 	case "init": {
 
@@ -343,6 +373,10 @@ switch(_operation) do {
 		// Set final blacklist
         ALiVE_PR_BLACKLIST = ([_logic, "blacklist", _logic getVariable ["pr_restrictionBlacklist", DEFAULT_RESTRICTION_BLACKLIST]] call MAINCLASS) + ALiVE_PR_BLACKLIST + ALiVE_PLACEMENT_VEHICLEBLACKLIST;
 
+		// Set final whitelist
+        ALiVE_PR_WHITELIST = ([_logic, "whitelist", _logic getVariable ["pr_restrictionWhitelist", DEFAULT_RESTRICTION_WHITELIST]] call MAINCLASS) + ALiVE_PR_WHITELIST;
+
+		// Get on with it
         [_logic, "start"] call MAINCLASS;
 
 		// The machine has an interface? Must be a MP client, SP client or a client that acts as host!
@@ -513,9 +547,9 @@ switch(_operation) do {
             // get sorted config data
 
             if(_restrictionType == "SIDE") then {
-                _sortedVehicles = [_sideText] call ALIVE_fnc_sortCFGVehiclesByClass;
+                _sortedVehicles = [_sideText,ALiVE_PR_BLACKLIST,ALiVE_PR_WHITELIST] call ALIVE_fnc_sortCFGVehiclesByClass;
             }else{
-                _sortedVehicles = [_playerFaction] call ALIVE_fnc_sortCFGVehiclesByFactionClass;
+                _sortedVehicles = [_playerFaction,ALiVE_PR_BLACKLIST,ALiVE_PR_WHITELIST] call ALIVE_fnc_sortCFGVehiclesByFactionClass;
             };
 
             [_logic,"sortedVehicles",_sortedVehicles] call MAINCLASS;
@@ -1741,7 +1775,6 @@ switch(_operation) do {
                                 _values = ["<< Back"];
 
                                 _vehicleClasses = [_sortedVehicles,_selectedValue] call ALIVE_fnc_hashGet;
-                                _vehicleClasses = _vehicleClasses - ALiVE_PR_BLACKLIST;
 
                                 {
                                     _displayName = getText(configFile >> "CfgVehicles" >> _x >> "displayname");

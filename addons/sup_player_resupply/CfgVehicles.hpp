@@ -109,6 +109,13 @@ class CfgVehicles {
                                 defaultValue = "";
                     };
                     
+                    class pr_restrictionWhitelist
+                    {
+                                displayName = "$STR_ALIVE_PR_RESTRICTION_WHITELIST";
+                                description = "$STR_ALIVE_PR_RESTRICTION_WHITELIST_COMMENT";
+                                typeName = "STRING";
+                                defaultValue = "";
+                    };
                 };
 
         };
