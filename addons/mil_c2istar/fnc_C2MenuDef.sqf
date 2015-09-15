@@ -113,6 +113,13 @@ if (_menuName == "C2ISTAR") then {
                      true,
                      _result
                 ],*/
+				["Logistics",
+					{["OPEN",[]] call ALIVE_fnc_PRTabletOnAction},
+					"",
+					localize "STR_ALIVE_PR_COMMENT",
+	                 "",
+	                 -1,(MOD(Require) getVariable [format["ALIVE_MIL_LOG_AVAIL_%1", (side player)], false]), _result
+				],
 				["Tasks",
 
 					{["OPEN",[]] call ALIVE_fnc_C2TabletOnAction},
@@ -122,13 +129,6 @@ if (_menuName == "C2ISTAR") then {
 	                 -1,
 	                 true,
 	                 _result
-				],
-				["Logistics",
-					{["OPEN",[]] call ALIVE_fnc_PRTabletOnAction},
-					"",
-					localize "STR_ALIVE_PR_COMMENT",
-	                 "",
-	                 -1,(MOD(Require) getVariable [format["ALIVE_MIL_LOG_AVAIL_%1", (side player)], false]), _result
 				],
 /*				["Operations",
 					{CreateDialog "Spyder_TacticalCommandHighCommand"},
