@@ -94,8 +94,8 @@ if (_menuName == "C2ISTAR") then {
 		[
         	["C2ISTAR", localize "STR_ALIVE_C2ISTAR", "popup"],
 			[
-<<<<<<< HEAD
-				["Personnel",
+
+/*				["Personnel",
                     {["OPEN",[]] call ALIVE_fnc_GMTabletOnAction},
                     "",
                     localize "STR_ALIVE_GM_COMMENT",
@@ -112,11 +112,9 @@ if (_menuName == "C2ISTAR") then {
                      -1,
                      true,
                      _result
-                ],
+                ],*/
 				["Tasks",
-=======
-				["Manage Tasks",
->>>>>>> parent of a4c5301... [sup_command] Initial integration of SpyderBlack's awesome Tactical Command Tablet
+
 					{["OPEN",[]] call ALIVE_fnc_C2TabletOnAction},
 	                "",
 					localize "STR_ALIVE_C2ISTAR_COMMENT",
@@ -125,15 +123,22 @@ if (_menuName == "C2ISTAR") then {
 	                 true,
 	                 _result
 				],
-				["Manage Groups",
-                    {["OPEN",[]] call ALIVE_fnc_GMTabletOnAction},
-                    "",
-                    localize "STR_ALIVE_GM_COMMENT",
-                     "",
-                     -1,
-                     true,
-                     _result
-                ],
+				["Logistics",
+					{["OPEN",[]] call ALIVE_fnc_PRTabletOnAction},
+					"",
+					localize "STR_ALIVE_PR_COMMENT",
+	                 "",
+	                 -1,(MOD(Require) getVariable [format["ALIVE_MIL_LOG_AVAIL_%1", (side player)], false]), _result
+				],
+/*				["Operations",
+					{CreateDialog "Spyder_TacticalCommandHighCommand"},
+	                "",
+					localize "STR_ALIVE_SUP_COMMAND_HIGH_COMMENT",
+	                 "",
+	                 -1,
+	                 true,
+	                 _result
+				],*/
 				["Send SITREP",
 					{createDialog "RscDisplayALIVESITREP"},
 					"",

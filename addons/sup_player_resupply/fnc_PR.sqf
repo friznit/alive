@@ -301,7 +301,7 @@ switch(_operation) do {
 	                _args = [_args, "'", ""] call CBA_fnc_replace;
 	                _args = [_args, """", ""] call CBA_fnc_replace;
 					_args = [_args, ","] call CBA_fnc_split;
-	
+
 					if(count _args > 0) then {
 						_logic setVariable [_operation, _args];
 					};
@@ -314,12 +314,12 @@ switch(_operation) do {
 				};
 	        };
 	    };
-        
+
 	    _args = _logic getVariable [_operation, DEFAULT_RESTRICTION_BLACKLIST];
-        
+
         _result = _args;
 	};
-    
+
 	case "whitelist": {
 	    if !(isnil "_args") then {
 			if(typeName _args == "STRING") then {
@@ -347,7 +347,7 @@ switch(_operation) do {
 	    _args = _logic getVariable [_operation, DEFAULT_RESTRICTION_WHITELIST];
 
         _result = _args;
-	};    
+	};
 
 	case "init": {
 
@@ -363,7 +363,7 @@ switch(_operation) do {
         _logic setVariable ["startupComplete", false];
 
         ALIVE_SUP_PLAYER_RESUPPLY = _logic;
-        
+
         // load static data
         if(isNil "ALiVE_STATIC_DATA_LOADED") then {
             _file = "\x\alive\addons\main\static\staticData.sqf";
@@ -567,7 +567,7 @@ switch(_operation) do {
 
 
             // Initialise interaction key if undefined
-            if (isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
+/*          if (isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 
             TRACE_2("Menu pre-req",SELF_INTERACTION_KEY,ALIVE_fnc_logisticsMenuDef);
 
@@ -581,6 +581,7 @@ switch(_operation) do {
                             "main"
                     ]
             ] call ALiVE_fnc_flexiMenu_Add;
+            */
         };
 	};
 	case "start": {
