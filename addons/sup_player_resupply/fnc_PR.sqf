@@ -567,7 +567,7 @@ switch(_operation) do {
 
 
             // Initialise interaction key if undefined
-/*          if (isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
+          if (isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 
             TRACE_2("Menu pre-req",SELF_INTERACTION_KEY,ALIVE_fnc_logisticsMenuDef);
 
@@ -581,7 +581,7 @@ switch(_operation) do {
                             "main"
                     ]
             ] call ALiVE_fnc_flexiMenu_Add;
-            */
+
         };
 	};
 	case "start": {
