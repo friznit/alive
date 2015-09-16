@@ -90,7 +90,7 @@ if (_debug) then {
 	_time = time + 600;
 	waitUntil {
 		if (!isNil "_victim") then {
-			_bomber doMove getposATL _victim;
+            [_bomber, getposATL _victim] call ALiVE_fnc_doMoveRemote;
 		};
 		sleep 2;
 		!(alive _victim) || (isNil "_victim") || (_bomber distance _victim < 8) || (time > _time) || !(alive _bomber)

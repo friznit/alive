@@ -69,7 +69,7 @@ switch (_state) do {
 
             _position = getPosASL _vehicle;
             [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-            _agent doMove _position;
+            [_agent, _position] call ALiVE_fnc_doMoveRemote;
 
             _nextState = "travel_to_vehicle";
             _nextStateArgs = _args;
@@ -126,7 +126,7 @@ switch (_state) do {
 
             if(_agent in _vehicle) then {
                 _agent setSpeedMode "LIMITED";
-                _agent doMove _destination;
+                [_agent,_destination] call ALiVE_fnc_doMoveRemote;
 
                 _nextState = "travel";
                 _nextStateArgs = _args;

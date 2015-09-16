@@ -83,7 +83,7 @@ switch (_state) do {
                 if(count _positions > 0) then {
                     _position = _positions call BIS_fnc_arrayPop;
                     [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-                    _agent doMove _position;
+                    [_agent, _position] call ALiVE_fnc_doMoveRemote;
 
                     _nextStateArgs = [_target];
 
@@ -157,7 +157,7 @@ switch (_state) do {
             _agent setSkill 0.3 + random 0.5;
 
             [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-            _agent doMove getPosASL _target;
+            [_agent, getPosASL _target] call ALiVE_fnc_doMoveRemote;
 
             [_agent, _target] call ALIVE_fnc_addToEnemyGroup;
 
@@ -195,7 +195,7 @@ switch (_state) do {
             if(_agent distance _target > 20) then {
                 _agent addRating -10000;
                 [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-                _agent doMove getPosASL _target;
+                [_agent, getPosASL _target] call ALiVE_fnc_doMoveRemote;
             }else{
 
                 _agent doTarget _target;

@@ -68,7 +68,7 @@ switch (_state) do {
         //_target = [getPosASL _agent, 600, _targetSide] call ALIVE_fnc_getSideManOrPlayerNear;
 
         if !(isnil "_position") then {
-            _agent doMove _position;
+            [_agent, _position] call ALiVE_fnc_doMoveRemote;
             
             _position = ([_position,10] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_selectRandom;
 
@@ -183,7 +183,7 @@ switch (_state) do {
                 _position = _positions call BIS_fnc_arrayPop;
                 [_agent] call ALIVE_fnc_agentSelectSpeedMode;
                 
-                _agent doMove _position;
+                [_agent, _position] call ALiVE_fnc_doMoveRemote;
             };
             
             _agent setVariable ["ALIVE_agentBusy", false, false];                                            

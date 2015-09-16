@@ -1357,6 +1357,20 @@ class sideC
 	recompile = RECOMPILE;
 };
 
+class MoveRemote
+{
+	file = "\x\alive\addons\x_lib\functions\groups\fnc_MoveRemote.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class doMoveRemote
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_doMoveRemote.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class addToEnemyGroup
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_addToEnemyGroup.sqf";
