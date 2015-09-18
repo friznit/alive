@@ -54,7 +54,7 @@ if (isNil "_gunner" || isNil "_assistant") exitWith {
 	_weapont = typeOf (_this select 3);
 	_grp = _this select 4;
 
-	waitUntil{unitReady _gunner};
+	waitUntil{sleep 0.1; _gunner call ALiVE_fnc_unitReadyRemote};
 
 	_gunner disableAI "move";
 

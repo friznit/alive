@@ -115,9 +115,13 @@ switch (_state) do {
                 _agent setBehaviour "CARELESS";
             	_agent setSpeedMode "LIMITED";
 
-				[_agent, _position] call ALiVE_fnc_doMoveRemote;
-
-                waituntil {sleep 10; _agent distance _position < 5 || {!(alive _agent)}};
+                waituntil {
+                    [_agent, _position] call ALiVE_fnc_doMoveRemote;
+                    
+                    sleep 15;
+                    
+                    _agent distance _position < 5 || {!(alive _agent)};
+                };
                 
                 if (!alive _agent) exitwith {};
                 
@@ -139,10 +143,13 @@ switch (_state) do {
                 };
                 
                 _agent setSpeedMode "FULL";
-
-                [_agent,_orgpos] call ALiVE_fnc_doMoveRemote;
                     
-                waituntil {sleep 10; !alive _agent || {_agent distance (_bombs select 0) > 50}};
+                waituntil {
+                    [_agent,_orgpos] call ALiVE_fnc_doMoveRemote;
+                    
+                    sleep 15;
+                    
+                    !alive _agent || {_agent distance (_bombs select 0) > 50}};
                 
                 if (alive _agent) then {{_x setDamage 1} foreach _bombs};
             };

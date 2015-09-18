@@ -1119,6 +1119,13 @@ class roundDecimal
 	recompile = RECOMPILE;
 };
 
+class unitReadyRemote
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_unitReadyRemote.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class addActionGlobal
 {
 	file = "\x\alive\addons\x_lib\functions\misc\fnc_addActionGlobal.sqf";
@@ -1416,6 +1423,13 @@ class anyPlayersInRangeIncludeAir
 class chooseRandomUnits
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_chooseRandomUnits.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class getGroupsDataSource
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_getGroupsDataSource.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };

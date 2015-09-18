@@ -297,7 +297,7 @@ class FSM
            "_grp setCombatMode _ROE;" \n
            "_grp setSpeedMode ""FULL"";" \n
            "_grp enableAttack false;" \n
-           "_veh doMove _posCas;" \n
+           "[_veh, _posCas] call ALiVE_fnc_doMoveRemote;" \n
            "" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -335,7 +335,7 @@ class FSM
            "_grp setSpeedMode ""FULL"";" \n
            "_grp enableAttack false;" \n
            "_oldpos = getpos _veh;" \n
-           "_veh doMove _posCas;" \n
+           "[_veh, _posCas] call ALiVE_fnc_doMoveRemote;" \n
            "" \n
            "// Remove all weapons bar the one chosen" \n
            "_ammoCount = [];" \n

@@ -100,7 +100,7 @@ switch (_state) do {
         };
         // DEBUG -------------------------------------------------------------------------------------
 
-        if(unitReady _agent) then {
+        if(_agent call ALiVE_fnc_unitReadyRemote) then {
 
             _bomb1 = "DemoCharge_Remote_Ammo" createVehicle [0,0,0];
             _bomb2 = "DemoCharge_Remote_Ammo" createVehicle  [0,0,0];
@@ -158,11 +158,16 @@ switch (_state) do {
                 _bomb3 = _this select 4;
 
                 [_agent, getPosASL _target] call ALiVE_fnc_doMoveRemote;
+                
+                _timer = time;
 
                 waituntil {
                     sleep 0.5;
+                    
+                    if (time - _timer > 15) then {[_agent, getPosASL _target] call ALiVE_fnc_doMoveRemote; _timer = time};
+                    
                     _distance = _agent distance _target;
-                    _agent moveTo getPosASL _target;
+                    
                     //["SPAWNED SUICIDE distance: %1 alive: %2 condition: %3",_distance, (alive _agent), ((_distance < 5) || !(alive _agent))] call ALIVE_fnc_dump;
                     ((_distance < 5) || !(alive _agent))
                 };

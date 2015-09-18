@@ -32,7 +32,7 @@ _group = _this select 0;
 _result = true;
 
 {
-	if!(unitReady _x) then
+	if!(unitReady _x) exitwith
 	{
 		_result = false;
 	};

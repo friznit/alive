@@ -121,7 +121,7 @@ switch (_state) do {
         };
         // DEBUG -------------------------------------------------------------------------------------
 
-        if(unitReady _agent) then {
+        if(_agent call ALiVE_fnc_unitReadyRemote) then {
 
             //arm
             _faction = _agentData select 2 select 7;
@@ -192,7 +192,7 @@ switch (_state) do {
 
         _target = _args select 0;
 
-        if(unitReady _agent) then {
+        if(_agent call ALiVE_fnc_unitReadyRemote) then {
 
             if((isNil "_target") || !(alive _target)) then {
                 _nextState = "done";

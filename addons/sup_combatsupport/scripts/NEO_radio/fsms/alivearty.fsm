@@ -634,13 +634,13 @@ class FSM
            "" \n
            "	{" \n
            "		_x enableAI ""MOVE""; _x enableAI ""ANIM"";" \n
-           "		_x doMove ([_pos, 50, random 360] call BIS_fnc_relPos);" \n
+           "		[_x, [_pos, 50, random 360] call BIS_fnc_relPos] call ALiVE_fnc_doMoveRemote;" \n
            "	} forEach (units _grp);" \n
            "" \n
            "} else {" \n
            "" \n
            "{" \n
-           "	_x doMove ([_pos, 20, random 360] call BIS_fnc_relPos);" \n
+           "	[_x, [_pos, 20, random 360] call BIS_fnc_relPos] call ALiVE_fnc_doMoveRemote;" \n
            "} forEach _units;" \n
            "" \n
            "};" \n
@@ -867,13 +867,13 @@ class FSM
            "diag_log ""Mortar team have packed up mortars and are moving"";" \n
            "" \n
            "	{" \n
-           "		_x doMove ([_isFlat, 50, random 360] call BIS_fnc_relPos);" \n
+           "		[_x, [_isFlat, 50, random 360] call BIS_fnc_relPos] call ALiVE_fnc_doMoveRemote;" \n
            "	} forEach (units _grp);" \n
            "" \n
            "} else {" \n
            "	_grp setVariable [""mortar"", false];" \n
            "	{" \n
-           "		_x doMove ([_isFlat, 50, random 360] call BIS_fnc_relPos);" \n
+           "		[_x, [_isFlat, 50, random 360] call BIS_fnc_relPos] call ALiVE_fnc_doMoveRemote;" \n
            "	} forEach _units;" \n
            "" \n
            "};" \n
@@ -949,7 +949,7 @@ class FSM
           priority = 0.000000;
           to="__12";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"{ unitReady _x } count units _grp == count units _grp" \n
+          condition=/*%FSM<CONDITION""">*/"{ _x call ALiVE_fnc_unitReadyRemote } count units _grp == count units _grp" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"// IF its a mortar team, get them to assemble mortars" \n
            "" \n
@@ -1079,7 +1079,7 @@ class FSM
           priority = 0.000000;
           to="__18";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"{ unitReady _x } count units _grp == count units _grp" \n
+          condition=/*%FSM<CONDITION""">*/"{ _x call ALiVE_fnc_unitReadyRemote } count units _grp == count units _grp" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_grp setVariable [""NEO_radioArtyNotInBase"", nil];" \n
            "" \n

@@ -299,7 +299,7 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_task == ""CIRCLE""" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_dirCircle = [_pos, _chopper] call BIS_fnc_dirTo;" \n
-           "_chopper doMove ([_pos, _radiusCircle, _dirCircle] call BIS_fnc_relPos);" \n
+           "[_chopper, [_pos, _radiusCircle, _dirCircle] call BIS_fnc_relPos] call ALiVE_fnc_doMoveRemote;" \n
            "_chopper flyinheight 100;" \n
            "" \n
            "//New Status" \n
@@ -348,7 +348,7 @@ class FSM
            "sleep 0.01};" \n
            "};  " \n
            "_chopper flyinheight 100;" \n
-           "_chopper doMove _base;" \n
+           "[_chopper, _base] call ALiVE_fnc_doMoveRemote;" \n
            ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -371,7 +371,7 @@ class FSM
            "sleep 0.01};" \n
            "};  " \n
            "" \n
-           "_chopper doMove _pos;" \n
+           "[_chopper,_pos] call ALiVE_fnc_doMoveRemote;" \n
            ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -396,7 +396,7 @@ class FSM
            "};  " \n
            "" \n
            "_chopper flyinheight 100;" \n
-           "_chopper doMove _pos;"/*%FSM</ACTION""">*/;
+           "[_chopper,_pos] call ALiVE_fnc_doMoveRemote;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "land">*/
@@ -471,11 +471,11 @@ class FSM
            "" \n
            "_posLand set [2, 0];" \n
            "if (surfaceIsWater _posLand) then {" \n
-           "_chopper doMove _posLand;" \n
+           "[_chopper, _posLand] call ALiVE_fnc_doMoveRemote;" \n
            "_task = ""HOVER"";" \n
            "} else {" \n
            " _h setPosATL _posLand;" \n
-           " _chopper doMove _posLand;" \n
+           " [_chopper, _posLand] call ALiVE_fnc_doMoveRemote;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -491,7 +491,7 @@ class FSM
           action=/*%FSM<ACTION""">*/"_radiusCircle = 150;" \n
            "_chopper flyinheight 100;" \n
            "_dirCircle = [_pos, _chopper] call BIS_fnc_dirTo;" \n
-           "_chopper doMove ([_pos, _radiusCircle, _dirCircle] call BIS_fnc_relPos);" \n
+           "[_chopper, [_pos, _radiusCircle, _dirCircle] call BIS_fnc_relPos] call ALiVE_fnc_doMoveRemote;" \n
            "_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""MISSION"", true];" \n
            "" \n
            "[_chopper] spawn {  " \n
@@ -572,7 +572,7 @@ class FSM
           priority = 0.000000;
           to="__2";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"unitReady _chopper" \n
+          condition=/*%FSM<CONDITION""">*/"_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""SMOKE"", true];" \n
            "" \n
@@ -670,14 +670,14 @@ class FSM
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"({ getPosATL _x select 2 < 0.2 } count (_pos nearObjects [""SmokeShell"", 250]) > 0 || { getPosATL _x select 2 < 0.2 } count (_pos nearObjects [""IRStrobeBase"", 250]) > 0)" \n
            "&&" \n
-           "unitReady _chopper" \n
+           "_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"if (sunOrMoon == 0) then {" \n
            "	_smoke = _pos nearObjects [""IRStrobeBase"", 250] select 0;" \n
            "} else {" \n
            "	_smoke = _pos nearObjects [""SmokeShell"", 250] select 0;" \n
            "};" \n
-           "_chopper doMove getPosATL _smoke;" \n
+           "[_chopper, getPosATL _smoke] call ALiVE_fnc_doMoveRemote;" \n
            ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -687,12 +687,12 @@ class FSM
           priority = 0.000000;
           to="__2";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"unitReady _chopper" \n
+          condition=/*%FSM<CONDITION""">*/"_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_posCircle = [_pos, _radiusCircle, _dirCircle] call BIS_fnc_relPos;" \n
            "_dirCircle = _dirCircle + 45;" \n
            "" \n
-           "_chopper doMove _posCircle;" \n
+           "[_chopper,_posCircle] call ALiVE_fnc_doMoveRemote;" \n
            ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -748,7 +748,7 @@ class FSM
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"time > _delay" \n
            "&&" \n
-           "unitReady _chopper" \n
+           "_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"//Store smoke position" \n
            "_posSmoke = getPosATL _smoke;" \n
@@ -855,7 +855,7 @@ class FSM
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"!isNil { _chopper getVariable ""NEO_radioSmokeConfirmed"" }" \n
            "&&" \n
-           "unitReady _chopper" \n
+           "_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_goodToLand = _chopper getVariable ""NEO_radioSmokeConfirmed"";" \n
            "_chopper setVariable [""NEO_radioSmokeConfirmed"", nil, true];" \n
@@ -933,7 +933,7 @@ class FSM
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_goodToLand" \n
            "&&" \n
-           "unitReady _chopper" \n
+           "_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_chopper land ""Get In"";" \n
            "_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""CARGO"", true];" \n
@@ -1016,7 +1016,7 @@ class FSM
           action=/*%FSM<ACTION""">*/"_radiusCircle = 150;" \n
            "_chopper flyinheight 100;" \n
            "_dirCircle = [_pos, _chopper] call BIS_fnc_dirTo;" \n
-           "_chopper doMove ([_pos, _radiusCircle, _dirCircle] call BIS_fnc_relPos);" \n
+           "[_chopper, [_pos, _radiusCircle, _dirCircle] call BIS_fnc_relPos] call ALiVE_fnc_doMoveRemote;" \n
            "_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""MISSION"", true];" \n
            "" \n
            "[_chopper] spawn {  " \n
@@ -1132,7 +1132,7 @@ class FSM
           priority = 0.000000;
           to="__9";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"unitReady _chopper" \n
+          condition=/*%FSM<CONDITION""">*/"_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_h setPosATL _base;" \n
            "_chopper land ""LAND"";" \n
@@ -1249,7 +1249,7 @@ class FSM
           priority = 0.000000;
           to="__11";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"unitReady _chopper" \n
+          condition=/*%FSM<CONDITION""">*/"_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"switch (_task) do" \n
            "{" \n
@@ -1369,7 +1369,7 @@ class FSM
           priority = 0.000000;
           to="__13";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"unitReady _chopper" \n
+          condition=/*%FSM<CONDITION""">*/"_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
@@ -1467,11 +1467,11 @@ class FSM
           priority = 0.000000;
           to="__14";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"unitReady _chopper" \n
+          condition=/*%FSM<CONDITION""">*/"_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_dirCircle = _dirCircle + 45;" \n
            "_posCircle = [_pos, _radiusCircle, _dirCircle] call BIS_fnc_relPos;" \n
-           "_chopper doMove _posCircle;" \n
+           "[_chopper,_posCircle] call ALiVE_fnc_doMoveRemote;" \n
            "_coord = _pos call BIS_fnc_posToGrid;" \n
            "" \n
            "if (!_speechSaid) then" \n
@@ -1544,7 +1544,7 @@ class FSM
           priority = 0.000000;
           to="__16";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"unitReady _chopper" \n
+          condition=/*%FSM<CONDITION""">*/"_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_chopper flyinheight _alt;" \n
            ""/*%FSM</ACTION""">*/;
@@ -1567,7 +1567,7 @@ class FSM
           priority = 0.000000;
           to="__17";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"unitReady _chopper"/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_chopper call ALiVE_fnc_unitReadyRemote"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/

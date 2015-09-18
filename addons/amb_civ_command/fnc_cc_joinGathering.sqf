@@ -89,7 +89,7 @@ switch (_state) do {
 
         _target = _args select 0;
 
-        if(unitReady _agent) then {
+        if(_agent call ALiVE_fnc_unitReadyRemote) then {
 
             if!(isNil "_target") then {
 

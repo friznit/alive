@@ -153,7 +153,7 @@ if(count _buildings > 0) then {
 
                                 [_unit, _position] call ALiVE_fnc_doMoveRemote;
 
-                                waitUntil {sleep 1; unitReady _unit };
+                                waitUntil {sleep 1; _unit call ALiVE_fnc_unitReadyRemote};
 
                                 doStop _unit;
                             };
@@ -214,10 +214,9 @@ if(count _buildings > 0) then {
 
                             [_unit, _position] call ALiVE_fnc_doMoveRemote;
 
-                            waitUntil {sleep 0.5; unitReady _unit };
+                            waitUntil {sleep 0.5; _unit call ALiVE_fnc_unitReadyRemote};
 
                             doStop _unit;
-
                         };
                     };
 

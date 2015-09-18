@@ -93,7 +93,7 @@ switch (_state) do {
 
         _positions = _args select 0;
 
-        if(unitReady _agent) then {
+        if(_agent call ALiVE_fnc_unitReadyRemote) then {
 
             _fire = "FirePlace_burning_F" createVehicle (position _agent);
 

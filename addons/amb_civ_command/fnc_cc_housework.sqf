@@ -89,7 +89,7 @@ switch (_state) do {
 
         _positions = _args select 0;
 
-        if(unitReady _agent) then {
+        if(_agent call ALiVE_fnc_unitReadyRemote) then {
 
             _dayState = ALIVE_currentEnvironment select 0;
 
@@ -145,7 +145,7 @@ switch (_state) do {
         }
         else
         {
-            if(unitReady _agent) then
+            if(_agent call ALiVE_fnc_unitReadyRemote) then
             {
                 _position = _positions call BIS_fnc_arrayPop;
                 [_agent] call ALIVE_fnc_agentSelectSpeedMode;

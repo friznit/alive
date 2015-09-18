@@ -29,6 +29,9 @@ private ["_group","_pos"];
 _group = _this select 0;
 _pos = _this select 1;
 
+//Flag group with destination
+_group setvariable [QGVAR(MOVEDESTINATION),_pos];
+
 if (local _group) exitwith {
 	_group move _pos;
 };

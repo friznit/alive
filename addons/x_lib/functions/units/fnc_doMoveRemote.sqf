@@ -29,14 +29,16 @@ private ["_unit","_pos"];
 _unit = _this select 0;
 _pos = _this select 1;
 
+//Flag for usage with ALiVE_fnc_unitReadyRemote
+_unit setvariable [QGVAR(MOVEDESTINATION),_pos];
+
 if (local _unit) exitwith {
 	_unit doMove _pos;
 };
 
 //if !local send to server to distribute
 if !(isServer) then {
-    [_this,"ALiVE_fnc_doMoveRemote",false,false] spawn BIS_fnc_MP;
+    [_this,"ALiVE_fnc_doMoveRemote",false,false,true] call BIS_fnc_MP;
 } else {
-    [_this,"ALiVE_fnc_doMoveRemote",owner _unit,false] spawn BIS_fnc_MP;
+    [_this,"ALiVE_fnc_doMoveRemote",owner _unit,false,true] call BIS_fnc_MP;
 };
-

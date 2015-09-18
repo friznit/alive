@@ -94,7 +94,7 @@ switch (_state) do {
 
         _target = _args select 0;
 
-        if(unitReady _agent) then {
+        if(_agent call ALiVE_fnc_unitReadyRemote) then {
 
             if!(isNil "_target") then {
                 _agent doWatch _target;
@@ -130,7 +130,7 @@ switch (_state) do {
             _nextState = "done";
             [_commandState, _agentID, [_agentData, [_commandName,"managed",_args,_nextState,_nextStateArgs]]] call ALIVE_fnc_hashSet;
         }else{
-            if(unitReady _agent) then {
+            if(_agent call ALiVE_fnc_unitReadyRemote) then {
                 if(_agent distance _target > 7) then {
                     [_agent] call ALIVE_fnc_agentSelectSpeedMode;
                     _position = [getPosASL _target,1+(random 5), random 360] call BIS_fnc_relPos;

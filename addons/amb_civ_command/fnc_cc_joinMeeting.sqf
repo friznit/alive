@@ -93,7 +93,7 @@ switch (_state) do {
 
         _target = _args select 0;
 
-        if(unitReady _agent) then {
+        if(_agent call ALiVE_fnc_unitReadyRemote) then {
 
             _agent lookAt _target;
             _target lookAt _agent;

@@ -109,11 +109,11 @@ switch (_state) do {
                 sleep 60 + (random 120);
 
                 waituntil {
-                    _agent moveTo _position;
+                    [_agent,_position] call ALiVE_fnc_doMoveRemote;
                     
                     sleep 10;
                     
-                    unitReady _agent || {!(alive _agent)}
+                    _agent call ALiVE_fnc_unitReadyRemote || {!(alive _agent)}
                 };
                 
                 if (alive _agent) then {

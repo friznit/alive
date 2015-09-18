@@ -108,7 +108,7 @@ switch (_state) do {
         }
         else
         {
-            if(unitReady _agent) then
+            if(_agent call ALiVE_fnc_unitReadyRemote) then
             {
                 _position = _positions call BIS_fnc_arrayPop;
                 [_agent] call ALIVE_fnc_agentSelectSpeedMode;

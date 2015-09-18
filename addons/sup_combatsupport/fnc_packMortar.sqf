@@ -60,7 +60,7 @@ _gunner action ["Disassemble",_weapon];
 } forEach [_gunner, _assistant];
 
 {
-	_x doMove (position _weapon);
+    [_x,position _weapon] call ALiVE_fnc_doMoveRemote;
 } foreach [_gunner, _assistant];
 
 [_weapon, _gunner, _assistant] spawn {
@@ -71,7 +71,7 @@ _gunner action ["Disassemble",_weapon];
 	_position = position _weapon;
 
 	_timer = time;
-	waitUntil {sleep 0.3; unitReady _gunner || (time-_timer > 30)};
+	waitUntil {sleep 0.3; _gunner call ALiVE_fnc_unitReadyRemote || (time-_timer > 30)};
 
 	_gunner action ["Disassemble",_weapon];
 

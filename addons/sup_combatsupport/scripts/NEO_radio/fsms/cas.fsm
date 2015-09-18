@@ -1,7 +1,7 @@
 /*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, cas">*/
 /*%FSM<HEAD>*/
 /*
-item0[] = {"react",0,4346,-37.443069,45.098049,52.556931,95.098053,0.000000,"react"};
+item0[] = {"react",0,250,-37.443069,45.098049,52.556931,95.098053,0.000000,"react"};
 item1[] = {"killed",4,218,-231.102844,45.315475,-141.102768,95.315475,50.000000,"killed"};
 item2[] = {"end1",1,250,-612.799438,40.307156,-522.799500,90.307144,0.000000,"end1"};
 item3[] = {"New_Task",4,218,-37.668053,138.662827,52.331947,188.662827,10.000000,"New Task"};
@@ -19,7 +19,7 @@ item14[] = {"chopper",4,218,686.528015,412.047028,776.527893,462.047058,1.000000
 item15[] = {"__3",2,250,405.475739,686.437256,495.475769,736.437256,0.000000,""};
 item16[] = {"",7,210,-191.118027,611.746948,-183.118027,619.746948,0.000000,""};
 item17[] = {"__4",2,250,685.759583,859.291260,775.759460,909.291260,0.000000,""};
-item18[] = {"at_base",4,218,687.208801,943.764832,777.208801,993.764832,0.000000,"at base"};
+item18[] = {"at_base",4,4314,687.208801,943.764832,777.208801,993.764832,0.000000,"at base"};
 item19[] = {"__5",2,250,536.869751,920.550537,626.869446,970.550781,0.000000,""};
 item20[] = {"",7,210,-191.117874,797.665161,-183.117874,805.665161,0.000000,""};
 item21[] = {"",7,210,145.559280,257.188538,153.559265,265.188477,0.000000,""};
@@ -83,8 +83,8 @@ link43[] = {32,11};
 link44[] = {32,28};
 link45[] = {33,34};
 link46[] = {34,15};
-globals[] = {0.000000,0,0,0,0,640,480,1,66,6316128,1,-1204.336060,233.817505,296.090393,-851.847473,1117,937,1};
-window[] = {2,-1,-1,-1,-1,812,1995,3255,75,3,1135};
+globals[] = {0.000000,0,0,0,0,640,480,1,66,6316128,1,-641.528320,932.245544,1142.036621,-165.687851,1118,929,1};
+window[] = {2,-1,-1,-1,-1,869,132,1392,132,3,1135};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -263,7 +263,7 @@ class FSM
            "_grp setCombatMode _ROE;" \n
            "_grp setSpeedMode ""FULL"";" \n
            "_grp enableAttack false;" \n
-           "_veh doMove _posCas;" \n
+           "[_veh, _posCas] call ALiVE_fnc_doMoveRemote;" \n
            "" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -301,7 +301,7 @@ class FSM
            "_grp setSpeedMode ""FULL"";" \n
            "_grp enableAttack false;" \n
            "_oldpos = getpos _veh;" \n
-           "_veh doMove _posCas;" \n
+           "[_veh, _posCas] call ALiVE_fnc_doMoveRemote;" \n
            "" \n
            "// Remove all weapons bar the one chosen" \n
            "_ammoCount = [];" \n
@@ -332,7 +332,9 @@ class FSM
            "" \n
            "_dirCas = [_posCas, _veh] call BIS_fnc_dirTo;" \n
            "_posCircle = [_posCas, _radiusCas, _dirCas] call BIS_fnc_relPos;" \n
-           "_veh doMove _posCircle;" \n
+           "[_veh, _posCircle] call ALiVE_fnc_doMoveRemote;" \n
+           "" \n
+           "[""unitready #1 %1 on unit %2 HC %3 server %4 local %5"",unitready _veh,_veh,isHC,isServer,local _veh] call ALiVE_fnc_DumpR;" \n
            "" \n
            "[_veh,_callsign,_pos] spawn" \n
            "{" \n
@@ -355,7 +357,9 @@ class FSM
     class __1
     {
       name = "__1";
-      init = /*%FSM<STATEINIT""">*/"[_veh,_callsign,_posCas] spawn" \n
+      init = /*%FSM<STATEINIT""">*/"_startTimer = time;" \n
+       "" \n
+       "[_veh,_callsign,_posCas] spawn" \n
        "{		" \n
        "private [""_veh"", ""_callsign"",""_posCas""];" \n
        "		_veh = _this select 0;" \n
@@ -367,6 +371,8 @@ class FSM
        "	" \n
        "	[[_veh,format[""Copy that, %1 is moving to %2%3 to locate targets. Out."",_callsign,_coord select 0, _coord select 1],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
        "};" \n
+       "" \n
+       "[""unitready #2 %1 on unit %2 HC %3 server %4 local %5"",unitready _veh,_veh,isHC,isServer,local _veh] call ALiVE_fnc_DumpR;" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -416,9 +422,12 @@ class FSM
           priority = 0.000000;
           to="__1";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"unitReady _veh" \n
+          condition=/*%FSM<CONDITION""">*/"_veh call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"//Reveal Targets" \n
+           "" \n
+           "[""unitready final %1 on unit %2 HC %3 server %4 local %5 allReady %6"",unitready _veh,_veh,isHC,isServer,local _veh,{!unitready _x} count units _grp == 0] call ALiVE_fnc_DumpR;" \n
+           "" \n
            "{" \n
            "  if (alive _x && side _x != side _veh) then" \n
            "  {" \n
@@ -429,7 +438,7 @@ class FSM
            "_dirCas = _dirCas + 90;" \n
            "_posCircle = [_posCas, _radiusCas, _dirCas] call BIS_fnc_relPos;" \n
            "" \n
-           "_veh doMove _posCircle;" \n
+           "[_veh, _posCircle] call ALiVE_fnc_doMoveRemote;" \n
            ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -500,7 +509,7 @@ class FSM
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_veh isKindOf ""Helicopter""" \n
            ""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_veh doMove _pos;" \n
+          action=/*%FSM<ACTION""">*/"[_veh,_pos] call ALiVE_fnc_doMoveRemote;" \n
            ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -646,8 +655,7 @@ class FSM
           priority = 0.000000;
           to="__5";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"unitReady _veh" \n
-           ""/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_veh call ALiVE_fnc_unitReadyRemote"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_veh setVariable [""NEO_radioCasUnitStatus"", ""NONE"", true];" \n
            "_veh land ""LAND"";" \n
            "" \n
@@ -830,12 +838,11 @@ class FSM
           priority = 0.000000;
           to="__8";
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
-          condition=/*%FSM<CONDITION""">*/"unitReady _veh" \n
-           ""/*%FSM</CONDITION""">*/;
+          condition=/*%FSM<CONDITION""">*/"_veh call ALiVE_fnc_unitReadyRemote"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_dirCas = _dirCas + 90;" \n
            "_posCircle = [_posCas, _radiusCas, _dirCas] call BIS_fnc_relPos;" \n
            "" \n
-           "_veh doMove _posCircle;" \n
+           "[_veh, _posCircle] call ALiVE_fnc_doMoveRemote;" \n
            "" \n
            "// move the loiter point to here" \n
            "[_grp,0] setWaypointPosition [_posCircle,0];"/*%FSM</ACTION""">*/;
@@ -1052,7 +1059,7 @@ class FSM
        "			};" \n
        "		};" \n
        "" \n
-       "	_veh doMove _oldPos;" \n
+       "	[_veh,_oldPos] call ALiVE_fnc_doMoveRemote;" \n
        "	// move the loiter point to here" \n
        "	[_grp,0] setWaypointPosition [_oldPos,0];" \n
        "	" \n

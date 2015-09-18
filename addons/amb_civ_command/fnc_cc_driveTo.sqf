@@ -93,7 +93,7 @@ switch (_state) do {
         _vehicle = _args select 0;
         _destination = _args select 1;
 
-        if(unitReady _agent) then {
+        if(_agent call ALiVE_fnc_unitReadyRemote) then {
 
             if!(isNil "_vehicle") then {
                 _agent assignAsDriver _vehicle;
@@ -122,7 +122,7 @@ switch (_state) do {
         _vehicle = _args select 0;
         _destination = _args select 1;
 
-        if(unitReady _agent) then {
+        if(_agent call ALiVE_fnc_unitReadyRemote) then {
 
             if(_agent in _vehicle) then {
                 _agent setSpeedMode "LIMITED";
@@ -151,7 +151,7 @@ switch (_state) do {
         _vehicle = _args select 0;
         _destination = _args select 1;
 
-        if(unitReady _agent) then {
+        if(_agent call ALiVE_fnc_unitReadyRemote) then {
 
             if(_agent in _vehicle) then {
                 [_agent] orderGetIn false;

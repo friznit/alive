@@ -85,7 +85,7 @@ switch (_state) do {
         };
         // DEBUG -------------------------------------------------------------------------------------
 
-        if(unitReady _agent) then {
+        if(_agent call ALiVE_fnc_unitReadyRemote) then {
 
             _dayState = ALIVE_currentEnvironment select 0;
 

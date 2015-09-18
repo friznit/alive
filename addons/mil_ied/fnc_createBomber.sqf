@@ -88,11 +88,16 @@ if (_debug) then {
 
 	// Have bomber go after victim for up to 10 minutes
 	_time = time + 600;
+    _timer = time;
 	waitUntil {
-		if (!isNil "_victim") then {
+        
+		if (!isNil "_victim" && {time - _timer > 15}) then {
             [_bomber, getposATL _victim] call ALiVE_fnc_doMoveRemote;
+            _timer = time;
 		};
-		sleep 2;
+        
+		sleep 1;
+        
 		!(alive _victim) || (isNil "_victim") || (_bomber distance _victim < 8) || (time > _time) || !(alive _bomber)
 	};
 
