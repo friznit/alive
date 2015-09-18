@@ -38,10 +38,12 @@ Peer Reviewed:
 #define DEFAULT_STATE "INIT"
 #define DEFAULT_SIDE "WEST"
 #define DEFAULT_FACTION "BLU_F"
+#define DEFAULT_MARKER []
 #define DEFAULT_SELECTED_INDEX 0
 #define DEFAULT_SELECTED_VALUE ""
 #define DEFAULT_SCALAR 0
 #define DEFAULT_GROUP_STATE [] call ALIVE_fnc_hashCreate
+#define DEFAULT_GM_LIMIT "SIDE"
 
 // Display components
 #define GMTablet_CTRL_MainDisplay 11001
@@ -61,6 +63,8 @@ Peer Reviewed:
 #define GMTablet_CTRL_BR1 11017
 #define GMTablet_CTRL_BR2 11018
 #define GMTablet_CTRL_BR3 11019
+#define GMTablet_CTRL_MapLeft 11020
+#define GMTablet_CTRL_MapRight 11021
 
 // Control Macros
 #define GM_getControl(disp,ctrl) ((findDisplay ##disp) displayCtrl ##ctrl)
@@ -103,6 +107,9 @@ switch(_operation) do {
 
         _result = _args;
     };
+    case "limit": {
+        _result = [_logic,_operation,_args,DEFAULT_GM_LIMIT,["SIDE","FACTION"]] call ALIVE_fnc_OOsimpleOperation;
+    };
 
 	case "state": {
         _result = [_logic,_operation,_args,DEFAULT_STATE] call ALIVE_fnc_OOsimpleOperation;
@@ -116,7 +123,9 @@ switch(_operation) do {
     case "groupState": {
         _result = [_logic,_operation,_args,DEFAULT_GROUP_STATE] call ALIVE_fnc_OOsimpleOperation;
     };
-
+    case "marker": {
+        _result = [_logic,_operation,_args,DEFAULT_MARKER] call ALIVE_fnc_OOsimpleOperation;
+    };
 
 	case "init": {
 
@@ -138,6 +147,11 @@ switch(_operation) do {
         ALIVE_SUP_GROUP_MANAGER = _logic;
 
         if (isServer) then {
+
+            // create the group handler
+            ALIVE_groupHandler = [nil, "create"] call ALIVE_fnc_groupHandler;
+            [ALIVE_groupHandler, "init"] call ALIVE_fnc_groupHandler;
+            [ALIVE_groupHandler, "debug", true] call ALIVE_fnc_groupHandler;
 
         };
 
@@ -188,10 +202,26 @@ switch(_operation) do {
             [_groupState,"groupListRightSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_groupState,"groupListRightSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
             [_groupState,"groupListRightSelectedType",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+            [_groupState,"groupMapActive",false] call ALIVE_fnc_hashSet;
 
-            _groupState call ALIVE_fnc_inspectHash;
+            //_groupState call ALIVE_fnc_inspectHash;
 
             [_logic,"groupState",_groupState] call MAINCLASS;
+
+            // DEBUG -------------------------------------------------------------------------------------
+
+            private ["_limit"];
+
+            _limit = [_logic,"limit"] call MAINCLASS;
+
+            if(_debug) then {
+                ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                ["ALIVE Group Manager State"] call ALIVE_fnc_dump;
+                ["ALIVE Group Manager Side: %1, Faction: %2, Limit: %3",_sideText,_playerFaction,_limit] call ALIVE_fnc_dump;
+                _groupState call ALIVE_fnc_inspectHash;
+            };
+
+            // DEBUG -------------------------------------------------------------------------------------
 
 
         };
@@ -215,10 +245,8 @@ switch(_operation) do {
 	case "listen": {
         private["_listenerID"];
 
-        /*
-        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["TASKS_UPDATED"]]] call ALIVE_fnc_eventLog;
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["GROUPS_UPDATED"]]] call ALIVE_fnc_eventLog;
         _logic setVariable ["listenerID", _listenerID];
-        */
     };
     case "handleEvent": {
 
@@ -268,14 +296,12 @@ switch(_operation) do {
             _type = [_event, "type"] call ALIVE_fnc_hashGet;
             _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
 
+            disableSerialization;
+
             switch(_type) do {
-                case "TASKS_UPDATED": {
+                case "GROUPS_UPDATED": {
 
-                    private["_taskState"];
-
-                    _taskState = _eventData select 1;
-
-                    [_logic,"updateCurrentTaskList",_taskState] call MAINCLASS;
+                    [_logic,"enableGroupManager"] call MAINCLASS;
 
                 };
             };
@@ -336,13 +362,11 @@ switch(_operation) do {
             // Show GPS
             showGPS true;
 
-            /*
-            _markers = [_logic,"taskMarker"] call MAINCLASS;
+            _markers = [_logic,"marker"] call MAINCLASS;
 
             if(count _markers > 0) then {
                 deleteMarkerLocal (_markers select 0);
             };
-            */
 
         };
 
@@ -376,25 +400,29 @@ switch(_operation) do {
                     _list = _args select 0 select 0;
                     _selectedIndex = _args select 0 select 1;
 
-                    _listOptions = [_groupState,"groupListOptions"] call ALIVE_fnc_hashGet;
-                    _listValues = [_groupState,"groupListValues"] call ALIVE_fnc_hashGet;
-                    _selectedOption = _listOptions select _selectedIndex;
-                    _selectedValue = _listValues select _selectedIndex;
+                    if(_selectedIndex >= 0) then {
 
-                    [_groupState,"groupListLeftSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
-                    [_groupState,"groupListLeftSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+                        _listOptions = [_groupState,"groupListOptions"] call ALIVE_fnc_hashGet;
+                        _listValues = [_groupState,"groupListValues"] call ALIVE_fnc_hashGet;
+                        _selectedOption = _listOptions select _selectedIndex;
+                        _selectedValue = _listValues select _selectedIndex;
 
-                    if(typeName _selectedValue == 'GROUP') then {
-                        [_groupState,"groupListLeftSelectedType","GROUP"] call ALIVE_fnc_hashSet;
-                    }else{
-                        [_groupState,"groupListLeftSelectedType","UNIT"] call ALIVE_fnc_hashSet;
+                        [_groupState,"groupListLeftSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
+                        [_groupState,"groupListLeftSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+
+                        if(typeName _selectedValue == 'GROUP') then {
+                            [_groupState,"groupListLeftSelectedType","GROUP"] call ALIVE_fnc_hashSet;
+                        }else{
+                            [_groupState,"groupListLeftSelectedType","UNIT"] call ALIVE_fnc_hashSet;
+                        };
+
+                        [_logic,"groupState",_groupState] call MAINCLASS;
+
+                        //_groupState call ALIVE_fnc_inspectHash;
+
+                        [_logic,"handleGroupSelection"] call MAINCLASS;
+
                     };
-
-                    [_logic,"groupState",_groupState] call MAINCLASS;
-
-                    _groupState call ALIVE_fnc_inspectHash;
-
-                    [_logic,"handleGroupSelection"] call MAINCLASS;
 
                 };
 
@@ -407,25 +435,404 @@ switch(_operation) do {
                     _list = _args select 0 select 0;
                     _selectedIndex = _args select 0 select 1;
 
-                    _listOptions = [_groupState,"groupListOptions"] call ALIVE_fnc_hashGet;
-                    _listValues = [_groupState,"groupListValues"] call ALIVE_fnc_hashGet;
-                    _selectedOption = _listOptions select _selectedIndex;
-                    _selectedValue = _listValues select _selectedIndex;
+                    if(_selectedIndex >= 0) then {
 
-                    [_groupState,"groupListRightSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
-                    [_groupState,"groupListRightSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+                        _listOptions = [_groupState,"groupListOptions"] call ALIVE_fnc_hashGet;
+                        _listValues = [_groupState,"groupListValues"] call ALIVE_fnc_hashGet;
+                        _selectedOption = _listOptions select _selectedIndex;
+                        _selectedValue = _listValues select _selectedIndex;
 
-                    if(typeName _selectedValue == 'GROUP') then {
-                        [_groupState,"groupListRightSelectedType","GROUP"] call ALIVE_fnc_hashSet;
-                    }else{
-                        [_groupState,"groupListRightSelectedType","UNIT"] call ALIVE_fnc_hashSet;
+                        [_groupState,"groupListRightSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
+                        [_groupState,"groupListRightSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+
+                        if(typeName _selectedValue == 'GROUP') then {
+                            [_groupState,"groupListRightSelectedType","GROUP"] call ALIVE_fnc_hashSet;
+                        }else{
+                            [_groupState,"groupListRightSelectedType","UNIT"] call ALIVE_fnc_hashSet;
+                        };
+
+                        [_logic,"groupState",_groupState] call MAINCLASS;
+
+                        //_groupState call ALIVE_fnc_inspectHash;
+
+                        [_logic,"handleGroupSelection"] call MAINCLASS;
+
                     };
+
+                };
+
+                case "LEADER_PROMOTE_LEFT": {
+
+                    private ["_groupState","_unitSelected","_group"];
+
+                    _groupState = [_logic,"groupState"] call MAINCLASS;
+
+                    //_groupState call ALIVE_fnc_inspectHash;
+
+                    _unitSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _group = group _unitSelected;
+
+                    _group selectLeader _unitSelected;
+
+                    [_logic,"resetGroupMananger"] call MAINCLASS;
+
+                };
+
+                case "LEADER_PROMOTE_RIGHT": {
+
+                    private ["_groupState","_unitSelected","_group"];
+
+                    _groupState = [_logic,"groupState"] call MAINCLASS;
+
+                    //_groupState call ALIVE_fnc_inspectHash;
+
+                    _unitSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _group = group _unitSelected;
+
+                    _group selectLeader _unitSelected;
+
+                    [_logic,"resetGroupMananger"] call MAINCLASS;
+
+                };
+
+                case "JOIN_GROUP_LEFT": {
+
+                    private ["_groupState","_unitSelected","_groupSelected","_playerID","_requestID","_event"];
+
+                    _groupState = [_logic,"groupState"] call MAINCLASS;
+
+                    //_groupState call ALIVE_fnc_inspectHash;
+
+                    _unitSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
+                    _groupSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _playerID = getPlayerUID player;
+                    _requestID = format["%1_%2",_faction,floor(time)];
+
+                    _event = ['GROUP_JOIN', [_requestID,_playerID,_unitSelected,_groupSelected], "GM"] call ALIVE_fnc_event;
+
+                    if(isServer) then {
+                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                    }else{
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                    };
+
+                    [_logic,"resetGroupMananger"] call MAINCLASS;
+
+                };
+
+                case "JOIN_GROUP_RIGHT": {
+
+                    private ["_groupState","_unitSelected","_groupSelected","_playerID","_requestID","_event"];
+
+                    _groupState = [_logic,"groupState"] call MAINCLASS;
+
+                    //_groupState call ALIVE_fnc_inspectHash;
+
+                    _unitSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
+                    _groupSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _playerID = getPlayerUID player;
+                    _requestID = format["%1_%2",_faction,floor(time)];
+
+                    _event = ['GROUP_JOIN', [_requestID,_playerID,_unitSelected,_groupSelected], "GM"] call ALIVE_fnc_event;
+
+                    if(isServer) then {
+                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                    }else{
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                    };
+
+                    [_logic,"resetGroupMananger"] call MAINCLASS;
+
+                };
+
+                case "LEAVE_GROUP_LEFT": {
+
+                    private ["_groupState","_unitSelected","_newGroup","_playerID","_requestID","_event"];
+
+                    _groupState = [_logic,"groupState"] call MAINCLASS;
+
+                    //_groupState call ALIVE_fnc_inspectHash;
+
+                    _unitSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _playerID = getPlayerUID player;
+                    _requestID = format["%1_%2",_faction,floor(time)];
+
+                    _event = ['GROUP_LEAVE', [_requestID,_playerID,_unitSelected], "GM"] call ALIVE_fnc_event;
+
+                    if(isServer) then {
+                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                    }else{
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                    };
+
+                    [_logic,"resetGroupMananger"] call MAINCLASS;
+
+                };
+
+                case "LEAVE_GROUP_RIGHT": {
+
+                    private ["_groupState","_unitSelected","_newGroup","_playerID","_requestID","_event"];
+
+                    _groupState = [_logic,"groupState"] call MAINCLASS;
+
+                    //_groupState call ALIVE_fnc_inspectHash;
+
+                    _unitSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _playerID = getPlayerUID player;
+                    _requestID = format["%1_%2",_faction,floor(time)];
+
+                    _event = ['GROUP_LEAVE', [_requestID,_playerID,_unitSelected], "GM"] call ALIVE_fnc_event;
+
+                    if(isServer) then {
+                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                    }else{
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
+                    };
+
+                    [_logic,"resetGroupMananger"] call MAINCLASS;
+
+                };
+
+                case "SHOW_GROUP_DETAIL_LEFT": {
+
+                    private ["_groupState","_groupSelected","_mainList","_dataSource","_rows","_values"];
+
+                    [_logic,"enableGroupDetail"] call MAINCLASS;
+
+                    _groupState = [_logic,"groupState"] call MAINCLASS;
+
+                    _groupSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _mainList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MainList);
+
+                    _dataSource = [_groupSelected] call ALiVE_fnc_getGroupDetailDataSource;
+
+                    //_dataSource call ALIVE_fnc_inspectArray;
+
+                    _rows = _dataSource select 0;
+                    _values = _dataSource select 1;
+
+                    {
+                        _value = _values select _forEachIndex;
+
+                        _row = _x select 0;
+
+                        switch(count(_row)) do {
+                            case 6: {
+                                _rowIndex = _mainList lnbAddRow _row;
+                                _mainList lnbSetColor [[_rowIndex,0], [0.384,0.439,0.341,1]];
+                                _mainList lnbSetColor [[_rowIndex,1], [0.384,0.439,0.341,1]];
+                                _mainList lnbSetColor [[_rowIndex,2], [0.384,0.439,0.341,1]];
+                                _mainList lnbSetColor [[_rowIndex,3], [0.384,0.439,0.341,1]];
+                            };
+                            case 4: {
+                                _rowIndex = _mainList lnbAddRow [];
+                                _mainList lnbSetPicture [[_rowIndex,0], _row select 0];
+                                _mainList lnbSetText [[_rowIndex,1], _row select 1];
+                                _mainList lnbSetText [[_rowIndex,2], _row select 2];
+                                _mainList lnbSetText [[_rowIndex,3], _row select 3];
+                            };
+                            case 2: {
+                                _rowIndex = _mainList lnbAddRow [];
+                                _mainList lnbSetPicture [[_rowIndex,0], _row select 0];
+                                _mainList lnbSetText [[_rowIndex,1], _row select 1];
+                            };
+                            case 1: {
+                                _rowIndex = _mainList lnbAddRow _row;
+                            };
+                        };
+
+                    } foreach _rows;
+
+                };
+
+                case "SHOW_GROUP_DETAIL_RIGHT": {
+
+                    private ["_groupState","_groupSelected","_mainList"];
+
+                    [_logic,"enableGroupDetail"] call MAINCLASS;
+
+                    _groupState = [_logic,"groupState"] call MAINCLASS;
+
+                    _groupSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _mainList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MainList);
+
+                    _dataSource = [_groupSelected] call ALiVE_fnc_getGroupDetailDataSource;
+
+                    //_dataSource call ALIVE_fnc_inspectArray;
+
+                    _rows = _dataSource select 0;
+                    _values = _dataSource select 1;
+
+                    {
+                        _value = _values select _forEachIndex;
+
+                        _row = _x select 0;
+
+                        switch(count(_row)) do {
+                            case 6: {
+                                _rowIndex = _mainList lnbAddRow _row;
+                                _mainList lnbSetColor [[_rowIndex,0], [0.384,0.439,0.341,1]];
+                                _mainList lnbSetColor [[_rowIndex,1], [0.384,0.439,0.341,1]];
+                                _mainList lnbSetColor [[_rowIndex,2], [0.384,0.439,0.341,1]];
+                                _mainList lnbSetColor [[_rowIndex,3], [0.384,0.439,0.341,1]];
+                            };
+                            case 4: {
+                                _rowIndex = _mainList lnbAddRow [];
+                                _mainList lnbSetPicture [[_rowIndex,0], _row select 0];
+                                _mainList lnbSetText [[_rowIndex,1], _row select 1];
+                                _mainList lnbSetText [[_rowIndex,2], _row select 2];
+                                _mainList lnbSetText [[_rowIndex,3], _row select 3];
+                            };
+                            case 2: {
+                                _rowIndex = _mainList lnbAddRow [];
+                                _mainList lnbSetPicture [[_rowIndex,0], _row select 0];
+                                _mainList lnbSetText [[_rowIndex,1], _row select 1];
+                            };
+                            case 1: {
+                                _rowIndex = _mainList lnbAddRow _row;
+                            };
+                        };
+
+                    } foreach _rows;
+
+                };
+
+                case "HIDE_GROUP_DETAIL": {
+
+                    private ["_groupState","_groupSelected","_map","_markers","_position","_markerLabel","_marker"];
+
+                    [_logic,"enableGroupManager"] call MAINCLASS;
+
+                };
+
+                case "SHOW_GROUP_MAP_LEFT": {
+
+                    private ["_groupState","_groupSelected","_map","_markers","_position","_markerLabel","_marker"];
+
+                    [_logic,"enableLeftMap"] call MAINCLASS;
+
+                    _groupState = [_logic,"groupState"] call MAINCLASS;
+
+                    _groupSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _map = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MapLeft);
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    _position = position leader _groupSelected;
+
+                    _markerLabel = format["%1",_groupSelected];
+
+                    ctrlMapAnimClear _map;
+                    _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _position];
+                    ctrlMapAnimCommit _map;
+
+                    _marker = createMarkerLocal [format["%1%2",MTEMPLATE,"marker"],_position];
+                    _marker setMarkerAlphaLocal 1;
+                    _marker setMarkerTextLocal _markerLabel;
+                    _marker setMarkerTypeLocal "hd_End";
+
+                    [_groupState,"groupMapActive",true] call ALIVE_fnc_hashSet;
 
                     [_logic,"groupState",_groupState] call MAINCLASS;
 
-                    _groupState call ALIVE_fnc_inspectHash;
+                    [_logic,"marker",[_marker]] call MAINCLASS;
 
-                    [_logic,"handleGroupSelection"] call MAINCLASS;
+                };
+
+                case "HIDE_GROUP_MAP_LEFT": {
+
+                    private ["_groupState","_markers"];
+
+                    _groupState = [_logic,"groupState"] call MAINCLASS;
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    [_groupState,"groupMapActive",false] call ALIVE_fnc_hashSet;
+
+                    [_logic,"groupState",_groupState] call MAINCLASS;
+
+                    [_logic,"enableGroupManager"] call MAINCLASS;
+
+                };
+
+                case "SHOW_GROUP_MAP_RIGHT": {
+
+                    private ["_groupState","_groupSelected","_map","_markers","_position","_markerLabel","_marker"];
+
+                    [_logic,"enableRightMap"] call MAINCLASS;
+
+                    _groupState = [_logic,"groupState"] call MAINCLASS;
+
+                    _groupSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _map = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MapRight);
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    _position = position leader _groupSelected;
+
+                    _markerLabel = format["%1",_groupSelected];
+
+                    ctrlMapAnimClear _map;
+                    _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _position];
+                    ctrlMapAnimCommit _map;
+
+                    _marker = createMarkerLocal [format["%1%2",MTEMPLATE,"marker"],_position];
+                    _marker setMarkerAlphaLocal 1;
+                    _marker setMarkerTextLocal _markerLabel;
+                    _marker setMarkerTypeLocal "hd_End";
+
+                    [_groupState,"groupMapActive",true] call ALIVE_fnc_hashSet;
+
+                    [_logic,"groupState",_groupState] call MAINCLASS;
+
+                    [_logic,"marker",[_marker]] call MAINCLASS;
+
+
+                };
+
+                case "HIDE_GROUP_MAP_RIGHT": {
+
+                    private ["_groupState","_markers"];
+
+                    _groupState = [_logic,"groupState"] call MAINCLASS;
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    [_groupState,"groupMapActive",false] call ALIVE_fnc_hashSet;
+
+                    [_logic,"groupState",_groupState] call MAINCLASS;
+
+                    [_logic,"enableGroupManager"] call MAINCLASS;
 
                 };
 
@@ -435,148 +842,48 @@ switch(_operation) do {
 
     };
 
-    case "handleGroupSelection": {
+    case "enableGroupDetail": {
 
-        private ["_groupState","_leftSelectedType","_rightSelectedType","_leftSelected","_rightSelected","_leftGroup","_rightGroup","_leaderLeftGroup","_leaderRightGroup",
-        "_buttonL1","_buttonL2","_buttonL3","_buttonR1","_buttonR2","_buttonR3"];
+        private ["_mainList","_leftList","_rightList","_leftMap","_rightMap","_buttonL1","_buttonL2","_buttonL3","_buttonR1","_buttonR2","_buttonR3"];
 
-        _groupState = [_logic,"groupState"] call MAINCLASS;
+        _mainList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MainList);
+        _mainList ctrlShow true;
 
-        _groupState call ALIVE_fnc_inspectHash;
+        lbClear _mainList;
 
-        _leftSelectedType = [_groupState,"groupListLeftSelectedType"] call ALIVE_fnc_hashGet;
-        _rightSelectedType = [_groupState,"groupListRightSelectedType"] call ALIVE_fnc_hashGet;
+        _mainList lbSetCurSel 0;
 
-        _leftSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
-        _rightSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
+        _leftList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_LeftList);
+        _leftList ctrlShow false;
 
+        _rightList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_RightList);
+        _rightList ctrlShow false;
 
-        if(_leftSelectedType != '')then {
+        _leftMap = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MapLeft);
+        _leftMap ctrlShow false;
 
-            if(_leftSelectedType == 'UNIT')then {
-                _leftGroup = group _leftSelected;
-                _leaderLeftGroup = leader _leftGroup;
+        _rightMap = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MapRight);
+        _rightMap ctrlShow false;
 
-                if(_leaderLeftGroup != _leftSelected) then {
+        _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
+        _buttonL1 ctrlShow false;
 
-                    _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
-                    _buttonL1 ctrlShow true;
-                    _buttonL1 ctrlSetText "Promote to Leader";
-                    _buttonL1 ctrlSetEventHandler ["MouseButtonClick", "['LEADER_PROMOTE_LEFT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-                }else{
-
-                    _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
-                    _buttonL1 ctrlShow false;
-
-                };
-
-                _buttonL2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL2);
-                _buttonL2 ctrlShow true;
-                _buttonL2 ctrlSetText "Leave Group";
-                _buttonL2 ctrlSetEventHandler ["MouseButtonClick", "['LEAVE_GROUP_LEFT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-            }else{
-                _leftGroup = _leftSelected;
-                _leaderLeftGroup = leader _leftGroup;
-
-                _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
-                _buttonL1 ctrlShow true;
-                _buttonL1 ctrlSetText "Show Group Details";
-                _buttonL1 ctrlSetEventHandler ["MouseButtonClick", "['SHOW_GROUP_LEFT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-                _buttonL2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL2);
-                _buttonL2 ctrlShow false;
-            };
-
-        };
-
-        if(_rightSelectedType != '')then {
-
-            if(_rightSelectedType == 'UNIT')then {
-                _rightGroup = group _rightSelected;
-                _leaderRightGroup = leader _rightGroup;
-
-                if(_leaderRightGroup != _rightSelected) then {
-
-                    _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
-                    _buttonR1 ctrlShow true;
-                    _buttonR1 ctrlSetText "Promote to Leader";
-                    _buttonR1 ctrlSetEventHandler ["MouseButtonClick", "['LEADER_PROMOTE_LEFT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-                }else{
-
-                    _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
-                    _buttonR1 ctrlShow false;
-
-                };
-
-                _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
-                _buttonR2 ctrlShow true;
-                _buttonR2 ctrlSetText "Leave Group";
-                _buttonR2 ctrlSetEventHandler ["MouseButtonClick", "['LEAVE_GROUP_RIGHT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-            }else{
-                _rightGroup = _rightSelected;
-                _leaderRightGroup = leader _rightGroup;
-
-                _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
-                _buttonR1 ctrlShow true;
-                _buttonR1 ctrlSetText "Show Group Details";
-                _buttonR1 ctrlSetEventHandler ["MouseButtonClick", "['SHOW_GROUP_RIGHT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-                _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
-                _buttonR2 ctrlShow false;
-            };
-
-        };
-
-        if(_leftSelectedType == 'UNIT' && _rightSelectedType == 'GROUP')then {
-
-            _buttonL3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL3);
-            _buttonL3 ctrlShow true;
-            _buttonL3 ctrlSetText "Join Group >";
-            _buttonL3 ctrlSetEventHandler ["MouseButtonClick", "['JOIN_GROUP_LEFT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-        }else{
-
-            _buttonL3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL3);
-            _buttonL3 ctrlShow false;
-
-        };
-
-        if(_rightSelectedType == 'UNIT' && _leftSelectedType == 'GROUP')then {
-
-            _buttonR3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR3);
-            _buttonR3 ctrlShow true;
-            _buttonR3 ctrlSetText "Join Group <";
-            _buttonR3 ctrlSetEventHandler ["MouseButtonClick", "['JOIN_GROUP_RIGHT',[_this]] call ALIVE_fnc_C2TabletOnAction"];
-
-        }else{
-
-            _buttonR3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR3);
-            _buttonR3 ctrlShow false;
-
-        };
-
-
-        /*
         _buttonL2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL2);
-        _buttonL2 ctrlShow true;
+        _buttonL2 ctrlShow false;
 
         _buttonL3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL3);
-        _buttonL3 ctrlShow true;
+        _buttonL3 ctrlShow false;
 
         _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
-        _buttonR1 ctrlShow true;
+        _buttonR1 ctrlShow false;
 
         _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
-        _buttonR2 ctrlShow true;
+        _buttonR2 ctrlShow false;
 
         _buttonR3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR3);
         _buttonR3 ctrlShow true;
-        */
-
+        _buttonR3 ctrlSetText "Hide Group Detail";
+        _buttonR3 ctrlSetEventHandler ["MouseButtonClick", "['HIDE_GROUP_DETAIL',[_this]] call ALIVE_fnc_GMTabletOnAction"];
 
     };
 
@@ -587,18 +894,6 @@ switch(_operation) do {
         _side = [_logic,"side"] call MAINCLASS;
         _playerID = getPlayerUID player;
 
-        ["GM LOAD INIT DATA FOR SIDE: %1 PLAYER: %2",_side,_playerID] call ALIVE_fnc_dump;
-
-        /*
-        _event = ['TASKS_UPDATE', ["",_playerID,_side], "GM"] call ALIVE_fnc_event;
-
-        if(isServer) then {
-            [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-        }else{
-            //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
-            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-        };
-        */
     };
 
     case "disableAll": {
@@ -606,9 +901,10 @@ switch(_operation) do {
         [_logic,"disableGroupManager"] call MAINCLASS;
 
     };
+
     case "enableGroupManager": {
 
-        private ["_title","_backButton","_abortButton","_mainList","_leftList","_rightList","_buttonL1","_buttonL2","_buttonL3","_buttonR1","_buttonR2","_buttonR3"];
+        private ["_title","_backButton","_abortButton","_mainList","_leftList","_rightList","_leftMap","_rightMap","_buttonL1","_buttonL2","_buttonL3","_buttonR1","_buttonR2","_buttonR3"];
 
         _title = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_Title);
         _title ctrlShow true;
@@ -618,16 +914,20 @@ switch(_operation) do {
         _abortButton = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_SubMenuAbort);
         _abortButton ctrlShow true;
 
-        /*
         _mainList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MainList);
-        _mainList ctrlShow true;
-        */
+        _mainList ctrlShow false;
 
         _leftList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_LeftList);
         _leftList ctrlShow true;
 
         _rightList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_RightList);
         _rightList ctrlShow true;
+
+        _leftMap = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MapLeft);
+        _leftMap ctrlShow false;
+
+        _rightMap = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MapRight);
+        _rightMap ctrlShow false;
 
         _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
         _buttonL1 ctrlShow false;
@@ -650,60 +950,51 @@ switch(_operation) do {
         [_logic,"resetGroupMananger"] call MAINCLASS;
 
     };
+
     case "resetGroupMananger": {
 
-        private ["_side","_groupState","_leftList","_rightList","_dataSource","_rows","_values","_value","_row"];
+        private ["_side","_faction","_limit","_groupState","_leftList","_rightList","_dataSource","_rows","_values","_value","_row"];
 
         _side = [_logic,"side"] call MAINCLASS;
+        _faction = [_logic,"faction"] call MAINCLASS;
+        _limit = [_logic,"limit"] call MAINCLASS;
         _groupState = [_logic,"groupState"] call MAINCLASS;
 
         _leftList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_LeftList);
         _rightList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_RightList);
 
-        _dataSource = [_side] call ALiVE_fnc_getGroupsDataSource;
+        lbClear _leftList;
+        lbClear _rightList;
+
+        _leftList lbSetCurSel 0;
+        _rightList lbSetCurSel 0;
+
+        if(_limit == 'FACTION') then {
+            _dataSource = [player,_side,_faction] call ALiVE_fnc_getGroupsDataSource;
+        }else{
+            _dataSource = [player,_side] call ALiVE_fnc_getGroupsDataSource;
+        };
+
         _rows = _dataSource select 0;
         _values = _dataSource select 1;
 
-        _groupState call ALIVE_fnc_inspectHash;
+        [_groupState,"groupListOptions",[]] call ALIVE_fnc_hashSet;
+        [_groupState,"groupListValues",[]] call ALIVE_fnc_hashSet;
+        [_groupState,"groupListLeftSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
+        [_groupState,"groupListLeftSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+        [_groupState,"groupListLeftSelectedType",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+        [_groupState,"groupListRightSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
+        [_groupState,"groupListRightSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+        [_groupState,"groupListRightSelectedType",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+
+        //_groupState call ALIVE_fnc_inspectHash;
 
         [_groupState,"groupListOptions",_rows] call ALIVE_fnc_hashSet;
         [_groupState,"groupListValues",_values] call ALIVE_fnc_hashSet;
 
         [_logic,"groupState",_groupState] call MAINCLASS;
 
-        _groupState call ALIVE_fnc_inspectHash;
-
-        /*
-        [" name: %1", name _x] call ALIVE_fnc_dump;
-        [" class name: %1", typeOf _x] call ALIVE_fnc_dump;
-        [" is alive: %1", alive _x] call ALIVE_fnc_dump;
-        [" is player: %1", isPlayer _x] call ALIVE_fnc_dump;
-        [" is leader: %1", isFormationLeader _x] call ALIVE_fnc_dump;
-        [" can stand: %1", canStand _x] call ALIVE_fnc_dump;
-        [" can move: %1", canMove _x] call ALIVE_fnc_dump;
-        [" can fire: %1", canFire _x] call ALIVE_fnc_dump;
-        [" need reload: %1", needReload _x] call ALIVE_fnc_dump;
-        [" side: %1", side _x] call ALIVE_fnc_dump;
-        [" rank: %1", rank _x] call ALIVE_fnc_dump;
-        [" group: %1", group _x] call ALIVE_fnc_dump;
-        [" headgear: %1", headgear _x] call ALIVE_fnc_dump;
-        [" goggles: %1", goggles _x] call ALIVE_fnc_dump;
-        [" primary weapon: %1", primaryWeapon _x] call ALIVE_fnc_dump;
-        [" primary weapon items: %1", primaryWeaponItems _x] call ALIVE_fnc_dump;
-        [" secondary weapon: %1", secondaryWeapon _x] call ALIVE_fnc_dump;
-        [" secondary weapon items: %1", secondaryWeaponItems _x] call ALIVE_fnc_dump;
-        [" handgun: %1", handgunWeapon _x] call ALIVE_fnc_dump;
-        [" handgun items: %1", handgunItems _x] call ALIVE_fnc_dump;
-        [" assignedItems: %1", assignedItems _x] call ALIVE_fnc_dump;
-        [" uniform: %1", uniform _x] call ALIVE_fnc_dump;
-        [" uniformItems: %1", uniformItems _x] call ALIVE_fnc_dump;
-        [" vest: %1", vest _x] call ALIVE_fnc_dump;
-        [" vest items: %1", vestItems _x] call ALIVE_fnc_dump;
-        [" backpack: %1", backpack _x] call ALIVE_fnc_dump;
-        [" backpack items: %1", backpackItems _x] call ALIVE_fnc_dump;
-        [" weapons: %1", weapons _x] call ALIVE_fnc_dump;
-        [" magazines: %1", magazines _x] call ALIVE_fnc_dump;
-        */
+        //_groupState call ALIVE_fnc_inspectHash;
 
         {
             _value = _values select _forEachIndex;
@@ -714,7 +1005,7 @@ switch(_operation) do {
 
             _rightList lnbAddRow _row;
 
-            if((_row select 3) == '----') then {
+            if((_row select 3) == '------------') then {
                 _leftList lnbSetColor [[_forEachIndex,0], [0.384,0.439,0.341,1]];
                 _leftList lnbSetColor [[_forEachIndex,1], [0.384,0.439,0.341,1]];
                 _leftList lnbSetColor [[_forEachIndex,2], [0.384,0.439,0.341,1]];
@@ -732,9 +1023,169 @@ switch(_operation) do {
         _rightList ctrlSetEventHandler ["LBSelChanged", "['GROUP_MANAGER_RIGHT_LIST_SELECT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
 
     };
+
+    case "handleGroupSelection": {
+
+        private ["_groupState","_leftSelectedType","_rightSelectedType","_leftSelected","_rightSelected","_leftGroup","_rightGroup","_leaderLeftGroup","_leaderRightGroup",
+        "_buttonL1","_buttonL2","_buttonL3","_buttonR1","_buttonR2","_buttonR3","_mapActive"];
+
+        _groupState = [_logic,"groupState"] call MAINCLASS;
+
+        //_groupState call ALIVE_fnc_inspectHash;
+
+        _leftSelectedType = [_groupState,"groupListLeftSelectedType"] call ALIVE_fnc_hashGet;
+        _rightSelectedType = [_groupState,"groupListRightSelectedType"] call ALIVE_fnc_hashGet;
+
+        _leftSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
+        _rightSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
+
+        _mapActive = [_groupState,"groupMapActive"] call ALIVE_fnc_hashGet;
+
+        if(_leftSelectedType != '')then {
+
+            if(_leftSelectedType == 'UNIT')then {
+
+                if!(_mapActive) then {
+
+                    _leftGroup = group _leftSelected;
+                    _leaderLeftGroup = leader _leftGroup;
+
+                    if(_leaderLeftGroup != _leftSelected) then {
+
+                        _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
+                        _buttonL1 ctrlShow true;
+                        _buttonL1 ctrlSetText "Promote to Leader";
+                        _buttonL1 ctrlSetEventHandler ["MouseButtonClick", "['LEADER_PROMOTE_LEFT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
+
+                    }else{
+
+                        _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
+                        _buttonL1 ctrlShow false;
+
+                    };
+
+                    _buttonL2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL2);
+                    _buttonL2 ctrlShow true;
+                    _buttonL2 ctrlSetText "Leave Group";
+                    _buttonL2 ctrlSetEventHandler ["MouseButtonClick", "['LEAVE_GROUP_LEFT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
+
+                };
+
+            }else{
+
+                if!(_mapActive) then {
+
+                    _leftGroup = _leftSelected;
+                    _leaderLeftGroup = leader _leftGroup;
+
+                    _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
+                    _buttonL1 ctrlShow true;
+                    _buttonL1 ctrlSetText "Show Group Details";
+                    _buttonL1 ctrlSetEventHandler ["MouseButtonClick", "['SHOW_GROUP_DETAIL_LEFT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
+
+                    _buttonL2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL2);
+                    _buttonL2 ctrlShow true;
+                    _buttonL2 ctrlSetText "Show Group Position";
+                    _buttonL2 ctrlSetEventHandler ["MouseButtonClick", "['SHOW_GROUP_MAP_RIGHT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
+
+                }else{
+
+                    [_logic,"tabletOnAction",['SHOW_GROUP_MAP_RIGHT',[]]] call ALIVE_fnc_GM;
+
+                }
+            };
+
+        };
+
+        if(_rightSelectedType != '')then {
+
+            if(_rightSelectedType == 'UNIT')then {
+
+                if!(_mapActive) then {
+
+                    _rightGroup = group _rightSelected;
+                    _leaderRightGroup = leader _rightGroup;
+
+                    if(_leaderRightGroup != _rightSelected) then {
+
+                        _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
+                        _buttonR1 ctrlShow true;
+                        _buttonR1 ctrlSetText "Promote to Leader";
+                        _buttonR1 ctrlSetEventHandler ["MouseButtonClick", "['LEADER_PROMOTE_RIGHT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
+
+                    }else{
+
+                        _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
+                        _buttonR1 ctrlShow false;
+
+                    };
+
+                    _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
+                    _buttonR2 ctrlShow true;
+                    _buttonR2 ctrlSetText "Leave Group";
+                    _buttonR2 ctrlSetEventHandler ["MouseButtonClick", "['LEAVE_GROUP_RIGHT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
+
+                };
+
+            }else{
+
+                if!(_mapActive) then {
+
+                    _rightGroup = _rightSelected;
+                    _leaderRightGroup = leader _rightGroup;
+
+                    _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
+                    _buttonR1 ctrlShow true;
+                    _buttonR1 ctrlSetText "Show Group Details";
+                    _buttonR1 ctrlSetEventHandler ["MouseButtonClick", "['SHOW_GROUP_DETAIL_RIGHT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
+
+                    _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
+                    _buttonR2 ctrlShow true;
+                    _buttonR2 ctrlSetText "Show Group Position";
+                    _buttonR2 ctrlSetEventHandler ["MouseButtonClick", "['SHOW_GROUP_MAP_LEFT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
+
+                }else{
+
+                    [_logic,"tabletOnAction",['SHOW_GROUP_MAP_LEFT',[]]] call ALIVE_fnc_GM;
+
+                };
+            };
+
+        };
+
+        if(_leftSelectedType == 'UNIT' && _rightSelectedType == 'GROUP')then {
+
+            _buttonL3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL3);
+            _buttonL3 ctrlShow true;
+            _buttonL3 ctrlSetText "Join Group >";
+            _buttonL3 ctrlSetEventHandler ["MouseButtonClick", "['JOIN_GROUP_LEFT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
+
+        }else{
+
+            _buttonL3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL3);
+            _buttonL3 ctrlShow false;
+
+        };
+
+        if(_rightSelectedType == 'UNIT' && _leftSelectedType == 'GROUP')then {
+
+            _buttonR3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR3);
+            _buttonR3 ctrlShow true;
+            _buttonR3 ctrlSetText "Join Group <";
+            _buttonR3 ctrlSetEventHandler ["MouseButtonClick", "['JOIN_GROUP_RIGHT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
+
+        }else{
+
+            _buttonR3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR3);
+            _buttonR3 ctrlShow false;
+
+        };
+
+    };
+
     case "disableGroupManager": {
 
-        private ["_title","_backButton","_abortButton","_leftList","_rightList","_joinGroupButton","_buttonL1","_buttonL2","_buttonL3","_buttonR1","_buttonR2","_buttonR3"];
+        private ["_title","_backButton","_abortButton","_leftList","_rightList","_leftMap","_rightMap","_joinGroupButton","_buttonL1","_buttonL2","_buttonL3","_buttonR1","_buttonR2","_buttonR3"];
 
         _title = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_Title);
         _title ctrlShow false;
@@ -748,6 +1199,12 @@ switch(_operation) do {
         _rightList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_RightList);
         _rightList ctrlShow false;
 
+        _leftMap = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MapLeft);
+        _leftMap ctrlShow false;
+
+        _rightMap = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MapRight);
+        _rightMap ctrlShow false;
+
         _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
         _buttonL1 ctrlShow false;
 
@@ -759,6 +1216,70 @@ switch(_operation) do {
 
         _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
         _buttonR1 ctrlShow false;
+
+        _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
+        _buttonR2 ctrlShow false;
+
+        _buttonR3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR3);
+        _buttonR3 ctrlShow false;
+
+    };
+
+    case "enableLeftMap": {
+
+        private ["_leftList","_leftMap","_buttonL1","_buttonL2","_buttonL3","_buttonR1","_buttonR2","_buttonR3"];
+
+        _leftList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_LeftList);
+        _leftList ctrlShow false;
+
+        _leftMap = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MapLeft);
+        _leftMap ctrlShow true;
+
+        _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
+        _buttonL1 ctrlShow true;
+        _buttonL1 ctrlSetText "Hide Map";
+        _buttonL1 ctrlSetEventHandler ["MouseButtonClick", "['HIDE_GROUP_MAP_LEFT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
+
+        _buttonL2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL2);
+        _buttonL2 ctrlShow false;
+
+        _buttonL3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL3);
+        _buttonL3 ctrlShow false;
+
+        _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
+        _buttonR1 ctrlShow false;
+
+        _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
+        _buttonR2 ctrlShow false;
+
+        _buttonR3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR3);
+        _buttonR3 ctrlShow false;
+
+    };
+
+    case "enableRightMap": {
+
+        private ["_rightList","_rightMap","_buttonL1","_buttonL2","_buttonL3","_buttonR1","_buttonR2","_buttonR3"];
+
+        _rightList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_RightList);
+        _rightList ctrlShow false;
+
+        _rightMap = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MapRight);
+        _rightMap ctrlShow true;
+
+        _buttonR1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR1);
+        _buttonR1 ctrlShow true;
+        _buttonR1 ctrlSetText "Hide Map";
+        _buttonR1 ctrlSetEventHandler ["MouseButtonClick", "['HIDE_GROUP_MAP_RIGHT',[_this]] call ALIVE_fnc_GMTabletOnAction"];
+
+        _buttonL1 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL1);
+        _buttonL1 ctrlShow false;
+
+        _buttonL2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL2);
+        _buttonL2 ctrlShow false;
+
+        _buttonL3 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BL3);
+        _buttonL3 ctrlShow false;
 
         _buttonR2 = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_BR2);
         _buttonR2 ctrlShow false;

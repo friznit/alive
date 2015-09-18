@@ -51,6 +51,8 @@ Peer Reviewed:
 #define DEFAULT_TASK_ID ""
 #define DEFAULT_FACTION ""
 
+#define DEFAULT_GM_LIMIT "SIDE"
+
 #define DEFAULT_DISPLAY_INTEL false
 #define DEFAULT_INTEL_CHANCE "0.1"
 #define DEFAULT_FRIENDLY_INTEL false
@@ -232,6 +234,9 @@ switch(_operation) do {
     case "autoGenerateOpforEnemyFaction": {
         _result = [_logic,_operation,_args,DEFAULT_FACTION] call ALIVE_fnc_OOsimpleOperation;
     };
+    case "gmLimit": {
+        _result = [_logic,_operation,_args,DEFAULT_GM_LIMIT,["SIDE","FACTION"]] call ALIVE_fnc_OOsimpleOperation;
+    };
     case "displayIntel": {
         if (typeName _args == "BOOL") then {
             _logic setVariable ["displayIntel", _args];
@@ -361,7 +366,6 @@ switch(_operation) do {
         _logic setVariable ["initGlobal", false];
 
         // Call SITREP and PATROLREP
-        [] spawn ALIVE_fnc_GMInit;
         [] spawn ALIVE_fnc_sitrepInit;
         [] spawn ALIVE_fnc_patrolrepInit;
 
@@ -452,6 +456,16 @@ switch(_operation) do {
                     [ALIVE_taskHandler, "autoGenerateTasks", _taskData] call ALIVE_fnc_taskHandler;
                 };
             };
+
+            private["_gmLimit","_gm"];
+
+            _gmLimit = [_logic, "gmLimit"] call MAINCLASS;
+
+            _gm = [nil, "create"] call ALIVE_fnc_GM;
+            [_gm, "limit", _gmLimit] call ALIVE_fnc_GM;
+            [_gm, "debug", _debug] call ALIVE_fnc_GM;
+            [_gm, "init",[]] call ALIVE_fnc_GM;
+
 
             private["_displayIntel","_intelChance","_friendlyIntel","_friendlyIntelRadius","_displayMilitarySectors","_displayPlayerSectors","_displayIntel","_runEvery","_intel"];
 

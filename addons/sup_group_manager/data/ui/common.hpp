@@ -173,8 +173,8 @@ class GMTablet_RscListNBox {
     colorScrollbar[] = {0.95, 0.95, 0.95, 1};
     colorSelect[] = {0.023529, 0, 0.0313725, 1};
     colorSelect2[] = {0.023529, 0, 0.0313725, 1};
-    colorSelectBackground[] = {0.384,0.439,0.341,1};
-    colorSelectBackground2[] = {0.384,0.439,0.341,1};
+    colorSelectBackground[] = {0.173,0.173,0.173,1};
+    colorSelectBackground2[] = {0.3,0.3,0.3,1};
     colorPicture[] = {1,1,1,1};
     colorPictureSelected[] = {1,1,1,1};
     colorPictureDisabled[] = {1,1,1,1};

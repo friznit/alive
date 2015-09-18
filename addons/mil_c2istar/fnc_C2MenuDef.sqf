@@ -95,7 +95,7 @@ if (_menuName == "C2ISTAR") then {
         	["C2ISTAR", localize "STR_ALIVE_C2ISTAR", "popup"],
 			[
 
-/*				["Personnel",
+				["Personnel",
                     {["OPEN",[]] call ALIVE_fnc_GMTabletOnAction},
                     "",
                     localize "STR_ALIVE_GM_COMMENT",
@@ -104,6 +104,7 @@ if (_menuName == "C2ISTAR") then {
                      true,
                      _result
                 ],
+                /*
 				["Intel",
                     {CreateDialog "Spyder_TacticalCommandMain"},
                     "",

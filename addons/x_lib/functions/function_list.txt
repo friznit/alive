@@ -143,6 +143,8 @@ filesystem
 
 groups
 
+	ALiVE_fnc_getGroupDetailDataSource
+	ALiVE_fnc_getGroupsDataSource
 	ALiVE_fnc_groupCountAlive
 	ALiVE_fnc_groupGenerateConfigData
 	ALiVE_fnc_groupIsReady
@@ -266,7 +268,6 @@ units
 	ALiVE_fnc_anyPlayersInRangeExcludeAir
 	ALiVE_fnc_anyPlayersInRangeIncludeAir
 	ALiVE_fnc_chooseRandomUnits
-	ALiVE_fnc_getGroupsDataSource
 	ALiVE_fnc_getNearUnits
 	ALiVE_fnc_getPlayerByUID
 	ALiVE_fnc_getPlayerByUIDOnConnect

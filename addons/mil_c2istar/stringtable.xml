@@ -83,6 +83,18 @@
 <Key ID="STR_ALIVE_C2ISTAR_AUTOGEN_INDFOR_ENEMY_FACTION_COMMENT">
     <English>The enemy faction for INDFOR task autogeneration</English>
 </Key>
+<Key ID="STR_ALIVE_C2ISTAR_GM_LIMIT">
+    <English>Limit Group Management:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_GM_LIMIT_COMMENT">
+    <English>Limits effect of group manager functions</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_GM_LIMIT_SIDE">
+    <English>Side</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_GM_LIMIT_FACTION">
+    <English>Faction</English>
+</Key>
 <Key ID="STR_ALIVE_C2ISTAR_DISPLAY_INTEL">
     <English>Display Map Intel:</English>
 </Key>

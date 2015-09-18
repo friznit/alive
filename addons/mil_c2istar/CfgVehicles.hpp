@@ -161,6 +161,37 @@ class CfgVehicles {
                             description = "$STR_ALIVE_C2ISTAR_AUTOGEN_INDFOR_ENEMY_FACTION_COMMENT";
                             defaultValue = "OPF_F";
                     };
+                    // GROUP MANAGEMENT
+                    class GROUP_MANAGEMENT {
+                            displayName = "";
+                            class Values
+                            {
+                                    class Divider
+                                    {
+                                            name = "----- Group Management ---------------------------------------------";
+                                            value = "";
+                                    };
+                            };
+                    };
+                    class gmLimit
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_GM_LIMIT";
+                            description = "$STR_ALIVE_C2ISTAR_GM_LIMIT_COMMENT";
+                            class Values
+                            {
+                                    class SIDE
+                                    {
+                                            name = "$STR_ALIVE_C2ISTAR_GM_LIMIT_SIDE";
+                                            value = "SIDE";
+                                            default = 1;
+                                    };
+                                    class FACTION
+                                    {
+                                            name = "$STR_ALIVE_C2ISTAR_GM_LIMIT_FACTION";
+                                            value = "FACTION";
+                                    };
+                            };
+                    };
                     // INTEL
                     class INTEL {
                             displayName = "";

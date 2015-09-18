@@ -31,6 +31,11 @@ class CfgFunctions {
                 file = "\x\alive\addons\sup_group_manager\fnc_GMTabletEventToClient.sqf";
                 recompile = RECOMPILE;
             };
+            class groupHandler {
+                description = "Group Handler";
+                file = "\x\alive\addons\sup_group_manageR\fnc_groupHandler.sqf";
+                recompile = RECOMPILE;
+            };
         };
 	};
 };

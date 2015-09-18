@@ -741,6 +741,20 @@ class isFilePath
 	recompile = RECOMPILE;
 };
 
+class getGroupDetailDataSource
+{
+	file = "\x\alive\addons\x_lib\functions\groups\fnc_getGroupDetailDataSource.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class getGroupsDataSource
+{
+	file = "\x\alive\addons\x_lib\functions\groups\fnc_getGroupsDataSource.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class groupCountAlive
 {
 	file = "\x\alive\addons\x_lib\functions\groups\fnc_groupCountAlive.sqf";
@@ -1388,13 +1402,6 @@ class anyPlayersInRangeIncludeAir
 class chooseRandomUnits
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_chooseRandomUnits.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
-class getGroupsDataSource
-{
-	file = "\x\alive\addons\x_lib\functions\units\fnc_getGroupsDataSource.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
