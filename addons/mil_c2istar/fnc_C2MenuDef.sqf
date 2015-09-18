@@ -104,16 +104,15 @@ if (_menuName == "C2ISTAR") then {
                      true,
                      _result
                 ],
-                /*
-				["Intel",
-                    {CreateDialog "Spyder_TacticalCommandMain"},
+                ["Intel",
+                    {["OPEN_INTEL",[]] call ALIVE_fnc_SCOMTabletOnAction},
                     "",
-                    localize "STR_ALIVE_SUP_COMMAND_INTEL_COMMENT",
+                    localize "STR_ALIVE_SCOM_OPS_COMMENT",
                      "",
                      -1,
                      true,
                      _result
-                ],*/
+                ],
 				["Logistics",
 					{["OPEN",[]] call ALIVE_fnc_PRTabletOnAction},
 					"",
@@ -131,15 +130,15 @@ if (_menuName == "C2ISTAR") then {
 	                 true,
 	                 _result
 				],
-/*				["Operations",
-					{CreateDialog "Spyder_TacticalCommandHighCommand"},
-	                "",
-					localize "STR_ALIVE_SUP_COMMAND_HIGH_COMMENT",
-	                 "",
-	                 -1,
-	                 true,
-	                 _result
-				],*/
+				["Operations",
+                    {["OPEN_OPS",[]] call ALIVE_fnc_SCOMTabletOnAction},
+                    "",
+                    localize "STR_ALIVE_GM_COMMENT",
+                     "",
+                     -1,
+                     true,
+                     _result
+                ],
 				["Send SITREP",
 					{createDialog "RscDisplayALIVESITREP"},
 					"",

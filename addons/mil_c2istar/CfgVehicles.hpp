@@ -192,6 +192,37 @@ class CfgVehicles {
                                     };
                             };
                     };
+                    // OPERATIONS
+                    class OPERATIONS {
+                            displayName = "";
+                            class Values
+                            {
+                                    class Divider
+                                    {
+                                            name = "----- Operations ---------------------------------------------";
+                                            value = "";
+                                    };
+                            };
+                    };
+                    class scomLimit
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_SCOM_LIMIT";
+                            description = "$STR_ALIVE_C2ISTAR_SCOM_LIMIT_COMMENT";
+                            class Values
+                            {
+                                    class SIDE
+                                    {
+                                            name = "$STR_ALIVE_C2ISTAR_SCOM_LIMIT_SIDE";
+                                            value = "SIDE";
+                                            default = 1;
+                                    };
+                                    class FACTION
+                                    {
+                                            name = "$STR_ALIVE_C2ISTAR_SCOM_LIMIT_FACTION";
+                                            value = "FACTION";
+                                    };
+                            };
+                    };
                     // INTEL
                     class INTEL {
                             displayName = "";

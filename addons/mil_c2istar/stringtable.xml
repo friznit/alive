@@ -95,6 +95,18 @@
 <Key ID="STR_ALIVE_C2ISTAR_GM_LIMIT_FACTION">
     <English>Faction</English>
 </Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_LIMIT">
+    <English>Limit Command:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_LIMIT_COMMENT">
+    <English>Limits effect of group manager functions</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_LIMIT_SIDE">
+    <English>Side</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_LIMIT_FACTION">
+    <English>Faction</English>
+</Key>
 <Key ID="STR_ALIVE_C2ISTAR_DISPLAY_INTEL">
     <English>Display Map Intel:</English>
 </Key>

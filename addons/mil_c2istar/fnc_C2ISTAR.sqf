@@ -53,6 +53,8 @@ Peer Reviewed:
 
 #define DEFAULT_GM_LIMIT "SIDE"
 
+#define DEFAULT_SCOM_LIMIT "SIDE"
+
 #define DEFAULT_DISPLAY_INTEL false
 #define DEFAULT_INTEL_CHANCE "0.1"
 #define DEFAULT_FRIENDLY_INTEL false
@@ -236,6 +238,9 @@ switch(_operation) do {
     };
     case "gmLimit": {
         _result = [_logic,_operation,_args,DEFAULT_GM_LIMIT,["SIDE","FACTION"]] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "scomLimit": {
+        _result = [_logic,_operation,_args,DEFAULT_SCOM_LIMIT,["SIDE","FACTION"]] call ALIVE_fnc_OOsimpleOperation;
     };
     case "displayIntel": {
         if (typeName _args == "BOOL") then {
@@ -465,6 +470,15 @@ switch(_operation) do {
             [_gm, "limit", _gmLimit] call ALIVE_fnc_GM;
             [_gm, "debug", _debug] call ALIVE_fnc_GM;
             [_gm, "init",[]] call ALIVE_fnc_GM;
+
+            private["_scomLimit","_scom"];
+
+            _scomLimit = [_logic, "scomLimit"] call MAINCLASS;
+
+            _scom = [nil, "create"] call ALIVE_fnc_SCOM;
+            [_scom, "limit", _gmLimit] call ALIVE_fnc_SCOM;
+            [_scom, "debug", _debug] call ALIVE_fnc_SCOM;
+            [_scom, "init",[]] call ALIVE_fnc_SCOM;
 
 
             private["_displayIntel","_intelChance","_friendlyIntel","_friendlyIntelRadius","_displayMilitarySectors","_displayPlayerSectors","_displayIntel","_runEvery","_intel"];
