@@ -295,7 +295,7 @@ class FSM
        "			};" \n
        "" \n
        "			_timeout = time;" \n
-       "			_unit domove _pos;" \n
+       "			[_unit, _pos] call ALiVE_fnc_doMoveRemote;" \n
        "			_unit setvariable [""HousePos"",_pos];" \n
        "		};" \n
        "} foreach (units _grp);" \n
@@ -496,7 +496,7 @@ class FSM
        "" \n
        "	_unit setSpeedMode ""FULL"";" \n
        "	_unit setbehaviour ""AWARE"";" \n
-       "	_unit domove _pos;" \n
+       "	[_unit, _pos] call ALiVE_fnc_doMoveRemote;" \n
        "	_unit setvariable [""HousePos"",nil];" \n
        "} foreach (units _grp);"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;

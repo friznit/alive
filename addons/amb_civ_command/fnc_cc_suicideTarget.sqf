@@ -87,7 +87,7 @@ switch (_state) do {
             if(count _positions > 0) then {
                 _position = _positions call BIS_fnc_arrayPop;
                 [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-                _agent doMove _position;
+                [_agent, _position] call ALiVE_fnc_doMoveRemote;
 
                 _nextStateArgs = [_target];
 
@@ -169,7 +169,7 @@ switch (_state) do {
                 _bomb2 = _this select 3;
                 _bomb3 = _this select 4;
 
-                _agent doMove getPosASL _target;
+                [_agent, getPosASL _target] call ALiVE_fnc_doMoveRemote;
 
                 waituntil {
                     sleep 0.5;

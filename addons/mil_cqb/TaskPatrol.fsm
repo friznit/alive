@@ -242,7 +242,7 @@ class FSM
        "	_unit setSpeedMode ""LIMITED"";" \n
        "};" \n
        "_grp setCombatMode ""YELLOW"";" \n
-       "_grp move _posM;" \n
+       "[_grp,_posM] call ALiVE_fnc_MoveRemote;" \n
        "" \n
        "deleteMarkerLocal format[""HP:%1"", _unit];" \n
        "if(_debug) then {" \n

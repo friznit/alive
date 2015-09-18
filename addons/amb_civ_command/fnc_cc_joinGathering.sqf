@@ -65,7 +65,7 @@ switch (_state) do {
         if!(isNil "_target") then {
             _position = [getPosASL _target, random 5, random 360] call BIS_fnc_relPos;
             [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-            _agent doMove _position;
+            [_agent, _position] call ALiVE_fnc_doMoveRemote;
 
             _nextState = "travel";
             _nextStateArgs = [_target];

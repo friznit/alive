@@ -67,7 +67,7 @@ switch (_state) do {
         if(count _positions > 0) then {
             _position = _positions call BIS_fnc_arrayPop;
             [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-            _agent doMove _position;
+            [_agent, _position] call ALiVE_fnc_doMoveRemote;
 
             _nextState = "travel";
             _nextStateArgs = [_positions];
@@ -149,7 +149,7 @@ switch (_state) do {
             {
                 _position = _positions call BIS_fnc_arrayPop;
                 [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-                _agent doMove _position;
+                [_agent, _position] call ALiVE_fnc_doMoveRemote;
 
                 _nextStateArgs = [_positions];
 

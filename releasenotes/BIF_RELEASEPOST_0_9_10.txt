@@ -1,0 +1,65 @@
+[CENTER][URL="http://alivemod.com/"][IMG]http://alivemod.com/img/alive_logo_bif.jpg[/IMG][/URL]
+[B][URL="http://alivemod.com/"]alivemod.com[/URL]
+[SIZE=4]The next generation dynamic persistent mission addon for ArmA3
+Release 0.9.8[/SIZE][/B][/CENTER]
+
+[B][U]Something something linux persistence and headless client support[/U][/B]
+We are very excited to release a completely rewritten plugin that supports both Windows and Linux dedicated servers.  Massive thanks to Secure for his code magic and dedication over the last few months making Linux persistence a reality.
+
+Meanwhile, Highhead solved one of our biggest challenges of how to spawn all ALiVE Virtual AI onto Headless Client.  The option to use Headless Client for all AI Placement modules represents a huge performance boost for those who enjoy full scale dynamic campaigns with thousands of AI and lots of players in different parts of the map.  The option to use Headless Client can be found in the ALiVE (Required) module.
+
+In addition, Tupolov has been working to improve the Server Performance Monitoring suite, which now has the option to autorun on any mission even without an ALiVE module placed.  This requires an optional pbo to be run on the server and of course you need to login to War Room and set up your server details there to see the stats.  Thanks to Dwarden for the feedback!
+
+Some people have already seen SpyderBlack's fantastic Command & Control tablet, which enables players to create map overlays of operational activity, tactical intelligence and even take over control of the battle from the AI Commander.  We loved it so much that we have fully integrated it into ALiVE and will continue to work with Spyder to develop it further.  Alongside this, ArJay has been hard at work developing a Group Manager, which has long been a popular request by the community.
+
+The rest of the team has been busy with fixes and enhancements - full change log below!
+
+[CENTER]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
+
+[SIZE=4][B][U][url=http://alivemod.com/#Download]Download[/url][/U][/B][/SIZE]
+Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+Also available from PlayWithSix and ArmAholic.
+
+Note for server admins that this build absolutely requires the new @ALiVEServer package. The old one will no longer work.
+
+[img]http://i.imgur.com/FtD4kaD.jpg[/img][/CENTER]
+
+[CENTER][SIZE=4][B][url=http://alivemod.com/#ALiVEWarRoom]Join the War Room Now![/url][/B][/SIZE][/CENTER]
+
+[B][U]Manual[/U][/B]
+Please refer to the [URL="http://www.alivemod.com/wiki"]ALiVE Wiki[/URL].  All the info you need is there.  If anything is missing or unclear, please let us know by submitting a ticket on our [URL="http://dev.withsix.com/projects/alive/issues"]Development Tracker[/URL] and we'll look to fix it.
+
+[B][U]Support Forum[/U][/B]
+For direct support and feedback from the ALiVE dev team, join us on our forum at [URL="http://alivemod.com/forum/"]http://alivemod.com/forum/[/URL]
+
+[B][U]Release Highlights[/U][/B]
+[LIST]
+[*] Linux dedicated server support for ALiVE Data & Persistence
+[*] Headless Client support for all Virtual AI Placement modules
+[*] Player Command & Control Tablet
+[*] Group Manager
+[*] Enhanced Server Performance Monitoring
+[*] White/Black list added to Military Logistics module
+[*] Combat Support improved to work with arty & mortar addons
+[*] AI Spawns staggered slightly to reduce stuttering
+[/LIST]
+
+[B][U]Changelog[/U][/B]
+[SPOILER]
+- Build 0.9.10
+
+
+[/SPOILER]
+
+[B][U]Want to join our team?[/U][/B]
+We are still on the look out for a web dev, ideally with Laravel experience, to develop the War Room further.  We are bursting with ideas but simply don't have the manpower to deliver!
+
+[B][U]Disclaimer[/U][/B]
+ALiVE is still in BETA and subject to change.  We may need to clear persistent database data from the War Room before major updates but we will try to let you know well in advance if this happens.  We have done our best to ensure backward compatibility for your missions. However, in case you get a new error with an existing mission, please delete and replace the offending module in the editor and you should be good to go again.  As usual, please post any issues or feature requests on our tracker.
+
+[B][U]ALiVE has transformed my Arma 3 experience, how can I thank you?[/U][/B]
+Please feel free to donate! It costs us about $65 per month to run our War Room website and ALiVE Database servers. Donate here http://www.alivemod.com/#Donate 
+
+Special thanks to everyone here for supporting us with donations to the ALiVE mod development effort. 
+
+Have fun!

@@ -66,7 +66,7 @@ switch (_state) do {
         _homePosition = _agentData select 2 select 10;
 
         [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-        _agent doMove _homePosition;
+        [_agent, _homePosition] call ALiVE_fnc_doMoveRemote;
 
         _timeout = _minTimeout + floor(random _maxTimeout);
         _timer = 0;

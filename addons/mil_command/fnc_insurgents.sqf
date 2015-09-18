@@ -219,7 +219,7 @@ if (_type == "entity") then {
 	                        
 	                        _x setspeedmode "FULL";
 	                        _x setbehaviour "CARELESS";
-	                    	_x domove getposATL _target;
+                            [_x, getposATL _target] call ALiVE_fnc_doMoveRemote;
 	                    } else {
 	                        
 	                        _x setspeedmode _speedmode;

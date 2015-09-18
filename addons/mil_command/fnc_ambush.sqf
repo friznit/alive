@@ -56,8 +56,8 @@ if (_type == "entity") then {
     if (count _roads > 0) then {
         {
 			_agent = _x;
-            
-            _agent domove (getposATL (_roads call BIS_fnc_SelectRandom));
+
+			[_agent, getposATL (_roads call BIS_fnc_SelectRandom)] call ALiVE_fnc_doMoveRemote;
             
             sleep 5;
                    
@@ -79,8 +79,8 @@ if (_type == "entity") then {
 			[], 
 			[_destination]
 		] call BIS_fnc_findSafePos;
-                        
-        _group move _newPosition;
+
+        [_group,_newPosition] call ALiVE_fnc_MoveRemote;
         _group setbehaviour "AWARE";
 		_group setSpeedmode "NORMAL";
        

@@ -151,7 +151,7 @@ if(count _buildings > 0) then {
                                 _unit = _this select 0;
                                 _position = _this select 1;
 
-                                _unit doMove _position;
+                                [_unit, _position] call ALiVE_fnc_doMoveRemote;
 
                                 waitUntil {sleep 1; unitReady _unit };
 
@@ -212,7 +212,7 @@ if(count _buildings > 0) then {
                             _unit = _this select 0;
                             _position = _this select 1;
 
-                            _unit doMove _position;
+                            [_unit, _position] call ALiVE_fnc_doMoveRemote;
 
                             waitUntil {sleep 0.5; unitReady _unit };
 

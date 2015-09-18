@@ -75,7 +75,7 @@ switch (_state) do {
             _agent setBehaviour "CARELESS";
             _agent setSpeedMode "LIMITED";
             
-            _agent doMove _position;
+            [_agent, _position] call ALiVE_fnc_doMoveRemote;
             
             _position = ([_position,15] call ALIVE_fnc_findIndoorHousePositions) call BIS_fnc_selectRandom;
 
@@ -115,7 +115,7 @@ switch (_state) do {
                 _agent setBehaviour "CARELESS";
             	_agent setSpeedMode "LIMITED";
 
-				_agent doMove _position;
+				[_agent, _position] call ALiVE_fnc_doMoveRemote;
 
                 waituntil {sleep 10; _agent distance _position < 5 || {!(alive _agent)}};
                 
@@ -128,7 +128,7 @@ switch (_state) do {
                 for "_i" from 1 to 3 do {
                     
                     _charge = _positions call BIS_fnc_SelectRandom;
-                    _agent domove _charge;
+                    [_agent,_charge] call ALiVE_fnc_doMoveRemote;
                     
                     sleep 20;
                     
@@ -140,7 +140,7 @@ switch (_state) do {
                 
                 _agent setSpeedMode "FULL";
 
-				_agent domove _orgpos;
+                [_agent,_orgpos] call ALiVE_fnc_doMoveRemote;
                     
                 waituntil {sleep 10; !alive _agent || {_agent distance (_bombs select 0) > 50}};
                 
@@ -204,7 +204,7 @@ switch (_state) do {
                 _position = _positions call BIS_fnc_arrayPop;
                 [_agent] call ALIVE_fnc_agentSelectSpeedMode;
                 
-                _agent doMove _position;
+                [_agent, _position] call ALiVE_fnc_doMoveRemote;
             };
             
             _agent setVariable ["ALIVE_agentBusy", false, false];                                            

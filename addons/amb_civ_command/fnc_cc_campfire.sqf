@@ -68,7 +68,7 @@ switch (_state) do {
 
         if(count _position > 0) then {
             [_agent] call ALIVE_fnc_agentSelectSpeedMode;
-            _agent doMove _position;
+            [_agent, _position] call ALiVE_fnc_doMoveRemote;
 
             _timeout = _minTimeout + floor(random _maxTimeout);
             _timer = 0;
