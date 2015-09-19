@@ -4607,7 +4607,8 @@ if(_worldName == "australia") then {
 
     ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
     	"ss_hangar",
-		"hangar_f"
+		"hangar_f",
+		"tenthangar"
     ];
 
     ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
@@ -4627,7 +4628,8 @@ if(_worldName == "australia") then {
     	"cargo_house_v",
     	"cargo_patrol_",
     	"research",
-        "fortified"
+        "fortified",
+		"fuelstation_army"
     ];
 
     ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
@@ -4636,17 +4638,14 @@ if(_worldName == "australia") then {
     ];
 
     ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
-		"ss_hangar"
+		"ss_hangar",
+		"tenthangar"
     ];
 
     ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
     	"ss_hangar",
 		"hangar_f",
-    	"runway_beton",
-    	"runway_main",
-    	"runway_end",
-		"runway_poj",
-		"runway_pojdraha"
+    	"runway_"
     ];
 
     ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
@@ -4664,7 +4663,9 @@ if(_worldName == "australia") then {
 
     ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
     	"airport_tower",
+		"army_hut",
 		"ammostore2",
+		"bagfence",
     	"radar",
     	"cargo_house_v",
     	"cargo_patrol_",
@@ -4678,17 +4679,16 @@ if(_worldName == "australia") then {
         "fortified",
         "hlaska",
         "posed",
-		"scrapyard"
+		"shooting_range"
     ];
 
     ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianPopulationBuildingTypes + [
-        "house_",
 		"budova",
 		"shop",
         "shop_",
         "stone_",
 		"pub",
-		"residential_a",
+		"residential",
 		"housedoubleal",
 		"market",
 		"garaz",
@@ -4703,14 +4703,15 @@ if(_worldName == "australia") then {
     ];
 
     ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
-    	"dp_main",
-		"dp_small",
+    	"dieselpowerplant",
 		"wpp_",
     	"spp_t",
 		"pec_",
         "trafostanica",
 		"ind_coltan_mine",
-		"ind_pipes"
+		"ind_pipeline",
+		"ind_pipes",
+		"ind_powerstation"
     ];
 
     ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
@@ -4725,9 +4726,9 @@ if(_worldName == "australia") then {
     ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
     	"crane",
     	"lighthouse",
-    	"nav_pier",
+    	"piers",
 		"molo_",
-    	"pier_",
+    	"nav_pier",
 		"sea_wall_",
 		"najezd",
         "cargo",
@@ -4737,6 +4738,7 @@ if(_worldName == "australia") then {
     ];
 
     ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+		"rail_najazdovarampa"
     ];
 
     ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
@@ -4752,13 +4754,14 @@ if(_worldName == "australia") then {
     ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
     	"wip",
 		"ind_coltan_mine",
+		"concretemixingplant",
 		"factory",
 		"torvana",
-		"workshop",
+		"ind_workshop",
 		"ind_quarry",
 		"ind_sawmill",
 		"ind_cementworks",
-		"dam_conc",
+		"civilengineering",
 		"vez"
     ];
 
@@ -4778,12 +4781,15 @@ if(_worldName == "australia") then {
 		"ghosthotel",
 		"hangar_2",
 		"helfenburk",
+		"hlidac_budka",
 		"hospital",
 		"hotel",
 		"housedoubleal",
 		"households",
+		"house",
 		"hut",
 		"kasna",
+		"kiosk",
 		"kostel2",
 		"kostelik",
 		"kulna",
@@ -4800,7 +4806,8 @@ if(_worldName == "australia") then {
 		"shops",
 		"stadium",
 		"stanek",
-		"statek"
+		"statek",
+		"watertower"
     ];
 
 };
