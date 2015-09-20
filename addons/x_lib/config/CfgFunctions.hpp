@@ -1427,13 +1427,6 @@ class chooseRandomUnits
 	recompile = RECOMPILE;
 };
 
-class getGroupsDataSource
-{
-	file = "\x\alive\addons\x_lib\functions\units\fnc_getGroupsDataSource.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
 class getNearUnits
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_getNearUnits.sqf";
