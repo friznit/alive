@@ -193,33 +193,74 @@ class CfgVehicles {
                             };
                     };
                     // OPERATIONS
-                    class OPERATIONS {
+                    class OPERATIONS_TABLET {
                             displayName = "";
                             class Values
                             {
                                     class Divider
                                     {
-                                            name = "----- Operations ---------------------------------------------";
+                                            name = "----- Operations Tablet --------------------------------------------";
                                             value = "";
                                     };
                             };
                     };
-                    class scomLimit
+                    class scomOpsLimit
                     {
-                            displayName = "$STR_ALIVE_C2ISTAR_SCOM_LIMIT";
-                            description = "$STR_ALIVE_C2ISTAR_SCOM_LIMIT_COMMENT";
+                            displayName = "$STR_ALIVE_C2ISTAR_SCOM_OPS_LIMIT";
+                            description = "$STR_ALIVE_C2ISTAR_SCOM_OPS_LIMIT_COMMENT";
                             class Values
                             {
                                     class SIDE
                                     {
-                                            name = "$STR_ALIVE_C2ISTAR_SCOM_LIMIT_SIDE";
+                                            name = "$STR_ALIVE_C2ISTAR_SCOM_OPS_LIMIT_SIDE";
                                             value = "SIDE";
                                             default = 1;
                                     };
                                     class FACTION
                                     {
-                                            name = "$STR_ALIVE_C2ISTAR_SCOM_LIMIT_FACTION";
+                                            name = "$STR_ALIVE_C2ISTAR_SCOM_OPS_LIMIT_FACTION";
                                             value = "FACTION";
+                                    };
+                                    class ALL
+                                    {
+                                            name = "$STR_ALIVE_C2ISTAR_SCOM_OPS_LIMIT_ALL";
+                                            value = "ALL";
+                                    };
+                            };
+                    };
+                    // INTEL TABLET
+                    class INTEL_TABLET {
+                            displayName = "";
+                            class Values
+                            {
+                                    class Divider
+                                    {
+                                            name = "----- Intel Tablet -------------------------------------------------";
+                                            value = "";
+                                    };
+                            };
+                    };
+                    class scomIntelLimit
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT";
+                            description = "$STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT_COMMENT";
+                            class Values
+                            {
+                                    class SIDE
+                                    {
+                                            name = "$STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT_SIDE";
+                                            value = "SIDE";
+                                            default = 1;
+                                    };
+                                    class FACTION
+                                    {
+                                            name = "$STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT_FACTION";
+                                            value = "FACTION";
+                                    };
+                                    class ALL
+                                    {
+                                            name = "$STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT_ALL";
+                                            value = "ALL";
                                     };
                             };
                     };
@@ -230,7 +271,7 @@ class CfgVehicles {
                             {
                                     class Divider
                                     {
-                                            name = "----- Intel --------------------------------------------------------";
+                                            name = "----- Global Intel -------------------------------------------------";
                                             value = "";
                                     };
                             };

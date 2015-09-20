@@ -239,8 +239,11 @@ switch(_operation) do {
     case "gmLimit": {
         _result = [_logic,_operation,_args,DEFAULT_GM_LIMIT,["SIDE","FACTION"]] call ALIVE_fnc_OOsimpleOperation;
     };
-    case "scomLimit": {
-        _result = [_logic,_operation,_args,DEFAULT_SCOM_LIMIT,["SIDE","FACTION"]] call ALIVE_fnc_OOsimpleOperation;
+    case "scomOpsLimit": {
+        _result = [_logic,_operation,_args,DEFAULT_SCOM_LIMIT,["SIDE","FACTION","ALL"]] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "scomIntelLimit": {
+        _result = [_logic,_operation,_args,DEFAULT_SCOM_LIMIT,["SIDE","FACTION","ALL"]] call ALIVE_fnc_OOsimpleOperation;
     };
     case "displayIntel": {
         if (typeName _args == "BOOL") then {
@@ -471,12 +474,14 @@ switch(_operation) do {
             [_gm, "debug", _debug] call ALIVE_fnc_GM;
             [_gm, "init",[]] call ALIVE_fnc_GM;
 
-            private["_scomLimit","_scom"];
+            private["_scomOpsLimit","_scomIntelLimit","_scom"];
 
-            _scomLimit = [_logic, "scomLimit"] call MAINCLASS;
+            _scomOpsLimit = [_logic, "scomOpsLimit"] call MAINCLASS;
+            _scomIntelLimit = [_logic, "scomIntelLimit"] call MAINCLASS;
 
             _scom = [nil, "create"] call ALIVE_fnc_SCOM;
-            [_scom, "limit", _gmLimit] call ALIVE_fnc_SCOM;
+            [_scom, "opsLimit", _scomOpsLimit] call ALIVE_fnc_SCOM;
+            [_scom, "intelLimit", _scomIntelLimit] call ALIVE_fnc_SCOM;
             [_scom, "debug", _debug] call ALIVE_fnc_SCOM;
             [_scom, "init",[]] call ALIVE_fnc_SCOM;
 

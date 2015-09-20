@@ -30,7 +30,7 @@ _result = [_logic, "init"] call ALIVE_fnc_commandHandler;
 See Also:
 
 Author:
-ARJay
+SpyderBlack / ARJay
 
 Peer reviewed:
 nil
@@ -88,7 +88,16 @@ switch(_operation) do {
     case "listen": {
         private["_listenerID"];
 
-        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["GROUP_JOIN","GROUP_LEAVE"]]] call ALIVE_fnc_eventLog;
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, [
+            "INTEL_TYPE_SELECT",
+            "INTEL_OPCOM_SELECT",
+            "OPS_DATA_PREPARE",
+            "OPS_OPCOM_SELECT",
+            "OPS_GET_PROFILE",
+            "OPS_GET_PROFILE_WAYPOINTS",
+            "OPS_CLEAR_PROFILE_WAYPOINTS",
+            "OPS_APPLY_PROFILE_WAYPOINTS"
+            ]]] call ALIVE_fnc_eventLog;
         [_logic,"listenerID",_listenerID] call ALIVE_fnc_hashSet;
     };
     case "handleEvent": {
@@ -104,7 +113,7 @@ switch(_operation) do {
 
         };
     };
-    case "GROUP_JOIN": {
+    case "INTEL_TYPE_SELECT": {
         private["_debug","_eventData"];
 
         _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
@@ -114,15 +123,15 @@ switch(_operation) do {
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
             ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-            ["ALiVE Group Handler - Group Join event received"] call ALIVE_fnc_dump;
+            ["ALiVE Command Handler - Intel Type Selected event received"] call ALIVE_fnc_dump;
             _eventData call ALIVE_fnc_inspectArray;
         };
         // DEBUG -------------------------------------------------------------------------------------
 
-        [_logic, "groupJoin", _eventData] call MAINCLASS;
+        [_logic, "intelTypeSelected", _eventData] call MAINCLASS;
 
     };
-    case "GROUP_LEAVE": {
+    case "INTEL_OPCOM_SELECT": {
         private["_debug","_eventData"];
 
         _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
@@ -132,207 +141,609 @@ switch(_operation) do {
         // DEBUG -------------------------------------------------------------------------------------
         if(_debug) then {
             ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
-            ["ALiVE Group Handler - Leave Group event received"] call ALIVE_fnc_dump;
+            ["ALiVE Command Handler - Intel OPCOM Selected event received"] call ALIVE_fnc_dump;
             _eventData call ALIVE_fnc_inspectArray;
         };
         // DEBUG -------------------------------------------------------------------------------------
 
-        [_logic, "groupLeave", _eventData] call MAINCLASS;
+        [_logic, "intelOPCOMSelected", _eventData] call MAINCLASS;
 
     };
-    case "groupJoin": {
-        private["_join","_playerID","_debug","_unit","_group","_event"];
+    case "OPS_DATA_PREPARE": {
+        private["_debug","_eventData"];
+
+        _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+        _eventData = _args;
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+            ["ALiVE Command Handler - Operations Data Prepare event received"] call ALIVE_fnc_dump;
+            _eventData call ALIVE_fnc_inspectArray;
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+        [_logic, "opsDataPrepare", _eventData] call MAINCLASS;
+
+    };
+    case "OPS_OPCOM_SELECT": {
+        private["_debug","_eventData"];
+
+        _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+        _eventData = _args;
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+            ["ALiVE Command Handler - Operations OPCOM Selected event received"] call ALIVE_fnc_dump;
+            _eventData call ALIVE_fnc_inspectArray;
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+        [_logic, "opsOPCOMSelected", _eventData] call MAINCLASS;
+
+    };
+    case "OPS_GET_PROFILE": {
+        private["_debug","_eventData"];
+
+        _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+        _eventData = _args;
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+            ["ALiVE Command Handler - Operations Get Profile event received"] call ALIVE_fnc_dump;
+            _eventData call ALIVE_fnc_inspectArray;
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+        [_logic, "opsGetProfile", _eventData] call MAINCLASS;
+
+    };
+    case "OPS_GET_PROFILE_WAYPOINTS": {
+        private["_debug","_eventData"];
+
+        _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+        _eventData = _args;
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+            ["ALiVE Command Handler - Operations Get Profile Waypoints event received"] call ALIVE_fnc_dump;
+            _eventData call ALIVE_fnc_inspectArray;
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+        [_logic, "opsGetProfileWaypoints", _eventData] call MAINCLASS;
+
+    };
+    case "OPS_CLEAR_PROFILE_WAYPOINTS": {
+        private["_debug","_eventData"];
+
+        _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+        _eventData = _args;
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+            ["ALiVE Command Handler - Operations Clear Profile Waypoints event received"] call ALIVE_fnc_dump;
+            _eventData call ALIVE_fnc_inspectArray;
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+        [_logic, "opsClearProfileWaypoints", _eventData] call MAINCLASS;
+
+    };
+    case "OPS_APPLY_PROFILE_WAYPOINTS": {
+        private["_debug","_eventData"];
+
+        _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+        _eventData = _args;
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+            ["ALiVE Command Handler - Operations Apply Profile Waypoints event received"] call ALIVE_fnc_dump;
+            _eventData call ALIVE_fnc_inspectArray;
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+        [_logic, "opsApplyProfileWaypoints", _eventData] call MAINCLASS;
+
+    };
+    case "opsDataPrepare": {
+        private["_data","_playerID","_type","_limit","_side","_faction","_debug"];
 
         if(typeName _args == "ARRAY") then {
 
-            _join = _args;
-            _playerID = _join select 1;
-            _unit = _join select 2;
-            _group = _join select 3;
+            _data = _args;
+            _playerID = _data select 0;
+            _type = _data select 1;
+            _limit = _data select 2;
+            _side = _data select 3;
+            _faction = _data select 4;
 
             _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
 
-            _groupFrom = group _unit;
-            _leaderGroupFrom = leader _groupFrom;
-            _leaderGroupFromPID = _leaderGroupFrom getVariable ["profileID",""];
-            _unitsGroupFrom = units _groupFrom;
+            private["_opcomData","_opcom","_opcomFactions","_opcomSide"];
 
-            _groupTo = _group;
-            _leaderGroupTo = leader _groupTo;
-            _leaderGroupToPID = _leaderGroupTo getVariable ["profileID",""];
-            _unitsGroupTo = units _groupTo;
+            // get opcoms available by limit set on intel
 
-            _unitIsPlayer = false;
-            _unitPlayerUID = '0';
-
-            if(isPlayer _unit) then {
-                ["Unit is a player"] call ALIVE_fnc_dump;
-                _unitIsPlayer = true;
-                _unitPlayerUID = getPlayerUID _unit;
-            }else{
-                ["Unit is not a player"] call ALIVE_fnc_dump;
-            };
-
-            _groupFromIsProfiled = false;
-            _groupFromProfile = nil;
-
-            if(_leaderGroupFromPID == "") then {
-                ["From group is not profiled"] call ALIVE_fnc_dump;
-            }else{
-                ["From group is profiled %1",_leaderGroupFromPID] call ALIVE_fnc_dump;
-                _groupFromIsProfiled = true;
-                _groupFromProfile = [ALIVE_profileHandler, "getProfile", _leaderGroupFromPID] call ALIVE_fnc_profileHandler;
-            };
-
-            _groupToIsProfiled = false;
-            _groupToProfile = nil;
-
-            if(_leaderGroupToPID == "") then {
-                ["To group is not profiled"] call ALIVE_fnc_dump;
-            }else{
-                ["To group is profiled: %1",_leaderGroupToPID] call ALIVE_fnc_dump;
-                _groupToIsProfiled = true;
-                _groupToProfile = [ALIVE_profileHandler, "getProfile", _leaderGroupToPID] call ALIVE_fnc_profileHandler;
-            };
-
-            _anyPlayersInGroupFrom = false;
+            _opcomData = [];
 
             {
-                if(isPlayer _x) then {
-                    _uuid = getPlayerUID _x;
-                    if(_uuid != _unitPlayerUID) then {
-                        _anyPlayersInGroupFrom = true;
-                        ["From group has player: %1 %2",_uuid,_unitPlayerUID] call ALIVE_fnc_dump;
+                _opcom = _x;
+                _opcomFactions = [_opcom,"factions",""] call ALiVE_fnc_HashGet;
+                _opcomSide = [_opcom,"side"] call ALIVE_fnc_hashGet;
+
+                switch(_limit) do {
+                    case "SIDE": {
+                        if(_side == _opcomSide) then {
+                            _opcomData pushBack (_opcomSide);
+                        };
+                    };
+                    case "FACTION": {
+                        if(_faction in _opcomFactions) then {
+                            _opcomData pushBack (_opcomSide);
+                        };
+                    };
+                    case "ALL": {
+                        _opcomData pushBack (_opcomSide);
                     };
                 };
-            } forEach _unitsGroupFrom;
 
-            _anyPlayersInGroupTo = false;
+            } foreach OPCOM_INSTANCES;
 
-            {
-                if(isPlayer _x) then {
-                    _uuid = getPlayerUID _x;
-                    if(_uuid != _unitPlayerUID) then {
-                        _anyPlayersInGroupTo = true;
-                        ["To group has player: %1 %2",_uuid,_unitPlayerUID] call ALIVE_fnc_dump;
-                    };
-                };
-            } forEach _unitsGroupTo;
+            // send the data back to the players SCOM tablet
 
-
-            if!(isNil "_groupToProfile") then {
-                ["TO PROFILE IS NOT NIL"] call ALIVE_fnc_dump;
-                _groupToProfile call ALIVE_fnc_inspectHash;
-                [_groupToProfile, "addUnit", [typeOf _unit,position _unit,0,rank _unit]] call ALIVE_fnc_profileEntity;
-                //[ALIVE_profileHandler, "unregisterProfile", _groupToProfile] call ALIVE_fnc_profileHandler;
-            }else{
-                ["TO PROFILE IS NIL"] call ALIVE_fnc_dump;
-            };
-
-            if!(isNil "_groupFromProfile") then {
-                ["FROM PROFILE IS NOT NIL"] call ALIVE_fnc_dump;
-                _groupFromProfile call ALIVE_fnc_inspectHash;
-                _result = [_groupFromProfile,"handleDeath",_unit] call ALIVE_fnc_profileEntity;
-                // all units in profile are killed
-                if!(_result) then {
-
-                    // not sure about this, it will remove the profile and the bodies will remain
-                    // will need to have dead unit cleanup scripts
-                    [ALIVE_profileHandler, "unregisterProfile", _groupFromProfile] call ALIVE_fnc_profileHandler;
-
-                };
-            }else{
-                 ["FROM PROFILE IS NIL"] call ALIVE_fnc_dump;
-            };
-
-            _unit setVariable ["profileID",_leaderGroupToPID];
-
-            [_unit] joinSilent _group;
-
-            _event = ['GROUPS_UPDATED', [_playerID,[]], "GROUP_HANDLER"] call ALIVE_fnc_event;
+            _event = ['SCOM_UPDATED', [_playerID,_opcomData], "COMMAND_HANDLER", "OPS_SIDES_AVAILABLE"] call ALIVE_fnc_event;
             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 
         };
     };
-    case "groupLeave": {
-        private["_join","_playerID","_unit","_newGroup","_debug","_event"];
+    case "opsOPCOMSelected": {
+        private["_data","_playerID","_side","_debug"];
 
         if(typeName _args == "ARRAY") then {
 
-            _join = _args;
-            _playerID = _join select 1;
-            _unit = _join select 2;
+            _data = _args;
+            _playerID = _data select 1;
+            _side = _data select 2;
 
             _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
 
-            _groupFrom = group _unit;
-            _leaderGroupFrom = leader _groupFrom;
-            _leaderGroupFromPID = _leaderGroupFrom getVariable ["profileID",""];
-            _unitsGroupFrom = units _groupFrom;
+            private["_profileIDs","_groups","_opcom","_opcomSide","_data","_unitType"];
 
-            _unitIsPlayer = false;
-            _unitPlayerUID = '0';
+            // get groups state for the selected opcom
 
-            if(isPlayer _unit) then {
-                ["Unit is a player"] call ALIVE_fnc_dump;
-                _unitIsPlayer = true;
-                _unitPlayerUID = getPlayerUID _unit;
-            }else{
-                ["Unit is not a player"] call ALIVE_fnc_dump;
-            };
+            _profileIDs = [ALIVE_profileHandler, "getProfilesBySide", _side] call ALIVE_fnc_profileHandler;
 
-            _groupFromIsProfiled = false;
-            _groupFromProfile = nil;
-
-            if(_leaderGroupFromPID == "") then {
-                ["From group is not profiled"] call ALIVE_fnc_dump;
-            }else{
-                ["From group is profiled %1",_leaderGroupFromPID] call ALIVE_fnc_dump;
-                _groupFromIsProfiled = true;
-                _groupFromProfile = [ALIVE_profileHandler, "getProfile", _leaderGroupFromPID] call ALIVE_fnc_profileHandler;
-            };
-
-            _anyPlayersInGroupFrom = false;
+            _groups = [];
 
             {
-                if(isPlayer _x) then {
-                    _uuid = getPlayerUID _x;
-                    if(_uuid != _unitPlayerUID) then {
-                        _anyPlayersInGroupFrom = true;
-                        ["From group has player: %1 %2",_uuid,_unitPlayerUID] call ALIVE_fnc_dump;
+                _opcom = _x;
+                _opcomSide = [_opcom,"side"] call ALIVE_fnc_hashGet;
+
+                if(_side == _opcomSide) then {
+
+                    {
+                        _data = [];
+                        _unitType = [_opcom,_x,[]] call ALiVE_fnc_HashGet;
+                        {
+                            if (_x in _profileIDs) then {
+
+                                _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                                if !(isnil "_profile") then {
+                                    _position = _profile select 2 select 2;
+
+                                    _data pushBack [_x,_position];
+                                };
+                            };
+                        } forEach _unitType;
+                        _groups pushBack _data;
+                    } forEach ["infantry","motorized","mechanized","armored","air","sea","artillery","AAA"];
+
+                };
+
+            } foreach OPCOM_INSTANCES;
+
+            // send the data back to the players SCOM tablet
+
+            _event = ['SCOM_UPDATED', [_playerID,_side,_groups], "COMMAND_HANDLER", "OPS_GROUPS"] call ALIVE_fnc_event;
+            [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+        };
+    };
+    case "opsGetProfile": {
+        private["_data","_playerID","_profileID","_debug"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _data = _args;
+            _playerID = _data select 1;
+            _profileID = _data select 2;
+
+            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+            private["_profile","_profileData","_waypoints","_waypointPositions","_event"];
+
+            // get profile
+
+            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+            if !(isnil "_profile") then {
+
+                // send the data back to the players SCOM tablet
+
+                _profileData = [];
+                _profileData pushBack (_profile select 2 select 1); // active
+                _profileData pushBack (_profile select 2 select 3); // side
+                _profileData pushBack (_profile select 2 select 2); // position
+                _profileData pushBack (_profile select 2 select 13); // group
+
+                _waypoints = _profile select 2 select 16;
+                _waypointPositions = [];
+                {
+                    _waypointPositions pushBack ((_x select 2) select 0);
+                } forEach _waypoints;
+
+                _profileData pushBack _waypointPositions; // waypoints
+
+                _event = ['SCOM_UPDATED', [_playerID,_profileData], "COMMAND_HANDLER", "OPS_PROFILE"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+            }else{
+
+                _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+            };
+        };
+    };
+    case "opsGetProfileWaypoints": {
+        private["_data","_playerID","_profileID","_debug"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _data = _args;
+            _playerID = _data select 1;
+            _profileID = _data select 2;
+
+            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+            private["_profile","_profileData","_waypoints","_waypointPositions","_event"];
+
+            // get profile
+
+            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+            if !(isnil "_profile") then {
+
+                // send the data back to the players SCOM tablet
+
+                _profileData = [];
+                _profileData pushBack (_profile select 2 select 1); // active
+                _profileData pushBack (_profile select 2 select 3); // side
+                _profileData pushBack (_profile select 2 select 2); // position
+                _profileData pushBack (_profile select 2 select 13); // group
+
+                _waypoints = _profile select 2 select 16;
+                _waypointsArray = [];
+                {
+                    _waypointsArray pushBack (_x select 2);
+                } forEach _waypoints;
+
+                _profileData pushBack _waypointsArray; // waypoints
+
+                _event = ['SCOM_UPDATED', [_playerID,_profileData], "COMMAND_HANDLER", "OPS_PROFILE_WAYPOINTS"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+            }else{
+
+                _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+            };
+        };
+    };
+    case "opsClearProfileWaypoints": {
+        private["_data","_playerID","_profileID"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _data = _args;
+            _playerID = _data select 1;
+            _profileID = _data select 2;
+
+            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+            private["_profile","_profileData","_waypoints","_waypointPositions","_event"];
+
+            // get profile
+
+            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+            if !(isnil "_profile") then {
+
+                // clear waypoints
+
+                [_profile, 'clearWaypoints'] call ALIVE_fnc_profileEntity;
+
+                // send the data back to the players SCOM tablet
+
+                _profileData = [];
+                _profileData pushBack (_profile select 2 select 1); // active
+                _profileData pushBack (_profile select 2 select 3); // side
+                _profileData pushBack (_profile select 2 select 2); // position
+                _profileData pushBack (_profile select 2 select 13); // group
+                _profileData pushBack []; // waypoints
+
+                _event = ['SCOM_UPDATED', [_playerID,_profileData], "COMMAND_HANDLER", "OPS_PROFILE_WAYPOINTS_CLEARED"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+            }else{
+
+                _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+            };
+        };
+    };
+    case "opsApplyProfileWaypoints": {
+        private["_data","_playerID","_profileID","_plannedWaypoints"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _data = _args;
+            _playerID = _data select 1;
+            _profileID = _data select 2;
+            _plannedWaypoints = _data select 3;
+
+            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+            private["_profile","_profileData","_waypoints","_waypointPositions","_event","_profilePos","_wp"];
+
+            // get profile
+
+            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+            if !(isnil "_profile") then {
+
+                _profilePos = [_profile, "position"] call CBA_fnc_HashGet;
+
+                //-- Create waypoints
+                {
+                    /*
+                    _x params ["_pos","_type","_speed","_formation","_behavior"];
+
+                    if ((_type == "Land - Engines Off") or (_type == "Land - Low Hover")) then {
+                        _wp = [_pos,15] call ALIVE_fnc_createProfileWaypoint;
+                        [_profile,"addWaypoint",_wp] call ALIVE_fnc_profileEntity;
+                        _helipad = "Land_HelipadEmpty_F" createVehicle _pos;
+                        [_profile,_helipad,_type] spawn {
+                            _this params ["_profile","_helipad","_type"];
+                            _timeTaken = time;
+                            waitUntil {sleep 5;([_profile,"active"] call ALiVE_fnc_hashGet or {time - _timeTaken > 600})};
+                            if ([_profile,"active"] call ALiVE_fnc_hashGet) then {
+                                _group = _profile select 2 select 13;
+                                waitUntil {sleep 2;unitReady (leader _group)};
+                                [_profile, 'clearWaypoints'] call ALIVE_fnc_profileEntity;	//-- Needed because waypoint doesn't seem to complete when you use land command
+                                if (_type == "Land - Engines Off") then {(vehicle (leader _group)) land "LAND"} else {(vehicle (leader _group)) land "GET OUT"};
+                                sleep 60;
+                                deleteVehicle _helipad;
+                            } else {deleteVehicle _helipad};
+                        };
+                    } else {
+                        _wp = [_pos, 15, _type, _speed,50,[0,0,0], _formation, "RED", _behavior] call ALIVE_fnc_createProfileWaypoint;
+                        [_profile,"addWaypoint",_wp] call ALIVE_fnc_profileEntity;
                     };
-                };
-            } forEach _unitsGroupFrom;
+                    */
 
-            if!(isNil "_groupFromProfile") then {
-                ["FROM PROFILE IS NOT NIL"] call ALIVE_fnc_dump;
-                _groupFromProfile call ALIVE_fnc_inspectHash;
-                _result = [_groupFromProfile,"handleDeath",_unit] call ALIVE_fnc_profileEntity;
-                // all units in profile are killed
-                if!(_result) then {
+                    _wp = [_x] call ALIVE_fnc_createProfileWaypoint;
+                    [_profile,"addWaypoint",_wp] call ALIVE_fnc_profileEntity;
 
-                    // not sure about this, it will remove the profile and the bodies will remain
-                    // will need to have dead unit cleanup scripts
-                    [ALIVE_profileHandler, "unregisterProfile", _groupFromProfile] call ALIVE_fnc_profileHandler;
+                } forEach _plannedWaypoints;
 
-                };
+                _profileData = [];
+                _profileData pushBack (_profile select 2 select 1); // active
+                _profileData pushBack (_profile select 2 select 3); // side
+                _profileData pushBack (_profile select 2 select 2); // position
+                _profileData pushBack (_profile select 2 select 13); // group
+
+                _waypoints = _profile select 2 select 16;
+                _waypointsArray = [];
+                {
+                    _waypointsArray pushBack (_x select 2);
+                } forEach _waypoints;
+
+                _profileData pushBack _waypointsArray; // waypoints
+
+                _event = ['SCOM_UPDATED', [_playerID,_profileData], "COMMAND_HANDLER", "OPS_PROFILE_WAYPOINTS_UPDATED"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
             }else{
-                 ["FROM PROFILE IS NIL"] call ALIVE_fnc_dump;
+
+                _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+            };
+        };
+    };
+
+    case "intelTypeSelected": {
+        private["_data","_playerID","_type","_limit","_side","_faction","_debug"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _data = _args;
+            _playerID = _data select 1;
+            _type = _data select 2;
+            _limit = _data select 3;
+            _side = _data select 4;
+            _faction = _data select 5;
+
+            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+            switch(_type) do {
+                case "Objectives": {
+
+                    private["_objectiveData","_opcom","_opcomFactions","_opcomSide"];
+
+                    // get opcoms available by limit set on intel
+
+                    _opcomData = [];
+
+                    {
+                        _opcom = _x;
+                        _opcomFactions = [_opcom,"factions",""] call ALiVE_fnc_HashGet;
+                        _opcomSide = [_opcom,"side"] call ALIVE_fnc_hashGet;
+
+                        switch(_limit) do {
+                            case "SIDE": {
+                                if(_side == _opcomSide) then {
+                                    _opcomData pushBack (_opcomSide);
+                                };
+                            };
+                            case "FACTION": {
+                                if(_faction in _opcomFactions) then {
+                                    _opcomData pushBack (_opcomSide);
+                                };
+                            };
+                            case "ALL": {
+                                _opcomData pushBack (_opcomSide);
+                            };
+                        };
+
+                    } foreach OPCOM_INSTANCES;
+
+                    // send the data back to the players SCOM tablet
+
+                    _event = ['SCOM_UPDATED', [_playerID,_opcomData], "COMMAND_HANDLER", "OPCOM_SIDES_AVAILABLE"] call ALIVE_fnc_event;
+                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                };
+
+                case "Marking": {
+
+                    private["_profilesInactive","_entities","_entitiesWest","_entitiesEast","_entitiesGuer","_profiles","_type","_profilePosition","_profileSide","_profileFaction"];
+
+                    // get inactive profiles available by limit set on intel
+
+                    _profilesInactive = [ALIVE_profileHandler, "profilesInActiveBySide"] call ALIVE_fnc_hashGet;
+
+                    switch(_limit) do {
+                        case "SIDE": {
+                            _entities = [_profilesInactive, _side] call ALIVE_fnc_hashGet;
+                            _entities = _entities select 2;
+                        };
+                        case "FACTION": {
+                            _entities = [_profilesInactive, _side] call ALIVE_fnc_hashGet;
+                            _entities = _entities select 2;
+                        };
+                        case "ALL": {
+                            _entitiesWest = [_profilesInactive, "WEST"] call ALIVE_fnc_hashGet;
+                            _entitiesWest = _entitiesWest select 2;
+                            _entitiesEast = [_profilesInactive, "EAST"] call ALIVE_fnc_hashGet;
+                            _entitiesEast = _entitiesEast select 2;
+                            _entitiesGuer = [_profilesInactive, "GUER"] call ALIVE_fnc_hashGet;
+                            _entitiesGuer = _entitiesGuer select 2;
+
+                            _entities = _entitiesWest;
+                            _entities = _entities + _entitiesEast;
+                            _entities = _entities + _entitiesGuer;
+                        };
+                    };
+
+                    _profiles = [];
+                    {
+                        _type = _x select 2 select 5;
+
+                        if(_type == "entity") then {
+
+                            _profilePosition = _x select 2 select 2;
+                            _profileSide = _x select 2 select 3;
+                            _profileFaction = _x select 2 select 29;
+
+                            if(_limit == "FACTION" && {_faction == _profileFaction}) then {
+                                _profiles pushback [_profilePosition,_profileSide];
+                            }else{
+                                _profiles pushback [_profilePosition,_profileSide];
+                            };
+                        };
+
+                    } forEach _entities;
+
+                    // send the data back to the players SCOM tablet
+
+                    _event = ['SCOM_UPDATED', [_playerID,_profiles], "COMMAND_HANDLER", "UNIT_MARKING"] call ALIVE_fnc_event;
+                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+                };
             };
 
-            _unit setVariable ["profileID",""];
+        };
+    };
+    case "intelOPCOMSelected": {
+        private["_data","_playerID","_side","_debug"];
 
-            _newGroup = createGroup (side _unit);
+        if(typeName _args == "ARRAY") then {
 
-            [_unit] joinSilent _newGroup;
+            _data = _args;
+            _playerID = _data select 1;
+            _side = _data select 2;
 
-            if(_unitIsPlayer) then {
-                ["CONNECT","",_unit] call ALIVE_fnc_createProfilesFromPlayers;
-            }else{
-                [true, [_newGroup], []] call ALIVE_fnc_createProfilesFromUnitsRuntime;
-            };
+            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
 
-            _event = ['GROUPS_UPDATED', [_playerID,[]], "GROUP_HANDLER"] call ALIVE_fnc_event;
+            private["_objectiveData","_opcom","_opcomSide","_center","_size","_tacom_state","_opcom_state","_section","_profileID","_profile","_position","_sections"];
+
+            // get objective state by selected opcom
+
+            _objectiveData = [];
+
+            {
+                _opcom = _x;
+                _opcomSide = [_opcom,"side"] call ALIVE_fnc_hashGet;
+
+                if(_side == _opcomSide) then {
+
+                    {
+                        _center = [_x,"center",[]] call ALIVE_fnc_hashGet;
+                        _size = [_x,"size",150] call ALIVE_fnc_hashGet;
+                        _tacom_state = [_x,"tacom_state","unassigned"] call ALIVE_fnc_hashGet;
+                        _opcom_state = [_x,"opcom_state","unassigned"] call ALIVE_fnc_hashGet;
+                        _section = [_x,"section"] call ALIVE_fnc_hashGet;
+
+                        if!(isNil "_section") then {
+
+                            _sections = [];
+
+                            {
+                                _profileID = _x;
+                                _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+                                if !(isnil "_profile") then {
+                                    _position = _profile select 2 select 2;
+
+                                    if!(surfaceIsWater _position) then {
+                                        _dir = [_position, _center] call BIS_fnc_dirTo;
+                                        _sections pushBack [_position,_dir];
+                                    };
+
+                                };
+                            } forEach _section;
+                        };
+
+                        _objectiveData pushBack [_size,_center,_tacom_state,_opcom_state,_sections];
+
+                    } forEach ([_opcom,"objectives",[]] call ALiVE_fnc_HashGet);
+
+                };
+
+            } foreach OPCOM_INSTANCES;
+
+            // send the data back to the players SCOM tablet
+
+            _event = ['SCOM_UPDATED', [_playerID,_objectiveData], "COMMAND_HANDLER", "OPCOM_OBJECTIVES"] call ALIVE_fnc_event;
             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 
         };
@@ -341,6 +752,6 @@ switch(_operation) do {
         _result = [_logic, _operation, _args] call SUPERCLASS;
     };
 };
-TRACE_1("groupHandler - output",_result);
+TRACE_1("commandHandler - output",_result);
 
 if !(isnil "_result") then {_result} else {nil};

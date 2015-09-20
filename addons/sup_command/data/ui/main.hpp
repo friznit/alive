@@ -80,72 +80,6 @@ class SCOMTablet
             action = "closeDialog 0";
         };
 
-        class SCOMTablet_mainList : SCOMTablet_RscListNBox
-        {
-            idc = 12011;
-            text = "";
-            x = 0.271102 * safezoneW + safezoneX;
-            y = 0.1600 * safezoneH + safezoneY;
-            w = 0.465 * safezoneW;
-            h = 0.5 * safezoneH;
-            colorBackground[] = {0.173,0.173,0.173,1};
-            colorSelectBackground[] = {0.3,0.3,0.3,1};
-            colorSelectBackground2[] = {0.3,0.3,0.3,1};
-            colorText[] = {0.6,0.6,0.6,1};
-            color[] = {0.8,0.8,0.8,1};
-            colorActive[] = {0.384,0.439,0.341,1};
-            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
-            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
-            columns[] = {0,0.07,0.6,0.8};
-            drawSideArrows = false;
-            idcLeft = -1;
-            idcRight = -1;
-        };
-
-        class SCOMTablet_leftList : SCOMTablet_RscListNBox
-        {
-            idc = 12012;
-            text = "";
-            x = 0.271102 * safezoneW + safezoneX;
-            y = 0.1600 * safezoneH + safezoneY;
-            w = 0.2325 * safezoneW;
-            h = 0.45 * safezoneH;
-            colorBackground[] = {0.173,0.173,0.173,1};
-            colorSelectBackground[] = {0.3,0.3,0.3,1};
-            colorSelectBackground2[] = {0.3,0.3,0.3,1};
-            colorText[] = {0.6,0.6,0.6,1};
-            color[] = {0.6,0.6,0.6,1};
-            colorActive[] = {0.384,0.439,0.341,1};
-            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
-            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
-            columns[] = {0,0.2,0.6,0.8};
-            drawSideArrows = false;
-            idcLeft = -1;
-            idcRight = -1;
-        };
-
-        class SCOMTablet_rightList : SCOMTablet_RscListNBox
-        {
-            idc = 12013;
-            text = "";
-            x = 0.507 * safezoneW + safezoneX;
-            y = 0.1600 * safezoneH + safezoneY;
-            w = 0.2325 * safezoneW;
-            h = 0.45 * safezoneH;
-            colorBackground[] = {0.173,0.173,0.173,1};
-            colorSelectBackground[] = {0.3,0.3,0.3,1};
-            colorSelectBackground2[] = {0.3,0.3,0.3,1};
-            colorText[] = {0.6,0.6,0.6,1};
-            color[] = {0.6,0.6,0.6,1};
-            colorActive[] = {0.3,0.3,0.3,1};
-            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
-            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
-            columns[] = {0,0.2,0.5,0.7};
-            drawSideArrows = false;
-            idcLeft = -1;
-            idcRight = -1;
-        };
-
         class SCOMTablet_1ButtonL : SCOMTablet_RscButton
         {
             idc = 12014;
@@ -230,15 +164,6 @@ class SCOMTablet
             colorFocused[] = {0.706,0.706,0.706,1};
         };
 
-        class SCOMTablet_left_map : SCOMTablet_RscMap
-        {
-            idc = 12020;
-            x = 0.271102 * safezoneW + safezoneX;
-            y = 0.1600 * safezoneH + safezoneY;
-            w = 0.2325 * safezoneW;
-            h = 0.45 * safezoneH;
-        };
-
         class SCOMTablet_right_map : SCOMTablet_RscMap
         {
             idc = 12021;
@@ -246,6 +171,187 @@ class SCOMTablet
             y = 0.1600 * safezoneH + safezoneY;
             w = 0.2325 * safezoneW;
             h = 0.45 * safezoneH;
+        };
+
+        class SCOMTablet_main_map : SCOMTablet_RscMap
+        {
+            idc = 12022;
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.1600 * safezoneH + safezoneY;
+            w = 0.465 * safezoneW;
+            h = 0.5 * safezoneH;
+        };
+
+        class SCOMTablet_editList : SCOMTablet_RscListBox
+        {
+            idc = 12027;
+            text = "";
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.1600 * safezoneH + safezoneY;
+            w = 0.14 * safezoneW;
+            h = 0.45 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorSelectBackground[] = {0.3,0.3,0.3,1};
+            colorSelectBackground2[] = {0.3,0.3,0.3,1};
+            colorText[] = {0.6,0.6,0.6,1};
+            color[] = {0.6,0.6,0.6,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
+        class SCOMTablet_waypointList : SCOMTablet_RscListBox
+        {
+            idc = 12028;
+            text = "";
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.1600 * safezoneH + safezoneY;
+            w = 0.14 * safezoneW;
+            h = 0.13 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorSelectBackground[] = {0.3,0.3,0.3,1};
+            colorSelectBackground2[] = {0.3,0.3,0.3,1};
+            colorText[] = {0.6,0.6,0.6,1};
+            color[] = {0.6,0.6,0.6,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
+        class SCOMTablet_waypointTypeList : SCOMTablet_RscListBox
+        {
+            idc = 12029;
+            text = "";
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.296 * safezoneH + safezoneY;
+            w = 0.14 * safezoneW;
+            h = 0.103 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorSelectBackground[] = {0.3,0.3,0.3,1};
+            colorSelectBackground2[] = {0.3,0.3,0.3,1};
+            colorText[] = {0.6,0.6,0.6,1};
+            color[] = {0.6,0.6,0.6,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
+        class SCOMTablet_waypointSpeedList : SCOMTablet_RscListBox
+        {
+            idc = 12030;
+            text = "";
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.405 * safezoneH + safezoneY;
+            w = 0.14 * safezoneW;
+            h = 0.1 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorSelectBackground[] = {0.3,0.3,0.3,1};
+            colorSelectBackground2[] = {0.3,0.3,0.3,1};
+            colorText[] = {0.6,0.6,0.6,1};
+            color[] = {0.6,0.6,0.6,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
+        class SCOMTablet_waypointFormationList : SCOMTablet_RscListBox
+        {
+            idc = 12031;
+            text = "";
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.51 * safezoneH + safezoneY;
+            w = 0.14 * safezoneW;
+            h = 0.1 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorSelectBackground[] = {0.3,0.3,0.3,1};
+            colorSelectBackground2[] = {0.3,0.3,0.3,1};
+            colorText[] = {0.6,0.6,0.6,1};
+            color[] = {0.6,0.6,0.6,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
+        class SCOMTablet_waypointBehavourList : SCOMTablet_RscListBox
+        {
+            idc = 12032;
+            text = "";
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.616 * safezoneH + safezoneY;
+            w = 0.14 * safezoneW;
+            h = 0.1 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorSelectBackground[] = {0.3,0.3,0.3,1};
+            colorSelectBackground2[] = {0.3,0.3,0.3,1};
+            colorText[] = {0.6,0.6,0.6,1};
+            color[] = {0.6,0.6,0.6,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
+        class SCOMTablet_edit_map : SCOMTablet_RscMap
+        {
+            idc = 12026;
+            x = 0.415 * safezoneW + safezoneX;
+            y = 0.1600 * safezoneH + safezoneY;
+            w = 0.32 * safezoneW;
+            h = 0.45 * safezoneH;
+        };
+
+        class SCOMTablet_intelTypeTitle : SCOMTablet_RscText
+        {
+            idc = 12023;
+            text = "Intel Type";
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.6596 * safezoneH + safezoneY;
+            w = 0.159596 * safezoneW;
+            h = 0.0208 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#627057";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
+        };
+
+        class SCOMTablet_intelTypeList : SCOMTablet_RscGUIListBox
+        {
+            idc = 12024;
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.6810 * safezoneH + safezoneY;
+            w = 0.2325 * safezoneW;
+            h = 0.082 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+        };
+
+        class SCOMTablet_intelStatus : SCOMTablet_RscText
+        {
+            idc = 12025;
+            text = "";
+            x = 0.507 * safezoneW + safezoneX;
+            y = 0.6596 * safezoneH + safezoneY;
+            w = 0.159596 * safezoneW;
+            h = 0.0208 * safezoneH;
+            colorBackground[] = {0,0,0,0};
+            class Attributes
+            {
+                font = "PuristaMedium";
+                color = "#627057";
+                align = "left";
+                valign = "middle";
+                shadow = true;
+                shadowColor = "#000000";
+                size = 0.8;
+            };
         };
 
     };

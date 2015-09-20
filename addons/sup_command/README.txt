@@ -38,7 +38,7 @@ SpyderBlack
 | Rough component description |
 #=============================#
 
-Group management
+Command and Control / Intel Tablet
 
 #=================#
 | Contact details |
