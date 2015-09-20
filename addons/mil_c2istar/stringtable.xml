@@ -95,6 +95,36 @@
 <Key ID="STR_ALIVE_C2ISTAR_GM_LIMIT_FACTION">
     <English>Faction</English>
 </Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_OPS_LIMIT">
+    <English>Limit Command:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_OPS_LIMIT_COMMENT">
+    <English>Limits effect of operations tablet functions</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_OPS_LIMIT_SIDE">
+    <English>Side</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_OPS_LIMIT_FACTION">
+    <English>Faction</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_OPS_LIMIT_ALL">
+    <English>All</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT">
+    <English>Limit Command:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT_COMMENT">
+    <English>Limits effect of operations tablet functions</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT_SIDE">
+    <English>Side</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT_FACTION">
+    <English>Faction</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT_ALL">
+    <English>All</English>
+</Key>
 <Key ID="STR_ALIVE_C2ISTAR_DISPLAY_INTEL">
     <English>Display Map Intel:</English>
 </Key>
