@@ -139,15 +139,6 @@ if (_menuName == "C2ISTAR") then {
                      true,
                      _result
                 ],
-                ["Operations2",
-                    {CreateDialog "Spyder_TacticalCommandHighCommand"},
-                    "",
-                    localize "STR_ALIVE_SUP_COMMAND_HIGH_COMMENT",
-                     "",
-                     -1,
-                     true,
-                     _result
-                ],
 				["Send SITREP",
 					{createDialog "RscDisplayALIVESITREP"},
 					"",
