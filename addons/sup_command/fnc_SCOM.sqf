@@ -559,454 +559,6 @@ switch(_operation) do {
 
                 };
 
-                /*
-                case "GROUP_MANAGER_LEFT_LIST_SELECT": {
-
-                    private ["_commandState","_list","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue"];
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _list = _args select 0 select 0;
-                    _selectedIndex = _args select 0 select 1;
-
-                    if(_selectedIndex >= 0) then {
-
-                        _listOptions = [_commandState,"commandListOptions"] call ALIVE_fnc_hashGet;
-                        _listValues = [_commandState,"commandListValues"] call ALIVE_fnc_hashGet;
-                        _selectedOption = _listOptions select _selectedIndex;
-                        _selectedValue = _listValues select _selectedIndex;
-
-                        [_commandState,"commandListLeftSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
-                        [_commandState,"commandListLeftSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
-
-                        if(typeName _selectedValue == 'GROUP') then {
-                            [_commandState,"commandListLeftSelectedType","GROUP"] call ALIVE_fnc_hashSet;
-                        }else{
-                            [_commandState,"commandListLeftSelectedType","UNIT"] call ALIVE_fnc_hashSet;
-                        };
-
-                        [_logic,"commandState",_commandState] call MAINCLASS;
-
-                        //_commandState call ALIVE_fnc_inspectHash;
-
-                        [_logic,"handleGroupSelection"] call MAINCLASS;
-
-                    };
-
-                };
-
-                case "GROUP_MANAGER_RIGHT_LIST_SELECT": {
-
-                    private ["_commandState","_list","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue"];
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _list = _args select 0 select 0;
-                    _selectedIndex = _args select 0 select 1;
-
-                    if(_selectedIndex >= 0) then {
-
-                        _listOptions = [_commandState,"commandListOptions"] call ALIVE_fnc_hashGet;
-                        _listValues = [_commandState,"commandListValues"] call ALIVE_fnc_hashGet;
-                        _selectedOption = _listOptions select _selectedIndex;
-                        _selectedValue = _listValues select _selectedIndex;
-
-                        [_commandState,"commandListRightSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
-                        [_commandState,"commandListRightSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
-
-                        if(typeName _selectedValue == 'GROUP') then {
-                            [_commandState,"commandListRightSelectedType","GROUP"] call ALIVE_fnc_hashSet;
-                        }else{
-                            [_commandState,"commandListRightSelectedType","UNIT"] call ALIVE_fnc_hashSet;
-                        };
-
-                        [_logic,"commandState",_commandState] call MAINCLASS;
-
-                        //_commandState call ALIVE_fnc_inspectHash;
-
-                        [_logic,"handleGroupSelection"] call MAINCLASS;
-
-                    };
-
-                };
-
-                case "LEADER_PROMOTE_LEFT": {
-
-                    private ["_commandState","_unitSelected","_group"];
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    //_commandState call ALIVE_fnc_inspectHash;
-
-                    _unitSelected = [_commandState,"commandListLeftSelectedValue"] call ALIVE_fnc_hashGet;
-
-                    _group = group _unitSelected;
-
-                    _group selectLeader _unitSelected;
-
-                    [_logic,"resetGroupMananger"] call MAINCLASS;
-
-                };
-
-                case "LEADER_PROMOTE_RIGHT": {
-
-                    private ["_commandState","_unitSelected","_group"];
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    //_commandState call ALIVE_fnc_inspectHash;
-
-                    _unitSelected = [_commandState,"commandListRightSelectedValue"] call ALIVE_fnc_hashGet;
-
-                    _group = group _unitSelected;
-
-                    _group selectLeader _unitSelected;
-
-                    [_logic,"resetGroupMananger"] call MAINCLASS;
-
-                };
-
-                case "JOIN_GROUP_LEFT": {
-
-                    private ["_commandState","_unitSelected","_commandSelected","_playerID","_requestID","_event"];
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    //_commandState call ALIVE_fnc_inspectHash;
-
-                    _unitSelected = [_commandState,"commandListLeftSelectedValue"] call ALIVE_fnc_hashGet;
-                    _commandSelected = [_commandState,"commandListRightSelectedValue"] call ALIVE_fnc_hashGet;
-
-                    _playerID = getPlayerUID player;
-                    _requestID = format["%1_%2",_faction,floor(time)];
-
-                    _event = ['GROUP_JOIN', [_requestID,_playerID,_unitSelected,_commandSelected], "SCOM"] call ALIVE_fnc_event;
-
-                    if(isServer) then {
-                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-                    }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
-                    };
-
-                    [_logic,"resetGroupMananger"] call MAINCLASS;
-
-                };
-
-                case "JOIN_GROUP_RIGHT": {
-
-                    private ["_commandState","_unitSelected","_commandSelected","_playerID","_requestID","_event"];
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    //_commandState call ALIVE_fnc_inspectHash;
-
-                    _unitSelected = [_commandState,"commandListRightSelectedValue"] call ALIVE_fnc_hashGet;
-                    _commandSelected = [_commandState,"commandListLeftSelectedValue"] call ALIVE_fnc_hashGet;
-
-                    _playerID = getPlayerUID player;
-                    _requestID = format["%1_%2",_faction,floor(time)];
-
-                    _event = ['GROUP_JOIN', [_requestID,_playerID,_unitSelected,_commandSelected], "SCOM"] call ALIVE_fnc_event;
-
-                    if(isServer) then {
-                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-                    }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
-                    };
-
-                    [_logic,"resetGroupMananger"] call MAINCLASS;
-
-                };
-
-                case "LEAVE_GROUP_LEFT": {
-
-                    private ["_commandState","_unitSelected","_newGroup","_playerID","_requestID","_event"];
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    //_commandState call ALIVE_fnc_inspectHash;
-
-                    _unitSelected = [_commandState,"commandListLeftSelectedValue"] call ALIVE_fnc_hashGet;
-
-                    _playerID = getPlayerUID player;
-                    _requestID = format["%1_%2",_faction,floor(time)];
-
-                    _event = ['GROUP_LEAVE', [_requestID,_playerID,_unitSelected], "SCOM"] call ALIVE_fnc_event;
-
-                    if(isServer) then {
-                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-                    }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
-                    };
-
-                    [_logic,"resetGroupMananger"] call MAINCLASS;
-
-                };
-
-                case "LEAVE_GROUP_RIGHT": {
-
-                    private ["_commandState","_unitSelected","_newGroup","_playerID","_requestID","_event"];
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    //_commandState call ALIVE_fnc_inspectHash;
-
-                    _unitSelected = [_commandState,"commandListRightSelectedValue"] call ALIVE_fnc_hashGet;
-
-                    _playerID = getPlayerUID player;
-                    _requestID = format["%1_%2",_faction,floor(time)];
-
-                    _event = ['GROUP_LEAVE', [_requestID,_playerID,_unitSelected], "SCOM"] call ALIVE_fnc_event;
-
-                    if(isServer) then {
-                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-                    }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
-                    };
-
-                    [_logic,"resetGroupMananger"] call MAINCLASS;
-
-                };
-
-                case "SHOW_GROUP_DETAIL_LEFT": {
-
-                    private ["_commandState","_commandSelected","_mainList","_dataSource","_rows","_values"];
-
-                    [_logic,"enableGroupDetail"] call MAINCLASS;
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _commandSelected = [_commandState,"commandListLeftSelectedValue"] call ALIVE_fnc_hashGet;
-
-                    _mainList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_MainList);
-
-                    _dataSource = [_commandSelected] call ALiVE_fnc_getGroupDetailDataSource;
-
-                    //_dataSource call ALIVE_fnc_inspectArray;
-
-                    _rows = _dataSource select 0;
-                    _values = _dataSource select 1;
-
-                    {
-                        _value = _values select _forEachIndex;
-
-                        _row = _x select 0;
-
-                        switch(count(_row)) do {
-                            case 6: {
-                                _rowIndex = _mainList lnbAddRow _row;
-                                _mainList lnbSetColor [[_rowIndex,0], [0.384,0.439,0.341,1]];
-                                _mainList lnbSetColor [[_rowIndex,1], [0.384,0.439,0.341,1]];
-                                _mainList lnbSetColor [[_rowIndex,2], [0.384,0.439,0.341,1]];
-                                _mainList lnbSetColor [[_rowIndex,3], [0.384,0.439,0.341,1]];
-                            };
-                            case 4: {
-                                _rowIndex = _mainList lnbAddRow [];
-                                _mainList lnbSetPicture [[_rowIndex,0], _row select 0];
-                                _mainList lnbSetText [[_rowIndex,1], _row select 1];
-                                _mainList lnbSetText [[_rowIndex,2], _row select 2];
-                                _mainList lnbSetText [[_rowIndex,3], _row select 3];
-                            };
-                            case 2: {
-                                _rowIndex = _mainList lnbAddRow [];
-                                _mainList lnbSetPicture [[_rowIndex,0], _row select 0];
-                                _mainList lnbSetText [[_rowIndex,1], _row select 1];
-                            };
-                            case 1: {
-                                _rowIndex = _mainList lnbAddRow _row;
-                            };
-                        };
-
-                    } foreach _rows;
-
-                };
-
-                case "SHOW_GROUP_DETAIL_RIGHT": {
-
-                    private ["_commandState","_commandSelected","_mainList"];
-
-                    [_logic,"enableGroupDetail"] call MAINCLASS;
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _commandSelected = [_commandState,"commandListRightSelectedValue"] call ALIVE_fnc_hashGet;
-
-                    _mainList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_MainList);
-
-                    _dataSource = [_commandSelected] call ALiVE_fnc_getGroupDetailDataSource;
-
-                    //_dataSource call ALIVE_fnc_inspectArray;
-
-                    _rows = _dataSource select 0;
-                    _values = _dataSource select 1;
-
-                    {
-                        _value = _values select _forEachIndex;
-
-                        _row = _x select 0;
-
-                        switch(count(_row)) do {
-                            case 6: {
-                                _rowIndex = _mainList lnbAddRow _row;
-                                _mainList lnbSetColor [[_rowIndex,0], [0.384,0.439,0.341,1]];
-                                _mainList lnbSetColor [[_rowIndex,1], [0.384,0.439,0.341,1]];
-                                _mainList lnbSetColor [[_rowIndex,2], [0.384,0.439,0.341,1]];
-                                _mainList lnbSetColor [[_rowIndex,3], [0.384,0.439,0.341,1]];
-                            };
-                            case 4: {
-                                _rowIndex = _mainList lnbAddRow [];
-                                _mainList lnbSetPicture [[_rowIndex,0], _row select 0];
-                                _mainList lnbSetText [[_rowIndex,1], _row select 1];
-                                _mainList lnbSetText [[_rowIndex,2], _row select 2];
-                                _mainList lnbSetText [[_rowIndex,3], _row select 3];
-                            };
-                            case 2: {
-                                _rowIndex = _mainList lnbAddRow [];
-                                _mainList lnbSetPicture [[_rowIndex,0], _row select 0];
-                                _mainList lnbSetText [[_rowIndex,1], _row select 1];
-                            };
-                            case 1: {
-                                _rowIndex = _mainList lnbAddRow _row;
-                            };
-                        };
-
-                    } foreach _rows;
-
-                };
-
-                case "HIDE_GROUP_DETAIL": {
-
-                    private ["_commandState","_commandSelected","_map","_markers","_position","_markerLabel","_marker"];
-
-                    [_logic,"enableGroupManager"] call MAINCLASS;
-
-                };
-
-                case "SHOW_GROUP_MAP_LEFT": {
-
-                    private ["_commandState","_commandSelected","_map","_markers","_position","_markerLabel","_marker"];
-
-                    [_logic,"enableLeftMap"] call MAINCLASS;
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _commandSelected = [_commandState,"commandListRightSelectedValue"] call ALIVE_fnc_hashGet;
-
-                    _map = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_MapLeft);
-
-                    _markers = [_logic,"marker"] call MAINCLASS;
-
-                    if(count _markers > 0) then {
-                        deleteMarkerLocal (_markers select 0);
-                    };
-
-                    _position = position leader _commandSelected;
-
-                    _markerLabel = format["%1",_commandSelected];
-
-                    ctrlMapAnimClear _map;
-                    _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _position];
-                    ctrlMapAnimCommit _map;
-
-                    _marker = createMarkerLocal [format["%1%2",MTEMPLATE,"marker"],_position];
-                    _marker setMarkerAlphaLocal 1;
-                    _marker setMarkerTextLocal _markerLabel;
-                    _marker setMarkerTypeLocal "hd_End";
-
-                    [_commandState,"commandMapActive",true] call ALIVE_fnc_hashSet;
-
-                    [_logic,"commandState",_commandState] call MAINCLASS;
-
-                    [_logic,"marker",[_marker]] call MAINCLASS;
-
-                };
-
-                case "HIDE_GROUP_MAP_LEFT": {
-
-                    private ["_commandState","_markers"];
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _markers = [_logic,"marker"] call MAINCLASS;
-
-                    if(count _markers > 0) then {
-                        deleteMarkerLocal (_markers select 0);
-                    };
-
-                    [_commandState,"commandMapActive",false] call ALIVE_fnc_hashSet;
-
-                    [_logic,"commandState",_commandState] call MAINCLASS;
-
-                    [_logic,"enableGroupManager"] call MAINCLASS;
-
-                };
-
-                case "SHOW_GROUP_MAP_RIGHT": {
-
-                    private ["_commandState","_commandSelected","_map","_markers","_position","_markerLabel","_marker"];
-
-                    [_logic,"enableRightMap"] call MAINCLASS;
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _commandSelected = [_commandState,"commandListLeftSelectedValue"] call ALIVE_fnc_hashGet;
-
-                    _map = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_MapRight);
-
-                    _markers = [_logic,"marker"] call MAINCLASS;
-
-                    if(count _markers > 0) then {
-                        deleteMarkerLocal (_markers select 0);
-                    };
-
-                    _position = position leader _commandSelected;
-
-                    _markerLabel = format["%1",_commandSelected];
-
-                    ctrlMapAnimClear _map;
-                    _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _position];
-                    ctrlMapAnimCommit _map;
-
-                    _marker = createMarkerLocal [format["%1%2",MTEMPLATE,"marker"],_position];
-                    _marker setMarkerAlphaLocal 1;
-                    _marker setMarkerTextLocal _markerLabel;
-                    _marker setMarkerTypeLocal "hd_End";
-
-                    [_commandState,"commandMapActive",true] call ALIVE_fnc_hashSet;
-
-                    [_logic,"commandState",_commandState] call MAINCLASS;
-
-                    [_logic,"marker",[_marker]] call MAINCLASS;
-
-
-                };
-
-                case "HIDE_GROUP_MAP_RIGHT": {
-
-                    private ["_commandState","_markers"];
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _markers = [_logic,"marker"] call MAINCLASS;
-
-                    if(count _markers > 0) then {
-                        deleteMarkerLocal (_markers select 0);
-                    };
-
-                    [_commandState,"commandMapActive",false] call ALIVE_fnc_hashSet;
-
-                    [_logic,"commandState",_commandState] call MAINCLASS;
-
-                    [_logic,"enableGroupManager"] call MAINCLASS;
-
-                };
-                */
-
-
                 // INTEL ------------------------------------------------------------------------------------------------------------------------------
 
                 case "INTEL_TYPE_LIST_SELECT": {
@@ -1275,7 +827,7 @@ switch(_operation) do {
 
                 case "OPS_EDIT_WAYPOINTS": {
 
-                    private ["_commandState","_selectedProfile","_profileID","_playerID","_requestID","_event","_faction"];
+                    private ["_commandState","_selectedProfile","_profileID","_playerID","_requestID","_event","_faction","_buttonL1"];
 
                     // a group has been selected for waypoint editing
 
@@ -1289,6 +841,9 @@ switch(_operation) do {
 
                     _playerID = getPlayerUID player;
                     _requestID = format["%1_%2",_faction,floor(time)];
+
+                    _buttonL1 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BL1);
+                    _buttonL1 ctrlShow false;
 
                     // send the event to get further data from the command handler
 
@@ -1306,85 +861,13 @@ switch(_operation) do {
 
                 };
 
-                case "OPS_WAYPOINT_LIST_SELECT": {
-
-                    private ["_commandState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue","_map"];
-
-                    // on click of the ops group list
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _selectedList = _args select 0 select 0;
-                    _selectedIndex = _args select 0 select 1;
-
-                    if(_selectedIndex >= 0) then {
-
-                        // store the selected item in the state
-
-                        _listOptions = [_commandState,"opsGroupWaypointsSelectedOptions"] call ALIVE_fnc_hashGet;
-                        _listValues = [_commandState,"opsGroupWaypointsSelectedValues"] call ALIVE_fnc_hashGet;
-                        _selectedOption = _listOptions select _selectedIndex;
-                        _selectedValue = _listValues select _selectedIndex;
-
-                        [_commandState,"opsGroupWaypointsSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
-                        [_commandState,"opsGroupWaypointsSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
-
-                        [_logic,"commandState",_commandState] call MAINCLASS;
-
-                        _commandState call ALIVE_fnc_inspectHash;
-
-                        // move the map to the selected profile
-
-                        _map = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_EditRight);
-
-                        ctrlMapAnimClear _map;
-                        _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _selectedValue select 0];
-                        ctrlMapAnimCommit _map;
-
-                        [_logic, "enableWaypointSelected"] call MAINCLASS;
-
-                    };
-                };
-
-                case "OPS_CLEAR_WAYPOINTS": {
-
-                    private ["_commandState","_selectedProfile","_profileID","_playerID","_requestID","_event","_faction"];
-
-                    // a group has been selected for waypoint editing
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _selectedProfile = [_commandState,"opsGroupsSelectedValue"] call ALIVE_fnc_hashGet;
-
-                    _profileID = _selectedProfile select 0;
-
-                    _faction = [_logic,"faction"] call MAINCLASS;
-
-                    _playerID = getPlayerUID player;
-                    _requestID = format["%1_%2",_faction,floor(time)];
-
-                    // send the event to get further data from the command handler
-
-                    _event = ['OPS_CLEAR_PROFILE_WAYPOINTS', [_requestID,_playerID,_profileID], "SCOM"] call ALIVE_fnc_event;
-
-                    if(isServer) then {
-                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-                    }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-                    };
-
-                    // show waiting until response comes back
-
-                    [_logic, "enableOpsWaiting"] call MAINCLASS;
-
-                };
-
-                case "OP_MAIN_MAP_CLICK": {
+                case "OP_EDIT_WAYPOINT_MAP_CLICK": {
 
                     // on click of edit map draw planned waypoint
 
-                    private ["_commandState","_button","_posX","_posY","_map","_position","_groupWaypoints","_plannedWaypoints","_previousWaypoints","_arrowMarkers","_selectedProfile",
-                    "_markerPos","_m"];
+                    private ["_commandState","_button","_posX","_posY","_map","_position","_groupWaypoints","_plannedWaypoints","_previousWaypoints",
+                    "_arrowMarkers","_selectedProfile","_markerPos","_m","_waypointOptions","_waypoints","_newWaypointOption","_newWaypointValue",
+                    "_waypointList"];
 
                     _button = _args select 0 select 1;
                     _posX = _args select 0 select 2;
@@ -1439,33 +922,354 @@ switch(_operation) do {
 
                         _arrowMarkers pushBack _m;
 
+                        // add to the waypoints array
+
+                        _waypointOptions = [_commandState,"opsGroupWaypointsSelectedOptions"] call ALIVE_fnc_hashGet;
+                        _waypoints = [_commandState,"opsGroupWaypointsSelectedValues"] call ALIVE_fnc_hashGet;
+
+                        _newWaypointOption = format["Waypoint %1 [%2]",count(_waypoints),"MOVE"];
+                        _newWaypointValue = [_position, 100] call ALIVE_fnc_createProfileWaypoint;
+
+                        _newWaypointValue call ALIVE_fnc_inspectHash;
+
+                        _waypointOptions pushBack _newWaypointOption;
+                        _waypoints pushBack (_newWaypointValue select 2);
+
+                        _waypointList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointList);
+
+                        _waypointList lbAdd _newWaypointOption;
+
                         // store updates in state
 
+                        [_commandState,"opsGroupWaypointsSelectedOptions",_waypointOptions] call ALIVE_fnc_hashSet;
+                        [_commandState,"opsGroupWaypointsSelectedValues",_waypoints] call ALIVE_fnc_hashSet;
                         [_commandState,"opsGroupPlannedWaypoints",_plannedWaypoints] call ALIVE_fnc_hashSet;
                         [_commandState,"opsGroupArrowMarkers",_arrowMarkers] call ALIVE_fnc_hashSet;
                         [_commandState,"opsGroupWaypointsPlanned",true] call ALIVE_fnc_hashSet;
 
+                        _commandState call ALIVE_fnc_inspectHash;
+
                         [_logic,"commandState",_commandState] call MAINCLASS;
 
-                        private["_buttonL2","_buttonR1"];
+                        private["_backButton","_buttonR2","_buttonR3"];
 
-                        _buttonL2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BL2);
-                        _buttonL2 ctrlShow true;
-                        _buttonL2 ctrlSetText "Clear Waypoint Changes";
-                        _buttonL2 ctrlSetEventHandler ["MouseButtonClick", "['OPS_CANCEL_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+                        _backButton = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                        _backButton ctrlShow false;
 
-                        _buttonR1 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR1);
-                        _buttonR1 ctrlShow true;
-                        _buttonR1 ctrlSetText "Apply Waypoint Changes";
-                        _buttonR1 ctrlSetEventHandler ["MouseButtonClick", "['OPS_APPLY_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+                        _buttonR2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR2);
+                        _buttonR2 ctrlShow true;
+                        _buttonR2 ctrlSetText "Clear Waypoint Changes";
+                        _buttonR2 ctrlSetEventHandler ["MouseButtonClick", "['OPS_CANCEL_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                        _buttonR3 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR3);
+                        _buttonR3 ctrlShow true;
+                        _buttonR3 ctrlSetText "Apply Waypoint Changes";
+                        _buttonR3 ctrlSetEventHandler ["MouseButtonClick", "['OPS_APPLY_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
 
                     };
 
                 };
 
+                case "OP_MAP_CLICK_NULL": {
+
+                    // map click on reset
+                    // do nothing
+
+                };
+
+                case "OPS_WAYPOINT_LIST_SELECT": {
+
+                    private ["_commandState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue","_map"];
+
+                    // on click of the ops group list
+
+                    _commandState = [_logic,"commandState"] call MAINCLASS;
+
+                    _selectedList = _args select 0 select 0;
+                    _selectedIndex = _args select 0 select 1;
+
+                    if(_selectedIndex >= 0) then {
+
+                        // store the selected item in the state
+
+                        _listOptions = [_commandState,"opsGroupWaypointsSelectedOptions"] call ALIVE_fnc_hashGet;
+                        _listValues = [_commandState,"opsGroupWaypointsSelectedValues"] call ALIVE_fnc_hashGet;
+                        _selectedOption = _listOptions select _selectedIndex;
+                        _selectedValue = _listValues select _selectedIndex;
+
+                        [_commandState,"opsGroupWaypointsSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
+                        [_commandState,"opsGroupWaypointsSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+
+                        [_logic,"commandState",_commandState] call MAINCLASS;
+
+                        _commandState call ALIVE_fnc_inspectHash;
+
+                        // move the map to the selected profile
+
+                        _map = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_EditRight);
+
+                        ctrlMapAnimClear _map;
+                        _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _selectedValue select 0];
+                        ctrlMapAnimCommit _map;
+
+                        [_logic, "enableWaypointSelected"] call MAINCLASS;
+
+                    };
+                };
+
+                case "OPS_WP_TYPE_LIST_SELECT": {
+
+                    private ["_commandState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue",
+                    "_waypointSelectedIndex","_waypoints","_waypointSelected","_buttonR2","_buttonR3","_backButton"];
+
+                    // on click of the ops group list
+
+                    _commandState = [_logic,"commandState"] call MAINCLASS;
+
+                    _selectedList = _args select 0 select 0;
+                    _selectedIndex = _args select 0 select 1;
+
+                    if(_selectedIndex >= 0) then {
+
+                        // store the selected item in the state
+
+                        _listOptions = [_commandState,"opsWPTypeOptions"] call ALIVE_fnc_hashGet;
+                        _listValues = [_commandState,"opsWPTypeValues"] call ALIVE_fnc_hashGet;
+                        _selectedOption = _listOptions select _selectedIndex;
+                        _selectedValue = _listValues select _selectedIndex;
+
+                        [_commandState,"opsWPTypeSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
+                        [_commandState,"opsWPTypeSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+
+                        _commandState call ALIVE_fnc_inspectHash;
+
+                        _waypointSelectedIndex = [_commandState,"opsGroupWaypointsSelectedIndex"] call ALIVE_fnc_hashGet;
+                        _waypoints = [_commandState,"opsGroupWaypointsSelectedValues"] call ALIVE_fnc_hashGet;
+                        _waypointSelected = _waypoints select _waypointSelectedIndex;
+
+                        _waypointSelected set [2,_selectedValue];
+                        _waypoints set [_waypointSelectedIndex,_waypointSelected];
+                        [_commandState,"opsGroupWaypointsSelectedValues",_waypoints] call ALIVE_fnc_hashSet;
+
+                        [_logic,"commandState",_commandState] call MAINCLASS;
+
+                        _commandState call ALIVE_fnc_inspectHash;
+
+                        _backButton = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                        _backButton ctrlShow false;
+
+                        _buttonR2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR2);
+                        _buttonR2 ctrlShow true;
+                        _buttonR2 ctrlSetText "Clear Waypoint Changes";
+                        _buttonR2 ctrlSetEventHandler ["MouseButtonClick", "['OPS_CANCEL_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                        _buttonR3 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR3);
+                        _buttonR3 ctrlShow true;
+                        _buttonR3 ctrlSetText "Apply Waypoint Changes";
+                        _buttonR3 ctrlSetEventHandler ["MouseButtonClick", "['OPS_APPLY_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                    };
+                };
+
+                case "OPS_WP_SPEED_LIST_SELECT": {
+
+                    private ["_commandState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue",
+                    "_waypointSelectedIndex","_waypoints","_waypointSelected","_buttonR2","_buttonR3","_backButton"];
+
+                    // on click of the ops group list
+
+                    _commandState = [_logic,"commandState"] call MAINCLASS;
+
+                    _selectedList = _args select 0 select 0;
+                    _selectedIndex = _args select 0 select 1;
+
+                    if(_selectedIndex >= 0) then {
+
+                        // store the selected item in the state
+
+                        _listOptions = [_commandState,"opsWPSpeedOptions"] call ALIVE_fnc_hashGet;
+                        _listValues = [_commandState,"opsWPSpeedValues"] call ALIVE_fnc_hashGet;
+                        _selectedOption = _listOptions select _selectedIndex;
+                        _selectedValue = _listValues select _selectedIndex;
+
+                        [_commandState,"opsWPSpeedSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
+                        [_commandState,"opsWPSpeedSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+
+                        _commandState call ALIVE_fnc_inspectHash;
+
+                        _waypointSelectedIndex = [_commandState,"opsGroupWaypointsSelectedIndex"] call ALIVE_fnc_hashGet;
+                        _waypoints = [_commandState,"opsGroupWaypointsSelectedValues"] call ALIVE_fnc_hashGet;
+                        _waypointSelected = _waypoints select _waypointSelectedIndex;
+
+                        _waypointSelected set [3,_selectedValue];
+                        _waypoints set [_waypointSelectedIndex,_waypointSelected];
+                        [_commandState,"opsGroupWaypointsSelectedValues",_waypoints] call ALIVE_fnc_hashSet;
+
+                        [_logic,"commandState",_commandState] call MAINCLASS;
+
+                        _commandState call ALIVE_fnc_inspectHash;
+
+                        _backButton = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                        _backButton ctrlShow false;
+
+                        _buttonR2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR2);
+                        _buttonR2 ctrlShow true;
+                        _buttonR2 ctrlSetText "Clear Waypoint Changes";
+                        _buttonR2 ctrlSetEventHandler ["MouseButtonClick", "['OPS_CANCEL_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                        _buttonR3 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR3);
+                        _buttonR3 ctrlShow true;
+                        _buttonR3 ctrlSetText "Apply Waypoint Changes";
+                        _buttonR3 ctrlSetEventHandler ["MouseButtonClick", "['OPS_APPLY_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                    };
+                };
+
+                case "OPS_WP_FORMATION_LIST_SELECT": {
+
+                    private ["_commandState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue",
+                    "_waypointSelectedIndex","_waypoints","_waypointSelected","_buttonR2","_buttonR3","_backButton"];
+
+                    // on click of the ops group list
+
+                    _commandState = [_logic,"commandState"] call MAINCLASS;
+
+                    _selectedList = _args select 0 select 0;
+                    _selectedIndex = _args select 0 select 1;
+
+                    if(_selectedIndex >= 0) then {
+
+                        // store the selected item in the state
+
+                        _listOptions = [_commandState,"opsWPFormationOptions"] call ALIVE_fnc_hashGet;
+                        _listValues = [_commandState,"opsWPFormationValues"] call ALIVE_fnc_hashGet;
+                        _selectedOption = _listOptions select _selectedIndex;
+                        _selectedValue = _listValues select _selectedIndex;
+
+                        [_commandState,"opsWPFormationSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
+                        [_commandState,"opsWPFormationSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+
+                        _commandState call ALIVE_fnc_inspectHash;
+
+                        _waypointSelectedIndex = [_commandState,"opsGroupWaypointsSelectedIndex"] call ALIVE_fnc_hashGet;
+                        _waypoints = [_commandState,"opsGroupWaypointsSelectedValues"] call ALIVE_fnc_hashGet;
+                        _waypointSelected = _waypoints select _waypointSelectedIndex;
+
+                        _waypointSelected set [6,_selectedValue];
+                        _waypoints set [_waypointSelectedIndex,_waypointSelected];
+                        [_commandState,"opsGroupWaypointsSelectedValues",_waypoints] call ALIVE_fnc_hashSet;
+
+                        [_logic,"commandState",_commandState] call MAINCLASS;
+
+                        _commandState call ALIVE_fnc_inspectHash;
+
+                        _backButton = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                        _backButton ctrlShow false;
+
+                        _buttonR2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR2);
+                        _buttonR2 ctrlShow true;
+                        _buttonR2 ctrlSetText "Clear Waypoint Changes";
+                        _buttonR2 ctrlSetEventHandler ["MouseButtonClick", "['OPS_CANCEL_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                        _buttonR3 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR3);
+                        _buttonR3 ctrlShow true;
+                        _buttonR3 ctrlSetText "Apply Waypoint Changes";
+                        _buttonR3 ctrlSetEventHandler ["MouseButtonClick", "['OPS_APPLY_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                    };
+                };
+
+                case "OPS_WP_BEHAVIOUR_LIST_SELECT": {
+
+                    private ["_commandState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue",
+                    "_waypointSelectedIndex","_waypoints","_waypointSelected","_buttonR2","_buttonR3","_backButton"];
+
+                    // on click of the ops group list
+
+                    _commandState = [_logic,"commandState"] call MAINCLASS;
+
+                    _selectedList = _args select 0 select 0;
+                    _selectedIndex = _args select 0 select 1;
+
+                    if(_selectedIndex >= 0) then {
+
+                        // store the selected item in the state
+
+                        _listOptions = [_commandState,"opsWPBehaviourOptions"] call ALIVE_fnc_hashGet;
+                        _listValues = [_commandState,"opsWPBehaviourValues"] call ALIVE_fnc_hashGet;
+                        _selectedOption = _listOptions select _selectedIndex;
+                        _selectedValue = _listValues select _selectedIndex;
+
+                        [_commandState,"opsWPBehaviourSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
+                        [_commandState,"opsWPBehaviourSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
+
+                        _commandState call ALIVE_fnc_inspectHash;
+
+                        _waypointSelectedIndex = [_commandState,"opsGroupWaypointsSelectedIndex"] call ALIVE_fnc_hashGet;
+                        _waypoints = [_commandState,"opsGroupWaypointsSelectedValues"] call ALIVE_fnc_hashGet;
+                        _waypointSelected = _waypoints select _waypointSelectedIndex;
+
+                        _waypointSelected set [8,_selectedValue];
+                        _waypoints set [_waypointSelectedIndex,_waypointSelected];
+                        [_commandState,"opsGroupWaypointsSelectedValues",_waypoints] call ALIVE_fnc_hashSet;
+
+                        [_logic,"commandState",_commandState] call MAINCLASS;
+
+                        _commandState call ALIVE_fnc_inspectHash;
+
+                        _backButton = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                        _backButton ctrlShow false;
+
+                        _buttonR2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR2);
+                        _buttonR2 ctrlShow true;
+                        _buttonR2 ctrlSetText "Clear Waypoint Changes";
+                        _buttonR2 ctrlSetEventHandler ["MouseButtonClick", "['OPS_CANCEL_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                        _buttonR3 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR3);
+                        _buttonR3 ctrlShow true;
+                        _buttonR3 ctrlSetText "Apply Waypoint Changes";
+                        _buttonR3 ctrlSetEventHandler ["MouseButtonClick", "['OPS_APPLY_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                    };
+                };
+
+                case "OPS_CLEAR_WAYPOINTS": {
+
+                    private ["_commandState","_selectedProfile","_profileID","_playerID","_requestID","_event","_faction"];
+
+                    // a group has been selected for waypoint editing
+
+                    _commandState = [_logic,"commandState"] call MAINCLASS;
+
+                    _selectedProfile = [_commandState,"opsGroupsSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _profileID = _selectedProfile select 0;
+
+                    _faction = [_logic,"faction"] call MAINCLASS;
+
+                    _playerID = getPlayerUID player;
+                    _requestID = format["%1_%2",_faction,floor(time)];
+
+                    // send the event to get further data from the command handler
+
+                    _event = ['OPS_CLEAR_PROFILE_WAYPOINTS', [_requestID,_playerID,_profileID], "SCOM"] call ALIVE_fnc_event;
+
+                    if(isServer) then {
+                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                    }else{
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                    };
+
+                    // show waiting until response comes back
+
+                    [_logic, "enableOpsWaiting"] call MAINCLASS;
+
+                };
+
                 case "OPS_CANCEL_WAYPOINTS": {
 
-                    private ["_commandState","_plannedWaypoints","_arrowMarkers"];
+                    private ["_commandState","_plannedWaypoints","_arrowMarkers","_countPlanned","_countArrows","_diffCount","_newArrowMarkers",
+                    "_selectedProfile","_profileID","_event","_requestID","_playerID"];
 
                     // cancel any planned waypoints
 
@@ -1504,26 +1308,42 @@ switch(_operation) do {
 
                     [_logic,"commandState",_commandState] call MAINCLASS;
 
+                    // send the event to get further data from the command handler\
+
+                    _selectedProfile = [_commandState,"opsGroupsSelectedValue"] call ALIVE_fnc_hashGet;
+
+                    _profileID = _selectedProfile select 0;
+
+                    _faction = [_logic,"faction"] call MAINCLASS;
+
+                    _playerID = getPlayerUID player;
+                    _requestID = format["%1_%2",_faction,floor(time)];
+
+                    _event = ['OPS_GET_PROFILE_WAYPOINTS', [_requestID,_playerID,_profileID], "SCOM"] call ALIVE_fnc_event;
+
+                    if(isServer) then {
+                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                    }else{
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                    };
+
+                    // show waiting until response comes back
+
+                    [_logic, "enableOpsWaiting"] call MAINCLASS;
+
                 };
 
                 case "OPS_APPLY_WAYPOINTS": {
 
-                    private ["_commandState","_selectedProfile","_plannedWaypoints","_waypoints",
-                    "_profileID","_playerID","_requestID","_event","_faction","_buttonL2","_buttonR1"];
+                    private ["_commandState","_selectedProfile","_waypoints",
+                    "_profileID","_playerID","_requestID","_event","_faction","_buttonL2","_buttonR1","_backButton"];
 
                     // a group has been selected for waypoint editing
 
                     _commandState = [_logic,"commandState"] call MAINCLASS;
 
                     _selectedProfile = [_commandState,"opsGroupsSelectedValue"] call ALIVE_fnc_hashGet;
-                    _plannedWaypoints = [_commandState,"opsGroupPlannedWaypoints"] call ALIVE_fnc_hashGet;
-
-                    _waypoints = [];
-                    {
-                    	//_x params ["_marker","_2","_3","_4","_5"];
-                    	//_waypoints pushBack [getMarkerPos _marker,_2,_3,_4,_5];
-                    	_waypoints pushBack getMarkerPos _x;
-                    } forEach _plannedWaypoints;
+                    _waypoints = [_commandState,"opsGroupWaypointsSelectedValues"] call ALIVE_fnc_hashGet;
 
                     _profileID = _selectedProfile select 0;
 
@@ -1544,8 +1364,11 @@ switch(_operation) do {
 
                     // hide editing buttons
 
-                    _buttonL2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BL2);
-                    _buttonL2 ctrlShow false;
+                    _backButton = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                    _backButton ctrlShow true;
+
+                    _buttonR2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR2);
+                    _buttonR2 ctrlShow false;
 
                     _buttonR1 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR1);
                     _buttonR1 ctrlShow false;
@@ -1555,133 +1378,6 @@ switch(_operation) do {
 
                     [_logic, "enableOpsWaiting"] call MAINCLASS;
 
-                };
-
-                case "OP_MAP_CLICK_NULL": {
-
-                    // map click on reset
-                    // do nothing
-
-                };
-
-                case "OPS_WP_TYPE_LIST_SELECT": {
-
-                    private ["_commandState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue","_map"];
-
-                    // on click of the ops group list
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _selectedList = _args select 0 select 0;
-                    _selectedIndex = _args select 0 select 1;
-
-                    if(_selectedIndex >= 0) then {
-
-                        // store the selected item in the state
-
-                        _listOptions = [_commandState,"opsWPTypeOptions"] call ALIVE_fnc_hashGet;
-                        _listValues = [_commandState,"opsWPTypeValues"] call ALIVE_fnc_hashGet;
-                        _selectedOption = _listOptions select _selectedIndex;
-                        _selectedValue = _listValues select _selectedIndex;
-
-                        [_commandState,"opsWPTypeSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
-                        [_commandState,"opsWPTypeSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
-
-                        [_logic,"commandState",_commandState] call MAINCLASS;
-
-                        _commandState call ALIVE_fnc_inspectHash;
-
-                    };
-                };
-
-                case "OPS_WP_SPEED_LIST_SELECT": {
-
-                    private ["_commandState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue","_map"];
-
-                    // on click of the ops group list
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _selectedList = _args select 0 select 0;
-                    _selectedIndex = _args select 0 select 1;
-
-                    if(_selectedIndex >= 0) then {
-
-                        // store the selected item in the state
-
-                        _listOptions = [_commandState,"opsWPSpeedOptions"] call ALIVE_fnc_hashGet;
-                        _listValues = [_commandState,"opsWPSpeedValues"] call ALIVE_fnc_hashGet;
-                        _selectedOption = _listOptions select _selectedIndex;
-                        _selectedValue = _listValues select _selectedIndex;
-
-                        [_commandState,"opsWPSpeedSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
-                        [_commandState,"opsWPSpeedSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
-
-                        [_logic,"commandState",_commandState] call MAINCLASS;
-
-                        _commandState call ALIVE_fnc_inspectHash;
-
-                    };
-                };
-
-                case "OPS_WP_FORMATION_LIST_SELECT": {
-
-                    private ["_commandState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue","_map"];
-
-                    // on click of the ops group list
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _selectedList = _args select 0 select 0;
-                    _selectedIndex = _args select 0 select 1;
-
-                    if(_selectedIndex >= 0) then {
-
-                        // store the selected item in the state
-
-                        _listOptions = [_commandState,"opsWPFormationOptions"] call ALIVE_fnc_hashGet;
-                        _listValues = [_commandState,"opsWPFormationValues"] call ALIVE_fnc_hashGet;
-                        _selectedOption = _listOptions select _selectedIndex;
-                        _selectedValue = _listValues select _selectedIndex;
-
-                        [_commandState,"opsWPFormationSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
-                        [_commandState,"opsWPFormationSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
-
-                        [_logic,"commandState",_commandState] call MAINCLASS;
-
-                        _commandState call ALIVE_fnc_inspectHash;
-
-                    };
-                };
-
-                case "OPS_WP_BEHAVIOUR_LIST_SELECT": {
-
-                    private ["_commandState","_selectedList","_selectedIndex","_listOptions","_listValues","_selectedOption","_selectedValue","_map"];
-
-                    // on click of the ops group list
-
-                    _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _selectedList = _args select 0 select 0;
-                    _selectedIndex = _args select 0 select 1;
-
-                    if(_selectedIndex >= 0) then {
-
-                        // store the selected item in the state
-
-                        _listOptions = [_commandState,"opsWPBehaviourOptions"] call ALIVE_fnc_hashGet;
-                        _listValues = [_commandState,"opsWPBehaviourValues"] call ALIVE_fnc_hashGet;
-                        _selectedOption = _listOptions select _selectedIndex;
-                        _selectedValue = _listValues select _selectedIndex;
-
-                        [_commandState,"opsWPBehaviourSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
-                        [_commandState,"opsWPBehaviourSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
-
-                        [_logic,"commandState",_commandState] call MAINCLASS;
-
-                        _commandState call ALIVE_fnc_inspectHash;
-
-                    };
                 };
 
                 case "OPS_RESET": {
@@ -3015,7 +2711,7 @@ switch(_operation) do {
                 _editMap = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_EditMap);
                 _editMap ctrlShow true;
 
-                _editMap ctrlSetEventHandler ["MouseButtonDown", "['OP_MAIN_MAP_CLICK',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+                _editMap ctrlSetEventHandler ["MouseButtonDown", "['OP_EDIT_WAYPOINT_MAP_CLICK',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
 
                 _profilePosition = _profile select 2;
 
@@ -3102,12 +2798,47 @@ switch(_operation) do {
 
                 // enable interface elements for interacting with profile
 
-                private["_buttonL1"];
+                private["_buttonR1","_buttonR2","_buttonR3","_waypointTypeList","_waypointSpeedList","_waypointFormationList","_waypointBehaviourList"];
 
-                _buttonL1 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BL1);
-                _buttonL1 ctrlShow true;
-                _buttonL1 ctrlSetText "Clear Waypoints";
-                _buttonL1 ctrlSetEventHandler ["MouseButtonClick", "['OPS_CLEAR_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+                _buttonR1 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR1);
+                _buttonR1 ctrlShow true;
+                _buttonR1 ctrlSetText "Clear All Waypoints";
+                _buttonR1 ctrlSetEventHandler ["MouseButtonClick", "['OPS_CLEAR_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                _backButton = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                _backButton ctrlShow true;
+
+                // disable interface elements for interacting with profile
+
+                _buttonR2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR2);
+                _buttonR2 ctrlShow false;
+
+                _buttonR3 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR3);
+                _buttonR3 ctrlShow false;
+
+                _waypointTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointTypeList);
+                _waypointTypeList ctrlShow false;
+
+                lbClear _waypointTypeList;
+                _waypointTypeList ctrlSetEventHandler ["LBSelChanged", ""];
+
+                _waypointSpeedList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointSpeedList);
+                _waypointSpeedList ctrlShow false;
+
+                lbClear _waypointSpeedList;
+                _waypointSpeedList ctrlSetEventHandler ["LBSelChanged", ""];
+
+                _waypointFormationList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointFormationList);
+                _waypointFormationList ctrlShow false;
+
+                lbClear _waypointFormationList;
+                _waypointFormationList ctrlSetEventHandler ["LBSelChanged", ""];
+
+                _waypointBehaviourList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointBehavourList);
+                _waypointBehaviourList ctrlShow false;
+
+                lbClear _waypointBehaviourList;
+                _waypointBehaviourList ctrlSetEventHandler ["LBSelChanged", ""];
 
 
             }else{
@@ -3136,9 +2867,6 @@ switch(_operation) do {
         _commandState = [_logic,"commandState"] call MAINCLASS;
 
         _selectedWaypoint = [_commandState,"opsGroupWaypointsSelectedValue"] call ALIVE_fnc_hashGet;
-
-        ["WAYPOINT SELECTED"] call ALIVE_fnc_dump;
-        _selectedWaypoint call ALIVE_fnc_inspectArray;
 
         _selectedWaypointType = _selectedWaypoint select 2;
         _selectedWaypointSpeed = _selectedWaypoint select 3;

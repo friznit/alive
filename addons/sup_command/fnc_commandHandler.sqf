@@ -493,29 +493,44 @@ switch(_operation) do {
         };
     };
     case "opsApplyProfileWaypoints": {
-        private["_data","_playerID","_profileID","_plannedWaypoints"];
+        private["_data","_playerID","_profileID","_updatedWaypoints"];
 
         if(typeName _args == "ARRAY") then {
 
             _data = _args;
             _playerID = _data select 1;
             _profileID = _data select 2;
-            _plannedWaypoints = _data select 3;
+            _updatedWaypoints = _data select 3;
 
             _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
 
-            private["_profile","_profileData","_waypoints","_waypointPositions","_event","_profilePos","_wp"];
+            private["_profile","_profileData","_waypoints","_waypointsArray","_waypointData","_event","_profilePos","_wp"];
 
             // get profile
 
             _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
             if !(isnil "_profile") then {
 
+                // clear waypoints
+
+                [_profile, 'clearWaypoints'] call ALIVE_fnc_profileEntity;
+
+                {
+                    _waypointData = _x;
+
+                    _wp = [_waypointData select 0] call ALIVE_fnc_createProfileWaypoint;
+
+                    _wp set [2,_waypointData];
+
+                    [_profile,"addWaypoint",_wp] call ALIVE_fnc_profileEntity;
+
+                } foreach _updatedWaypoints;
+
+                /*
                 _profilePos = [_profile, "position"] call CBA_fnc_HashGet;
 
                 //-- Create waypoints
                 {
-                    /*
                     _x params ["_pos","_type","_speed","_formation","_behavior"];
 
                     if ((_type == "Land - Engines Off") or (_type == "Land - Low Hover")) then {
@@ -539,12 +554,12 @@ switch(_operation) do {
                         _wp = [_pos, 15, _type, _speed,50,[0,0,0], _formation, "RED", _behavior] call ALIVE_fnc_createProfileWaypoint;
                         [_profile,"addWaypoint",_wp] call ALIVE_fnc_profileEntity;
                     };
-                    */
 
                     _wp = [_x] call ALIVE_fnc_createProfileWaypoint;
                     [_profile,"addWaypoint",_wp] call ALIVE_fnc_profileEntity;
 
                 } forEach _plannedWaypoints;
+                */
 
                 _profileData = [];
                 _profileData pushBack (_profile select 2 select 1); // active

@@ -52,9 +52,9 @@ class SCOMTablet
             idc = 12006;
             text = "Back";
             style = 0x02;
-            x = 0.519796 * safezoneW + safezoneX;
+            x = 0.507 * safezoneW + safezoneX;
             y = 0.7000 * safezoneH + safezoneY;
-            w = 0.216525 * safezoneW;
+            w = 0.2325 * safezoneW;
             h = 0.028 * safezoneH;
             sizeEx = 0.8 * GUI_GRID_H;
             colorBackground[] = {0.376,0.196,0.204,1};
@@ -68,9 +68,9 @@ class SCOMTablet
             idc = 12010;
             text = "Close";
             style = 0x02;
-            x = 0.519796 * safezoneW + safezoneX;
+            x = 0.507 * safezoneW + safezoneX;
             y = 0.7350 * safezoneH + safezoneY;
-            w = 0.216525 * safezoneW;
+            w = 0.2325 * safezoneW;
             h = 0.028 * safezoneH;
             sizeEx = 0.8 * GUI_GRID_H;
             colorBackground[] = {0.376,0.196,0.204,1};
@@ -295,7 +295,7 @@ class SCOMTablet
             idc = 12026;
             x = 0.415 * safezoneW + safezoneX;
             y = 0.1600 * safezoneH + safezoneY;
-            w = 0.32 * safezoneW;
+            w = 0.323 * safezoneW;
             h = 0.45 * safezoneH;
         };
 
