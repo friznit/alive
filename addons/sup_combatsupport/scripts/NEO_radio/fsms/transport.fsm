@@ -251,7 +251,7 @@ class FSM
     class _
     {
       name = "_";
-      init = /*%FSM<STATEINIT""">*/"_chopper land ""NONE"";" \n
+      init = /*%FSM<STATEINIT""">*/"[_chopper,""NONE""] call ALiVE_fnc_landRemote;" \n
        "_speechSaid = false;" \n
        "_speechSaidSmoke = false;" \n
        ""/*%FSM</STATEINIT""">*/;
@@ -935,7 +935,7 @@ class FSM
            "&&" \n
            "_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_chopper land ""Get In"";" \n
+          action=/*%FSM<ACTION""">*/"[_chopper,""Get In""] call ALiVE_fnc_landRemote;" \n
            "_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""CARGO"", true];" \n
            "" \n
            "" \n
@@ -1135,7 +1135,7 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_chopper call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_h setPosATL _base;" \n
-           "_chopper land ""LAND"";" \n
+           "[_chopper,""LAND""] call ALiVE_fnc_landRemote;" \n
            "_chopper setVariable [""NEO_radioTrasportUnitStatus"", ""NONE"", true];" \n
            "" \n
            "_chopper setFuel 1;" \n
@@ -1253,9 +1253,9 @@ class FSM
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"switch (_task) do" \n
            "{" \n
-           "case ""LAND"" : { _chopper land ""GET OUT"";};" \n
+           "case ""LAND"" : { [_chopper,""GET OUT""] call ALiVE_fnc_landRemote;};" \n
            "case ""HOVER"" : {[[_chopper,format[""%1 is unable to Land at coordinates. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP; };" \n
-           "default {_chopper land ""LAND""; };" \n
+           "default {[_chopper,""LAND""] call ALiVE_fnc_landRemote; };" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };

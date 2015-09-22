@@ -4942,7 +4942,7 @@ switch(_operation) do {
 
                             if (alive _vehicle) then
                             {
-                                   _vehicle land "LAND";
+                                   [_vehicle,"LAND"] call ALiVE_fnc_landRemote;
                             };
 
                         };

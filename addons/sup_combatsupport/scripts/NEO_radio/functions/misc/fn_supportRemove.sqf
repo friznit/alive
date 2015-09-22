@@ -24,7 +24,7 @@
 					switch (_forEachIndex) do
 					{
 						case 0 : { { if (!isPlayer _x) then { deletevehicle _x } } forEach crew _x; deleteVehicle _x };
-						case 1 : { deleteGroup _x };
+						case 1 : { _x call ALiVE_fnc_DeleteGroupRemote };
 					};
 				} forEach (_array select _index);
 
@@ -57,7 +57,7 @@
 					switch (_forEachIndex) do
 					{
 						case 0 : { { deletevehicle _x } forEach crew _x; deleteVehicle _x };
-						case 1 : { deleteGroup _x };
+						case 1 : { _x call ALiVE_fnc_DeleteGroupRemote };
 					};
 				} forEach (_array select _index);
 
@@ -90,7 +90,7 @@
 					switch (_forEachIndex) do
 					{
 						case 0 : { deleteVehicle _x };
-						case 1 : { { deletevehicle _x } forEach units _x; deleteGroup _x };
+						case 1 : { { deletevehicle _x } forEach units _x; _x call ALiVE_fnc_DeleteGroupRemote };
 						case 3 : { { deleteVehicle _x } forEach _x };
 					};
 				} forEach (_array select _index);

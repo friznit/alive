@@ -61,7 +61,7 @@ _toDelete = [];
 //Delete objects and groups
 {deleteVehicle _x} foreach _units;
 {deletevehicle _x} foreach units _grp;
-deletegroup _grp;
+_grp call ALiVE_fnc_DeleteGroupRemote;
 
 sleep 5;
 

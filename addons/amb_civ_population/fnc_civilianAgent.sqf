@@ -418,7 +418,7 @@ switch(_operation) do {
 
             // delete
             deleteVehicle _unit;
-            deleteGroup _group;
+           _group call ALiVE_fnc_DeleteGroupRemote;
 
             // store the agent id on the in active agents index
             [ALIVE_agentHandler,"setInActive",[_agentID,_logic]] call ALIVE_fnc_agentHandler;

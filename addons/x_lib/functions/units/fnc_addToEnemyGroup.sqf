@@ -59,6 +59,5 @@ if!((_unitSide) getFriend (_targetSide) < 0.6) then {
 
     _currentGroup = group _unit;
     [_unit] joinSilent _group;
-    deleteGroup _currentGroup;
-
+    _currentGroup call ALiVE_fnc_DeleteGroupRemote;
 };

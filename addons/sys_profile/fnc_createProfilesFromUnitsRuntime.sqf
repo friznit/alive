@@ -273,7 +273,7 @@ _deleteVehicleCount = 0;
 				deleteVehicle _x;
 			} forEach (_units);
 
-			deleteGroup _group;
+			_group call ALiVE_fnc_DeleteGroupRemote;
 			
 			_deleteEntityCount = _deleteEntityCount + 1;
 		};

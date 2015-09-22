@@ -353,7 +353,7 @@ switch(_operation) do {
 								//Make sure the group is empty.
 								if (({alive _x} count (units _object)) == 0) then
 								{
-									deleteGroup _object;
+									_object call ALiVE_fnc_DeleteGroupRemote;
 	                                _queue set [_foreachIndex, -1];
 								};
 							};

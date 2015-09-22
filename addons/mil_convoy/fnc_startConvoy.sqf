@@ -249,7 +249,7 @@ for "_j" from 1 to _intensity do {
                             {deletemarker _x} foreach [_marker_start,_marker_dest,_marker_end];
 						};
 						{deleteVehicle (vehicle _x); deleteVehicle _x;} forEach units _grp;
-						deletegroup _grp;
+						_grp call ALiVE_fnc_DeleteGroupRemote;
 
                         _sleep = if(_debug) then {30} else {random 300};
                         sleep _sleep;

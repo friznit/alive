@@ -19,7 +19,7 @@ item14[] = {"chopper",4,218,686.528015,412.047028,776.527893,462.047058,1.000000
 item15[] = {"__3",2,250,405.475739,686.437256,495.475769,736.437256,0.000000,""};
 item16[] = {"",7,210,-191.118027,611.746948,-183.118027,619.746948,0.000000,""};
 item17[] = {"__4",2,250,685.759583,859.291260,775.759460,909.291260,0.000000,""};
-item18[] = {"at_base",4,4314,687.208801,943.764832,777.208801,993.764832,0.000000,"at base"};
+item18[] = {"at_base",4,218,687.208801,943.764832,777.208801,993.764832,0.000000,"at base"};
 item19[] = {"__5",2,250,536.869751,920.550537,626.869446,970.550781,0.000000,""};
 item20[] = {"",7,210,-191.117874,797.665161,-183.117874,805.665161,0.000000,""};
 item21[] = {"",7,210,145.559280,257.188538,153.559265,265.188477,0.000000,""};
@@ -84,7 +84,7 @@ link44[] = {32,28};
 link45[] = {33,34};
 link46[] = {34,15};
 globals[] = {0.000000,0,0,0,0,640,480,1,66,6316128,1,-641.528320,932.245544,1142.036621,-165.687851,1118,929,1};
-window[] = {2,-1,-1,-1,-1,869,132,1392,132,3,1135};
+window[] = {2,-1,-1,-1,-1,957,220,1480,220,3,1135};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -521,7 +521,7 @@ class FSM
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_veh isKindOf ""UAV""" \n
            ""/*%FSM</CONDITION""">*/;
-          action=/*%FSM<ACTION""">*/"_veh landAt _airport;"/*%FSM</ACTION""">*/;
+          action=/*%FSM<ACTION""">*/"[_veh,_airport] call ALiVE_fnc_landAtRemote;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
         /*%FSM<LINK "plane">*/
@@ -657,7 +657,8 @@ class FSM
           precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
           condition=/*%FSM<CONDITION""">*/"_veh call ALiVE_fnc_unitReadyRemote"/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"_veh setVariable [""NEO_radioCasUnitStatus"", ""NONE"", true];" \n
-           "_veh land ""LAND"";" \n
+           "" \n
+           "[_veh, ""LAND""] call ALiVE_fnc_landRemote;" \n
            "" \n
            "if (_veh isKindOf ""Helicopter"") then" \n
            "{" \n

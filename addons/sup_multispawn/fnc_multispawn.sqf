@@ -613,7 +613,7 @@ switch(_operation) do {
                 sleep 60;
 
             	{deleteVehicle _x} foreach (_data select 1);
-                deleteGroup (_data select 2);
+                (_data select 2) call ALiVE_fnc_DeleteGroupRemote;
                 deleteVehicle (_data select 0);
             } else {
 				_wp = _group addWaypoint [_StartPos, 0];
@@ -629,7 +629,7 @@ switch(_operation) do {
 				    [_factionData,'ALiVE_sup_multispawn_INSERTION_TRANSPORT'] call ALiVE_fnc_HashRem;
 
 					{deleteVehicle _x} foreach (_data select 1);
-				    deleteGroup (_data select 2);
+				    (_data select 2) call ALiVE_fnc_DeleteGroupRemote;
 				    deleteVehicle (_data select 0);
 				"];
 

@@ -1077,7 +1077,8 @@ switch(_operation) do {
 						} forEach _units;
 
 						// delete group
-						deleteGroup _group;
+                        // FIX YOUR FUCKING CODES BIS. FINALLY. AFTER 239475987 gazillion years
+                        _group call ALiVE_fnc_DeleteGroupRemote;
 
 						[_logic,"leader", objNull] call ALIVE_fnc_hashSet;
 						[_logic,"positions", _positions] call ALIVE_fnc_hashSet;
@@ -1152,7 +1153,7 @@ switch(_operation) do {
                 } forEach _units;
 
                 // delete group
-                deleteGroup _group;
+                _group call ALiVE_fnc_DeleteGroupRemote;
             };
 
             // unregister

@@ -1093,7 +1093,9 @@ switch(_operation) do {
 			[_logic,"groups",[_grp],true,true] call BIS_fnc_variableSpaceRemove;
 
 			{deleteVehicle _x} forEach units _grp;
-            deleteGroup _grp;
+
+            // FIX YOUR FUCKING CODES BIS. FINALLY. AFTER 239475987 gazillion years
+			_grp call ALiVE_fnc_DeleteGroupRemote;
 	    };
 	};
 

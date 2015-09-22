@@ -545,7 +545,7 @@ switch(_operation) do {
                                 _group = _profile select 2 select 13;
                                 waitUntil {sleep 2;unitReady (leader _group)};
                                 [_profile, 'clearWaypoints'] call ALIVE_fnc_profileEntity;	//-- Needed because waypoint doesn't seem to complete when you use land command
-                                if (_type == "Land - Engines Off") then {(vehicle (leader _group)) land "LAND"} else {(vehicle (leader _group)) land "GET OUT"};
+                                if (_type == "Land - Engines Off") then {[(vehicle (leader _group)),"LAND"] call ALiVE_fnc_landRemote} else {(vehicle (leader _group)) land "GET OUT"};
                                 sleep 60;
                                 deleteVehicle _helipad;
                             } else {deleteVehicle _helipad};

@@ -51,7 +51,7 @@ CAS_RESPAWN_LIMIT = CAS_RESPAWN_LIMIT - 1;
 //Delete objects and groups
 deletevehicle _veh;
 {deletevehicle _x} foreach units _grp;
-deletegroup _grp;
+_grp call ALiVE_fnc_DeleteGroupRemote;
 
 sleep 5;
 

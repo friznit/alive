@@ -1385,9 +1385,30 @@ class MoveRemote
 	recompile = RECOMPILE;
 };
 
+class DeleteGroupRemote
+{
+	file = "\x\alive\addons\x_lib\functions\groups\fnc_DeleteGroupRemote.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class doMoveRemote
 {
 	file = "\x\alive\addons\x_lib\functions\units\fnc_doMoveRemote.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class landRemote
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_landRemote.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class landAtRemote
+{
+	file = "\x\alive\addons\x_lib\functions\units\fnc_landAtRemote.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };

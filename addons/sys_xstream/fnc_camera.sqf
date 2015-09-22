@@ -316,7 +316,7 @@ while { ((count subjects + count infantry) > 0) && GVAR(cameraStarted)} do {
 				if (time > _stopTime) then {_stopScene = true};
 			};
 			deleteVehicle _newTarget;
-			deleteGroup _groupTarget;
+			_groupTarget call ALiVE_fnc_DeleteGroupRemote;
 		};
 
 		// Satellite
