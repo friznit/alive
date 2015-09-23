@@ -16,6 +16,9 @@ PARAMS_1(_logic);
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_Data","Main function missing");
 
+//Only one init per instance is allowed
+if !(isnil QUOTE(ADDON)) exitwith {["ALiVE SYS DATA - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
+
 // Check to see if module was placed... (might be auto enabled)
 if (isnil "_logic") then {
     if (isServer) then {
