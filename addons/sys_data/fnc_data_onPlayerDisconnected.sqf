@@ -37,7 +37,7 @@ if (_name == "__SERVER__") then {
 		    ["ALiVE SYS_DATA - SERVER EXIT SAVING DATA"] call ALIVE_fnc_dump;
         };
 
-		if (MOD(sys_data) getVariable ["saveDateTime","true"] == "true") then {
+		if (MOD(sys_data) getVariable ["saveDateTime","false"] == "true") then {
 
 			[GVAR(mission_data), "date", date] call ALIVE_fnc_hashSet;
 			[GVAR(mission_data), "Group", GVAR(GROUP_ID)] call ALIVE_fnc_hashSet;

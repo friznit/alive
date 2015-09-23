@@ -9,9 +9,9 @@ SCRIPT(DataInit);
 // Sets up a system for data (separate from the fnc_data module = datahandler)
 
 LOG(MSG_INIT);
-private ["_response","_dictionaryName","_logic","_config","_moduleID"];
+private ["_response","_dictionaryName","_logic","_config","_moduleID","_mode"];
 
-PARAMS_1(_logic);
+PARAMS_2(_logic,_mode);
 
 // Confirm init function available
 ASSERT_DEFINED("ALIVE_fnc_Data","Main function missing");
@@ -30,6 +30,12 @@ if (isnil "_logic") then {
         } else {
             _logic = (createGroup sideLogic) createUnit ["ALiVE_sys_data", [0,0], [], 0, "NONE"];
             MOD(sys_data) = _logic;
+        };
+
+        // If auto enabled allow
+        if (_mode == 1) then { // override defaults and disable everything bar perf
+        	MOD(sys_data) setVariable ["disableStats","true"];
+         	MOD(sys_data) setVariable ["disablePerfMon","false"];
         };
 
         //Push to clients
@@ -129,8 +135,8 @@ if (isDedicated) then {
 	if ([_config, "PerfData","false"] call ALIVE_fnc_hashGet != "none") then {
 		if ([_config, "PerfData","false"] call ALIVE_fnc_hashGet == "true") then {
 			["CONNECTED TO DATABASE AND PERFDATA IS ALLOWED"] call ALIVE_fnc_logger;
-//			MOD(sys_data) setvariable ["disablePerf", "false"];
-//			ALIVE_sys_perf_ENABLED = true;
+			//			MOD(sys_data) setvariable ["disablePerf", "false"];
+			//			ALIVE_sys_perf_ENABLED = true;
 		} else {
 			["CONNECTED TO DATABASE, BUT PERFDATA HAS BEEN TURNED OFF"] call ALIVE_fnc_logger;
 			MOD(sys_data) setvariable ["disablePerf", "true"];
@@ -206,7 +212,7 @@ if (isDedicated) then {
 
 	// Handle basic mission persistence - date/time and custom variables
 	GVAR(mission_data) = [] call CBA_fnc_hashCreate;
-	if (GVAR(dictionaryLoaded) && (MOD(sys_data) getVariable ["saveDateTime","true"] == "true")) then {
+	if (GVAR(dictionaryLoaded) && (MOD(sys_data) getVariable ["saveDateTime","false"] == "true")) then {
 		private ["_missionName","_response"];
 		// Read in date/time for mission
 		_missionName = format["%1_%2", GVAR(GROUP_ID), missionName];
@@ -247,9 +253,9 @@ if (isDedicated) then {
 		["ALiVE SYS_DATA - ASYNC WRITE LOOP STARTING"] call ALIVE_fnc_dump;
 		while {true} do {
 			TRACE_1("ASYNC QUEUE COUNT", count GVAR(ASYNC_QUEUE));
-//			{
-//				["ALiVE SYS_DATA - ASYNC QUEUE %2: %1", _x, _forEachIndex] call ALIVE_fnc_dump;
-//			} foreach GVAR(ASYNC_QUEUE);
+		//	{
+		//		["ALiVE SYS_DATA - ASYNC QUEUE %2: %1", _x, _forEachIndex] call ALIVE_fnc_dump;
+		//	} foreach GVAR(ASYNC_QUEUE);
 			{
 				private ["_cmd","_response"];
 				_cmd = _x;
