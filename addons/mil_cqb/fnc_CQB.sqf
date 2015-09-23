@@ -162,7 +162,7 @@ switch(_operation) do {
 			_type = _logic getvariable ["CQB_TYPE","regular"];
 			_logic setVariable ["type", _type];
 
-			_locality = _logic getvariable ["CQB_locality_setting","client"];
+			_locality = _logic getvariable ["CQB_locality_setting","server"];
 			_logic setVariable ["locality", _locality];
 
 			_traceGrid = _logic getvariable ["CQB_TraceGrid","None"];
@@ -1218,7 +1218,7 @@ switch(_operation) do {
 						_spawn = _logic getVariable ["spawnDistance", 1000];
                         _spawnHeli = _logic getVariable ["spawnDistanceHeli", 0];
                         _spawnJet = _logic getVariable ["spawnDistanceJet", 0];
-                        _locality = _logic getVariable ["locality", "client"];
+                        _locality = _logic getVariable ["locality", "server"];
                         _useDominantFaction = _logic getvariable ["CQB_UseDominantFaction",false];
 
                         if (!isnil QMOD(CQB) && {!(MOD(CQB) getVariable ["pause", false])}) then {
@@ -1233,6 +1233,11 @@ switch(_operation) do {
 								if ((isNil {_house getVariable "group"}) && {count _nearplayers > 0}) then {
 
 	                                    switch (_locality) do {
+                                            default {
+                                                _hosts = [false];
+                                            };
+                                            
+                                            /* // Always use server and then switch to new locality
 	                                    	case ("server") : {
 	                                            _hosts = [false];
 	                                        };
@@ -1244,6 +1249,7 @@ switch(_operation) do {
                                                 _nearplayers = [_nearplayers,[],{_x getvariable ["averageFPS",30]},"DESCEND"] call BIS_fnc_sortBy;
                                                 _hosts = [_nearplayers select 0];
 	                                        };
+                                            */
 	                                    };
 
 	                                    if (count _hosts > 0) then {

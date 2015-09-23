@@ -57,6 +57,14 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_CQB_LOCALITY_COMMENT";
                                 class Values
                                 {
+                                        class automatic
+                                        {
+                                                name = "Auto";
+                                                value = "server";
+                                                default = 1;
+                                        };
+                                        
+                                        /*
                                         class client
                                         {
                                                 name = "JIP clients";
@@ -73,6 +81,7 @@ class CfgVehicles {
                                                 name = "Headless Client";
                                                 value = "HC";
                                         };
+                                        */
                                 };
                         };
                         class CQB_TYPE
