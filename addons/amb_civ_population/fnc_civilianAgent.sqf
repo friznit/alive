@@ -356,7 +356,7 @@ switch(_operation) do {
             _unit setVariable ["politician", _politician,_politician];
 
             // killed event handler
-            _eventID = _unit addEventHandler["Killed", ALIVE_fnc_agentKilledEventHandler];
+            _eventID = _unit addMPEventHandler["MPKilled", ALIVE_fnc_agentKilledEventHandler];
 
             // set agent as active and store a reference to the unit on the agent
             [_logic,"unit",_unit] call ALIVE_fnc_hashSet;

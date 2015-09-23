@@ -31,7 +31,7 @@ _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profi
 
 _killerSide = str(side _killer);
 
-if (isnil "_profile") exitwith {};
+if (isnil "_profile" || {!isServer}) exitwith {};
 
 _profileType = _profile select 2 select 5; // [_profile, "type"] call ALIVE_fnc_hashGet;
 

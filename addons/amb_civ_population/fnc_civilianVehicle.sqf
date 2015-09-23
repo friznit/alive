@@ -319,7 +319,7 @@ switch(_operation) do {
             _unit setVariable ["agentID", _agentID];
 
             // killed event handler
-            _eventID = _unit addEventHandler["Killed", ALIVE_fnc_agentKilledEventHandler];
+            _eventID = _unit addMPEventHandler["MPKilled", ALIVE_fnc_agentKilledEventHandler];
 
             // getin event handler
             _eventID = _unit addEventHandler["getIn", ALIVE_fnc_agentGetInEventHandler];

@@ -914,7 +914,7 @@ switch(_operation) do {
 							_unit setVariable ["profileIndex", _unitCount];
 	
 							// killed event handler
-							_eventID = _unit addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
+							_eventID = _unit addMPEventHandler["MPKilled", ALIVE_fnc_profileKilledEventHandler];
 	
 							_units set [_unitCount, _unit];
 	

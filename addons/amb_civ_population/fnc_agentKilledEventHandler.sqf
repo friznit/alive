@@ -33,7 +33,7 @@ _agent = [ALIVE_agentHandler, "getAgent", _agentID] call ALIVE_fnc_agentHandler;
 
 _killerSide = str(side (group _killer));
 
-if (isnil "_agent") exitwith {};
+if (isnil "_agent" || {!isServer}) exitwith {};
 
 [_agent, "handleDeath"] call ALIVE_fnc_civilianAgent;
 

@@ -279,7 +279,7 @@ if!(isNil "_registeredProfile") then {
 
                             // killed event handler
                             if!(isPlayer _unit) then {
-                                _eventID = _unit addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
+                                _eventID = _unit addMPEventHandler["MPKilled", ALIVE_fnc_profileKilledEventHandler];
                             };
 
                             _unitCount = _unitCount + 1;
@@ -445,7 +445,7 @@ if!(isNil "_registeredProfile") then {
 
                     // killed event handler
                     if!(isPlayer _unit) then {
-                        _eventID = _unit addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
+                        _eventID = _unit addMPEventHandler["MPKilled", ALIVE_fnc_profileKilledEventHandler];
                     };
 
                     _unitCount = _unitCount + 1;
@@ -624,7 +624,7 @@ if!(isNil "_registeredProfile") then {
 
                     // killed event handler
                     if!(isPlayer _unit) then {
-                        _eventID = _unit addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
+                        _eventID = _unit addMPEventHandler["MPKilled", ALIVE_fnc_profileKilledEventHandler];
                     };
 
                     _unitCount = _unitCount + 1;

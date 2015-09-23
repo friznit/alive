@@ -547,7 +547,7 @@ switch(_operation) do {
 					_vehicle setVariable ["profileID", _profileID];
 
 					// killed event handler
-					_eventID = _vehicle addEventHandler["Killed", ALIVE_fnc_profileKilledEventHandler];
+					_eventID = _vehicle addMPEventHandler["MPKilled", ALIVE_fnc_profileKilledEventHandler];
 
                     // getin event handler
 					_vehicle addEventHandler ["getIn", ALIVE_fnc_profileGetInEventHandler];
