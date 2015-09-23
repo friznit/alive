@@ -559,7 +559,7 @@ ALiVE_fnc_INS_recruit = {
 
 				// Recruit 5 times
 				[_pos,_size,_id,_faction,_HQ,_sides,_agents] spawn {
-					private ["_pos","_size","_id","_faction","_targetBuilding","_sides","_agents"];
+					private ["_pos","_size","_id","_faction","_targetBuilding","_sides","_agents","_created"];
 					
 					_pos = _this select 0;
 					_size = _this select 1;
@@ -569,14 +569,22 @@ ALiVE_fnc_INS_recruit = {
 					_sides = _this select 5;
 					_agents = _this select 6;
 					_allSides = ["EAST","WEST","GUER"];
+                    
+                    _created = 0;
 
 					for "_i" from 1 to (count _agents) do {
+                        
+                        // Only recruit if there is an HQ existing and up to 5 groups at max to not spam the map
+                        if (!alive _HQ || {_created >= 5}) exitwith {};
+                        
 						_group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
 						_recruits = [_group, [_pos,_size] call CBA_fnc_RandPos, random(360), true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 						{[_x, "setActiveCommand", ["ALIVE_fnc_ambientMovement","spawn",[_size + 200,"SAFE",[0,0,0]]]] call ALIVE_fnc_profileEntity} foreach _recruits;
 
 						[_pos,_sides, 10] call ALiVE_fnc_updateSectorHostility;
 						[_pos,_allSides - _sides, -10] call ALiVE_fnc_updateSectorHostility;	
+                        
+                        _created = _created + 1;
 					
 						sleep (900 + random 600);
 					};
