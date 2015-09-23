@@ -39,12 +39,12 @@ if(count _this > 1) then {
 if(isNil {_variableType}) then {
 	_output = ["IS NIL"];
 } else {
-	if(_variableType == "STRING") then {
+	if(_variableType == "STRING" || {_variableType == "TEXT"}) then {
 		_output = _variable;
 	} else {
 		_output = str _variable;
 	};
 };
 
-diag_log text _output;
+diag_log _output;
 [[_output],"ALiVE_fnc_hintS",true,false] spawn BIS_fnc_MP;
