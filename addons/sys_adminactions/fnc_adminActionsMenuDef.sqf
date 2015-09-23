@@ -234,6 +234,15 @@ if (_menuName == "adminOptions") then {
 	                 1,
 	                !isNil QMOD(amb_civ_population) && call ALIVE_fnc_isServerAdmin
 				],
+				[localize "STR_ALIVE_player" + " >",
+					"",
+					"",
+					localize "STR_ALIVE_player_COMMENT",
+	                ["call ALiVE_fnc_playerMenuDef", "playeradmin", 1],
+	                 -1,
+	                 1,
+	                !isNil QMOD(sys_player) && call ALIVE_fnc_isServerAdmin
+				],
 				[localize "STR_ALIVE_STATISTICS" + " >",
 					"",
 					"",
