@@ -76,6 +76,26 @@ class CfgVehicles {
 	                };
 	        };
 
+	        class ALiVE_AI_DISTRIBUTION
+	        {
+	                displayName = "$STR_ALIVE_REQUIRES_ALIVE_AI_DISTRIBUTION";
+	                description = "$STR_ALIVE_REQUIRES_ALIVE_AI_DISTRIBUTION_COMMENT";
+	                class Values
+	                {
+	                        class off
+	                        {
+	                                name = "Server";
+	                                value = false;
+	                                default = 1;
+	                        };
+	                        class on
+	                        {
+	                                name = "Headless clients";
+	                                value = true;
+	                        };
+	                };
+	        };
+
 	        class ALiVE_DISABLESAVE
 	        {
 	                displayName = "$STR_ALIVE_DISABLESAVE";

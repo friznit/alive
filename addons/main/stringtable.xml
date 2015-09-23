@@ -61,4 +61,10 @@
 <Key ID="STR_ALIVE_DISABLEPLAYERLOG_COMMENT">
 	<Original>Disable player logistics, such as pickup and move crates, objects etc.</Original>
 </Key>
+<Key ID="STR_ALIVE_REQUIRES_ALIVE_AI_DISTRIBUTION">
+	<Original>AI Distribution:</Original>
+</Key>
+<Key ID="STR_ALIVE_REQUIRES_ALIVE_AI_DISTRIBUTION_COMMENT">
+	<Original>Activates dynamic AI distribution of all AI to all available headless clients</Original>
+</Key>
 </Container></Package></Project>

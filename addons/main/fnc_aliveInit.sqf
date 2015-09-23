@@ -133,6 +133,10 @@ if (isServer) then {
     MOD(DISABLESAVE) = _logic getvariable [QMOD(DISABLESAVE),"true"];
     Publicvariable QMOD(DISABLESAVE);
 
+    //Activates dynamic AI distribution to all available headless clients
+    MOD(AI_DISTRIBUTION) = call compile (_logic getvariable [QMOD(AI_DISTRIBUTION),"false"]);
+    MOD(AI_DISTRIBUTION) spawn ALiVE_fnc_AI_Distributor;
+
     // Event Log
     ALIVE_eventLog = [nil, "create"] call ALIVE_fnc_eventLog;
     [ALIVE_eventLog, "init"] call ALIVE_fnc_eventLog;
