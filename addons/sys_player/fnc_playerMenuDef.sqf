@@ -189,7 +189,7 @@ if (_menuName == "playerAdmin") then {
 					localize "STR_ALIVE_player_autoSaveTime_COMMENT",
 					"",
 					-1,
-					MOD(sys_player) getVariable ["storeToDB", true],
+					!isNil QMOD(sys_data) && {MOD(sys_data_ENABLED) && MOD(sys_player) getVariable ["storeToDB", false]},
 					call ALIVE_fnc_isServerAdmin
 				]
 			]
