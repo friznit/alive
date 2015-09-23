@@ -95,7 +95,7 @@ if (isDedicated) then {
     };
 
 	// Check that the config loaded ok, if not then stop the data module
-	if (typeName _config == "STRING") exitWith {
+	if (typeName _config == "STRING" || (_initmsg select 1 == "ERROR" && _initmsg select 2 != "ALiVE already initialized")) exitWith {
 		["CANNOT CONNECT TO DATABASE, DISABLING DATA MODULE"] call ALIVE_fnc_logger;
 		GVAR(DISABLED) = true;
 		publicVariable QGVAR(DISABLED);
