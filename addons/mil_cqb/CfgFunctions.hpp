@@ -26,6 +26,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_cqb\fnc_CQBLoadData.sqf";
 								recompile = RECOMPILE;
                         };
+                        class CQBMenuDef {
+                                description = "CQB Menu Definition";
+                                file = "\x\alive\addons\mil_cqb\fnc_CQBMenuDef.sqf";
+                                                                recompile = RECOMPILE;
+                        };
                         class addCQBPositions {
                                 description = "Enables CQB positions within the given radius of a position";
                                 file = "\x\alive\addons\mil_cqb\fnc_addCQBPositions.sqf";

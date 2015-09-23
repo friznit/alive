@@ -1,12 +1,12 @@
-#include <\x\alive\addons\mil_ied\script_component.hpp>
+#include <\x\alive\addons\amb_civ_population\script_component.hpp>
 #include <\x\cba\addons\ui_helper\script_dikCodes.hpp>
 
-SCRIPT(IEDMenuDef);
+SCRIPT(civilianPopulationMenuDef);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_IEDMenuDef
+Function: ALIVE_fnc_civilianPopulationMenuDef
 Description:
-This function controls the View portion of IED.
+This function controls the View portion of civ pop.
 
 Parameters:
 Object - The object to attach the menu too
@@ -22,7 +22,7 @@ Examples:
 	"player",
 	[221,[false,false,false]],
 	-9500,
-	["call ALIVE_fnc_IEDMenuDef","main"]
+	["call ALIVE_fnc_civilianPopulationMenuDef","main"]
 ] call CBA_fnc_flexiMenu_Add;
 (end)
 
@@ -80,29 +80,29 @@ _menus =
 	]
 ];
 
-if (_menuName == "IED") then {
+if (_menuName == "civpop") then {
 	_menus set [count _menus,
 		[
-			["IED", localize "STR_ALIVE_IED", "popup"],
+			["civpop", localize "STR_ALIVE_CIV_POP", "popup"],
 			[
-				[localize "STR_ALIVE_IED_DEBUG_ENABLE",
-					{ADDON setVariable ["debug", true, true]},
-					"",
-					localize "STR_ALIVE_IED_DEBUG_COMMENT",
-					"",
-					-1,
-					!(ADDON getVariable ["debug", false]),
-					!(ADDON getVariable ["debug", false])
-				],
-				[localize "STR_ALIVE_IED_DEBUG_DISABLE",
-					{ADDON setVariable ["debug", false, true] },
-					"",
-					localize "STR_ALIVE_IED_DEBUG_COMMENT",
-					"",
-					-1,
-					ADDON getVariable ["debug", false],
-					ADDON getVariable ["debug", false]
-				]
+				[localize "STR_ALIVE_CIV_POP_DEBUG_ENABLE",
+                    { ADDON setVariable ["debug","true",true]; [] call ALIVE_fnc_agentSystemDebug; },
+                    "",
+                    localize "STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_COMMENT",
+                    "",
+                    -1,
+                    [QUOTE(ADDON)] call ALiVE_fnc_isModuleAvailable,
+                    !isnil QUOTE(ADDON) && {!(call compile (ADDON getVariable ["debug","false"]))}
+                ],
+                [localize "STR_ALIVE_CIV_POP_DEBUG_DISABLE",
+                    { ADDON setVariable ["debug","false",true]; [] call ALIVE_fnc_agentSystemDebug; },
+                    "",
+                    localize "STR_ALIVE_CIV_POP_DEBUG_COMMENT",
+                    "",
+                    -1,
+                    [QUOTE(ADDON)] call ALiVE_fnc_isModuleAvailable,
+                    !isnil QUOTE(ADDON) && {(call compile (ADDON getVariable ["debug","false"]))}
+                ]
 			]
 		]
 	];

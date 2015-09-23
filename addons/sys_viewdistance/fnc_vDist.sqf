@@ -142,7 +142,7 @@ switch(_operation) do {
                     if(viewdistance >  _maxsetvd) then {
                         setViewDistance _maxsetvd;
                     };
-
+/*
                         // Initialise interaction key if undefined
                         if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
                         // if ACE spectator enabled, seto to allow exit
@@ -156,7 +156,7 @@ switch(_operation) do {
                                         "call ALIVE_fnc_vdistMenuDef",
                                         "main"
                                 ]
-                        ] call ALIVE_fnc_flexiMenu_Add;
+                        ] call ALIVE_fnc_flexiMenu_Add; */
                 };
 
                 //End init

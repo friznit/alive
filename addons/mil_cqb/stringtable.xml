@@ -122,4 +122,16 @@
 <Key ID="STR_ALIVE_CQB_SPAWNDISTANCEJET_COMMENT">
 	<English>Spawn distance for jets (0 is no spawning)! Note that spawn distance for strategic placements is factor 1.4 of this value</English>
 </Key>
+<Key ID="STR_ALIVE_CQB_DEBUG_ENABLE">
+    <English>Activate CQB Debug</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_DEBUG_ENABLE_COMMENT">
+    <English>Activates CQB Debug</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_DEBUG_DISABLE">
+    <English>Deactivate CQB Debug</English>
+</Key>
+<Key ID="STR_ALIVE_CQB_DEBUG_DISABLE_COMMENT">
+    <English>Deactivates CQB Debug</English>
+</Key>
 </Container></Package></Project>

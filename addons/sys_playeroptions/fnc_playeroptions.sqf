@@ -74,7 +74,7 @@ switch (_operation) do {
 
         case "init": {
 
-            //["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
+            ["%1 - Initialisation started...",_logic] call ALiVE_fnc_Dump;
 
             //Only one init per instance is allowed
             if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE Player Options - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
@@ -155,7 +155,24 @@ switch (_operation) do {
                 _logic setVariable ["startupComplete", true, true];
             };
 
-            //["%1 - Initialisation Completed...", _logic] call ALiVE_fnc_Dump;
+            if(!isDedicated && !isHC) then {
+                // Initialise interaction key if undefined
+                if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
+                // if ACE spectator enabled, seto to allow exit
+                if(!isNil "ace_fnc_startSpectator") then {ace_sys_spectator_can_exit_spectator = true;};
+                // initialise main menu
+                [
+                        "player",
+                        [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
+                        -9500,
+                        [
+                                "call ALIVE_fnc_playeroptionsMenuDef",
+                                "main"
+                        ]
+                ] call ALIVE_fnc_flexiMenu_Add;
+            };
+
+            ["%1 - Initialisation Completed...", _logic] call ALiVE_fnc_Dump;
 
             _result = _logic;
         };

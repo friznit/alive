@@ -158,7 +158,7 @@ switch(_operation) do {
                 if(!isDedicated && !isHC) then {
 
                     // Initialise interaction key if undefined
-                    if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
+/*                    if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 
 
                     // initialise main menu
@@ -170,7 +170,7 @@ switch(_operation) do {
                                     "call ALIVE_fnc_playertagsMenuDef",
                                     "main"
                             ]
-                    ] call ALIVE_fnc_flexiMenu_Add;
+                    ] call ALIVE_fnc_flexiMenu_Add; */
                 };
 
                 // Debug

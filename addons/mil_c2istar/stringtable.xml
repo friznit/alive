@@ -8,8 +8,11 @@
 <Key ID="STR_ALIVE_C2ISTAR_MENU">
     <English>Player C2ISTAR</English>
 </Key>
+<Key ID="STR_ALIVE_C2ISTAR_COMMANDER">
+    <English>Commander Actions</English>
+</Key>
 <Key ID="STR_ALIVE_C2ISTAR_COMMENT">
-    <English>Command, Control, Intelligence, Surveillance, Target Aquisition and Reconnaisance</English>
+    <English>Command, Control, Comms, Intelligence, Surveillance, Target Aquisition and Reconnaisance</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_DEBUG">
     <English>Enable Debug:</English>

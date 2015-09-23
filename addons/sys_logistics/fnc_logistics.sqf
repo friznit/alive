@@ -208,7 +208,7 @@ switch (_operation) do {
             if (hasInterface) then {
 
                 // Initialise interaction key if undefined
-                if (isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
+ /*               if (isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 
                 TRACE_2("Menu pre-req",SELF_INTERACTION_KEY,ALIVE_fnc_logisticsMenuDef);
 
@@ -221,7 +221,7 @@ switch (_operation) do {
                                 "call ALIVE_fnc_logisticsMenuDef",
                                 "main"
                         ]
-                ] call ALiVE_fnc_flexiMenu_Add;
+                ] call ALiVE_fnc_flexiMenu_Add; */
             };
 
             TRACE_1("After module init",_logic);
@@ -305,7 +305,7 @@ switch (_operation) do {
             };
 
             if (isnil "_id") exitwith {_result = _object};
-            
+
             _object setvariable [QGVAR(CONTAINER),nil,true];
             _object setvariable [QGVAR(CARGO),nil,true];
 
@@ -736,9 +736,9 @@ switch (_operation) do {
         };
 
         case "removeActions": {
-            
+
             _args = [_this, 2, player, [objNull]] call BIS_fnc_param;
-            
+
 			if !(hasInterface) exitwith {
                 [[_logic, _operation, _args],"ALIVE_fnc_logistics", owner _args, false] call BIS_fnc_MP;
             };
@@ -775,20 +775,20 @@ switch (_operation) do {
 
 				//All Localities
                 _object setvariable [QGVAR(EH_KILLED), _object getvariable [QGVAR(EH_KILLED), _object addEventHandler ["Killed", {
-                        
+
 	                    _object = _this select 0;
-	                    
+
 	                    if (isPlayer _object && {vehicle _object == _object}) then {
 	                        //Drop object if player is carrying while beeing killed
 	                        {[MOD(SYS_LOGISTICS),"dropObject",[_x,_object]] call ALIVE_fnc_logistics} foreach (_object getvariable [QGVAR(CARGO),[]]);
-							
+
 	                        //Deactivate actions
 	                    	[MOD(SYS_LOGISTICS),"removeActions",_object] call ALIVE_fnc_logistics;
 	                    };
-	                    
+
 	                    //Remove object from store
 	                    [MOD(SYS_LOGISTICS),"removeObject",_object] call ALIVE_fnc_logistics;
-	                    
+
 	                    if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {
 	                        ["ALiVE SYS LOGISTICS EH Killed firing"] call ALiVE_fnc_DumpR;
 	                    };
@@ -799,7 +799,7 @@ switch (_operation) do {
 					//apply these EHs on players
 					_object setvariable [QGVAR(EH_INVENTORYCLOSED), _object getvariable [QGVAR(EH_INVENTORYCLOSED), _object addEventHandler ["InventoryClosed", {[ALiVE_SYS_LOGISTICS,"updateObject",[_this select 1, _this select 0]] call ALIVE_fnc_logistics; if (!isnil QMOD(SYS_LOGISTICS) && {MOD(SYS_LOGISTICS) getvariable [QGVAR(LISTENER),false]}) then {["ALiVE SYS LOGISTICS EH InventoryClosed firing"] call ALiVE_fnc_DumpR}}]]];
 				};
-                
+
                 //Serverside only section
                 if (isServer) then {
 		            //apply these EHs on vehicles

@@ -75,8 +75,10 @@ _menus =
 				"",
 				"",
 				localize "STR_ALIVE_player_COMMENT",
-                               		 ["call ALiVE_fnc_playerMenuDef", "player", 1],
-                                		-1, 1, true
+                ["call ALiVE_fnc_playerMenuDef", "player", 1],
+                -1,
+                1,
+                true
 			]
 		]
 	]

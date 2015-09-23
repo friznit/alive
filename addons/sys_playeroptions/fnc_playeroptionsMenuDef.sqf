@@ -1,12 +1,12 @@
-#include <\x\alive\addons\mil_ied\script_component.hpp>
+#include <\x\alive\addons\sys_playeroptions\script_component.hpp>
 #include <\x\cba\addons\ui_helper\script_dikCodes.hpp>
 
-SCRIPT(IEDMenuDef);
+SCRIPT(playeroptionsMenuDef);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_IEDMenuDef
+Function: ALIVE_fnc_playeroptionsMenuDef
 Description:
-This function controls the View portion of IED.
+This function controls the View portion of player options.
 
 Parameters:
 Object - The object to attach the menu too
@@ -22,16 +22,16 @@ Examples:
 	"player",
 	[221,[false,false,false]],
 	-9500,
-	["call ALIVE_fnc_IEDMenuDef","main"]
+	["call ALIVE_fnc_playeroptionsMenuDef","main"]
 ] call CBA_fnc_flexiMenu_Add;
 (end)
 
 See Also:
-- <ALIVE_fnc_IED>
+- <ALIVE_fnc_adminActions>
 - <CBA_fnc_flexiMenu_Add>
 
 Author:
-Tupolov, Wolffy
+Tupolov
 
 Peer reviewed:
 nil
@@ -71,37 +71,69 @@ _menus =
 	[
 		["main", "ALiVE", _menuRsc],
 		[
-		]
-	],
-	[
-		["adminOptions", "Admin Options", "popup"],
-		[
+			[localize "STR_ALIVE_PLAYEROPTIONS_SHORT" + " >",
+				"",
+				"",
+				localize "STR_ALIVE_PLAYEROPTIONS_COMMENT",
+                ["call ALiVE_fnc_playeroptionsMenuDef", "playeroptions", 1],
+                -1,
+                1,
+                !isnil QMOD(sys_playeroptions)
+			]
 		]
 	]
 ];
 
-if (_menuName == "IED") then {
+
+if (_menuName == "playeroptions") then {
 	_menus set [count _menus,
 		[
-			["IED", localize "STR_ALIVE_IED", "popup"],
+			["playeroptions", localize "STR_ALIVE_PLAYEROPTIONS", "popup"],
 			[
-				[localize "STR_ALIVE_IED_DEBUG_ENABLE",
-					{ADDON setVariable ["debug", true, true]},
+				[localize "STR_ALIVE_VDIST",
+					{[] call ALIVE_fnc_vDistGuiInit},
 					"",
-					localize "STR_ALIVE_IED_DEBUG_COMMENT",
-					"",
-					-1,
-					!(ADDON getVariable ["debug", false]),
-					!(ADDON getVariable ["debug", false])
+					localize "STR_ALIVE_VDIST_COMMENT",
+			 		"",
+			 		-1,
+			 		1,
+			 		true
 				],
-				[localize "STR_ALIVE_IED_DEBUG_DISABLE",
-					{ADDON setVariable ["debug", false, true] },
+				[localize "STR_ALIVE_PLAYERTAGS_DISPLAY_ENABLE",
+					{ MOD(sys_playertags) setVariable ["display_enabled", true]; true call MOD(sys_playertags_TRIGGER); },
 					"",
-					localize "STR_ALIVE_IED_DEBUG_COMMENT",
+					localize "STR_ALIVE_PLAYERTAGS_DISPLAY_COMMENT",
 					"",
 					-1,
-					ADDON getVariable ["debug", false],
-					ADDON getVariable ["debug", false]
+				 	true,
+					!isnil QMOD(sys_playertags) && !(MOD(sys_playertags) getVariable ["display_enabled", false])
+				],
+				[localize "STR_ALIVE_PLAYERTAGS_DISPLAY_DISABLE",
+					 { 	MOD(sys_playertags)  setVariable ["display_enabled", false]; false call MOD(sys_playertags_TRIGGER); },
+					"",
+					localize "STR_ALIVE_PLAYERTAGS_DISPLAY_COMMENT",
+					"",
+					-1,
+				  	true,
+					!isnil QMOD(sys_playertags) && ( MOD(sys_playertags) getVariable ["display_enabled", false])
+				],
+				[localize "STR_ALIVE_LOGISTICS_ENABLEACTIONS_COMMENT",
+					{[MOD(SYS_LOGISTICS),"addActions"] call ALiVE_fnc_Logistics},
+					"",
+					localize "STR_ALIVE_LOGISTICS_ENABLEACTIONS_COMMENT",
+					"",
+					-1,
+					true,
+					!isnil QMOD(sys_logistics) && (isnil {player getvariable [QMOD(SYS_LOGISTICS_ACTIONS),nil]})
+				],
+                [localize "STR_ALIVE_LOGISTICS_DISABLEACTIONS_COMMENT",
+					{[MOD(SYS_LOGISTICS),"removeActions"] call ALiVE_fnc_Logistics},
+					"",
+					localize "STR_ALIVE_LOGISTICS_DISABLEACTIONS_COMMENT",
+					"",
+					-1,
+					true,
+					!isnil QMOD(sys_logistics) && !(isnil {player getvariable [QMOD(SYS_LOGISTICS_ACTIONS),nil]})
 				]
 			]
 		]

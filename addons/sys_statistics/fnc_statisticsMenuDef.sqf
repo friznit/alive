@@ -55,32 +55,32 @@ if (typeName _params == typeName []) then {
 /*
         ["Menu Caption", "flexiMenu resource dialog", "optional icon folder", menuStayOpenUponSelect],
         [
-            ["caption", 
-                "action", 
-                "icon", 
-                "tooltip", 
-                {"submenu"|["menuName", "", {0|1} (optional - use embedded list menu)]}, 
+            ["caption",
+                "action",
+                "icon",
+                "tooltip",
+                {"submenu"|["menuName", "", {0|1} (optional - use embedded list menu)]},
                 -1 (shortcut DIK code),
-                {0|1/"0"|"1"/false|true} (enabled), 
+                {0|1/"0"|"1"/false|true} (enabled),
                 {-1|0|1/"-1"|"0"|"1"/false|true} (visible)
             ],
              ...
 */
+
 _menus =
 [
 	[
 		["main", "ALiVE", _menuRsc],
 		[
-			[localize "STR_ALIVE_STATISTICS" + " >",
-				"",
-				"",
-				localize "STR_ALIVE_STATISTICS_ENABLE_COMMENT",
-                                ["call ALiVE_fnc_statisticsMenuDef", "statistics", 1],
-                                -1, !(GVAR(DISABLED)), (call ALIVE_fnc_isServerAdmin)
-			]
+		]
+	],
+	[
+		["adminOptions", "Admin Options", "popup"],
+		[
 		]
 	]
 ];
+
 
 TRACE_2("Menu setup",GVAR(ENABLED),GVAR(DISABLED));
 

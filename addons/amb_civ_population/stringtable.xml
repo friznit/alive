@@ -111,4 +111,22 @@
 <Key ID="STR_ALIVE_CIV_POP_CIVILIAN_ROLES_EAST">
     <English>Eastern</English>
 </Key>
+<Key ID="STR_ALIVE_CIV_POP_DEBUG_ENABLE">
+    <English>Enable Debug</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_DEBUG_DISABLE">
+    <English>Disable Debug</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_DEBUG">
+    <English>Debug Civilian System:</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_DEBUG_ENABLE">
+    <English>Activate Civilian Debug</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_DEBUG_DISABLE">
+    <English>Deactivate Civilian Debug</English>
+</Key>
+<Key ID="STR_ALIVE_CIV_POP_DEBUG_COMMENT">
+    <English>Toggle debug mode on the civilian system</English>
+</Key>
 </Container></Package></Project>

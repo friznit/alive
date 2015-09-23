@@ -36,7 +36,7 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_menuDef","_target","_params","_menuName","_menuRsc","_menus","_backpacks","_userItems","_items","_result"];
+private ["_menuDef","_target","_params","_menuName","_menuRsc","_menus","_backpacks","_userItems","_items","_result","_prUserItems","_otherResult","_csUserItems","_csResult"];
 // _this==[_target, _menuNameOrParams]
 
 PARAMS_2(_target,_params);
@@ -48,6 +48,16 @@ _backpacks = Backpack player;
 _userItems = [[MOD(MIL_C2ISTAR),"c2_item"] call ALIVE_fnc_C2ISTAR,"ALIVE_Tablet"];
 //Finds selected userItem-string(s) in assignedItems
 _result = (({([toLower(str(_items + [_backpacks])), toLower(_x)] call CBA_fnc_find) > -1} count _userItems) > 0);
+
+if ([QMOD(SUP_PLAYER_RESUPPLY)] call ALiVE_fnc_isModuleAvailable) then {
+	_prUserItems = [[MOD(SUP_PLAYER_RESUPPLY),"pr_item"] call ALIVE_fnc_PR,"ALIVE_Tablet"];
+	_otherResult = (({([toLower(str(_items + [_backpacks])), toLower(_x)] call CBA_fnc_find) > -1} count _prUserItems) > 0);
+};
+
+if ([QMOD(SUP_COMBATSUPPORT)] call ALiVE_fnc_isModuleAvailable) then {
+	_csUserItems = [NEO_radioLogic getVariable ["combatsupport_item","LaserDesignator"],"ALIVE_Tablet"];
+	_csResult = (({([toLower(str(_items + [_backpacks])), toLower(_x)] call CBA_fnc_find) > -1} count _csUserItems) > 0);
+};
 
 if (typeName _params == typeName []) then {
 	if (count _params < 1) exitWith {diag_log format["Error: Invalid params: %1, %2", _this, __FILE__];};
@@ -76,7 +86,7 @@ _menus =
 	[
 		["main", "ALiVE", _menuRsc],
 		[
-			[localize "STR_ALIVE_C2ISTAR_MENU" + " >",
+			[localize "STR_ALIVE_C2ISTAR_COMMANDER" + " >",
 				"",
 				"",
 				localize "STR_ALIVE_C2ISTAR_COMMENT",
@@ -118,7 +128,9 @@ if (_menuName == "C2ISTAR") then {
 					"",
 					localize "STR_ALIVE_PR_COMMENT",
 	                 "",
-	                 -1,(MOD(Require) getVariable [format["ALIVE_MIL_LOG_AVAIL_%1", (side player)], false]), _result
+	                 -1,
+	                 (MOD(Require) getVariable [format["ALIVE_MIL_LOG_AVAIL_%1", (side player)], false]),
+	                 [QMOD(SUP_PLAYER_RESUPPLY)] call ALiVE_fnc_isModuleAvailable && {_otherResult}
 				],
 				["Tasks",
 
@@ -139,6 +151,15 @@ if (_menuName == "C2ISTAR") then {
                      true,
                      _result
                 ],
+				["Combat Support",
+					{["radio"] call ALIVE_fnc_radioAction},
+					"",
+					localize "STR_ALIVE_CS_COMMENT",
+	                 "",
+	                 -1,
+	                 true,
+	                 [QMOD(SUP_COMBATSUPPORT)] call ALiVE_fnc_isModuleAvailable && {_csResult}
+				],
 				["Send SITREP",
 					{createDialog "RscDisplayALIVESITREP"},
 					"",

@@ -1,12 +1,12 @@
-#include <\x\alive\addons\mil_ied\script_component.hpp>
+#include <\x\alive\addons\sys_profile\script_component.hpp>
 #include <\x\cba\addons\ui_helper\script_dikCodes.hpp>
 
-SCRIPT(IEDMenuDef);
+SCRIPT(profileMenuDef);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_IEDMenuDef
+Function: ALIVE_fnc_profileMenuDef
 Description:
-This function controls the View portion of IED.
+This function controls the View portion of profile.
 
 Parameters:
 Object - The object to attach the menu too
@@ -22,7 +22,7 @@ Examples:
 	"player",
 	[221,[false,false,false]],
 	-9500,
-	["call ALIVE_fnc_IEDMenuDef","main"]
+	["call ALIVE_fnc_profileMenuDef","main"]
 ] call CBA_fnc_flexiMenu_Add;
 (end)
 
@@ -80,28 +80,28 @@ _menus =
 	]
 ];
 
-if (_menuName == "IED") then {
+if (_menuName == "profile") then {
 	_menus set [count _menus,
 		[
-			["IED", localize "STR_ALIVE_IED", "popup"],
+			["profile", localize "STR_ALIVE_PROFILE_SYSTEM", "popup"],
 			[
-				[localize "STR_ALIVE_IED_DEBUG_ENABLE",
-					{ADDON setVariable ["debug", true, true]},
+                [localize "STR_ALIVE_PROFILE_SYSTEM_DEBUG_ENABLE",
+					{ADDON setVariable ["debug","true", true]; [] call ALIVE_fnc_profileSystemDebug; },
 					"",
-					localize "STR_ALIVE_IED_DEBUG_COMMENT",
+					localize "STR_ALIVE_PROFILE_SYSTEM_DEBUG_COMMENT",
 					"",
 					-1,
-					!(ADDON getVariable ["debug", false]),
-					!(ADDON getVariable ["debug", false])
+                    [QUOTE(ADDON)] call ALiVE_fnc_isModuleAvailable,
+                    !isnil QUOTE(ADDON) && {!(call compile (ADDON getVariable ["debug","false"]))}
 				],
-				[localize "STR_ALIVE_IED_DEBUG_DISABLE",
-					{ADDON setVariable ["debug", false, true] },
+				[localize "STR_ALIVE_PROFILE_SYSTEM_DEBUG_DISABLE",
+					{ADDON setVariable ["debug","false", true]; [] call ALIVE_fnc_profileSystemDebug; },
 					"",
-					localize "STR_ALIVE_IED_DEBUG_COMMENT",
+					localize "STR_ALIVE_PROFILE_SYSTEM_DEBUG_COMMENT",
 					"",
 					-1,
-					ADDON getVariable ["debug", false],
-					ADDON getVariable ["debug", false]
+                    [QUOTE(ADDON)] call ALiVE_fnc_isModuleAvailable,
+                    !isnil QUOTE(ADDON) && {(call compile (ADDON getVariable ["debug","false"]))}
 				]
 			]
 		]

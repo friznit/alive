@@ -10,6 +10,12 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_COMMENT">
 	<English>Server admin functions</English>
 </Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_OPTIONS">
+	<English>Admin Options</English>
+</Key>
+<Key ID="STR_ALIVE_ADMINACTIONS_SETTINGS_COMMENT">
+	<English>Adjust ALiVE module settings, i.e. debug, as necessary</English>
+</Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_GHOST">
 	<English>Allow Ghosting:</English>
 </Key>
@@ -49,29 +55,8 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_MARK_UNITS_COMMENT">
 	<English>Allow server admins to mark units positions for 15 seconds</English>
 </Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_CQB_ENABLE">
-    <English>Activate CQB Debug</English>
-</Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_CQB_ENABLE_COMMENT">
-    <English>Activates CQB Debug</English>
-</Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_CQB_DISABLE">
-    <English>Deactivate CQB Debug</English>
-</Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_CQB_DISABLE_COMMENT">
-    <English>Deactivates CQB Debug</English>
-</Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG">
     <English>Debug Profile System:</English>
-</Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_ENABLE">
-    <English>Activate Profiles Debug</English>
-</Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_DISABLE">
-    <English>Deactivate Profiles Debug</English>
-</Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT">
-    <English>Toggle debug mode on the profile system</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_CREATE_PROFILES">
     <English>Profile non profiled units:</English>
@@ -81,18 +66,6 @@
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_CREATE_PROFILES_COMMENT">
     <English>Create profiles from non profiles units and vehicles.</English>
-</Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG">
-    <English>Debug Civilian System:</English>
-</Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_ENABLE">
-    <English>Activate Civilian Debug</English>
-</Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_DISABLE">
-    <English>Deactivate Civilian Debug</English>
-</Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_COMMENT">
-    <English>Toggle debug mode on the civilian system</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_CONSOLE">
 	<English>Allow Debug:</English>

@@ -71,4 +71,13 @@
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_ERROR1">
 	<English>Only one Virtual AI System module can be used</English>
 </Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_DEBUG_ENABLE">
+    <English>Activate Profiles Debug</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_DEBUG_DISABLE">
+    <English>Deactivate Profiles Debug</English>
+</Key>
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_DEBUG_COMMENT">
+    <English>Toggle debug mode on the profile system</English>
+</Key>
 </Container></Package></Project>

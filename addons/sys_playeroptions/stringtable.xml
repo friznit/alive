@@ -5,6 +5,9 @@
 <Key ID="STR_ALIVE_playeroptions">
 	<English>ALiVE Player Options</English>
 </Key>
+<Key ID="STR_ALIVE_PLAYEROPTIONS_SHORT">
+	<English>Player Options</English>
+</Key>
 <Key ID="STR_ALIVE_playeroptions_COMMENT">
 	<English>Set in game player options such as view distance, respawn, player persistence, crew info, player tags and more</English>
 </Key>

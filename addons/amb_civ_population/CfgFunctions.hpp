@@ -11,6 +11,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\amb_civ_population\fnc_civilianPopulationSystem.sqf";
 				recompile = RECOMPILE;
 			};
+            class civilianPopulationMenuDef {
+                description = "civilianPopulationMenuDef";
+                file = "\x\alive\addons\amb_civ_population\fnc_civilianPopulationMenuDef.sqf";
+                recompile = RECOMPILE;
+            };
 			class clusterHandler {
                 description = "clusterHandler";
                 file = "\x\alive\addons\amb_civ_population\fnc_clusterHandler.sqf";
@@ -95,7 +100,7 @@ class cfgFunctions {
                 description = "addCivilianActions";
                 file = "\x\alive\addons\amb_civ_population\fnc_selectRoleAction.sqf";
                 recompile = RECOMPILE;
-            };                           
+            };
 		};
 	};
 };

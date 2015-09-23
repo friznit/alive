@@ -1,12 +1,12 @@
-#include <\x\alive\addons\mil_ied\script_component.hpp>
+#include <\x\alive\addons\mil_CQB\script_component.hpp>
 #include <\x\cba\addons\ui_helper\script_dikCodes.hpp>
 
-SCRIPT(IEDMenuDef);
+SCRIPT(CQBMenuDef);
 
 /* ----------------------------------------------------------------------------
-Function: ALIVE_fnc_IEDMenuDef
+Function: ALIVE_fnc_profileMenuDef
 Description:
-This function controls the View portion of IED.
+This function controls the View portion of CQB.
 
 Parameters:
 Object - The object to attach the menu too
@@ -22,7 +22,7 @@ Examples:
 	"player",
 	[221,[false,false,false]],
 	-9500,
-	["call ALIVE_fnc_IEDMenuDef","main"]
+	["call ALIVE_fnc_CQBMenuDef","main"]
 ] call CBA_fnc_flexiMenu_Add;
 (end)
 
@@ -80,28 +80,28 @@ _menus =
 	]
 ];
 
-if (_menuName == "IED") then {
+if (_menuName == "cqb") then {
 	_menus set [count _menus,
 		[
-			["IED", localize "STR_ALIVE_IED", "popup"],
+			["cqb", localize "STR_ALIVE_CQB", "popup"],
 			[
-				[localize "STR_ALIVE_IED_DEBUG_ENABLE",
-					{ADDON setVariable ["debug", true, true]},
+                [localize "STR_ALIVE_CQB_DEBUG_ENABLE",
+					{MOD(CQB) setVariable ["debug","true", true]; {[_x,"debug",true] call ALiVE_fnc_CQB} foreach (MOD(CQB) getVariable ["instances",[]]); },
 					"",
-					localize "STR_ALIVE_IED_DEBUG_COMMENT",
+					localize "STR_ALIVE_CQB_DEBUG_ENABLE_COMMENT",
 					"",
 					-1,
-					!(ADDON getVariable ["debug", false]),
-					!(ADDON getVariable ["debug", false])
+                    [QUOTE(ADDON)] call ALiVE_fnc_isModuleAvailable,
+                    !isnil QUOTE(MOD(CQB)) && {!(MOD(CQB) getVariable ["debug",false])}
 				],
-				[localize "STR_ALIVE_IED_DEBUG_DISABLE",
-					{ADDON setVariable ["debug", false, true] },
+				[localize "STR_ALIVE_CQB_DEBUG_DISABLE",
+					{MOD(CQB) setVariable ["debug","false", true]; {[_x,"debug",false] call ALiVE_fnc_CQB} foreach (MOD(CQB) getVariable ["instances",[]]); },
 					"",
-					localize "STR_ALIVE_IED_DEBUG_COMMENT",
+					localize "STR_ALIVE_CQB_DEBUG_DISABLE_COMMENT",
 					"",
 					-1,
-					ADDON getVariable ["debug", false],
-					ADDON getVariable ["debug", false]
+                    [QUOTE(ADDON)] call ALiVE_fnc_isModuleAvailable,
+                    !isnil QUOTE(MOD(CQB)) && {(MOD(CQB) getVariable ["debug",false])}
 				]
 			]
 		]
@@ -120,3 +120,5 @@ if (count _menuDef == 0) then {
 };
 
 _menuDef // return value
+
+

@@ -98,7 +98,7 @@ switch(_operation) do {
 
                 if(!isDedicated && !isHC) then {
                         // Initialise interaction key if undefined
-                        if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
+/*                        if(isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 
                         // if ACE spectator enabled, seto to allow exit
                         if(!isNil "ace_fnc_startSpectator") then {ace_sys_spectator_can_exit_spectator = true;};
@@ -115,9 +115,9 @@ switch(_operation) do {
                                 -9500,
                                 [
                                         "call ALIVE_fnc_statisticsMenuDef",
-                                        "main"
+                                        "adminActions"
                                 ]
-                        ] call ALIVE_fnc_flexiMenu_Add;
+                        ] call ALIVE_fnc_flexiMenu_Add; */
                 };
 
                 /*

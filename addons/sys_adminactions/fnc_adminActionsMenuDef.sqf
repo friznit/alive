@@ -75,8 +75,19 @@ _menus =
 				"",
 				"",
 				localize "STR_ALIVE_ADMINACTIONS_COMMENT",
-                                ["call ALiVE_fnc_adminActionsMenuDef", "adminActions", 1],
-                                -1, 1, call ALIVE_fnc_isServerAdmin
+                ["call ALiVE_fnc_adminActionsMenuDef", "adminActions", 1],
+                -1,
+                1,
+                call ALIVE_fnc_isServerAdmin
+			],
+			[localize "STR_ALIVE_ADMINACTIONS_OPTIONS" + " >",
+				"",
+				"",
+				localize "STR_ALIVE_ADMINACTIONS_OPTIONS_COMMENT",
+                ["call ALiVE_fnc_adminActionsMenuDef", "adminOptions", 1],
+                -1,
+                1,
+                call ALIVE_fnc_isServerAdmin
 			]
 		]
 	]
@@ -89,6 +100,15 @@ if (_menuName == "adminActions") then {
 		[
 			["adminActions", localize "STR_ALIVE_ADMINACTIONS", "popup"],
 			[
+				[localize "STR_ALIVE_ADMINACTIONS_MARK_UNITS_ENABLE",
+					{ [] call ALIVE_fnc_markUnits },
+					"",
+					localize "STR_ALIVE_ADMINACTIONS_MARK_UNITS_COMMENT",
+					"",
+					-1,
+					1,
+					true
+				],
 				[localize "STR_ALIVE_ADMINACTIONS_GHOST_ENABLE",
 					//{ player setCaptive true },
 					{ ADDON setVariable ["GHOST_enabled", true]; [player,true] call ALIVE_fnc_adminGhost; },
@@ -140,55 +160,6 @@ if (_menuName == "adminActions") then {
 					1,
 					true
 				],
-
-				[localize "STR_ALIVE_ADMINACTIONS_MARK_UNITS_ENABLE",
-					{ [] call ALIVE_fnc_markUnits },
-					"",
-					localize "STR_ALIVE_ADMINACTIONS_MARK_UNITS_COMMENT",
-					"",
-					-1,
-					1,
-					true
-				],
-
-                [localize "STR_ALIVE_ADMINACTIONS_CQB_ENABLE",
-					{ ALiVE_CQB setVariable ["debug",true,true]; {[_x,"debug",true] call ALiVE_fnc_CQB} foreach (MOD(CQB) getVariable ["instances",[]]); },
-					"",
-					localize "STR_ALIVE_ADMINACTIONS_CQB_ENABLE_COMMENT",
-					"",
-					-1,
-					["ALiVE_mil_CQB"] call ALiVE_fnc_isModuleAvailable,
-					!isnil "ALiVE_CQB" && {!(ALiVE_CQB getVariable ["debug",false])}
-				],
-				[localize "STR_ALIVE_ADMINACTIONS_CQB_DISABLE",
-					{ ALiVE_CQB setVariable ["debug",false,true]; {[_x,"debug",false] call ALiVE_fnc_CQB} foreach (MOD(CQB) getVariable ["instances",[]]); },
-					"",
-					localize "STR_ALIVE_ADMINACTIONS_CQB_DISABLE_COMMENT",
-					"",
-					-1,
-					["ALiVE_mil_CQB"] call ALiVE_fnc_isModuleAvailable,
-					!isnil "ALiVE_CQB" && {ALiVE_CQB getVariable ["debug",false]}
-				],
-
-                [localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_ENABLE",
-					{ALiVE_SYS_PROFILE setVariable ["debug","true", true]; [] call ALIVE_fnc_profileSystemDebug; },
-					"",
-					localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT",
-					"",
-					-1,
-					["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable,
-					!isnil "ALiVE_SYS_PROFILE" && {!(call compile (ALiVE_SYS_PROFILE getVariable ["debug","false"]))}
-				],
-				[localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_DISABLE",
-					{ALiVE_SYS_PROFILE setVariable ["debug","false", true]; [] call ALIVE_fnc_profileSystemDebug; },
-					"",
-					localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT",
-					"",
-					-1,
-					["ALiVE_sys_profile"] call ALiVE_fnc_isModuleAvailable,
-					!isnil "ALiVE_SYS_PROFILE" && {call compile (ALiVE_SYS_PROFILE getVariable ["debug","false"])}
-				],
-
 				[localize "STR_ALIVE_ADMINACTIONS_CREATE_PROFILES_ENABLE",
                     { [] call ALIVE_fnc_adminCreateProfiles; },
                     "",
@@ -198,7 +169,6 @@ if (_menuName == "adminActions") then {
                     1,
                     true
                 ],
-                
                 [localize "STR_ALIVE_ADMINACTIONS_OPCOM_TOGGLEINSTALLATIONS",
                     { [] call ALIVE_fnc_OPCOMToggleInstallations; },
                     "",
@@ -209,25 +179,6 @@ if (_menuName == "adminActions") then {
                     !isnil "ALiVE_mil_OPCOM"
                 ],
 
-				[localize "STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_ENABLE",
-                    { ALiVE_amb_civ_population setVariable ["debug","true",true]; [] call ALIVE_fnc_agentSystemDebug; },
-                    "",
-                    localize "STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_COMMENT",
-                    "",
-                    -1,
-                    ["ALiVE_amb_civ_population"] call ALiVE_fnc_isModuleAvailable,
-                    !isnil "ALiVE_amb_civ_population" && {!(call compile (ALiVE_amb_civ_population getVariable ["debug","false"]))}
-                ],
-                [localize "STR_ALIVE_ADMINACTIONS_AGENTS_DEBUG_DISABLE",
-                    { ALiVE_amb_civ_population setVariable ["debug","false",true]; [] call ALIVE_fnc_agentSystemDebug; },
-                    "",
-                    localize "STR_ALIVE_ADMINACTIONS_PROFILES_DEBUG_COMMENT",
-                    "",
-                    -1,
-                    ["ALiVE_amb_civ_population"] call ALiVE_fnc_isModuleAvailable,
-                    !isnil "ALiVE_amb_civ_population" && {(call compile (ALiVE_amb_civ_population getVariable ["debug","false"]))}
-                ],
-
 				[localize "STR_ALIVE_ADMINACTIONS_CONSOLE_ENABLE",
 					{ createDialog "RscDisplayDebugPublic" },
 					"",
@@ -236,6 +187,61 @@ if (_menuName == "adminActions") then {
 					-1,
 					1,
 					true
+				]
+			]
+		]
+	];
+};
+
+if (_menuName == "adminOptions") then {
+	_menus set [count _menus,
+		[
+			["adminOptions", localize "STR_ALIVE_ADMINACTIONS_OPTIONS", "popup"],
+			[
+				[localize "STR_ALIVE_CQB" + " >",
+					"",
+					"",
+					localize "STR_ALIVE_CQB_COMMENT",
+	                ["call ALiVE_fnc_CQBMenuDef", "cqb", 1],
+	                 -1,
+	                 1,
+	                !isNil QMOD(CQB) && call ALIVE_fnc_isServerAdmin
+				],
+				[localize "STR_ALIVE_IED" + " >",
+					"",
+					"",
+					localize "STR_ALIVE_IED_COMMENT",
+	                ["call ALiVE_fnc_IEDMenuDef", "IED", 1],
+	                 -1,
+	                 1,
+	                !isNil QMOD(mil_IED) && call ALIVE_fnc_isServerAdmin
+				],
+				[localize "STR_ALIVE_PROFILE_SYSTEM" + " >",
+					"",
+					"",
+					localize "STR_ALIVE_PROFILE_SYSTEM_COMMENT",
+	                ["call ALiVE_fnc_profileMenuDef", "profile", 1],
+	                 -1,
+	                 1,
+	                !isNil QMOD(sys_profile) && call ALIVE_fnc_isServerAdmin
+				],
+				[localize "STR_ALIVE_CIV_POP" + " >",
+					"",
+					"",
+					localize "STR_ALIVE_CIV_POP_COMMENT",
+	                ["call ALiVE_fnc_civilianPopulationMenuDef", "civpop", 1],
+	                 -1,
+	                 1,
+	                !isNil QMOD(amb_civ_population) && call ALIVE_fnc_isServerAdmin
+				],
+				[localize "STR_ALIVE_STATISTICS" + " >",
+					"",
+					"",
+					localize "STR_ALIVE_STATISTICS_ENABLE_COMMENT",
+	                ["call ALiVE_fnc_statisticsMenuDef", "statistics", 1],
+	                -1,
+	                !isNil QMOD(sys_statistics_ENABLED),
+	                !isNil QMOD(statistics) && call ALIVE_fnc_isServerAdmin
 				]
 			]
 		]

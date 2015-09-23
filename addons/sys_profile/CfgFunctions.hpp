@@ -26,6 +26,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\sys_profile\fnc_profileEntity.sqf";
 				recompile = RECOMPILE;
 			};
+			class profileMenuDef {
+				description = "profileMenuDef";
+				file = "\x\alive\addons\sys_profile\fnc_profileMenuDef.sqf";
+				recompile = RECOMPILE;
+			};
 			class profileVehicle {
 				description = "profileVehicle";
 				file = "\x\alive\addons\sys_profile\fnc_profileVehicle.sqf";

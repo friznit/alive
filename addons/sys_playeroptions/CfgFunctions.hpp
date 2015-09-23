@@ -11,6 +11,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\sys_playeroptions\fnc_playeroptionsInit.sqf";
 								recompile = RECOMPILE;
                         };
+                        class playeroptionsMenuDef {
+                                description = "The menu definition function";
+                                file = "\x\alive\addons\sys_playeroptions\fnc_playeroptionsMenuDef.sqf";
+                                                                recompile = RECOMPILE;
+                        };
                 };
         };
 };
