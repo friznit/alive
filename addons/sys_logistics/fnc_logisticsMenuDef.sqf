@@ -57,10 +57,10 @@ _menus =
 	[
 		["main", "ALiVE", _menuRsc],
 		[
-			[localize "STR_ALIVE_LOGISTICS" + " >",
+			[localize "STR_ALIVE_PLAYEROPTIONS_SHORT" + " >",
 				"",
 				"",
-				localize "STR_ALIVE_LOGISTICS_COMMENT",
+				localize "STR_ALIVE_PLAYEROPTIONS_COMMENT",
                 ["call ALiVE_fnc_logisticsMenuDef", "logistics", 1],
                 -1,
                 1,
@@ -77,7 +77,7 @@ TRACE_2("Menu setup",MOD(SYS_LOGISTICS),[QMOD(SYS_LOGISTICS)] call ALiVE_fnc_isM
 if (_menuName == "logistics") then {
     	_menus set [count _menus,
 		[
-        	["logistics", localize "STR_ALIVE_LOGISTICS", "popup"],
+        	["logistics", localize "STR_ALIVE_PLAYEROPTIONS", "popup"],
 			[
 				[localize "STR_ALIVE_LOGISTICS_ENABLEACTIONS_COMMENT",
 					{[MOD(SYS_LOGISTICS),"addActions"] call ALiVE_fnc_Logistics},

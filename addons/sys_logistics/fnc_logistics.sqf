@@ -208,20 +208,23 @@ switch (_operation) do {
             if (hasInterface) then {
 
                 // Initialise interaction key if undefined
- /*               if (isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
+                if (isNil "SELF_INTERACTION_KEY") then {SELF_INTERACTION_KEY = [221,[false,false,false]];};
 
                 TRACE_2("Menu pre-req",SELF_INTERACTION_KEY,ALIVE_fnc_logisticsMenuDef);
 
-                // Initialise main menu
-                [
-                        "player",
-                        [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
-                        -9500,
-                        [
-                                "call ALIVE_fnc_logisticsMenuDef",
-                                "main"
-                        ]
-                ] call ALiVE_fnc_flexiMenu_Add; */
+                // Check to see if player options is available, if not give the user this menu otherwise player options menu will have it
+                if (isnil QMOD(sys_playeroptions)) then {
+                    // Initialise main menu
+                    [
+                            "player",
+                            [((["ALiVE", "openMenu"] call cba_fnc_getKeybind) select 5) select 0],
+                            -9500,
+                            [
+                                    "call ALIVE_fnc_logisticsMenuDef",
+                                    "main"
+                            ]
+                    ] call ALiVE_fnc_flexiMenu_Add;
+                };
             };
 
             TRACE_1("After module init",_logic);
