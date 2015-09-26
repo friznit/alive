@@ -377,35 +377,26 @@ switch(_operation) do {
                 _position = _profile select 2 select 2;
                 _vehiclesInCommandOf = _profile select 2 select 8;
 
-                if(count _vehiclesInCommandOf == 0) then {
+                _position = [_position, 50, random 360] call BIS_fnc_relPos;
 
-                    _position = [_position, 50, random 360] call BIS_fnc_relPos;
-
-                    if(surfaceIsWater _position) then {
-                        _position = [_position] call ALIVE_fnc_getClosestLand;
-                    };
-
-                    _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
-
-                    _player setPos _position;
-
-                    waitUntil{_profile select 2 select 1};
-
-                    sleep 2;
-
-                    _group = _profile select 2 select 13;
-                    _unit = (units _group) call BIS_fnc_selectRandom;
-
-                    _event = ['SCOM_UPDATED', [_playerID,[_unit]], "COMMAND_HANDLER", "OPS_GROUP_SPECTATE_READY"] call ALIVE_fnc_event;
-                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-
-
-                }else{
-
-                    _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
-                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-
+                if(surfaceIsWater _position) then {
+                    _position = [_position] call ALIVE_fnc_getClosestLand;
                 };
+
+                _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+
+                _player setPos _position;
+
+                waitUntil{_profile select 2 select 1};
+
+                sleep 2;
+
+                _group = _profile select 2 select 13;
+                _unit = (units _group) call BIS_fnc_selectRandom;
+
+                _event = ['SCOM_UPDATED', [_playerID,[_unit]], "COMMAND_HANDLER", "OPS_GROUP_SPECTATE_READY"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
 
             }else{
 
