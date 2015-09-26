@@ -25,7 +25,9 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_side","_faction","_sideNumber","_leaderSide","_leaderSideNumber","_matched","_data","_playerRows","_playerValues","_rows","_values","_groups","_leaderFaction","_leaderSide","_leaderSideNumber","_row","_labels","_rank","_containsPlayers"];
+private ["_side","_faction","_sideNumber","_leaderSide","_leaderSideNumber","_matched","_data","_playerRows","_playerValues",
+"_rows","_values","_groups","_leaderFaction","_leaderSide","_leaderSideNumber","_row","_labels","_rank","_containsPlayers",
+"_vehicle","_vehicleName","_vehiclePosition","_playerType","_leaderType","_unitName","_leader"];
 
 _player = _this select 0;
 _side = _this select 1;
@@ -67,10 +69,10 @@ _groups = allGroups;
 
 	        _distance = floor (player distance leader _x);
 
-	        _labels pushback (format['%1',_x]);
-	        _labels pushback (format['----- %1m ------------------',_distance]);
-	        _labels pushback ('----------------');
-	        _labels pushback ('------------');
+	        _labels pushback (format['%1 [%2m] ---------------------------------------------------------------------',_x,_distance]);
+	        _labels pushback ('');
+	        _labels pushback ('');
+	        _labels pushback ('');
 
 	        _row pushback (_labels);
 
@@ -96,10 +98,83 @@ _groups = allGroups;
 
             };
 
+            _row = [];
+            _labels = [];
+
+            _leader = leader _x;
+
+            _rank = '';
+
+            switch(rank _leader) do {
+                case 'PRIVATE':{
+                    _rank = 'PVT ';
+                };
+                case 'CORPORAL':{
+                    _rank = 'CPL ';
+                };
+                case 'SERGEANT':{
+                    _rank = 'SGT ';
+                };
+                case 'LIEUTENANT':{
+                    _rank = 'LT ';
+                };
+                case 'CAPTAIN':{
+                    _rank = 'CAPT ';
+                };
+                case 'MAJOR':{
+                    _rank = 'MAJ ';
+                };
+                case 'COLONEL':{
+                    _rank = 'COL ';
+                };
+            };
+
+            _unitName = format["%1 ",name _leader];
+            _vehicleName = "";
+            _vehiclePosition = "";
+
+            if!(vehicle _leader == _leader) then {
+
+                _vehicle = assignedVehicle _leader;
+                _vehicleName = getText (configFile >> "CfgVehicles" >> (typeOf vehicle _leader) >> "DisplayName");
+
+                if((driver _vehicle == _leader) || (gunner _vehicle == _leader)) then
+                {
+                    if(driver _vehicle == _leader) then {
+                        _vehiclePosition = "- Driver";
+                    }else{
+                        _vehiclePosition = "- Gunner";
+                    };
+                }else{
+                    _vehiclePosition = "- Cargo";
+                };
+            };
+
+            _playerType = "AI ";
+            if(isPlayer _leader) then {
+                _playerType = "Player ";
+            };
+
+            _labels pushback (format['%1%2%3%4 %5', _playerType, _rank, _unitName, _vehiclePosition, _vehicleName]);
+
+            _row pushback (_labels);
+
+            if(_containsPlayers) then {
+
+                _playerRows pushback (_row);
+                _playerValues pushback (_leader);
+
+            }else{
+
+                _rows pushback (_row);
+                _values pushback (_leader);
+
+            };
+
 
 	        {
 
-            	if(alive _x) then {
+            	if(alive _x && _x != _leader) then {
 
                     _row = [];
                     _labels = [];
@@ -107,41 +182,55 @@ _groups = allGroups;
 
                     switch(rank _x) do {
                         case 'PRIVATE':{
-                            _rank = 'PVT';
+                            _rank = 'PVT ';
                         };
                         case 'CORPORAL':{
-                            _rank = 'CPL';
+                            _rank = 'CPL ';
                         };
                         case 'SERGEANT':{
-                            _rank = 'SGT';
+                            _rank = 'SGT ';
                         };
                         case 'LIEUTENANT':{
-                            _rank = 'LT';
+                            _rank = 'LT ';
                         };
                         case 'CAPTAIN':{
-                            _rank = 'CAPT';
+                            _rank = 'CAPT ';
                         };
                         case 'MAJOR':{
-                            _rank = 'MAJ';
+                            _rank = 'MAJ ';
                         };
                         case 'COLONEL':{
-                            _rank = 'COL';
+                            _rank = 'COL ';
                         };
                     };
 
-                    _labels pushback (format['%1',_rank]);
+                    _unitName = format["%1 ",name _x];
+                    _vehicleName = "";
+                    _vehiclePosition = "";
 
-                    _labels pushback (format['%1',name _x]);
+                    if!(vehicle _x == _x) then {
 
+                        _vehicle = assignedVehicle _x;
+                        _vehicleName = getText (configFile >> "CfgVehicles" >> (typeOf vehicle _x) >> "DisplayName");
+
+                        if((driver _vehicle == _x) || (gunner _vehicle == _x)) then
+                        {
+                            if(driver _vehicle == _x) then {
+                                _vehiclePosition = "- Driver";
+                            }else{
+                                _vehiclePosition = "- Gunner";
+                            };
+                        }else{
+                            _vehiclePosition = "- Cargo";
+                        };
+                    };
+
+                    _playerType = "AI ";
                     if(isPlayer _x) then {
-                        _labels pushback ('Player');
-                    }else{
-                        _labels pushback ('AI');
+                        _playerType = "Player ";
                     };
 
-                    if(isFormationLeader _x) then {
-                        _labels pushback ('Lead');
-                    };
+                    _labels pushback (format['%1%2%3%4 %5', _playerType, _rank, _unitName, _vehiclePosition, _vehicleName]);
 
                     _row pushback (_labels);
 

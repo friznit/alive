@@ -22,10 +22,10 @@ class RscTUP_IEDButton
 	colorFocused[] = {0.4,0.6,0.3,1};
 	colorShadow[] = {0.023529,0,0.0313725,1};
 	colorBorder[] = {0.023529,0,0.0313725,1};
-	soundEnter[] = {"\ca\ui\data\sound\onover",0.09,1};
-	soundPush[] = {"\ca\ui\data\sound\new1",0,0};
-	soundClick[] = {"\ca\ui\data\sound\onclick",0.07,1};
-	soundEscape[] = {"\ca\ui\data\sound\onescape",0.09,1};
+	soundEnter[] = {"\A3\ui_f\data\sound\RscButton\soundEnter",0.09,1};
+    soundPush[] = {"\A3\ui_f\data\sound\RscButton\soundPush",0.09,1};
+    soundClick[] = {"\A3\ui_f\data\sound\RscButton\soundClick",0.09,1};
+    soundEscape[] = {"\A3\ui_f\data\sound\RscButton\soundEscape",0.09,1};
 	style = 2;
 	x = 0;
 	y = 0;

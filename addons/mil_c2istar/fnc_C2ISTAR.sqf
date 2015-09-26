@@ -373,11 +373,7 @@ switch(_operation) do {
     	//Start init
         _logic setVariable ["initGlobal", false];
 
-        // Call SITREP and PATROLREP
-        [] spawn ALIVE_fnc_sitrepInit;
-        [] spawn ALIVE_fnc_patrolrepInit;
-
-	    private["_debug"];
+        private["_debug"];
 
         _logic setVariable ["super", SUPERCLASS];
         _logic setVariable ["class", MAINCLASS];
@@ -387,6 +383,30 @@ switch(_operation) do {
         _debug = [_logic, "debug"] call MAINCLASS;
 
         ALIVE_MIL_C2ISTAR = _logic;
+
+        // Call SITREP and PATROLREP
+        [] spawn ALIVE_fnc_sitrepInit;
+        [] spawn ALIVE_fnc_patrolrepInit;
+
+        private["_gmLimit","_gm"];
+
+        _gmLimit = [_logic, "gmLimit"] call MAINCLASS;
+
+        _gm = [nil, "create"] call ALIVE_fnc_GM;
+        [_gm, "limit", _gmLimit] call ALIVE_fnc_GM;
+        [_gm, "debug", _debug] call ALIVE_fnc_GM;
+        [_gm, "init",[]] call ALIVE_fnc_GM;
+
+        private["_scomOpsLimit","_scomIntelLimit","_scom"];
+
+        _scomOpsLimit = [_logic, "scomOpsLimit"] call MAINCLASS;
+        _scomIntelLimit = [_logic, "scomIntelLimit"] call MAINCLASS;
+
+        _scom = [nil, "create"] call ALIVE_fnc_SCOM;
+        [_scom, "opsLimit", _scomOpsLimit] call ALIVE_fnc_SCOM;
+        [_scom, "intelLimit", _scomIntelLimit] call ALIVE_fnc_SCOM;
+        [_scom, "debug", _debug] call ALIVE_fnc_SCOM;
+        [_scom, "init",[]] call ALIVE_fnc_SCOM;
 
         if (isServer) then {
 
@@ -464,27 +484,6 @@ switch(_operation) do {
                     [ALIVE_taskHandler, "autoGenerateTasks", _taskData] call ALIVE_fnc_taskHandler;
                 };
             };
-
-            private["_gmLimit","_gm"];
-
-            _gmLimit = [_logic, "gmLimit"] call MAINCLASS;
-
-            _gm = [nil, "create"] call ALIVE_fnc_GM;
-            [_gm, "limit", _gmLimit] call ALIVE_fnc_GM;
-            [_gm, "debug", _debug] call ALIVE_fnc_GM;
-            [_gm, "init",[]] call ALIVE_fnc_GM;
-
-            private["_scomOpsLimit","_scomIntelLimit","_scom"];
-
-            _scomOpsLimit = [_logic, "scomOpsLimit"] call MAINCLASS;
-            _scomIntelLimit = [_logic, "scomIntelLimit"] call MAINCLASS;
-
-            _scom = [nil, "create"] call ALIVE_fnc_SCOM;
-            [_scom, "opsLimit", _scomOpsLimit] call ALIVE_fnc_SCOM;
-            [_scom, "intelLimit", _scomIntelLimit] call ALIVE_fnc_SCOM;
-            [_scom, "debug", _debug] call ALIVE_fnc_SCOM;
-            [_scom, "init",[]] call ALIVE_fnc_SCOM;
-
 
             private["_displayIntel","_intelChance","_friendlyIntel","_friendlyIntelRadius","_displayMilitarySectors","_displayPlayerSectors","_displayIntel","_runEvery","_intel"];
 

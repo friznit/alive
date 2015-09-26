@@ -113,8 +113,8 @@ class GMTablet
             colorBackground[] = {0.173,0.173,0.173,1};
             colorSelectBackground[] = {0.3,0.3,0.3,1};
             colorSelectBackground2[] = {0.3,0.3,0.3,1};
-            colorText[] = {0.6,0.6,0.6,1};
-            color[] = {0.6,0.6,0.6,1};
+            colorText[] = {0.5,0.5,0.5,1};
+            color[] = {0.5,0.5,0.5,1};
             colorActive[] = {0.384,0.439,0.341,1};
             sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
             rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
@@ -135,8 +135,8 @@ class GMTablet
             colorBackground[] = {0.173,0.173,0.173,1};
             colorSelectBackground[] = {0.3,0.3,0.3,1};
             colorSelectBackground2[] = {0.3,0.3,0.3,1};
-            colorText[] = {0.6,0.6,0.6,1};
-            color[] = {0.6,0.6,0.6,1};
+            colorText[] = {0.5,0.5,0.5,1};
+            color[] = {0.5,0.5,0.5,1};
             colorActive[] = {0.3,0.3,0.3,1};
             sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
             rowHeight = (safeZoneW / 75) + (safeZoneH / 275);

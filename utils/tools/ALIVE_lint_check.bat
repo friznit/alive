@@ -1,6 +1,6 @@
 @echo off
 rem set exe=echo
-set exe=Rapify.exe -A -E -L -K
+set exe=Rapify.exe -A -E -L -K -N
 rem -N
 set source=P:\x\alive\addons
 

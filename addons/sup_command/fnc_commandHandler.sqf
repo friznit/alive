@@ -96,7 +96,9 @@ switch(_operation) do {
             "OPS_GET_PROFILE",
             "OPS_GET_PROFILE_WAYPOINTS",
             "OPS_CLEAR_PROFILE_WAYPOINTS",
-            "OPS_APPLY_PROFILE_WAYPOINTS"
+            "OPS_APPLY_PROFILE_WAYPOINTS",
+            "OPS_JOIN_GROUP",
+            "OPS_SPECTATE_GROUP"
             ]]] call ALIVE_fnc_eventLog;
         [_logic,"listenerID",_listenerID] call ALIVE_fnc_hashSet;
     };
@@ -257,14 +259,169 @@ switch(_operation) do {
         [_logic, "opsApplyProfileWaypoints", _eventData] call MAINCLASS;
 
     };
+    case "OPS_JOIN_GROUP": {
+        private["_debug","_eventData"];
+
+        _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+        _eventData = _args;
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+            ["ALiVE Command Handler - Operations Join Group event received"] call ALIVE_fnc_dump;
+            _eventData call ALIVE_fnc_inspectArray;
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+        [_logic, "opsJoinGroup", _eventData] call MAINCLASS;
+
+    };
+    case "OPS_SPECTATE_GROUP": {
+        private["_debug","_eventData"];
+
+        _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+        _eventData = _args;
+
+        // DEBUG -------------------------------------------------------------------------------------
+        if(_debug) then {
+            ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+            ["ALiVE Command Handler - Operations Spectate Group event received"] call ALIVE_fnc_dump;
+            _eventData call ALIVE_fnc_inspectArray;
+        };
+        // DEBUG -------------------------------------------------------------------------------------
+
+        [_logic, "opsSpectateGroup", _eventData] call MAINCLASS;
+
+    };
+    case "opsJoinGroup": {
+        private["_data","_playerID","_profileID","_debug"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _data = _args;
+            _playerID = _data select 1;
+            _profileID = _data select 2;
+
+            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+            private["_profile","_faction","_position","_vehiclesInCommandOf","_event","_player","_group"];
+
+            // get profile
+
+            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+            if !(isnil "_profile") then {
+
+                _faction = _profile select 2 select 29;
+                _position = _profile select 2 select 2;
+                _vehiclesInCommandOf = _profile select 2 select 8;
+
+                if(count _vehiclesInCommandOf == 0) then {
+
+                    _position = [_position, 50, random 360] call BIS_fnc_relPos;
+
+                    if(surfaceIsWater _position) then {
+                        _position = [_position] call ALIVE_fnc_getClosestLand;
+                    };
+
+                    _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+
+                    _player setPos _position;
+
+                    waitUntil{_profile select 2 select 1};
+
+                    sleep 2;
+
+                    _group = _profile select 2 select 13;
+                    _unit = (units _group) call BIS_fnc_selectRandom;
+
+                    _event = ['SCOM_UPDATED', [_playerID,[_unit]], "COMMAND_HANDLER", "OPS_GROUP_JOIN_READY"] call ALIVE_fnc_event;
+                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+
+                }else{
+
+                    _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
+                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+                };
+
+            }else{
+
+                _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+            };
+        };
+    };
+    case "opsSpectateGroup": {
+        private["_data","_playerID","_profileID","_debug"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _data = _args;
+            _playerID = _data select 1;
+            _profileID = _data select 2;
+
+            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+            private["_profile","_faction","_position","_vehiclesInCommandOf","_event","_player","_group"];
+
+            // get profile
+
+            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+            if !(isnil "_profile") then {
+
+                _faction = _profile select 2 select 29;
+                _position = _profile select 2 select 2;
+                _vehiclesInCommandOf = _profile select 2 select 8;
+
+                if(count _vehiclesInCommandOf == 0) then {
+
+                    _position = [_position, 50, random 360] call BIS_fnc_relPos;
+
+                    if(surfaceIsWater _position) then {
+                        _position = [_position] call ALIVE_fnc_getClosestLand;
+                    };
+
+                    _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+
+                    _player setPos _position;
+
+                    waitUntil{_profile select 2 select 1};
+
+                    sleep 2;
+
+                    _group = _profile select 2 select 13;
+                    _unit = (units _group) call BIS_fnc_selectRandom;
+
+                    _event = ['SCOM_UPDATED', [_playerID,[_unit]], "COMMAND_HANDLER", "OPS_GROUP_SPECTATE_READY"] call ALIVE_fnc_event;
+                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+
+                }else{
+
+                    _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
+                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+                };
+
+            }else{
+
+                _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+            };
+        };
+    };
     case "opsDataPrepare": {
         private["_data","_playerID","_type","_limit","_side","_faction","_debug"];
 
         if(typeName _args == "ARRAY") then {
 
             _data = _args;
-            _playerID = _data select 0;
-            _type = _data select 1;
+            _playerID = _data select 1;
             _limit = _data select 2;
             _side = _data select 3;
             _faction = _data select 4;
@@ -504,62 +661,64 @@ switch(_operation) do {
 
             _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
 
-            private["_profile","_profileData","_waypoints","_waypointsArray","_waypointData","_event","_profilePos","_wp"];
+            private["_profile","_profileData","_waypoints","_waypointsArray","_waypointData","_event","_profilePos","_wp",
+            "_waypointType","_waypointPosition"];
 
             // get profile
 
             _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
             if !(isnil "_profile") then {
 
+                // set busy
+
+                [_profile,"busy",true] call ALIVE_fnc_profileEntity;
+
                 // clear waypoints
 
-                [_profile, 'clearWaypoints'] call ALIVE_fnc_profileEntity;
+                [_profile, "clearWaypoints"] call ALIVE_fnc_profileEntity;
 
                 {
                     _waypointData = _x;
 
-                    _wp = [_waypointData select 0] call ALIVE_fnc_createProfileWaypoint;
+                    _waypointType = _waypointData select 2;
 
-                    _wp set [2,_waypointData];
+                    if(_waypointType == "LAND OFF" || _waypointType == "LAND HOVER") then {
 
-                    [_profile,"addWaypoint",_wp] call ALIVE_fnc_profileEntity;
+                        _waypointPosition = _waypointData select 0;
 
-                } foreach _updatedWaypoints;
+                        _wp = [_waypointPosition,15] call ALIVE_fnc_createProfileWaypoint;
 
-                /*
-                _profilePos = [_profile, "position"] call CBA_fnc_HashGet;
-
-                //-- Create waypoints
-                {
-                    _x params ["_pos","_type","_speed","_formation","_behavior"];
-
-                    if ((_type == "Land - Engines Off") or (_type == "Land - Low Hover")) then {
-                        _wp = [_pos,15] call ALIVE_fnc_createProfileWaypoint;
                         [_profile,"addWaypoint",_wp] call ALIVE_fnc_profileEntity;
-                        _helipad = "Land_HelipadEmpty_F" createVehicle _pos;
-                        [_profile,_helipad,_type] spawn {
-                            _this params ["_profile","_helipad","_type"];
+
+                        _helipad = "Land_HelipadEmpty_F" createVehicle _waypointPosition;
+
+                        [_profile,_helipad,_waypointType] spawn {
+                            private["_profile","_helipad","_type","_timeTaken","_group","_waypointType","_waypointPosition"];
+                            _this params ["_profile","_helipad","_waypointType"];
                             _timeTaken = time;
                             waitUntil {sleep 5;([_profile,"active"] call ALiVE_fnc_hashGet or {time - _timeTaken > 600})};
                             if ([_profile,"active"] call ALiVE_fnc_hashGet) then {
                                 _group = _profile select 2 select 13;
                                 waitUntil {sleep 2;unitReady (leader _group)};
                                 [_profile, 'clearWaypoints'] call ALIVE_fnc_profileEntity;	//-- Needed because waypoint doesn't seem to complete when you use land command
-                                if (_type == "Land - Engines Off") then {[(vehicle (leader _group)),"LAND"] call ALiVE_fnc_landRemote} else {(vehicle (leader _group)) land "GET OUT"};
+                                if (_waypointType == "LAND OFF") then {(vehicle (leader _group)) land "LAND"} else {(vehicle (leader _group)) land "GET OUT"};
                                 sleep 60;
                                 deleteVehicle _helipad;
                             } else {deleteVehicle _helipad};
+
                         };
-                    } else {
-                        _wp = [_pos, 15, _type, _speed,50,[0,0,0], _formation, "RED", _behavior] call ALIVE_fnc_createProfileWaypoint;
+
+                    }else{
+
+                        _wp = [_waypointData select 0] call ALIVE_fnc_createProfileWaypoint;
+
+                        _wp set [2,_waypointData];
+
                         [_profile,"addWaypoint",_wp] call ALIVE_fnc_profileEntity;
+
                     };
 
-                    _wp = [_x] call ALIVE_fnc_createProfileWaypoint;
-                    [_profile,"addWaypoint",_wp] call ALIVE_fnc_profileEntity;
-
-                } forEach _plannedWaypoints;
-                */
+                } foreach _updatedWaypoints;
 
                 _profileData = [];
                 _profileData pushBack (_profile select 2 select 1); // active

@@ -166,20 +166,20 @@ switch(_operation) do {
             _unitPlayerUID = '0';
 
             if(isPlayer _unit) then {
-                ["Unit is a player"] call ALIVE_fnc_dump;
+                //["Unit is a player"] call ALIVE_fnc_dump;
                 _unitIsPlayer = true;
                 _unitPlayerUID = getPlayerUID _unit;
             }else{
-                ["Unit is not a player"] call ALIVE_fnc_dump;
+                //["Unit is not a player"] call ALIVE_fnc_dump;
             };
 
             _groupFromIsProfiled = false;
             _groupFromProfile = nil;
 
             if(_leaderGroupFromPID == "") then {
-                ["From group is not profiled"] call ALIVE_fnc_dump;
+                //["From group is not profiled"] call ALIVE_fnc_dump;
             }else{
-                ["From group is profiled %1",_leaderGroupFromPID] call ALIVE_fnc_dump;
+                //["From group is profiled %1",_leaderGroupFromPID] call ALIVE_fnc_dump;
                 _groupFromIsProfiled = true;
                 _groupFromProfile = [ALIVE_profileHandler, "getProfile", _leaderGroupFromPID] call ALIVE_fnc_profileHandler;
             };
@@ -188,9 +188,9 @@ switch(_operation) do {
             _groupToProfile = nil;
 
             if(_leaderGroupToPID == "") then {
-                ["To group is not profiled"] call ALIVE_fnc_dump;
+                //["To group is not profiled"] call ALIVE_fnc_dump;
             }else{
-                ["To group is profiled: %1",_leaderGroupToPID] call ALIVE_fnc_dump;
+                //["To group is profiled: %1",_leaderGroupToPID] call ALIVE_fnc_dump;
                 _groupToIsProfiled = true;
                 _groupToProfile = [ALIVE_profileHandler, "getProfile", _leaderGroupToPID] call ALIVE_fnc_profileHandler;
             };
@@ -202,7 +202,7 @@ switch(_operation) do {
                     _uuid = getPlayerUID _x;
                     if(_uuid != _unitPlayerUID) then {
                         _anyPlayersInGroupFrom = true;
-                        ["From group has player: %1 %2",_uuid,_unitPlayerUID] call ALIVE_fnc_dump;
+                        //["From group has player: %1 %2",_uuid,_unitPlayerUID] call ALIVE_fnc_dump;
                     };
                 };
             } forEach _unitsGroupFrom;
@@ -214,24 +214,24 @@ switch(_operation) do {
                     _uuid = getPlayerUID _x;
                     if(_uuid != _unitPlayerUID) then {
                         _anyPlayersInGroupTo = true;
-                        ["To group has player: %1 %2",_uuid,_unitPlayerUID] call ALIVE_fnc_dump;
+                        //["To group has player: %1 %2",_uuid,_unitPlayerUID] call ALIVE_fnc_dump;
                     };
                 };
             } forEach _unitsGroupTo;
 
 
             if!(isNil "_groupToProfile") then {
-                ["TO PROFILE IS NOT NIL"] call ALIVE_fnc_dump;
-                _groupToProfile call ALIVE_fnc_inspectHash;
+                //["TO PROFILE IS NOT NIL"] call ALIVE_fnc_dump;
+                //_groupToProfile call ALIVE_fnc_inspectHash;
                 [_groupToProfile, "addUnit", [typeOf _unit,position _unit,0,rank _unit]] call ALIVE_fnc_profileEntity;
                 //[ALIVE_profileHandler, "unregisterProfile", _groupToProfile] call ALIVE_fnc_profileHandler;
             }else{
-                ["TO PROFILE IS NIL"] call ALIVE_fnc_dump;
+                //["TO PROFILE IS NIL"] call ALIVE_fnc_dump;
             };
 
             if!(isNil "_groupFromProfile") then {
-                ["FROM PROFILE IS NOT NIL"] call ALIVE_fnc_dump;
-                _groupFromProfile call ALIVE_fnc_inspectHash;
+                //["FROM PROFILE IS NOT NIL"] call ALIVE_fnc_dump;
+                //_groupFromProfile call ALIVE_fnc_inspectHash;
                 _result = [_groupFromProfile,"handleDeath",_unit] call ALIVE_fnc_profileEntity;
                 // all units in profile are killed
                 if!(_result) then {
@@ -242,7 +242,7 @@ switch(_operation) do {
 
                 };
             }else{
-                 ["FROM PROFILE IS NIL"] call ALIVE_fnc_dump;
+                 //["FROM PROFILE IS NIL"] call ALIVE_fnc_dump;
             };
 
             _unit setVariable ["profileID",_leaderGroupToPID];
@@ -274,20 +274,20 @@ switch(_operation) do {
             _unitPlayerUID = '0';
 
             if(isPlayer _unit) then {
-                ["Unit is a player"] call ALIVE_fnc_dump;
+                //["Unit is a player"] call ALIVE_fnc_dump;
                 _unitIsPlayer = true;
                 _unitPlayerUID = getPlayerUID _unit;
             }else{
-                ["Unit is not a player"] call ALIVE_fnc_dump;
+                //["Unit is not a player"] call ALIVE_fnc_dump;
             };
 
             _groupFromIsProfiled = false;
             _groupFromProfile = nil;
 
             if(_leaderGroupFromPID == "") then {
-                ["From group is not profiled"] call ALIVE_fnc_dump;
+                //["From group is not profiled"] call ALIVE_fnc_dump;
             }else{
-                ["From group is profiled %1",_leaderGroupFromPID] call ALIVE_fnc_dump;
+                //["From group is profiled %1",_leaderGroupFromPID] call ALIVE_fnc_dump;
                 _groupFromIsProfiled = true;
                 _groupFromProfile = [ALIVE_profileHandler, "getProfile", _leaderGroupFromPID] call ALIVE_fnc_profileHandler;
             };
@@ -299,14 +299,14 @@ switch(_operation) do {
                     _uuid = getPlayerUID _x;
                     if(_uuid != _unitPlayerUID) then {
                         _anyPlayersInGroupFrom = true;
-                        ["From group has player: %1 %2",_uuid,_unitPlayerUID] call ALIVE_fnc_dump;
+                        //["From group has player: %1 %2",_uuid,_unitPlayerUID] call ALIVE_fnc_dump;
                     };
                 };
             } forEach _unitsGroupFrom;
 
             if!(isNil "_groupFromProfile") then {
-                ["FROM PROFILE IS NOT NIL"] call ALIVE_fnc_dump;
-                _groupFromProfile call ALIVE_fnc_inspectHash;
+                //["FROM PROFILE IS NOT NIL"] call ALIVE_fnc_dump;
+                //_groupFromProfile call ALIVE_fnc_inspectHash;
                 _result = [_groupFromProfile,"handleDeath",_unit] call ALIVE_fnc_profileEntity;
                 // all units in profile are killed
                 if!(_result) then {
@@ -317,7 +317,7 @@ switch(_operation) do {
 
                 };
             }else{
-                 ["FROM PROFILE IS NIL"] call ALIVE_fnc_dump;
+                 //["FROM PROFILE IS NIL"] call ALIVE_fnc_dump;
             };
 
             _unit setVariable ["profileID",""];

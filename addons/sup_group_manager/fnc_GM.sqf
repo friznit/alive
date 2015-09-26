@@ -151,7 +151,7 @@ switch(_operation) do {
             // create the group handler
             ALIVE_groupHandler = [nil, "create"] call ALIVE_fnc_groupHandler;
             [ALIVE_groupHandler, "init"] call ALIVE_fnc_groupHandler;
-            [ALIVE_groupHandler, "debug", true] call ALIVE_fnc_groupHandler;
+            [ALIVE_groupHandler, "debug", _debug] call ALIVE_fnc_groupHandler;
 
         };
 
@@ -203,8 +203,6 @@ switch(_operation) do {
             [_groupState,"groupListRightSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
             [_groupState,"groupListRightSelectedType",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
             [_groupState,"groupMapActive",false] call ALIVE_fnc_hashSet;
-
-            //_groupState call ALIVE_fnc_inspectHash;
 
             [_logic,"groupState",_groupState] call MAINCLASS;
 
@@ -288,13 +286,23 @@ switch(_operation) do {
         // event handler for response from server
         // events
 
-        private["_event","_eventData","_type"];
+        private["_event","_eventData","_type","_debug"];
 
         if(typeName _args == "ARRAY") then {
 
             _event = _args;
             _type = [_event, "type"] call ALIVE_fnc_hashGet;
             _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
+
+            _debug = [_logic, "debug"] call MAINCLASS;
+
+            // DEBUG -------------------------------------------------------------------------------------
+            if(_debug) then {
+                ["----------------------------------------------------------------------------------------"] call ALIVE_fnc_dump;
+                ["ALiVE GM - Handle server response event received"] call ALIVE_fnc_dump;
+                _event call ALIVE_fnc_inspectHash;
+            };
+            // DEBUG -------------------------------------------------------------------------------------
 
             disableSerialization;
 
@@ -378,10 +386,11 @@ switch(_operation) do {
 
             if (isnil "_args") exitwith {};
 
-            private ["_action"];
+            private ["_action","_debug"];
 
             _action = _args select 0;
             _args = _args select 1;
+            _debug = [_logic, "debug"] call MAINCLASS;
 
             switch(_action) do {
 
@@ -418,8 +427,6 @@ switch(_operation) do {
 
                         [_logic,"groupState",_groupState] call MAINCLASS;
 
-                        //_groupState call ALIVE_fnc_inspectHash;
-
                         [_logic,"handleGroupSelection"] call MAINCLASS;
 
                     };
@@ -453,8 +460,6 @@ switch(_operation) do {
 
                         [_logic,"groupState",_groupState] call MAINCLASS;
 
-                        //_groupState call ALIVE_fnc_inspectHash;
-
                         [_logic,"handleGroupSelection"] call MAINCLASS;
 
                     };
@@ -466,8 +471,6 @@ switch(_operation) do {
                     private ["_groupState","_unitSelected","_group"];
 
                     _groupState = [_logic,"groupState"] call MAINCLASS;
-
-                    //_groupState call ALIVE_fnc_inspectHash;
 
                     _unitSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
 
@@ -485,8 +488,6 @@ switch(_operation) do {
 
                     _groupState = [_logic,"groupState"] call MAINCLASS;
 
-                    //_groupState call ALIVE_fnc_inspectHash;
-
                     _unitSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
 
                     _group = group _unitSelected;
@@ -503,8 +504,6 @@ switch(_operation) do {
 
                     _groupState = [_logic,"groupState"] call MAINCLASS;
 
-                    //_groupState call ALIVE_fnc_inspectHash;
-
                     _unitSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
                     _groupSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
 
@@ -517,7 +516,6 @@ switch(_operation) do {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
                         [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                     };
 
                     [_logic,"resetGroupMananger"] call MAINCLASS;
@@ -529,8 +527,6 @@ switch(_operation) do {
                     private ["_groupState","_unitSelected","_groupSelected","_playerID","_requestID","_event"];
 
                     _groupState = [_logic,"groupState"] call MAINCLASS;
-
-                    //_groupState call ALIVE_fnc_inspectHash;
 
                     _unitSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
                     _groupSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
@@ -544,7 +540,6 @@ switch(_operation) do {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
                         [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                     };
 
                     [_logic,"resetGroupMananger"] call MAINCLASS;
@@ -557,8 +552,6 @@ switch(_operation) do {
 
                     _groupState = [_logic,"groupState"] call MAINCLASS;
 
-                    //_groupState call ALIVE_fnc_inspectHash;
-
                     _unitSelected = [_groupState,"groupListLeftSelectedValue"] call ALIVE_fnc_hashGet;
 
                     _playerID = getPlayerUID player;
@@ -570,7 +563,6 @@ switch(_operation) do {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
                         [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                     };
 
                     [_logic,"resetGroupMananger"] call MAINCLASS;
@@ -583,8 +575,6 @@ switch(_operation) do {
 
                     _groupState = [_logic,"groupState"] call MAINCLASS;
 
-                    //_groupState call ALIVE_fnc_inspectHash;
-
                     _unitSelected = [_groupState,"groupListRightSelectedValue"] call ALIVE_fnc_hashGet;
 
                     _playerID = getPlayerUID player;
@@ -596,7 +586,6 @@ switch(_operation) do {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
                         [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-                        //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                     };
 
                     [_logic,"resetGroupMananger"] call MAINCLASS;
@@ -616,8 +605,6 @@ switch(_operation) do {
                     _mainList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MainList);
 
                     _dataSource = [_groupSelected] call ALiVE_fnc_getGroupDetailDataSource;
-
-                    //_dataSource call ALIVE_fnc_inspectArray;
 
                     _rows = _dataSource select 0;
                     _values = _dataSource select 1;
@@ -669,8 +656,6 @@ switch(_operation) do {
                     _mainList = GM_getControl(GMTablet_CTRL_MainDisplay,GMTablet_CTRL_MainList);
 
                     _dataSource = [_groupSelected] call ALiVE_fnc_getGroupDetailDataSource;
-
-                    //_dataSource call ALIVE_fnc_inspectArray;
 
                     _rows = _dataSource select 0;
                     _values = _dataSource select 1;
@@ -838,6 +823,15 @@ switch(_operation) do {
 
             };
 
+            // DEBUG -------------------------------------------------------------------------------------
+            if(_debug) then {
+                private ["_groupState"];
+                _groupState = [_logic,"groupState"] call MAINCLASS;
+                ["GM Action: %1",_action] call ALIVE_fnc_dump;
+                _groupState call ALIVE_fnc_inspectHash;
+            };
+            // DEBUG -------------------------------------------------------------------------------------
+
         };
 
     };
@@ -953,7 +947,7 @@ switch(_operation) do {
 
     case "resetGroupMananger": {
 
-        private ["_side","_faction","_limit","_groupState","_leftList","_rightList","_dataSource","_rows","_values","_value","_row"];
+        private ["_side","_faction","_limit","_groupState","_leftList","_rightList","_dataSource","_rows","_values","_value","_row","_lastRowWasGroup"];
 
         _side = [_logic,"side"] call MAINCLASS;
         _faction = [_logic,"faction"] call MAINCLASS;
@@ -987,14 +981,10 @@ switch(_operation) do {
         [_groupState,"groupListRightSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
         [_groupState,"groupListRightSelectedType",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
 
-        //_groupState call ALIVE_fnc_inspectHash;
-
         [_groupState,"groupListOptions",_rows] call ALIVE_fnc_hashSet;
         [_groupState,"groupListValues",_values] call ALIVE_fnc_hashSet;
 
         [_logic,"groupState",_groupState] call MAINCLASS;
-
-        //_groupState call ALIVE_fnc_inspectHash;
 
         {
             _value = _values select _forEachIndex;
@@ -1005,7 +995,11 @@ switch(_operation) do {
 
             _rightList lnbAddRow _row;
 
-            if((_row select 3) == '------------') then {
+            //if((_row select 3) == '-') then {
+            if(count(_row) == 4) then {
+
+                _lastRowWasGroup = true;
+
                 _leftList lnbSetColor [[_forEachIndex,0], [0.384,0.439,0.341,1]];
                 _leftList lnbSetColor [[_forEachIndex,1], [0.384,0.439,0.341,1]];
                 _leftList lnbSetColor [[_forEachIndex,2], [0.384,0.439,0.341,1]];
@@ -1015,6 +1009,17 @@ switch(_operation) do {
                 _rightList lnbSetColor [[_forEachIndex,1], [0.384,0.439,0.341,1]];
                 _rightList lnbSetColor [[_forEachIndex,2], [0.384,0.439,0.341,1]];
                 _rightList lnbSetColor [[_forEachIndex,3], [0.384,0.439,0.341,1]];
+            }else{
+
+                if(_lastRowWasGroup) then {
+
+                    _leftList lnbSetColor [[_forEachIndex,0], [0.7,0.7,0.7,1]];
+                    _rightList lnbSetColor [[_forEachIndex,0], [0.7,0.7,0.7,1]];
+
+                };
+
+                _lastRowWasGroup = false;
+
             };
 
         } foreach _rows;
@@ -1030,8 +1035,6 @@ switch(_operation) do {
         "_buttonL1","_buttonL2","_buttonL3","_buttonR1","_buttonR2","_buttonR3","_mapActive"];
 
         _groupState = [_logic,"groupState"] call MAINCLASS;
-
-        //_groupState call ALIVE_fnc_inspectHash;
 
         _leftSelectedType = [_groupState,"groupListLeftSelectedType"] call ALIVE_fnc_hashGet;
         _rightSelectedType = [_groupState,"groupListRightSelectedType"] call ALIVE_fnc_hashGet;
