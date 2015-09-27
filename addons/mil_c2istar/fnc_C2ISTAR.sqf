@@ -242,6 +242,34 @@ switch(_operation) do {
     case "scomOpsLimit": {
         _result = [_logic,_operation,_args,DEFAULT_SCOM_LIMIT,["SIDE","FACTION","ALL"]] call ALIVE_fnc_OOsimpleOperation;
     };
+    case "scomOpsAllowSpectate": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["scomOpsAllowSpectate", _args];
+        } else {
+            _args = _logic getVariable ["scomOpsAllowSpectate", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["scomOpsAllowSpectate", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "scomOpsAllowInstantJoin": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["scomOpsAllowInstantJoin", _args];
+        } else {
+            _args = _logic getVariable ["scomOpsAllowInstantJoin", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["scomOpsAllowInstantJoin", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
     case "scomIntelLimit": {
         _result = [_logic,_operation,_args,DEFAULT_SCOM_LIMIT,["SIDE","FACTION","ALL"]] call ALIVE_fnc_OOsimpleOperation;
     };
@@ -401,10 +429,14 @@ switch(_operation) do {
 
         _scomOpsLimit = [_logic, "scomOpsLimit"] call MAINCLASS;
         _scomIntelLimit = [_logic, "scomIntelLimit"] call MAINCLASS;
+        _scomOpsAllowSpectate = [_logic, "scomOpsAllowSpectate"] call MAINCLASS;
+        _scomOpsAllowJoin = [_logic, "scomOpsAllowInstantJoin"] call MAINCLASS;
 
         _scom = [nil, "create"] call ALIVE_fnc_SCOM;
         [_scom, "opsLimit", _scomOpsLimit] call ALIVE_fnc_SCOM;
         [_scom, "intelLimit", _scomIntelLimit] call ALIVE_fnc_SCOM;
+        [_scom, "scomOpsAllowSpectate", _scomOpsAllowSpectate] call ALIVE_fnc_SCOM;
+        [_scom, "scomOpsAllowInstantJoin", _scomOpsAllowJoin] call ALIVE_fnc_SCOM;
         [_scom, "debug", _debug] call ALIVE_fnc_SCOM;
         [_scom, "init",[]] call ALIVE_fnc_SCOM;
 

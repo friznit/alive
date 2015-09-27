@@ -117,6 +117,34 @@ switch(_operation) do {
     case "opsLimit": {
         _result = [_logic,_operation,_args,DEFAULT_SCOM_LIMIT,["SIDE","FACTION","ALL"]] call ALIVE_fnc_OOsimpleOperation;
     };
+    case "scomOpsAllowSpectate": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["scomOpsAllowSpectate", _args];
+        } else {
+            _args = _logic getVariable ["scomOpsAllowSpectate", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["scomOpsAllowSpectate", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
+    case "scomOpsAllowInstantJoin": {
+        if (typeName _args == "BOOL") then {
+            _logic setVariable ["scomOpsAllowInstantJoin", _args];
+        } else {
+            _args = _logic getVariable ["scomOpsAllowInstantJoin", false];
+        };
+        if (typeName _args == "STRING") then {
+                if(_args == "true") then {_args = true;} else {_args = false;};
+                _logic setVariable ["scomOpsAllowInstantJoin", _args];
+        };
+        ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+        _result = _args;
+    };
     case "intelLimit": {
         _result = [_logic,_operation,_args,DEFAULT_SCOM_LIMIT,["SIDE","FACTION","ALL"]] call ALIVE_fnc_OOsimpleOperation;
     };
@@ -2461,7 +2489,7 @@ switch(_operation) do {
                     _m setMarkerTypeLocal _profileMarker;
                     _m setMarkerColorLocal _color;
                     _m setMarkerAlphaLocal _alpha;
-                    _m setMarkerText format["e%1",_label];
+                    _m setMarkerTextLocal format["e%1",_label];
 
                     _markers = _markers + [_m];
 
@@ -2487,7 +2515,7 @@ switch(_operation) do {
                     _m setMarkerTypeLocal _profileMarker;
                     _m setMarkerColorLocal _color;
                     _m setMarkerAlphaLocal _alpha;
-                    _m setMarkerText format["e%1",_label];
+                    _m setMarkerTextLocal format["e%1",_label];
 
                     _markers = _markers + [_m];
 
@@ -2513,7 +2541,7 @@ switch(_operation) do {
                     _m setMarkerTypeLocal _profileMarker;
                     _m setMarkerColorLocal _color;
                     _m setMarkerAlphaLocal _alpha;
-                    _m setMarkerText format["e%1",_label];
+                    _m setMarkerTextLocal format["e%1",_label];
 
                     _markers = _markers + [_m];
 
@@ -2539,7 +2567,7 @@ switch(_operation) do {
                     _m setMarkerTypeLocal _profileMarker;
                     _m setMarkerColorLocal _color;
                     _m setMarkerAlphaLocal _alpha;
-                    _m setMarkerText format["e%1",_label];
+                    _m setMarkerTextLocal format["e%1",_label];
 
                     _markers = _markers + [_m];
 
@@ -2565,7 +2593,7 @@ switch(_operation) do {
                     _m setMarkerTypeLocal _profileMarker;
                     _m setMarkerColorLocal _color;
                     _m setMarkerAlphaLocal _alpha;
-                    _m setMarkerText format["e%1",_label];
+                    _m setMarkerTextLocal format["e%1",_label];
 
                     _markers = _markers + [_m];
 
@@ -2591,7 +2619,7 @@ switch(_operation) do {
                     _m setMarkerTypeLocal _profileMarker;
                     _m setMarkerColorLocal _color;
                     _m setMarkerAlphaLocal _alpha;
-                    _m setMarkerText format["e%1",_label];
+                    _m setMarkerTextLocal format["e%1",_label];
 
                     _markers = _markers + [_m];
 
@@ -2617,7 +2645,7 @@ switch(_operation) do {
                     _m setMarkerTypeLocal _profileMarker;
                     _m setMarkerColorLocal _color;
                     _m setMarkerAlphaLocal _alpha;
-                    _m setMarkerText format["e%1",_label];
+                    _m setMarkerTextLocal format["e%1",_label];
 
                     _markers = _markers + [_m];
 
@@ -2643,7 +2671,7 @@ switch(_operation) do {
                     _m setMarkerTypeLocal _profileMarker;
                     _m setMarkerColorLocal _color;
                     _m setMarkerAlphaLocal _alpha;
-                    _m setMarkerText format["e%1",_label];
+                    _m setMarkerTextLocal format["e%1",_label];
 
                     _markers = _markers + [_m];
 
@@ -2802,22 +2830,33 @@ switch(_operation) do {
 
                 // enable interface elements for interacting with profile
 
-                private["_buttonL1"];
+                private["_allowSpectate","_allowJoin","_buttonL1","_buttonR1","_buttonL2"];
 
                 _buttonL1 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BL1);
                 _buttonL1 ctrlShow true;
                 _buttonL1 ctrlSetText "Edit Group Waypoints";
                 _buttonL1 ctrlSetEventHandler ["MouseButtonClick", "['OPS_EDIT_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
 
-                _buttonR1 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR1);
-                _buttonR1 ctrlShow true;
-                _buttonR1 ctrlSetText "Instant Join Group";
-                _buttonR1 ctrlSetEventHandler ["MouseButtonClick", "['OPS_JOIN_GROUP',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+                _allowSpectate = [_logic,"scomOpsAllowSpectate"] call MAINCLASS;
+                _allowJoin = [_logic,"scomOpsAllowInstantJoin"] call MAINCLASS;
 
-                _buttonL2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BL2);
-                _buttonL2 ctrlShow true;
-                _buttonL2 ctrlSetText "Spectate Group";
-                _buttonL2 ctrlSetEventHandler ["MouseButtonClick", "['OPS_SPECTATE_GROUP',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+                if(_allowJoin) then {
+
+                    _buttonR1 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR1);
+                    _buttonR1 ctrlShow true;
+                    _buttonR1 ctrlSetText "Instant Join Group";
+                    _buttonR1 ctrlSetEventHandler ["MouseButtonClick", "['OPS_JOIN_GROUP',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                };
+
+                if(_allowSpectate) then {
+
+                    _buttonL2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BL2);
+                    _buttonL2 ctrlShow true;
+                    _buttonL2 ctrlSetText "Spectate Group";
+                    _buttonL2 ctrlSetEventHandler ["MouseButtonClick", "['OPS_SPECTATE_GROUP',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                };
 
                 [_logic,"commandState",_commandState] call MAINCLASS;
 
@@ -2982,7 +3021,7 @@ switch(_operation) do {
 
                 // enable interface elements for interacting with profile
 
-                private["_buttonR1","_buttonR2","_buttonR3","_waypointTypeList","_waypointSpeedList","_waypointFormationList","_waypointBehaviourList"];
+                private["_buttonR1","_buttonL2","_buttonR2","_buttonR3","_waypointTypeList","_waypointSpeedList","_waypointFormationList","_waypointBehaviourList"];
 
                 _buttonR1 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR1);
                 _buttonR1 ctrlShow true;
@@ -2993,6 +3032,9 @@ switch(_operation) do {
                 _backButton ctrlShow true;
 
                 // disable interface elements for interacting with profile
+
+                _buttonL2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BL2);
+                _buttonL2 ctrlShow false;
 
                 _buttonR2 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR2);
                 _buttonR2 ctrlShow false;
@@ -3183,11 +3225,11 @@ switch(_operation) do {
                 ["setSideTopSmallText",_text] call ALIVE_fnc_displayMenu;
 
                 player remoteControl _unit;
-                _unit enableFatigue false;
+                //_unit enableFatigue false;
 
                 [_unit,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
 
-                player hideObjectGlobal true;
+                //player hideObjectGlobal true;
 
                 ["closeSplash"] call ALIVE_fnc_displayMenu;
 
@@ -3197,28 +3239,42 @@ switch(_operation) do {
                         //_newPosition = [getPos _unit, 10, random 360] call BIS_fnc_relPos;
                         player setPos (position _unit);
                     };
-                    !(alive _unit) || !([_commandState,"opsGroupInstantJoin"] call ALIVE_fnc_hashGet)
+                    !(alive player) || !(alive _unit) || !([_commandState,"opsGroupInstantJoin"] call ALIVE_fnc_hashGet)
                 };
 
-                _initialPosition = [_commandState,"opsGroupInstantJoinPlayerPosition"] call ALIVE_fnc_hashGet;
-                _instantJoinState = [_commandState,"opsGroupInstantJoin"] call ALIVE_fnc_hashGet;
+                if!(alive player) then {
 
-                if(_instantJoinState) then {
-                    _line1 = "<t size='1.5' color='#68a7b7' align='center'>You have been killed...</t><br/><br/>";
+                    objNull remoteControl _unit;
+
+                    [player,false] call ALIVE_fnc_adminGhost;
+
+                    [true] call ALIVE_fnc_revertCamera;
+
                 }else{
-                    _line1 = "<t size='1.5' color='#68a7b7' align='center'>Reverting...</t><br/><br/>";
+
+                    _initialPosition = [_commandState,"opsGroupInstantJoinPlayerPosition"] call ALIVE_fnc_hashGet;
+                    _instantJoinState = [_commandState,"opsGroupInstantJoin"] call ALIVE_fnc_hashGet;
+
+                    if(_instantJoinState) then {
+                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>You have been killed...</t><br/><br/>";
+                    }else{
+                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>Reverting...</t><br/><br/>";
+                    };
+
+                    ["openSplash",0.25] call ALIVE_fnc_displayMenu;
+                    ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+                    player setPos _initialPosition;
+
+                    //player hideObjectGlobal false;
+
+                    [player,false] call ALIVE_fnc_adminGhost;
+
+                    objNull remoteControl _unit;
+
+                    [true] call ALIVE_fnc_revertCamera;
+
                 };
-
-                ["openSplash",0.25] call ALIVE_fnc_displayMenu;
-                ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
-
-                player setPos _initialPosition;
-
-                player hideObjectGlobal false;
-
-                objNull remoteControl _unit;
-
-                [true] call ALIVE_fnc_revertCamera;
 
                 [_commandState,"opsGroupInstantJoin",false] call ALIVE_fnc_hashSet;
 
@@ -3256,8 +3312,7 @@ switch(_operation) do {
 
                 [_logic,"commandState",_commandState] call MAINCLASS;
 
-                _target = "RoadCone_L_F" createVehicle _position;
-                hideObjectGlobal _target;
+                _target = "Land_HelipadEmpty_F" createVehicle _position;
 
                 [_logic, "createDynamicCamera", [_duration,player,_unit,_target]] call MAINCLASS;
 
@@ -3279,31 +3334,43 @@ switch(_operation) do {
                     sleep 1;
                     _timer = _timer + 1;
                     if((player distance _unit) > 100) then {
-                        //_newPosition = [getPos _unit, 10, random 360] call BIS_fnc_relPos;
-                        player setPos (position _unit);
+                        _newPosition = [getPos _unit, 10, random 360] call BIS_fnc_relPos;
+                        player setPos _newPosition;
                     };
-                    (_timer == _duration) || !(alive _unit) || !([_commandState,"opsGroupSpectate"] call ALIVE_fnc_hashGet)
+                    (_timer == _duration) || !(alive player) || !(alive _unit) || !([_commandState,"opsGroupSpectate"] call ALIVE_fnc_hashGet)
                 };
 
-                _initialPosition = [_commandState,"opsGroupSpectatePlayerPosition"] call ALIVE_fnc_hashGet;
-                _spectateState = [_commandState,"opsGroupSpectate"] call ALIVE_fnc_hashGet;
+                if!(alive player) then {
 
-                if(_spectateState) then {
-                    _line1 = "<t size='1.5' color='#68a7b7' align='center'>Reverting...</t><br/><br/>";
+                    [player,false] call ALIVE_fnc_adminGhost;
+
+                    [_logic, "deleteDynamicCamera"] call MAINCLASS;
+
                 }else{
-                    _line1 = "<t size='1.5' color='#68a7b7' align='center'>Reverting...</t><br/><br/>";
+
+                    _initialPosition = [_commandState,"opsGroupSpectatePlayerPosition"] call ALIVE_fnc_hashGet;
+                    _spectateState = [_commandState,"opsGroupSpectate"] call ALIVE_fnc_hashGet;
+
+                    if(_spectateState) then {
+                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>Reverting...</t><br/><br/>";
+                    }else{
+                        _line1 = "<t size='1.5' color='#68a7b7' align='center'>Reverting...</t><br/><br/>";
+                    };
+
+                    ["openSplash",0.25] call ALIVE_fnc_displayMenu;
+                    ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+
+                    deleteVehicle _target;
+
+                    [player,false] call ALIVE_fnc_adminGhost;
+
+                    player setPos _initialPosition;
+
+                    ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
+
+                    [_logic, "deleteDynamicCamera"] call MAINCLASS;
+
                 };
-
-                ["openSplash",0.25] call ALIVE_fnc_displayMenu;
-                ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
-
-                deleteVehicle _target;
-
-                player setPos _initialPosition;
-
-                ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
-
-                [_logic, "deleteDynamicCamera"] call MAINCLASS;
 
                 [_commandState,"opsGroupSpectate",false] call ALIVE_fnc_hashSet;
 
@@ -3362,7 +3429,9 @@ switch(_operation) do {
 
         //["CAMERA TYPE IS: %1",ALIVE_cameraType] call ALIVE_fnc_dump;
 
-        _cameraShots = ["FLY_IN","PAN","ZOOM"];
+        //_cameraShots = ["FLY_IN","PAN","ZOOM"];
+
+        _cameraShots = ["FLY_IN"];
 
         if(_targetIsMan || _targetInVehicle) then {
             _cameraShots = _cameraShots + ["CHASE","CHASE_SIDE","CHASE_ANGLE"];
@@ -3393,8 +3462,7 @@ switch(_operation) do {
 
                     if(isNil "_target2") then {
                         _randomPosition = [position _source, (random(50)), random(360)] call BIS_fnc_relPos;
-                        _target2 = "RoadCone_L_F" createVehicle _randomPosition;
-                        _target2 hideObjectGlobal true;
+                        _target2 = "Land_HelipadEmpty_F" createVehicle _randomPosition;
                     };
 
                     ALIVE_tourCamera = [_source,false,_initialAngle] call ALIVE_fnc_addCamera;
@@ -3439,7 +3507,7 @@ switch(_operation) do {
 
         };
 
-        player hideObjectGlobal false;
+        //player hideObjectGlobal false;
 
     };
 

@@ -327,6 +327,8 @@ switch(_operation) do {
 
                     _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
 
+                    //_player hideObjectGlobal true;
+
                     _player setPos _position;
 
                     waitUntil{_profile select 2 select 1};
@@ -384,6 +386,8 @@ switch(_operation) do {
                 };
 
                 _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+
+                _player hideObjectGlobal true;
 
                 _player setPos _position;
 

@@ -113,11 +113,23 @@
 <Key ID="STR_ALIVE_C2ISTAR_SCOM_OPS_LIMIT_ALL">
     <English>All</English>
 </Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_OPS_ALLOW_SPECTATE">
+    <English>Allow spectate:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_OPS_ALLOW_SPECTATE_COMMENT">
+    <English>Allow commanders to spectate remote forces</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_OPS_ALLOW_JOIN">
+    <English>Allow Join:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_SCOM_OPS_ALLOW_JOIN_COMMENT">
+    <English>Allow commanders to join remote forces via remote control</English>
+</Key>
 <Key ID="STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT">
-    <English>Limit Command:</English>
+    <English>Limit Intel:</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT_COMMENT">
-    <English>Limits effect of operations tablet functions</English>
+    <English>Limits effect of intel tablet functions</English>
 </Key>
 <Key ID="STR_ALIVE_C2ISTAR_SCOM_INTEL_LIMIT_SIDE">
     <English>Side</English>

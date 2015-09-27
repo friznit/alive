@@ -228,6 +228,44 @@ class CfgVehicles {
                                     };
                             };
                     };
+                    class scomOpsAllowSpectate
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_SCOM_OPS_ALLOW_SPECTATE";
+                            description = "$STR_ALIVE_C2ISTAR_SCOM_OPS_ALLOW_SPECTATE_COMMENT";
+                            class Values
+                            {
+                                    class No
+                                    {
+                                            name = "No";
+                                            value = false;
+                                    };
+                                    class Yes
+                                    {
+                                            name = "Yes";
+                                            value = true;
+                                            default = 1;
+                                    };
+                            };
+                    };
+                    class scomOpsAllowInstantJoin
+                    {
+                            displayName = "$STR_ALIVE_C2ISTAR_SCOM_OPS_ALLOW_JOIN";
+                            description = "$STR_ALIVE_C2ISTAR_SCOM_OPS_ALLOW_JOIN_COMMENT";
+                            class Values
+                            {
+                                    class No
+                                    {
+                                            name = "No";
+                                            value = false;
+                                    };
+                                    class Yes
+                                    {
+                                            name = "Yes";
+                                            value = true;
+                                            default = 1;
+                                    };
+                            };
+                    };
                     // INTEL TABLET
                     class INTEL_TABLET {
                             displayName = "";
