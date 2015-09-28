@@ -27,4 +27,6 @@ private ["_response"];
 
 _response = ["GroupName"] call ALIVE_fnc_sendToPlugIn;
 
+TRACE_1("GET GROUP ID: ", _response);
+
 _response;

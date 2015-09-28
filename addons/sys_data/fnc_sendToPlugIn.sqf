@@ -29,6 +29,7 @@ Wolffy.au 24 Oct 2012
 private ["_cmd","_response","_resp"];
 PARAMS_1(_cmd);
 
+TRACE_1("SEND TO PLUGIN CMD: ", _cmd);
 
 _response = "ALiVEPlugIn" callExtension _cmd;
 

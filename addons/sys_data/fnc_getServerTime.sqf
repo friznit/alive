@@ -25,6 +25,10 @@ Peer Reviewed:
 ---------------------------------------------------------------------------- */
 private ["_response"];
 
+TRACE_1("GET SERVER TIME: ", time);
+
 _response = ["DateTime ['%d/%m/%Y %H:%M:%S']"] call ALIVE_fnc_sendToPlugIn;
+
+TRACE_1("GET SERVER TIME: ", _response);
 
 _response;
