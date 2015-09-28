@@ -5,7 +5,7 @@ class CfgVehicles {
                 scope = 1;
                 displayName = "$STR_ALIVE_GM";
                 function = "ALIVE_fnc_emptyInit";
-                functionPriority = 44;
+                functionPriority = 152;
                 isGlobal = 2;
                 icon = "x\alive\addons\sup_group_manager\icon_sup_group_manager.paa";
                 picture = "x\alive\addons\sup_group_manager\icon_sup_group_manager.paa";

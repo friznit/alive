@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_CIV_POP";
                 function = "ALIVE_fnc_civilianPopulationSystemInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 120;
+                functionPriority = 70;
                 isGlobal = 2;
 				icon = "x\alive\addons\amb_civ_population\icon_civ_pop.paa";
 				picture = "x\alive\addons\amb_civ_population\icon_civ_pop.paa";

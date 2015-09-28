@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_CQB";
                 function = "ALIVE_fnc_CQBInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 100;
+                functionPriority = 120;
                 isGlobal = 2;
 				icon = "x\alive\addons\mil_cqb\icon_mil_cqb.paa";
 				picture = "x\alive\addons\mil_cqb\icon_mil_cqb.paa";
@@ -63,7 +63,7 @@ class CfgVehicles {
                                                 value = "server";
                                                 default = 1;
                                         };
-                                        
+
                                         /*
                                         class client
                                         {

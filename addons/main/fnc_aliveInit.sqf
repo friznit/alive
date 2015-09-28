@@ -93,9 +93,6 @@ TRACE_1("Launching Base ALiVE Systems",true);
 // NewsFeed
 [] spawn ALiVE_fnc_newsFeedInit;
 
-// Player Logistics
-[] spawn ALiVE_fnc_logisticsInit;
-
 // Admin Actions
 if !(_logic getVariable ["ALIVE_DISABLEADMINACTIONS", false]) then {
     [] spawn ALiVE_fnc_adminActionsInit;
@@ -106,6 +103,9 @@ if !(_logic getVariable ["ALIVE_DISABLEMARKERS", false]) then {
     [] spawn ALIVE_fnc_spotrepInit;
     [] spawn ALiVE_fnc_markerInit;
 };
+
+// Player Logistics
+[] spawn ALiVE_fnc_logisticsInit;
 
 // Pause Modules
 if (_logic getVariable ["ALIVE_PAUSEMODULES", false]) then {

@@ -6,7 +6,7 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_CMP";
                 function = "ALIVE_fnc_CMPInit";
                 author = MODULE_AUTHOR;
-                functionPriority = 90;
+                functionPriority = 100;
                 isGlobal = 1;
                 icon = "x\alive\addons\mil_placement_custom\icon_mil_CMP.paa";
                 picture = "x\alive\addons\mil_placement_custom\icon_mil_CMP.paa";

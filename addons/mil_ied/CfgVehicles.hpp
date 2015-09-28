@@ -8,7 +8,7 @@ class CfgVehicles {
                 isGlobal = 2;
                 isPersistent = 0;
                 author = MODULE_AUTHOR;
-                functionPriority = 110;
+                functionPriority = 130;
 				icon = "x\alive\addons\mil_ied\icon_mil_ied.paa";
 				picture = "x\alive\addons\mil_ied\icon_mil_ied.paa";
                 class Arguments
