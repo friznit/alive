@@ -213,7 +213,7 @@ switch (_operation) do {
                 TRACE_2("Menu pre-req",SELF_INTERACTION_KEY,ALIVE_fnc_logisticsMenuDef);
 
                 // Check to see if player options is available, if not give the user this menu otherwise player options menu will have it
-                if (isnil QMOD(sys_playeroptions)) then {
+                if !([QMOD(sys_playeroptions)] call ALiVE_fnc_isModuleAvailable) then {
                     // Initialise main menu
                     [
                             "player",
