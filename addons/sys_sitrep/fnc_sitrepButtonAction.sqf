@@ -77,7 +77,7 @@ _cs = lbText [CS_LIST, lbCurSel CS_LIST];
 
 [_sitrepHash, QGVAR(pos), GVAR(pos)] call ALIVE_fnc_hashSet;
 
-_sitrepHash = [_sitrepHash] call ALIVE_fnc_hashAddWarRoomData;
+
 
 switch _eyes do {
 	case "SIDE" : {

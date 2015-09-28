@@ -369,6 +369,10 @@ switch (_operation) do {
             _spotrepName = _args select 0;
             _spotrepHash = _args select 1;
 
+            if (isDedicated) then {
+                _spotrepHash = [_spotrepHash] call ALIVE_fnc_hashAddWarRoomData;
+            };
+
             [GVAR(STORE), _spotrepName, _spotrepHash] call ALIVE_fnc_hashSet;
 
             _result = GVAR(STORE);

@@ -91,9 +91,6 @@ _cs = lbText [CS_LIST, lbCurSel CS_LIST];
 [_patrolrepHash, QGVAR(spos), GVAR(spos)] call ALIVE_fnc_hashSet;
 [_patrolrepHash, QGVAR(epos), GVAR(epos)] call ALIVE_fnc_hashSet;
 
-_patrolrepHash = [_patrolrepHash] call ALIVE_fnc_hashAddWarRoomData;
-
-
 switch _eyes do {
 	case "SIDE" : {
 		[_patrolrepHash, QGVAR(localityValue), str(side (group player))] call ALIVE_fnc_hashSet;

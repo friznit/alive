@@ -373,6 +373,10 @@ switch (_operation) do {
             _sitrepName = _args select 0;
             _sitrepHash = _args select 1;
 
+            if (isDedicated) then {
+                _sitrepHash = [_sitrepHash] call ALIVE_fnc_hashAddWarRoomData;
+            };
+
             [GVAR(STORE), _sitrepName, _sitrepHash] call ALIVE_fnc_hashSet;
 
             _result = GVAR(STORE);

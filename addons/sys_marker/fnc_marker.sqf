@@ -269,7 +269,7 @@ switch (_operation) do {
                     "ColorOPFOR"
                 ];
 
-                if !(SLX_XEH_MACHINE select 1 || SLX_XEH_MACHINE select 6) then { // Don't run if JIP as no briefing screen appears
+                if !(SLX_XEH_MACHINE select 1) then { // Don't run if JIP as no briefing screen appears
                     [] spawn {
                         // Install handlers on briefing screen
                         private ["_display","_control"];
@@ -1030,6 +1030,10 @@ switch (_operation) do {
             [_markersHash, QGVAR(shape), MarkerShape _marker] call ALIVE_fnc_hashSet;
             [_markersHash, QGVAR(locality), _args select 1] call ALIVE_fnc_hashSet;
 
+            if (isDedicated) then {
+                _markersHash = [_markersHash] call ALIVE_fnc_hashAddWarRoomData;
+            };
+
             _result = _markersHash;
         };
 
@@ -1037,6 +1041,10 @@ switch (_operation) do {
              private ["_markerName","_markerHash"];
             _markerName = _args select 0;
             _markerHash = _args select 1;
+
+            if (isDedicated) then {
+                _markerHash = [_markerHash] call ALIVE_fnc_hashAddWarRoomData;
+            };
 
             [GVAR(STORE), _markerName, _markerHash] call ALIVE_fnc_hashSet;
 

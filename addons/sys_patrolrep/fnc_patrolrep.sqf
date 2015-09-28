@@ -376,6 +376,10 @@ switch (_operation) do {
             _patrolrepName = _args select 0;
             _patrolrepHash = _args select 1;
 
+            if (isDedicated) then {
+                _patrolrepHash = [_patrolrepHash] call ALIVE_fnc_hashAddWarRoomData;
+            };
+
             [GVAR(STORE), _patrolrepName, _patrolrepHash] call ALIVE_fnc_hashSet;
 
             _result = GVAR(STORE);
