@@ -11,7 +11,7 @@
 	<English>Server admin functions</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_OPTIONS">
-	<English>Admin Options</English>
+	<English>Module Settings</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_SETTINGS_COMMENT">
 	<English>Adjust ALiVE module settings, i.e. debug, as necessary</English>
