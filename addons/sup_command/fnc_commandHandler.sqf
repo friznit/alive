@@ -295,121 +295,6 @@ switch(_operation) do {
         [_logic, "opsSpectateGroup", _eventData] call MAINCLASS;
 
     };
-    case "opsJoinGroup": {
-        private["_data","_playerID","_profileID","_debug"];
-
-        if(typeName _args == "ARRAY") then {
-
-            _data = _args;
-            _playerID = _data select 1;
-            _profileID = _data select 2;
-
-            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
-
-            private["_profile","_faction","_position","_vehiclesInCommandOf","_event","_player","_group"];
-
-            // get profile
-
-            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
-            if !(isnil "_profile") then {
-
-                _faction = _profile select 2 select 29;
-                _position = _profile select 2 select 2;
-                _vehiclesInCommandOf = _profile select 2 select 8;
-
-                if(count _vehiclesInCommandOf == 0) then {
-
-                    _position = [_position, 50, random 360] call BIS_fnc_relPos;
-
-                    if(surfaceIsWater _position) then {
-                        _position = [_position] call ALIVE_fnc_getClosestLand;
-                    };
-
-                    _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
-
-                    //_player hideObjectGlobal true;
-
-                    _player setPos _position;
-
-                    waitUntil{_profile select 2 select 1};
-
-                    sleep 2;
-
-                    _group = _profile select 2 select 13;
-                    _unit = (units _group) call BIS_fnc_selectRandom;
-
-                    _event = ['SCOM_UPDATED', [_playerID,[_unit]], "COMMAND_HANDLER", "OPS_GROUP_JOIN_READY"] call ALIVE_fnc_event;
-                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-
-
-                }else{
-
-                    _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
-                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-
-                };
-
-            }else{
-
-                _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
-                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-
-            };
-        };
-    };
-    case "opsSpectateGroup": {
-        private["_data","_playerID","_profileID","_debug"];
-
-        if(typeName _args == "ARRAY") then {
-
-            _data = _args;
-            _playerID = _data select 1;
-            _profileID = _data select 2;
-
-            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
-
-            private["_profile","_faction","_position","_vehiclesInCommandOf","_event","_player","_group"];
-
-            // get profile
-
-            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
-            if !(isnil "_profile") then {
-
-                _faction = _profile select 2 select 29;
-                _position = _profile select 2 select 2;
-                _vehiclesInCommandOf = _profile select 2 select 8;
-
-                _position = [_position, 50, random 360] call BIS_fnc_relPos;
-
-                if(surfaceIsWater _position) then {
-                    _position = [_position] call ALIVE_fnc_getClosestLand;
-                };
-
-                _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
-
-                _player hideObjectGlobal true;
-
-                _player setPos _position;
-
-                waitUntil{_profile select 2 select 1};
-
-                sleep 2;
-
-                _group = _profile select 2 select 13;
-                _unit = (units _group) call BIS_fnc_selectRandom;
-
-                _event = ['SCOM_UPDATED', [_playerID,[_unit]], "COMMAND_HANDLER", "OPS_GROUP_SPECTATE_READY"] call ALIVE_fnc_event;
-                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-
-
-            }else{
-
-                _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
-                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-
-            };
-        };
-    };
     case "opsDataPrepare": {
         private["_data","_playerID","_type","_limit","_side","_faction","_debug"];
 
@@ -731,6 +616,121 @@ switch(_operation) do {
 
                 _event = ['SCOM_UPDATED', [_playerID,_profileData], "COMMAND_HANDLER", "OPS_PROFILE_WAYPOINTS_UPDATED"] call ALIVE_fnc_event;
                 [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+            }else{
+
+                _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+            };
+        };
+    };
+    case "opsJoinGroup": {
+        private["_data","_playerID","_profileID","_debug"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _data = _args;
+            _playerID = _data select 1;
+            _profileID = _data select 2;
+
+            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+            private["_profile","_faction","_position","_vehiclesInCommandOf","_event","_player","_group"];
+
+            // get profile
+
+            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+            if !(isnil "_profile") then {
+
+                _faction = _profile select 2 select 29;
+                _position = _profile select 2 select 2;
+                _vehiclesInCommandOf = _profile select 2 select 8;
+
+                if(count _vehiclesInCommandOf == 0) then {
+
+                    _position = [_position, 50, random 360] call BIS_fnc_relPos;
+
+                    if(surfaceIsWater _position) then {
+                        _position = [_position] call ALIVE_fnc_getClosestLand;
+                    };
+
+                    _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+
+                    _player hideObjectGlobal true;
+
+                    _player setPos _position;
+
+                    waitUntil{_profile select 2 select 1};
+
+                    sleep 2;
+
+                    _group = _profile select 2 select 13;
+                    _unit = (units _group) call BIS_fnc_selectRandom;
+
+                    _event = ['SCOM_UPDATED', [_playerID,[_unit]], "COMMAND_HANDLER", "OPS_GROUP_JOIN_READY"] call ALIVE_fnc_event;
+                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+
+                }else{
+
+                    _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
+                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+                };
+
+            }else{
+
+                _event = ['SCOM_UPDATED', [_playerID,[]], "COMMAND_HANDLER", "OPS_RESET"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+            };
+        };
+    };
+    case "opsSpectateGroup": {
+        private["_data","_playerID","_profileID","_debug"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _data = _args;
+            _playerID = _data select 1;
+            _profileID = _data select 2;
+
+            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
+
+            private["_profile","_faction","_position","_vehiclesInCommandOf","_event","_player","_group"];
+
+            // get profile
+
+            _profile = [ALIVE_profileHandler, "getProfile", _profileID] call ALIVE_fnc_profileHandler;
+            if !(isnil "_profile") then {
+
+                _faction = _profile select 2 select 29;
+                _position = _profile select 2 select 2;
+                _vehiclesInCommandOf = _profile select 2 select 8;
+
+                _position = [_position, 50, random 360] call BIS_fnc_relPos;
+
+                if(surfaceIsWater _position) then {
+                    _position = [_position] call ALIVE_fnc_getClosestLand;
+                };
+
+                _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+
+                _player hideObjectGlobal true;
+
+                _player setPos _position;
+
+                waitUntil{_profile select 2 select 1};
+
+                sleep 2;
+
+                _group = _profile select 2 select 13;
+                _unit = (units _group) call BIS_fnc_selectRandom;
+
+                _event = ['SCOM_UPDATED', [_playerID,[_unit]], "COMMAND_HANDLER", "OPS_GROUP_SPECTATE_READY"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
 
             }else{
 

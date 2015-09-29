@@ -1,7 +1,10 @@
 ﻿$index_path = 'P:\x\alive\addons\fnc_strategic\indexes\'
 
 $index_names = (
-    'smd_sahrani_a3'
+    'pja308'
+    #'mog'
+    #'smd_sahrani_a3'
+    #'esseker'
     #'isladuala3'
     #'anim_helvantis_v2'
     #'wake'
@@ -118,7 +121,8 @@ $black_list = (
     'quercus',
     'betula',
     'quercus',
-    'populus'
+    'populus',
+    'cst_veg'
     )
 
 foreach ($index_name in $index_names){
