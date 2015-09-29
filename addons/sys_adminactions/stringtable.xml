@@ -13,7 +13,7 @@
 <Key ID="STR_ALIVE_ADMINACTIONS_OPTIONS">
 	<English>Module Settings</English>
 </Key>
-<Key ID="STR_ALIVE_ADMINACTIONS_SETTINGS_COMMENT">
+<Key ID="STR_ALIVE_ADMINACTIONS_OPTIONS_COMMENT">
 	<English>Adjust ALiVE module settings, i.e. debug, as necessary</English>
 </Key>
 <Key ID="STR_ALIVE_ADMINACTIONS_GHOST">

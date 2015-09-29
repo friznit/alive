@@ -77,7 +77,7 @@
 <Key ID="STR_ALIVE_PROFILE_SYSTEM_DEBUG_DISABLE">
     <English>Deactivate Profiles Debug</English>
 </Key>
-<Key ID="STR_ALIVE_PROFILE_SYSTEM_DEBUG_COMMENT">
+<Key ID="STR_ALIVE_PROFILE_SYSTEM_DEBUG1_COMMENT">
     <English>Toggle debug mode on the profile system</English>
 </Key>
 </Container></Package></Project>
