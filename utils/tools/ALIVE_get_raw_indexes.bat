@@ -39,6 +39,10 @@ rem ----------------------------- A3 --------------------------------------
 rem %exe% "%arma%\Addons\map_altis.pbo" > %target%\objects.altis.sqf
 rem %exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
 
+%exe% "%arma%\@lingor_a3\Addons\lingor3.pbo" > %target%\objects.lingor3.sqf
+%exe% "%arma%\@panthera_a3\Addons\panthera3.pbo" > %target%\objects.panthera3.sqf
+%exe% "%arma%\@mske-a3\Addons\hotze_mske.pbo" > %target%\objects.mske.sqf
+
 rem %exe% "%arma%\@imrali\addons\imrali.pbo" > %target%\objects.imrali.sqf
 
 rem %exe% "%arma%\@everon2013\addons\everon2014.pbo" > %target%\objects.everon2014.sqf
@@ -47,7 +51,7 @@ rem %exe% "%arma%\@esseker\Addons\esseker.pbo" > %target%\objects.esseker.sqf
 
 rem %exe% "%arma%\@mog\Addons\mog.pbo" > %target%\objects.mog.sqf
 
-%exe% "%arma%\@gunkizli\Addons\projeta3008.pbo" > %target%\objects.pja308.sqf
+rem %exe% "%arma%\@gunkizli\Addons\projeta3008.pbo" > %target%\objects.pja308.sqf
 
 rem %exe% "%arma%\@Bornholm\Addons\Bornholm.pbo" > %target%\objects.bornholm.sqf
 rem %exe% "%arma%\@panthera_a3\addons\panthera3.pbo" > %target%\objects.panthera3.sqf
