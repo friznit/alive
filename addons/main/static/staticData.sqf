@@ -824,6 +824,7 @@ ALIVE_mapBounds = [] call ALIVE_fnc_hashCreate;
 [ALIVE_mapBounds, "smd_sahrani_a3", 20480] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Esseker", 13000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "Mog", 11000] call ALIVE_fnc_hashSet;
+[ALIVE_mapBounds, "Pandora", 21000] call ALIVE_fnc_hashSet;
 [ALIVE_mapBounds, "mske", 26000] call ALIVE_fnc_hashSet;
 
 /*
@@ -1140,8 +1141,8 @@ if(_worldName == "Esseker") then {
 
 };
 
-// Mogadishu
-if(_worldName == "Mog") then {
+// Mogadishu, Nam (Pandora)
+if(_worldName == "Mog" || _worldName == "Pandora") then {
 
     ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
     	"hangar"

@@ -39,7 +39,7 @@ rem ----------------------------- A3 --------------------------------------
 rem %exe% "%arma%\Addons\map_altis.pbo" > %target%\objects.altis.sqf
 rem %exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
 
-%exe% "%arma%\@nam\Addons\nam.pbo" > %target%\objects.nam.sqf
+rem %exe% "%arma%\@nam\Addons\pandora.pbo" > %target%\objects.pandora.sqf
 
 rem %exe% "%arma%\@lingor_a3\Addons\lingor3.pbo" > %target%\objects.lingor3.sqf
 rem %exe% "%arma%\@panthera_a3\Addons\panthera3.pbo" > %target%\objects.panthera3.sqf
