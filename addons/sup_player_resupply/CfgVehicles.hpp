@@ -28,7 +28,7 @@ class CfgVehicles {
                                     {
                                             name = "$STR_ALIVE_PR_RESTRICTION_TYPE_SIDE";
                                             value = "SIDE";
-                                            default = true;
+                                            default = 1;
                                     };
                                     class Faction
                                     {
@@ -47,7 +47,7 @@ class CfgVehicles {
                                     {
                                             name = "Yes";
                                             value = true;
-                                            default = true;
+                                            default = 1;
                                             typeName = "BOOL";
                                     };
                                     class No
@@ -68,7 +68,7 @@ class CfgVehicles {
                                     {
                                             name = "Yes";
                                             value = true;
-                                            default = true;
+                                            default = 1;
                                             typeName = "BOOL";
                                     };
                                     class No
@@ -89,7 +89,7 @@ class CfgVehicles {
                                     {
                                             name = "Yes";
                                             value = true;
-                                            default = true;
+                                            default = 1;
                                             typeName = "BOOL";
                                     };
                                     class No

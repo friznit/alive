@@ -1,9 +1,10 @@
 ﻿$index_path = 'P:\x\alive\addons\fnc_strategic\indexes\'
 
 $index_names = (
+    'nam'
     #'mske'
     #'lingor3'
-    'panthera3'
+    #'panthera3'
     #'pja308'
     #'mog'
     #'smd_sahrani_a3'

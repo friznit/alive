@@ -6,10 +6,10 @@ class CfgVehicles {
                 displayName = "$STR_ALIVE_MP";
                 function = "ALIVE_fnc_MPInit";
                 author = MODULE_AUTHOR;
-	        functionPriority = 90;
+	            functionPriority = 90;
                 isGlobal = 1;
-		icon = "x\alive\addons\mil_placement\icon_mil_MP.paa";
-		picture = "x\alive\addons\mil_placement\icon_mil_MP.paa";
+		        icon = "x\alive\addons\mil_placement\icon_mil_MP.paa";
+		        picture = "x\alive\addons\mil_placement\icon_mil_MP.paa";
                 class Arguments
                 {
                         class debug
@@ -27,7 +27,7 @@ class CfgVehicles {
                                         {
                                                 name = "No";
                                                 value = false;
-                                                default = true;
+                                                default = 1;
                                         };
                                 };
                         };
@@ -312,7 +312,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {
@@ -331,7 +331,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {
@@ -350,7 +350,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {

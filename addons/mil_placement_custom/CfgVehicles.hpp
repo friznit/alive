@@ -27,7 +27,7 @@ class CfgVehicles {
                                         {
                                                 name = "No";
                                                 value = false;
-                                                default = true;
+                                                default = 1;
                                         };
                                 };
                         };
@@ -118,7 +118,7 @@ class CfgVehicles {
                                         {
                                                 name = "No";
                                                 value = false;
-                                                default = true;
+                                                default = 1;
                                         };
 
                                         // autogen start
@@ -329,7 +329,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {
@@ -348,7 +348,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {
@@ -367,7 +367,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {

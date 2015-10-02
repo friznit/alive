@@ -27,7 +27,7 @@ class CfgVehicles {
                                         {
                                                 name = "No";
                                                 value = false;
-                                                default = true;
+                                                default = 1;
                                         };
                                 };
                         };
@@ -159,7 +159,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_CP_PLACEMENT_YES";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {

@@ -39,9 +39,11 @@ rem ----------------------------- A3 --------------------------------------
 rem %exe% "%arma%\Addons\map_altis.pbo" > %target%\objects.altis.sqf
 rem %exe% "%arma%\Addons\map_stratis.pbo" > %target%\objects.stratis.sqf
 
-%exe% "%arma%\@lingor_a3\Addons\lingor3.pbo" > %target%\objects.lingor3.sqf
-%exe% "%arma%\@panthera_a3\Addons\panthera3.pbo" > %target%\objects.panthera3.sqf
-%exe% "%arma%\@mske-a3\Addons\hotze_mske.pbo" > %target%\objects.mske.sqf
+%exe% "%arma%\@nam\Addons\nam.pbo" > %target%\objects.nam.sqf
+
+rem %exe% "%arma%\@lingor_a3\Addons\lingor3.pbo" > %target%\objects.lingor3.sqf
+rem %exe% "%arma%\@panthera_a3\Addons\panthera3.pbo" > %target%\objects.panthera3.sqf
+rem %exe% "%arma%\@mske-a3\Addons\hotze_mske.pbo" > %target%\objects.mske.sqf
 
 rem %exe% "%arma%\@imrali\addons\imrali.pbo" > %target%\objects.imrali.sqf
 

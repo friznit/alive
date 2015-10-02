@@ -22,7 +22,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {
@@ -56,7 +56,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_MI_INTEL_CHANCE_TOTAL";
                                                 value = "1";
-                                                default = true;
+                                                default = 1;
                                         };
                                 };
                         };
@@ -70,7 +70,7 @@ class CfgVehicles {
                                         {
                                                 name = "Yes";
                                                 value = true;
-                                                default = true;
+                                                default = 1;
                                         };
                                         class No
                                         {
