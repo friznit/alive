@@ -9,6 +9,7 @@ class CfgPatches {
 		//versionAct = "['MAIN',_this] execVM '\x\alive\addons\main\about.sqf';";
 		VERSION_CONFIG;
 		author[] = {
+			"AndrewKhan",
 			"ARJay",
 			"Friznit",
 			"Gunny",
@@ -18,6 +19,8 @@ class CfgPatches {
 			"Naught",
 			"Raptor",
 			"Rye",
+			"Secure",
+			"SpyderBlack",
 			"Tupolov",
 			"WobbleyHeadedBob",
 			"Wolffy_au"
