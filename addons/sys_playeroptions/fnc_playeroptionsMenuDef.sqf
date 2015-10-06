@@ -134,6 +134,24 @@ if (_menuName == "playeroptions") then {
 					-1,
 					true,
 					!isnil QMOD(sys_logistics) && !(isnil {player getvariable [QMOD(SYS_LOGISTICS_ACTIONS),nil]})
+				],
+				[localize "STR_ALIVE_player_allowReset_ACTION",
+					{ [MOD(sys_player), "resetPlayer", [player]] call ALIVE_fnc_player;},
+					"",
+					localize "STR_ALIVE_player_allowReset_ACTION_COMMENT",
+					"",
+					-1,
+					!(isNil QGVAR(resetAvailable)),
+					!isNil QMOD(sys_player) && MOD(sys_player) getVariable ["enablePlayerPersistence",false] && (MOD(sys_player) getVariable ["allowReset", false])
+				],
+				[localize "STR_ALIVE_player_allowManualSave_ACTION",
+					{ [MOD(sys_player), "manualSavePlayer", [player]] call ALIVE_fnc_player },
+					"",
+					localize "STR_ALIVE_player_allowManualSave_ACTION_COMMENT",
+					"",
+					-1,
+					 (MOD(sys_player) getVariable ["allowManualSave", true]),
+					 !isNil QMOD(sys_player) && MOD(sys_player) getVariable ["enablePlayerPersistence",false] && (MOD(sys_player) getVariable ["allowManualSave", true])
 				]
 			]
 		]

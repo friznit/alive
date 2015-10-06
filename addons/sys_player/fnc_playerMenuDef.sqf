@@ -71,24 +71,6 @@ _menus =
 	[
 		["main", "ALiVE", _menuRsc],
 		[
-			[localize "STR_ALIVE_player_allowReset_ACTION",
-				{ [MOD(sys_player), "resetPlayer", [player]] call ALIVE_fnc_player;},
-				"",
-				localize "STR_ALIVE_player_allowReset_ACTION_COMMENT",
-				"",
-				-1,
-				!(isNil QGVAR(resetAvailable)),
-				(MOD(sys_player) getVariable ["allowReset", false])
-			],
-			[localize "STR_ALIVE_player_allowManualSave_ACTION",
-				{ [MOD(sys_player), "manualSavePlayer", [player]] call ALIVE_fnc_player },
-				"",
-				localize "STR_ALIVE_player_allowManualSave_ACTION_COMMENT",
-				"",
-				-1,
-				 (MOD(sys_player) getVariable ["allowManualSave", true]),
-				 (MOD(sys_player) getVariable ["allowManualSave", true])
-			]
 		]
 	]
 ];
@@ -162,7 +144,7 @@ if (_menuName == "playerAdmin") then {
 					-1,
 					 (MOD(sys_player) getVariable ["allowManualSave", true]),
 					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["allowManualSave", true])))
-				],
+				]
 
 /*				[localize "STR_ALIVE_player_storeToDB_ENABLE",
 					{ MOD(sys_player) setVariable ["storeToDB",true, true]; },
@@ -181,7 +163,7 @@ if (_menuName == "playerAdmin") then {
 					-1,
 					 (MOD(sys_player) getVariable ["storeToDB", true]),
 					(call ALIVE_fnc_isServerAdmin && ( (MOD(sys_player) getVariable ["storeToDB", true])))
-				],*/
+				],
 
 				[localize "STR_ALIVE_player_autoSaveTime_SET",
 					{ createDialog "ALIVE_ui_sys_player_setautoSaveTime";},
@@ -189,9 +171,9 @@ if (_menuName == "playerAdmin") then {
 					localize "STR_ALIVE_player_autoSaveTime_COMMENT",
 					"",
 					-1,
-					!isNil QMOD(sys_data) && {MOD(sys_data_ENABLED) && MOD(sys_player) getVariable ["storeToDB", false]},
+					!isNil QMOD(sys_data) && {MOD(sys_data_DISABLED) && MOD(sys_player) getVariable ["storeToDB", false]},
 					call ALIVE_fnc_isServerAdmin
-				]
+				]*/
 			]
 		]
 	];
