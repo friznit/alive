@@ -4,8 +4,6 @@ SCRIPT(removeIED);
 // Remove IED
 private ["_IEDs","_town","_position","_size","_j","_nodel","_debug"];
 
-_debug = ADDON getVariable ["debug", 0];
-
 if !(isServer) exitWith {diag_log "RemoveIED Not running on server!";};
 
 _position = _this select 0;
@@ -19,8 +17,6 @@ _removeIED = {
 	private ["_IED","_IEDObj","_IEDCharge","_IEDskin","_IEDpos","_trgr"];
 	_IEDpos = [_value, "IEDpos", [0,0,0]] call ALiVE_fnc_hashGet;
 	_IEDskin = [_value, "IEDskin", "ALIVE_IEDUrbanSmall_Remote_Ammo"] call ALiVE_fnc_hashGet;
-
-
 
 	// Delete Objects
 	_IEDObj = (_IEDpos nearObjects [_IEDskin, 4]) select 0;
@@ -41,9 +37,10 @@ _removeIED = {
 	deleteVehicle _IEDCharge;
 	deleteVehicle _IEDObj;
 
-	if (_debug) then {
-		[_IEDObj getvariable "Marker"] call cba_fnc_deleteEntity;
-	};
 };
 
 [_IEDs, _removeIED] call CBA_fnc_hashEachPair;
+
+if ([ADDON, "debug"] call MAINCLASS) then {
+	["Removed IEDs at %1 (%2)", _town, _position ] call ALIVE_fnc_dump;
+};

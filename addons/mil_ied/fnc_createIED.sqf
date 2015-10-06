@@ -1,9 +1,14 @@
 #include <\x\alive\addons\mil_IED\script_component.hpp>
-#define DEFAULT_IED_THREAT 60
+
 SCRIPT(createIED);
 
+#define SUPERCLASS ALIVE_fnc_baseClass
+#define MAINCLASS ALIVE_fnc_ied
+#define DEFAULT_IED_THREAT 60
+#define DEFAULT_IED_CHARGE "ALIVE_IEDUrbanSmall_Remote_Ammo"
+
 // IED - create IED(s) at location
-private ["_position","_town","_debug","_numIEDs","_j","_size","_posloc","_IEDs","_threat","_IEDData"];
+private ["_position","_town","_debug","_numIEDs","_j","_size","_posloc","_IEDs","_threat","_IEDData","_IEDcount"];
 
 if !(isServer) exitWith {diag_log "IED Not running on server!";};
 
@@ -26,10 +31,11 @@ if ((count _this) > 3) then {
 };
 
 // Get IEDs from store if available
-_IEDs = [[GVAR(STORE), "IEDs"] call ALiVE_fnc_hashGet, _town, []] call ALiVE_fnc_hashGet;
+_IEDs = [[GVAR(STORE), "IEDs"] call ALiVE_fnc_hashGet, _town, [] call ALiVE_fnc_hashCreate] call ALiVE_fnc_hashGet;
+_IEDcount = count (_IEDs select 1);
 
 // IF first time creating IEDs for location go work out how many IEDs
-if (count _IEDs == 0) then {
+if (_IEDcount == 0) then {
 	diag_log format ["ALIVE-%1 IED: creating %2 IEDs at %5 (%3) - size %4", time, _numIEDs, mapgridposition  _position, _size, _town];
 
 	// Find positions in area
@@ -46,66 +52,66 @@ if (count _IEDs == 0) then {
 	_IEDData = [] call ALiVE_fnc_hashCreate;
 
 } else {
-	_numIEDs = count (_IEDs select 1);
+	_numIEDs = _IEDcount;
 };
 
 for "_j" from 1 to _numIEDs do {
-	private ["_IEDpos","_pos","_cen","_near","_IED","_IEDskin","_data","_ID","_error"];
+	private ["_IEDpos","_pos","_cen","_near","_IED","_IEDskin","_data","_ID","_error","_IEDskins"];
+
 	// Select Position for IED and remove position used
 	_error = false;
 
-	If (count _IEDs == 0) then {
+	If (_IEDcount == 0) then {
 		_index = round (random ((count _posloc) -1));
 		_pos = _posloc select _index;
-
 		_posloc set [_index, -1];
 		_posloc = _posloc - [-1];
+
 		// Find safe location - if no safe pos find random position within 6m
 		_IEDpos = [_pos, 4, 20, 2, 0, 0, 0,[],[[((_pos select 0) - 6) + random 12, ((_pos select 1) - 6) + random 12, 0]]] call BIS_fnc_findSafePos;
 
-		private ["_IEDskins","_near","_choice"];
+		private ["_IEDskins","_near","_choice","_allIEDClasses"];
+
 		// Check no other IEDs nearby
-		// _near = nearestObjects [_IEDpos, ["Land_IED_v1_PMC","Land_IED_v2_PMC","Land_IED_v3_PMC","Land_IED_v4_PMC","Land_Misc_Rubble_EP1","Land_Misc_Garb_Heap_EP1","Garbage_container","Misc_TyreHeapEP1","Misc_TyreHeap","Garbage_can","Land_bags_EP1"], 10];
+		_allIEDClasses = ([ADDON, "roadIEDClasses"] call MAINCLASS) + ([ADDON, "urbanIEDClasses"] call MAINCLASS);
+		_near = nearestObjects [_IEDpos, _allIEDClasses, 3];
 
-		_near = nearestObjects [_IEDpos, ["ALIVE_IEDUrbanSmall_Remote_Ammo","ALIVE_IEDLandSmall_Remote_Ammo","ALIVE_IEDUrbanBig_Remote_Ammo","ALIVE_IEDLandBig_Remote_Ammo","Land_JunkPile_F","Land_GarbageContainer_closed_F","Land_GarbageBags_F","Land_Tyres_F","Land_GarbagePallet_F","Land_Basket_F","Land_Sack_F","Land_Sacks_goods_F","Land_Sacks_heap_F","Land_BarrelTrash_F"], 3];
-
-		if (count _near > 0) exitWith {diag_log format ["ALIVE-%1 IED: exiting as other IEDs found %2",time,_near]; _error = true;}; //Exit if other IEDs are found
+		// Exit if other IEDs are found or position is on water
+		if (count _near > 0) exitWith {diag_log format ["ALIVE-%1 IED: exiting as other IEDs found %2",time,_near]; _error = true;};
 		if (surfaceIsWater _IEDpos) exitWith {diag_log format ["ALIVE-%1 IED: exiting as pos was on water.",time]; _error = true;};
 
 		// Check not placed near a player
-		if ({(getpos _x distance _IEDpos) < 75} count ([] call BIS_fnc_listPlayers) > 0) exitWith {diag_log format ["ALIVE-%1 IED: exiting as placement too close to player.",time]; _error = true;}; //Exit if position is too close to a player
+		// Exit if position is too close to a player
+		if ({(getpos _x distance _IEDpos) < 75} count ([] call BIS_fnc_listPlayers) > 0) exitWith {diag_log format ["ALIVE-%1 IED: exiting as placement too close to player.",time]; _error = true;};
 
 		// Select type of IED
 		if (isOnRoad _IEDpos) then {
-
-	//		_IEDskins = ["Land_IED_v1_PMC","Land_IED_v2_PMC","Land_IED_v3_PMC","Land_IED_v4_PMC"];
-			_IEDskins = ["ALIVE_IEDUrbanSmall_Remote_Ammo","ALIVE_IEDLandSmall_Remote_Ammo","ALIVE_IEDUrbanBig_Remote_Ammo","ALIVE_IEDLandBig_Remote_Ammo"];
+			_IEDskins = [ADDON, "roadIEDClasses"] call MAINCLASS;
 		} else {
-	//		_IEDskins =["Land_IED_v1_PMC","Land_IED_v2_PMC","Land_IED_v3_PMC","Land_IED_v4_PMC","Land_IED_v1_PMC","Land_IED_v2_PMC","Land_IED_v3_PMC","Land_IED_v4_PMC","Land_Misc_Rubble_EP1","Land_Misc_Garb_Heap_EP1","Garbage_container","Misc_TyreHeapEP1","Misc_TyreHeap","Garbage_can","Land_bags_EP1"];
-
+			// Check to see proximity to houses
 			if (count (_IEDpos nearObjects ["House_F", 40]) > 0) then {
-				_IEDskins = ["ALIVE_IEDUrbanSmall_Remote_Ammo","ALIVE_IEDUrbanBig_Remote_Ammo","Land_JunkPile_F","Land_GarbageContainer_closed_F","Land_GarbageBags_F","Land_Tyres_F","Land_GarbagePallet_F","Land_Basket_F","Land_Sack_F","Land_Sacks_goods_F","Land_Sacks_heap_F","Land_BarrelTrash_F"];
+				_IEDskins = [ADDON, "urbanIEDClasses"] call MAINCLASS;
 
 				// Add clutter nearby so its not so obvious that there is an IED
 				private ["_clutter","_c","_clut","_clutm","_t"];
-				_clutter = ["Land_JunkPile_F","Land_GarbageContainer_closed_F","Land_GarbageBags_F","Land_Tyres_F","Land_GarbagePallet_F","Land_Basket_F","Land_Sack_F","Land_Sacks_goods_F","Land_Sacks_heap_F","Land_BarrelTrash_F"];
+				_clutter = [ADDON, "clutterClasses"] call MAINCLASS;
 				for "_c" from 1 to (2 + (ceil(random 6))) do {
 					_clut = createVehicle [_clutter call BIS_fnc_selectRandom,_IEDpos, [], 40, ""];
+					_clut setvariable [QUOTE(ADDON), true];
 					while {isOnRoad _clut} do {
 						_clut setPos [((position _clut) select 0) - 10 + random 20, ((position _clut) select 1) - 10 + random 20, ((position _clut) select 2)];
 					};
-					if (_debug) then {
+					/* if (_debug) then {
 						diag_log format ["ALIVE-%1 IED: Planting clutter (%2) at %3.", time, typeOf _clut, position _clut];
 						//Mark clutter position
 						_t = format["cl_r%1", floor (random 1000)];
 						_clutm = [_t, position _clut, "Icon", [1,1], "TEXT:", "", "TYPE:", "mil_dot", "COLOR:", "ColorGreen", "GLOBAL"] call CBA_fnc_createMarker;
 						_clut setvariable ["Marker", _clutm];
-					};
+					};*/
 				};
 			} else {
-				_IEDskins = ["ALIVE_IEDUrbanSmall_Remote_Ammo","ALIVE_IEDLandSmall_Remote_Ammo","ALIVE_IEDUrbanBig_Remote_Ammo","ALIVE_IEDLandBig_Remote_Ammo"];
+				_IEDskins = [ADDON, "roadIEDClasses"] call MAINCLASS;
 			};
-
 		};
 
 		_IEDpos set [2, -0.1];
@@ -117,7 +123,7 @@ for "_j" from 1 to _numIEDs do {
 		_data = [] call ALiVE_fnc_hashCreate;
 		[_data, "IEDskin", _IEDskin] call ALiVE_fnc_hashSet;
 		[_data, "IEDpos", getposATL _IED] call ALiVE_fnc_hashSet;
-
+		[_data, "IEDtype", "IED"] call ALiVE_fnc_hashSet;
 		[_IEDdata, _ID, _data] call ALiVE_fnc_hashSet;
 
 	} else {
@@ -143,8 +149,8 @@ for "_j" from 1 to _numIEDs do {
 		// Add damage handler
 		_ehID = _IEDCharge addeventhandler ["HandleDamage",{
 			private ["_trgr","_IED"];
-//			diag_log str(_this);
 
+//			diag_log str(_this);
 			if (isPlayer (_this select 3)) then { // GO BOOOOOOOOOOM!
 
 				_IED = attachedTo (_this select 0);
@@ -166,7 +172,6 @@ for "_j" from 1 to _numIEDs do {
 				{
 					deleteVehicle _x;
 				} foreach _trgr;
-
 			};
 
 		}];
@@ -176,6 +181,6 @@ for "_j" from 1 to _numIEDs do {
 };
 
 // Set data
-if (count _IEDs == 0) then {
+if (_IEDcount == 0) then {
 	[[GVAR(STORE), "IEDs"] call ALiVE_fnc_hashGet, _town, _IEDData] call ALiVE_fnc_hashSet;
 };

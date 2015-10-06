@@ -49,6 +49,12 @@ Tupolov
 
 Peer reviewed:
 nil
+
+// Arma 2 Classes
+DEFAULT_ROADIEDS ["Land_IED_v1_PMC","Land_IED_v2_PMC","Land_IED_v3_PMC","Land_IED_v4_PMC"];
+DEFAULT_URBANIEDS ["Land_IED_v1_PMC","Land_IED_v2_PMC","Land_IED_v3_PMC","Land_IED_v4_PMC","Land_IED_v1_PMC","Land_IED_v2_PMC","Land_IED_v3_PMC","Land_IED_v4_PMC","Land_Misc_Rubble_EP1","Land_Misc_Garb_Heap_EP1","Garbage_container","Misc_TyreHeapEP1","Misc_TyreHeap","Garbage_can","Land_bags_EP1"];
+DEFAULT_CLUTTER [Land_Misc_Rubble_EP1","Land_Misc_Garb_Heap_EP1","Garbage_container","Misc_TyreHeapEP1","Misc_TyreHeap","Garbage_can","Land_bags_EP1"]
+
 ---------------------------------------------------------------------------- */
 
 #define SUPERCLASS ALIVE_fnc_baseClass
@@ -60,6 +66,9 @@ nil
 #define DEFAULT_LOCS_IED 0
 #define DEFAULT_TAOR []
 #define DEFAULT_BLACKLIST []
+#define DEFAULT_ROADIEDS ["ALIVE_IEDUrbanSmall_Remote_Ammo","ALIVE_IEDLandSmall_Remote_Ammo","ALIVE_IEDUrbanBig_Remote_Ammo","ALIVE_IEDLandBig_Remote_Ammo"]
+#define DEFAULT_URBANIEDS ["ALIVE_IEDUrbanSmall_Remote_Ammo","ALIVE_IEDUrbanBig_Remote_Ammo","Land_JunkPile_F","Land_GarbageContainer_closed_F","Land_GarbageBags_F","Land_Tyres_F","Land_GarbagePallet_F","Land_Basket_F","Land_Sack_F","Land_Sacks_goods_F","Land_Sacks_heap_F","Land_BarrelTrash_F"]
+#define DEFAULT_CLUTTER ["Land_JunkPile_F","Land_GarbageContainer_closed_F","Land_GarbageBags_F","Land_Tyres_F","Land_GarbagePallet_F","Land_Basket_F","Land_Sack_F","Land_Sacks_goods_F","Land_Sacks_heap_F","Land_BarrelTrash_F"]
 
 private ["_logic","_operation","_args","_result"];
 
@@ -132,21 +141,24 @@ switch(_operation) do {
 
                     ADDON = _logic;
 
+                    // Create store initially on server
+                    GVAR(STORE) = [] call ALIVE_fnc_hashCreate;
+                    GVAR(Loaded) = false;
+
                     // if server, initialise module game logic
                     ADDON setVariable ["super", SUPERCLASS];
                     ADDON setVariable ["class", MAINCLASS];
                     ADDON setVariable ["init", true, true];
 
+                    [ADDON, "debug", _logic getVariable ["debug", false]] call MAINCLASS;
                     [ADDON, "taor", _logic getVariable ["taor", DEFAULT_TAOR]] call MAINCLASS;
                     [ADDON, "blacklist", _logic getVariable ["blacklist", DEFAULT_BLACKLIST]] call MAINCLASS;
+                    [ADDON, "roadIEDClasses", _logic getVariable ["roadIEDClasses", DEFAULT_ROADIEDS]] call MAINCLASS;
+                    [ADDON, "urbanIEDClasses", _logic getVariable ["urbanIEDClasses", DEFAULT_URBANIEDS]] call MAINCLASS;
+                    [ADDON, "clutterClasses", _logic getVariable ["clutterClasses", DEFAULT_CLUTTER]] call MAINCLASS;
 
                     publicVariable QUOTE(ADDON);
 
-                    _debug = [_logic, "debug"] call MAINCLASS;
-
-                    // Create store initially on server
-                    GVAR(STORE) = [] call ALIVE_fnc_hashCreate;
-                    GVAR(Loaded) = false;
                     // Reset states with provided data;
                     if (_logic getvariable ["Persistence",false]) then {
                         if (isDedicated && {[QMOD(SYS_DATA)] call ALiVE_fnc_isModuleAvailable}) then {
@@ -219,22 +231,21 @@ switch(_operation) do {
                     [true] call ALIVE_fnc_timer;
                 };
 
-                _debug = [ADDON, "debug"] call MAINCLASS;
-                _taor = [ADDON, "taor"] call MAINCLASS;
-                _blacklist = [ADDON, "blacklist"] call MAINCLASS;
-                _side = ADDON getvariable ["VB_IED_Side", DEFAULT_VB_IED_SIDE];
+                _taor = [_logic, "taor"] call MAINCLASS;
+                _blacklist = [_logic, "blacklist"] call MAINCLASS;
+                _side = _logic getvariable ["VB_IED_Side", DEFAULT_VB_IED_SIDE];
 
-				if (count synchronizedObjects ADDON > 0) then {
-					for "_i" from 0 to ((count synchronizedObjects ADDON) - 1) do {
+				if (count synchronizedObjects _logic > 0) then {
+					for "_i" from 0 to ((count synchronizedObjects _logic) - 1) do {
 
-			        	_mod = (synchronizedObjects ADDON) select _i;
+			        	_mod = (synchronizedObjects _logic) select _i;
 
                         if (typeof _mod == "ALiVE_mil_OPCOM") then {
 
-                            ADDON setvariable ["IED_Threat", 0];
-                            ADDON setvariable ["Bomber_Threat", 0];
-                            ADDON setvariable ["VB_IED_Threat", 0];
-                            ADDON setvariable ["VB_IED_Side", "CIV"];
+                            _logic setvariable ["IED_Threat", 0];
+                            _logic setvariable ["Bomber_Threat", 0];
+                            _logic setvariable ["VB_IED_Threat", 0];
+                            _logic setvariable ["VB_IED_Side", "CIV"];
 
                             ["ALiVE MIL IED reset for usage with OPCOM Insurgency!"] call ALiVE_fnc_Dump;
                         };
@@ -285,9 +296,9 @@ switch(_operation) do {
 
 						// If ALiVE Ambient civilians are available get the faction from there
 			            if (["ALiVE_amb_civ_placement"] call ALiVE_fnc_isModuleAvailable) then {
-                            
+
                             waituntil {!isnil QMOD(amb_civ_placement)};
-                            
+
                         	_factions = [ALiVE_amb_civ_placement getvariable ["faction","CIV_F"]];
 			            } else {
 	                        // Else get faction from side
@@ -329,11 +340,7 @@ switch(_operation) do {
                             _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [[getpos thisTrigger,%1,'%2'],thisList] call ALIVE_fnc_createBomber", _size, _faction], ""];
 
                              if (_debug) then {
-                                _t = format["suic_t%1", random 1000];
-
                                 diag_log format ["ALIVE-%1 Suicide Bomber Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
-                                [_t, getpos _twn, "Ellipse", [_size+250,_size+250], "TEXT:", text _twn, "COLOR:", "ColorOrange", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
-
                             };
 
                             if !(GVAR(Loaded)) then {
@@ -358,11 +365,7 @@ switch(_operation) do {
                             _trg setTriggerStatements["this && ({(vehicle _x in thisList) && ((getposATL _x) select 2 < 25)} count ([] call BIS_fnc_listPlayers) > 0)", format ["null = [getpos thisTrigger,%1,'%2'] call ALIVE_fnc_placeVBIED",_size, text _twn], ""];
 
                              if (_debug) then {
-                                _t = format["vbied_t%1", random 1000];
-
                                 diag_log format ["ALIVE-%1 VBIED Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
-                                [_t, getpos _twn, "Ellipse", [_size+250,_size+250], "TEXT:", text _twn, "COLOR:", "ColorGreen", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
-
                             };
 
                             if !(GVAR(Loaded)) then {
@@ -390,11 +393,7 @@ switch(_operation) do {
                             };
 
                             if (_debug) then {
-                                _t = format["ied_t%1", random 1000];
-
-                                diag_log format ["ALIVE-%1 IED Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
-                                [_t, getpos _twn, "Ellipse", [_size+249,_size+249], "TEXT:", text _twn, "COLOR:", "ColorYellow", "BRUSH:", "Border", "GLOBAL","PERSIST"] call CBA_fnc_createMarker;
-
+                                  diag_log format ["ALIVE-%1 IED Trigger: created at %2 (%3)", time, text _twn, mapgridposition  (getpos _twn)];
                             };
 
                             if !(GVAR(Loaded)) then {
@@ -409,7 +408,7 @@ switch(_operation) do {
                 } foreach _locations;
 
                 // DEBUG -------------------------------------------------------------------------------------
-                if(_debug) then {
+                if ([_logic, "debug"] call MAINCLASS) then {
                     ["ALIVE IED - Startup completed"] call ALIVE_fnc_dump;
                     ["ALIVE IED - Count IED Locations %1", count ([GVAR(STORE), "locations"] call ALiVE_fnc_hashGet)] call ALIVE_fnc_dump;
                     [] call ALIVE_fnc_timer;
@@ -431,6 +430,9 @@ switch(_operation) do {
                     _hash = [GVAR(STORE), "IEDs"] call ALiVE_fnc_hashGet;
                     _hash = [_hash, _town] call ALIVE_fnc_hashGet;
                     _result = [_hash, _ID] call ALiVE_fnc_hashRem;
+                    if ([ADDON, "debug"] call MAINCLASS) then {
+                            ["Removed IED %1 at %2", _IED, _town ] call ALIVE_fnc_dump;
+                    };
                 };
         };
         case "taor": {
@@ -459,22 +461,118 @@ switch(_operation) do {
                 };
                 _result = _logic getVariable [_operation, DEFAULT_BLACKLIST];
         };
+        case "roadIEDClasses": {
+                if(typeName _args == "STRING") then {
+                        _args = [_args, " ", ""] call CBA_fnc_replace;
+                        _args = [_args, ","] call CBA_fnc_split;
+                        if(count _args > 0) then {
+                                _logic setVariable [_operation, _args];
+                        };
+                };
+                if(typeName _args == "ARRAY") then {
+                        _logic setVariable [_operation, _args];
+                };
+                _result = _logic getVariable [_operation, DEFAULT_ROADIEDS];
+        };
+        case "urbanIEDClasses": {
+                if(typeName _args == "STRING") then {
+                        _args = [_args, " ", ""] call CBA_fnc_replace;
+                        _args = [_args, ","] call CBA_fnc_split;
+                        if(count _args > 0) then {
+                                _logic setVariable [_operation, _args];
+                        };
+                };
+                if(typeName _args == "ARRAY") then {
+                        _logic setVariable [_operation, _args];
+                };
+                _result = _logic getVariable [_operation, DEFAULT_URBANIEDS];
+        };
+        case "clutterClasses": {
+                if(typeName _args == "STRING") then {
+                        _args = [_args, " ", ""] call CBA_fnc_replace;
+                        _args = [_args, ","] call CBA_fnc_split;
+                        if(count _args > 0) then {
+                                _logic setVariable [_operation, _args];
+                        };
+                };
+                if(typeName _args == "ARRAY") then {
+                        _logic setVariable [_operation, _args];
+                };
+                _result = _logic getVariable [_operation, DEFAULT_CLUTTER];
+        };
         case "debug": {
             if (typeName _args == "BOOL") then {
-                _logic setVariable ["debug", _args];
+                _logic setVariable ["debug", _args, true];
             } else {
                 _args = _logic getVariable ["debug", false];
             };
             if (typeName _args == "STRING") then {
                     if(_args == "true") then {_args = true;} else {_args = false;};
-                    _logic setVariable ["debug", _args];
+                    _logic setVariable ["debug", _args, true];
             };
             ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
+            [_logic,"deleteMarkers"] call MAINCLASS;
+
+            if (_args) then {
+                // Mark each IED, Bomber, VB-IED?
+                [_logic,"createMarkers"] call MAINCLASS;
+            };
             _result = _args;
         };
         case "locations": {
             _result = [_logic,_operation,_args,[]] call ALIVE_fnc_OOsimpleOperation;
+        };
+        case "createMarkers": {
+
+            // Create Markers for locations with IED, Suicide or VB-IED
+            private ["_markers"];
+            _markers = [];
+
+            {
+                private ["_pos","_twn","_size","_t","_m","_ieds"];
+                _pos = position _x;
+                _twn = (nearestLocations [_pos, ["NameCityCapital","NameCity","NameVillage","Strategic"],200]) select 0;
+                _size = (size _twn) select 0;
+                if (_size < 250) then {_size = 250;};
+
+                // Mark Locations
+                _t = format["loc_t%1", random 1000];
+                _m = [_t, getpos _twn, "Ellipse", [_size+250,_size+250], "TEXT:", text _twn, "COLOR:", "ColorRed", "BRUSH:", "Border", "GLOBAL"] call CBA_fnc_createMarker;
+
+                _markers pushback _m;
+
+                // Mark IEDs
+                _ieds = [[GVAR(STORE), "IEDs", [] call ALiVE_fnc_hashCreate] call ALiVE_fnc_hashGet, text _twn, [] call ALiVE_fnc_hashCreate] call ALiVE_fnc_hashGet;
+
+                {
+                    private ["_t","_m","_text","_iedm","_pos","_type"];
+                    //Mark IED position
+
+                    _IED = [_ieds, _x, [] call ALiVE_fnc_hashCreate] call ALiVE_fnc_hashGet;
+
+                    _t = format["ied_r%1", floor (random 1000)];
+                    _pos = [_IED, "IEDpos", [0,0,0]] call ALiVE_fnc_hashGet;
+                    _type = [_IED, "IEDtype", "IED"] call ALiVE_fnc_hashGet;
+                    _iedm = [_t, _pos, "Icon", [0.5,0.5], "TEXT:", _type, "TYPE:", "mil_dot", "COLOR:", "ColorRed", "GLOBAL"] call CBA_fnc_createMarker;
+
+                    _markers pushback _iedm;
+
+                } foreach (_ieds select 1);
+
+            } foreach ([GVAR(STORE), "locations",[]] call ALiVE_fnc_hashGet);
+
+            _logic setVariable ["debugMarkers",_markers];
+
+        };
+        case "deleteMarkers": {
+
+            // Delete Location markers
+            // Delete IED/VB-IED markers
+            {
+                [_x] call CBA_fnc_deleteEntity;
+            } forEach (_logic getVariable ["debugMarkers", []]);
+
         };
         case "destroy": {
                 if (isServer) then {
@@ -484,7 +582,7 @@ switch(_operation) do {
                         _logic setVariable ["init", nil];
                         // and publicVariable to clients
                         ADDON = _logic;
-                        publicVariable QADDON;
+                        publicVariable QUOTE(ADDON);
                 };
 
                 if(!isDedicated && !isHC) then {

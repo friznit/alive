@@ -6,7 +6,7 @@ private ["_debug","_IED","_caller","_wire","_success","_selectedWire","_id","_IE
 
 if (isDedicated) exitWith {diag_log "disarmIED running on server!";};
 
-_debug = MOD(mil_ied) getVariable ["debug", false];
+_debug = ADDON getVariable ["debug", false];
 
 _IED = _this select 0;
 _caller = _this select 1;
@@ -61,10 +61,6 @@ if ((random 1) > 0.85) then {
 
 		[[ADDON, "removeIED", _IED] ,"ALiVE_fnc_IED", false, false, true] call BIS_fnc_MP;
 
-		if (_debug) then {
-			[_IED getvariable "Marker"] call cba_fnc_deleteEntity;
-		};
-
 		deleteVehicle _IEDCharge;
 		deleteVehicle _IED;
 	} else {
@@ -81,10 +77,6 @@ if ((random 1) > 0.85) then {
 		};
 
 		[[ADDON, "removeIED", _IED] ,"ALiVE_fnc_IED", false, false, true] call BIS_fnc_MP;
-
-		if (_debug) then {
-			[_IED getvariable "Marker"] call cba_fnc_deleteEntity;
-		};
 
 		hint "You guessed correct! IED is disarmed";
 	};
@@ -103,10 +95,6 @@ if ((random 1) > 0.85) then {
 		deleteVehicle _x;
 	} foreach _trgr;
 
-	if (_debug) then {
-		[_IED getvariable "Marker"] call cba_fnc_deleteEntity;
-	};
-
 	if !(isNil "_IEDCharge") then {
 		_IEDCharge removeEventHandler ["handleDamage", _IED getVariable "ehID"];
 	};
@@ -115,4 +103,3 @@ if ((random 1) > 0.85) then {
 
  	hint "IED is disarmed";
 };
-

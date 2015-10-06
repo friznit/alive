@@ -3,7 +3,6 @@
 #include "CfgFunctions.hpp"
 #include "c_ui.hpp"
 
-
 // ALiVE Main UI
 class Extended_PreInit_EventHandlers
 {
@@ -59,8 +58,6 @@ class cfgScriptPaths
 	alive = "\x\alive\addons\UI\";
 };
 
-
-
 class RscDisplayLoadMission: RscStandardDisplay
 {
 	onLoad = "[""onLoad"",_this,""RscDisplayLoadingALIVE"",'Loading'] call compile preprocessfilelinenumbers ""\x\alive\addons\UI\initDisplay.sqf""";
@@ -79,7 +76,6 @@ class RscDisplayLoadMission: RscStandardDisplay
 	};
 };
 
-
 class RscBackgroundLogo: RscPictureKeepAspect
 {
 //	text = "\x\alive\addons\UI\logo_alive.paa";
@@ -90,7 +86,6 @@ class RscBackgroundLogo: RscPictureKeepAspect
 	w = "(8 * 			(		((safezoneW / safezoneH) min 1.2) / 32))";
 	h = "(8 * 			(		(		((safezoneW / safezoneH) min 1.2) / 1.2) / 20))";
 };
-
 
 class RscDisplayMain: RscStandardDisplay
 {
@@ -172,7 +167,6 @@ class RscDisplayMPInterrupt: RscStandardDisplay
 	};
 };
 
-
 class CfgDebriefing
 {  
 	class Saved
@@ -228,4 +222,79 @@ class RscTitles {
     #include <\x\alive\addons\ui\menu\data\menu_side_top_small.hpp>
     #include <\x\alive\addons\ui\menu\data\menu_side_full.hpp>
     #include <\x\alive\addons\ui\menu\data\subtitle_side_small.hpp>
+};
+
+class RscEdit;
+class RscFrame;
+class RscButtonMenuOK;	
+
+class ALIVE_ui_setNumberValue {
+	idd = 80602;
+	movingEnable = true;
+	enableSimulation = true; 
+	onLoad = "((_this select 0) displayCtrl 1000) ctrlSetText ((uiNamespace getVariable 'ALIVE_UI_SETVALUE_PARAMS') select 2); ((_this select 0) displayCtrl 1400) ctrlSetText (str(((uiNamespace getVariable 'ALIVE_UI_SETVALUE_PARAMS') select 0) getVariable ((uiNamespace getVariable 'ALIVE_UI_SETVALUE_PARAMS') select 1))); ((_this select 0) displayCtrl 1400) ctrlSetTooltip ((uiNamespace getVariable 'ALIVE_UI_SETVALUE_PARAMS') select 3)";
+
+	class controls {
+		////////////////////////////////////////////////////////
+		// GUI EDITOR OUTPUT START (by Matt, v1.063, #Jypymu)
+		////////////////////////////////////////////////////////
+
+		class setValue_EditBox: RscEdit
+		{
+			idc = 1400;
+			text = "0"; //--- ToDo: Localize;
+			x = 0.448421 * safezoneW + safezoneX;
+			y = 0.456003 * safezoneH + safezoneY;
+			w = 0.118631 * safezoneW;
+			h = 0.0329974 * safezoneH;
+			colorBackground[] = {0,0,0,0.5};
+			colorText[] = {0.9,0.7,0.1,0.8};			
+			tooltip = "Enter a numerical value."; //--- ToDo: Localize;
+		};
+
+		class setValue_Frame: RscFrame
+		{
+			idc = 1800;
+			x = 0.442737 * safezoneW + safezoneX;
+			y = 0.423966 * safezoneH + safezoneY;
+			w = 0.128947 * safezoneW;
+			h = 0.0989922 * safezoneH;
+			colorBackground[] = {0,0,0,0.5};
+		};
+		
+		class setValue_RscButtonMenuOK_2600: RscButtonMenuOK
+		{
+			idc = 1401;
+			x = 0.535579 * safezoneW + safezoneX;
+			y = 0.493799 * safezoneH + safezoneY;
+			w = 0.0309473 * safezoneW;
+			h = 0.0219983 * safezoneH;
+			action = "((uiNamespace getVariable 'ALIVE_UI_SETVALUE_PARAMS') select 0) setvariable [((uiNamespace getVariable 'ALIVE_UI_SETVALUE_PARAMS') select 1), parseNumber (ctrlText 1400), true]; closeDialog 0";
+		};
+		
+		class setValue_RscButtonMenuCancel_2700: RscButtonMenuCancel
+		{
+			x = 0.449999 * safezoneW + safezoneX;
+			y = 0.493799 * safezoneH + safezoneY;
+			w = 0.0412631 * safezoneW;
+			h = 0.0219983 * safezoneH;
+			action = "closeDialog 0;";
+		};
+
+		class setValue_Header: RscText
+		{
+			idc = 1000;
+			text = "Set Value";
+			x = 0.448421 * safezoneW + safezoneX;
+			y = 0.431126 * safezoneH + safezoneY;
+			w = 0.118631 * safezoneW;
+			h = 0.0219983 * safezoneH;
+			colorText[] = {0.9,0.7,0.1,0.8};
+			colorBackground[] = {0.1,0.1,0.1,0.9};
+		};
+		////////////////////////////////////////////////////////
+		// GUI EDITOR OUTPUT END
+		////////////////////////////////////////////////////////
+
+	};
 };

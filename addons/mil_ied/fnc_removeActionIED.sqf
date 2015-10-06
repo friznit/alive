@@ -4,7 +4,7 @@ SCRIPT(removeActionIED);
 // Add action to IED
 private ["_debug"];
 
-_debug = MOD(mil_ied) getVariable ["debug", 0];
+_debug = ADDON getVariable ["debug", 0];
 
 if (_debug) then {diag_log "RemoveActionIED running.";};
 

@@ -1,13 +1,17 @@
 #include <\x\alive\addons\mil_IED\script_component.hpp>
 SCRIPT(armIED);
 
+#define SUPERCLASS ALIVE_fnc_baseClass
+#define MAINCLASS ALIVE_fnc_ied
+
 // Create trigger for IED detonation
 private ["_IED","_trg","_type","_shell","_proximity","_debug"];
 
 if !(isServer) exitWith {diag_log "ArmIED Not running on server!";};
-_debug = MOD(mil_ied) getVariable ["debug", 0];
-_detection = MOD(mil_ied) getVariable ["IED_Detection", 1];
-_device = MOD(mil_ied) getVariable ["IED_Detection_Device", "MineDetector"];
+
+_debug = ADDON getVariable ["debug", false];
+_detection = ADDON getVariable ["IED_Detection", 1];
+_device = ADDON getVariable ["IED_Detection_Device", "MineDetector"];
 
 _IED = _this select 0;
 _type = _this select 1;
@@ -21,17 +25,21 @@ if (count _this > 2) then {
 _proximity = 2 + floor(random 10);
 
 if (_debug) then {
-	private ["_iedm","_text"];
+    private ["_t","_markers","_text","_iedm"];
 	diag_log format ["ALIVE-%1 IED: arming IED at %2 of %3 as %4 with proximity of %5",time, getposATL _IED,_type,_shell,_proximity];
-	//Mark IED position
-	_t = format["ied_r%1", floor (random 1000)];
-	if !(typeof _IED == _type) then {
-		_text = "VBIED";
-	} else {
-		_text = "IED";
-	};
-	_iedm = [_t, position _IED, "Icon", [1,1], "TEXT:", _text, "TYPE:", "mil_dot", "COLOR:", "ColorRed", "GLOBAL"] call CBA_fnc_createMarker;
-	_IED setvariable ["Marker", _iedm];
+
+    //Mark IED position (don't do VBIED, handled elsewhere)
+    if (typeof _IED == _type) then {
+    	_t = format["ied_r%1", floor (random 1000)];
+        _text = "IED";
+
+	    _iedm = [_t, position _IED, "Icon", [0.5,0.5], "TEXT:", _text, "TYPE:", "mil_dot", "COLOR:", "ColorRed", "GLOBAL"] call CBA_fnc_createMarker;
+	    _IED setvariable ["Marker", _iedm];
+
+	    _markers = ADDON getVariable ["debugMarkers",[]];
+	    _markers pushback _iedm;
+	    ADDON setVariable ["debugMarkers",_markers];
+    };
 };
 
 // Add Action to IED for disarmm

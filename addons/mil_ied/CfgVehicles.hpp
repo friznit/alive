@@ -242,6 +242,24 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                       class roadIEDClasses
+                        {
+                                displayName = "$STR_ALIVE_IED_ROAD_IED_CLASSES";
+                                description = "$STR_ALIVE_IED_CLASSES_COMMENT";
+                                defaultValue = "ALIVE_IEDUrbanSmall_Remote_Ammo,ALIVE_IEDLandSmall_Remote_Ammo,ALIVE_IEDUrbanBig_Remote_Ammo,ALIVE_IEDLandBig_Remote_Ammo";
+                        };
+                        class urbanIEDClasses
+                        {
+                                displayName = "$STR_ALIVE_IED_URBAN_IED_CLASSES";
+                                description = "$STR_ALIVE_IED_CLASSES_COMMENT";
+                                defaultValue = "ALIVE_IEDUrbanSmall_Remote_Ammo,ALIVE_IEDUrbanBig_Remote_Ammo,Land_JunkPile_F,Land_GarbageContainer_closed_F,Land_GarbageBags_F,Land_Tyres_F,Land_GarbagePallet_F,Land_Basket_F,Land_Sack_F,Land_Sacks_goods_F,Land_Sacks_heap_F,Land_BarrelTrash_F";
+                        };
+                        class clutterClasses
+                        {
+                                displayName = "$STR_ALIVE_IED_CLUTTER_CLASSES";
+                                description = "$STR_ALIVE_IED_CLASSES_COMMENT";
+                                defaultValue = "Land_JunkPile_F,Land_GarbageContainer_closed_F,Land_GarbageBags_F,Land_Tyres_F,Land_GarbagePallet_F,Land_Basket_F,Land_Sack_F,Land_Sacks_goods_F,Land_Sacks_heap_F,Land_BarrelTrash_F";
+                        };
                 };
         };
 

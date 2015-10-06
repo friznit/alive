@@ -8,6 +8,8 @@ private ["_location","_radius","_veh", "_vblist","_num"];
 _location = _this select 0;
 _radius = _this select 1;
 
+_debug = ADDON getVariable ["debug", false];
+
 // Find all vehicles within radius
 _veh = nearestObjects [_location, ["Car"], _radius];
 

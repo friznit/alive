@@ -59,19 +59,28 @@ _IED attachTo [_vehicle, [0,-1,-1.08]];
 _IED setDir 270;
 _IED setVectorUp [0,0,-1];
 
-if (_debug) then {
-	private ["_vbiedm","_t"];
-	_t = format["vbied_r%1", floor (random 1000)];
-	_vbiedm = [_t, getposATL _vehicle, "Icon", [0.5,0.5], "TYPE:", "mil_dot", "COLOR:", "ColorRed", "GLOBAL"] call CBA_fnc_createMarker;
-	[_vbiedm,_vehicle] spawn {
-		_vbiedm = _this select 0;
-		_vehicle = _this select 1;
-		while {alive _vehicle} do {
-			_vbiedm  setmarkerpos position _vehicle;
-			sleep 0.1;
-		};
-		[_vbiedm] call CBA_fnc_deleteEntity;
+[_vehicle] spawn {
+	_vehicle = _this select 0;
+	while {alive _vehicle} do {
+		if  (ADDON getVariable ["debug",false]) then {
+			private "_marker";
+			_marker = _vehicle getvariable ["marker",nil];
+			if (isNil "_marker" || {!(_marker in allMapMarkers)}) then {
+				private ["_vbiedm","_t","_markers"];
+				_t = format["vbied_r%1", floor (random 1000)];
+				_marker = [_t, getposATL _vehicle, "Icon", [0.5,0.5], "TYPE:", "mil_dot", "COLOR:", "ColorRed", "GLOBAL","TEXT:","VBIED"] call CBA_fnc_createMarker;
+				_vehicle setVariable ["marker",_marker];
+			} else {
+				_marker setmarkerpos position _vehicle;
+			};
+        } else {
+ 			_marker = _vehicle getVariable ["marker", ""];
+			[_marker] call CBA_fnc_deleteEntity;
+        };
+		sleep 0.3;
 	};
+	_marker = _vehicle getvariable ["marker",nil];
+	if (!isNil "_marker") then {[_marker] call CBA_fnc_deleteEntity;};
 };
 
 // Set up trigger to detonate IED

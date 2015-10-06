@@ -36,6 +36,8 @@ Tupolov, Wolffy
 Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
+#define MAINCLASS ALIVE_fnc_IED
+
 private ["_menuDef", "_target", "_params", "_menuName", "_menuRsc", "_menus"];
 // _this==[_target, _menuNameOrParams]
 
@@ -86,7 +88,7 @@ if (_menuName == "IED") then {
 			["IED", localize "STR_ALIVE_IED", "popup"],
 			[
 				[localize "STR_ALIVE_IED_DEBUG_ENABLE",
-					{ADDON setVariable ["debug", true, true]},
+					{[[ADDON, "debug", true],QUOTE(MAINCLASS), false, false, true] call BIS_fnc_MP},
 					"",
 					localize "STR_ALIVE_IED_DEBUG_COMMENT",
 					"",
@@ -95,13 +97,40 @@ if (_menuName == "IED") then {
 					!(ADDON getVariable ["debug", false])
 				],
 				[localize "STR_ALIVE_IED_DEBUG_DISABLE",
-					{ADDON setVariable ["debug", false, true] },
+					{[[ADDON, "debug", false],QUOTE(MAINCLASS), false, false, true] call BIS_fnc_MP},
 					"",
 					localize "STR_ALIVE_IED_DEBUG_COMMENT",
 					"",
 					-1,
 					ADDON getVariable ["debug", false],
 					ADDON getVariable ["debug", false]
+				],
+				[localize "STR_ALIVE_IED_IED_THREAT_LEVEL",
+					{ uiNameSpace setVariable ["ALIVE_UI_SETVALUE_PARAMS",[ADDON, "IED_THREAT", "IED Threat Level", "Enter a valid number between 0 (no threat) and 350 (extreme threat)"]]; createDialog "ALIVE_ui_setNumberValue";},
+					"",
+					localize "STR_ALIVE_IED_IED_THREAT_COMMENT",
+					"",
+					-1,
+					true,
+					true
+				],
+				[localize "STR_ALIVE_IED_BOMBER_THREAT_LEVEL",
+					{ uiNameSpace setVariable ["ALIVE_UI_SETVALUE_PARAMS",[ADDON, "Bomber_Threat", "Suicide Bomber Threat", "Enter a valid number between 0 (no threat) and 50 (extreme threat)"]]; createDialog "ALIVE_ui_setNumberValue";},
+					"",
+					localize "STR_ALIVE_IED_BOMBER_THREAT_COMMENT",
+					"",
+					-1,
+					true,
+					true
+				],
+				[localize "STR_ALIVE_IED_VB_IED_THREAT_LEVEL",
+					{ uiNameSpace setVariable ["ALIVE_UI_SETVALUE_PARAMS",[ADDON, "VB_IED_Threat", "VB IED Threat Level", "Enter a valid number between 0 (no threat) and 70 (extreme threat)"]]; createDialog "ALIVE_ui_setNumberValue";},
+					"",
+					localize "STR_ALIVE_IED_VB_IED_THREAT_COMMENT",
+					"",
+					-1,
+					true,
+					true
 				]
 			]
 		]
