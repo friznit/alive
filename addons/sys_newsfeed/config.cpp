@@ -4,3 +4,10 @@
 #include <CfgVehicles.hpp>
 #include <CfgFunctions.hpp>
 #include <eventhandlers.hpp>
+
+
+class CfgCommands {
+    allowedHTMLLoadURIs[] += {
+        "http://alivemod.com/alive_news.php";
+    };
+};
