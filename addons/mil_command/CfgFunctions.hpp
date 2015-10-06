@@ -31,6 +31,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\mil_command\fnc_ambientMovement.sqf";
 				recompile = RECOMPILE;
 			};
+			class seaPatrol {
+				description = "Ambient sea patrol within a given radius";
+				file = "\x\alive\addons\mil_command\fnc_SeaPatrol.sqf";
+				recompile = RECOMPILE;
+			};
 			class garrison {
 				description = "Places units in building positions";
 				file = "\x\alive\addons\mil_command\fnc_garrison.sqf";

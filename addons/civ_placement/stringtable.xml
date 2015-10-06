@@ -209,4 +209,10 @@
 <Key ID="STR_ALIVE_CP_ROADBLOCKS_COMMENT">
 	<English>The chance of roadblocks being created at the objectives</English>
 </Key>
+<Key ID="STR_ALIVE_CP_PLACE_SEAPATROLS">
+	<English>Sea Patrols:</English>
+</Key>
+<Key ID="STR_ALIVE_CP_PLACE_SEAPATROLS_COMMENT">
+	<English>The chance of naval units patrolling near marine objectives</English>
+</Key>
 </Container></Package></Project>

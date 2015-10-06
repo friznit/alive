@@ -326,6 +326,46 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class placeSeaPatrols
+                        {
+                                displayName = "$STR_ALIVE_CP_PLACE_SEAPATROLS";
+                                description = "$STR_ALIVE_CP_PLACE_SEAPATROLS_COMMENT";
+                                typeName = "NUMBER";
+                                class Values
+                                {
+                                        class NONE
+                                        {
+                                                name = "None";
+                                                value = 0;
+                                                default = 1;
+                                        };
+                                        class All
+                                        {
+                                                name = "All";
+                                                value = 1;
+                                        };
+                                        class EXTREME
+                                        {
+                                                name = "Extreme";
+                                                value = 0.75;
+                                        };
+                                        class HIGH
+                                        {
+                                                name = "High";
+                                                value = 0.5;
+                                        };
+                                        class MEDIUM
+                                        {
+                                                name = "Medium";
+                                                value = 0.33;
+                                        };
+                                        class LOW
+                                        {
+                                                name = "Low";
+                                                value = 0.2;
+                                        };
+                                };
+                        };
                         class customInfantryCount
                         {
                                 displayName = "$STR_ALIVE_CP_CUSTOM_INFANTRY_COUNT";

@@ -104,4 +104,13 @@
 <Key ID="STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_Support_EOD0">
 	<Original>Support Team (EOD)</Original>
 </Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_F_Naval">
+	<Original>Naval</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_West_BLU_F_Naval">
+	<Original>Naval</Original>
+</Key>
+<Key ID="STR_A3_CfgGroups_East_OPF_F_Naval_OIA_sentryTeam_Boat0">
+	<Original>Sentry Team (Speed Boat)</Original>
+</Key>
 </Container></Package></Project>

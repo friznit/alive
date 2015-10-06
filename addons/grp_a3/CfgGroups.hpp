@@ -812,6 +812,157 @@ class CfgGroups
 					};
 				};
 			};
+			class Naval
+			{
+				name = "$STR_A3_CfgGroups_East_OPF_F_Naval";
+				class OI_sentryTeam_SpeedBoat
+				{
+					name = "$STR_A3_CfgGroups_East_OPF_F_Naval_OIA_sentryTeam_Boat0";
+					side = 0;
+					faction = "OPF_F";
+					icon = "\A3\ui_f\data\map\markers\nato\o_naval.paa";
+					class Unit0
+					{
+						side = 0;
+						vehicle = "O_soldier_TL_F";
+						rank = "SERGEANT";
+						position[] = {0,0,0};
+					};
+					class Unit1
+					{
+						side = 0;
+						vehicle = "O_Boat_Armed_01_hmg_F";
+						rank = "PRIVATE";
+						position[] = {-32,-57,0};
+					};
+				};
+				class OI_diverTeam
+				{
+					name = "$STR_A3_CfgGroups_West_BLU_F_SpecOps_BUS_diverTeam0";
+					side = 0;
+					faction = "OPF_F";
+					icon = "\A3\ui_f\data\map\markers\nato\o_naval.paa";
+					class Unit0
+					{
+						side = 0;
+						vehicle = "O_diver_TL_F";
+						rank = "SERGEANT";
+						position[] = {0,0,0};
+					};
+					class Unit1
+					{
+						side = 0;
+						vehicle = "O_diver_exp_F";
+						rank = "CORPORAL";
+						position[] = {5,-5,0};
+					};
+					class Unit2
+					{
+						side = 0;
+						vehicle = "O_diver_F";
+						rank = "PRIVATE";
+						position[] = {-5,-5,0};
+					};
+					class Unit3
+					{
+						side = 0;
+						vehicle = "O_diver_F";
+						rank = "PRIVATE";
+						position[] = {10,-10,0};
+					};
+				};
+				class OI_diverTeam_Boat
+				{
+					name = "$STR_A3_CfgGroups_West_BLU_F_SpecOps_BUS_diverTeam_Boat0";
+					side = 0;
+					faction = "OPF_F";
+					icon = "\A3\ui_f\data\map\markers\nato\o_naval.paa";
+					class Unit0
+					{
+						side = 0;
+						vehicle = "O_diver_TL_F";
+						rank = "SERGEANT";
+						position[] = {0,0,0};
+					};
+					class Unit1
+					{
+						side = 0;
+						vehicle = "O_diver_exp_F";
+						rank = "CORPORAL";
+						position[] = {5,-5,0};
+					};
+					class Unit2
+					{
+						side = 0;
+						vehicle = "O_diver_F";
+						rank = "PRIVATE";
+						position[] = {-5,-5,0};
+					};
+					class Unit3
+					{
+						side = 0;
+						vehicle = "O_diver_F";
+						rank = "PRIVATE";
+						position[] = {10,-10,0};
+					};
+					class Unit4
+					{
+						side = 0;
+						vehicle = "O_Boat_Transport_01_F";
+						rank = "PRIVATE";
+						position[] = {-32,-57,0};
+					};
+				};
+				class OI_diverTeam_SDV
+				{
+					name = "$STR_A3_CfgGroups_West_BLU_F_SpecOps_BUS_diverTeam_SDV0";
+					side = 0;
+					faction = "OPF_F";
+					icon = "\A3\ui_f\data\map\markers\nato\o_naval.paa";
+					class Unit0
+					{
+						side = 0;
+						vehicle = "O_diver_TL_F";
+						rank = "SERGEANT";
+						position[] = {0,0,0};
+					};
+					class Unit1
+					{
+						side = 0;
+						vehicle = "O_diver_exp_F";
+						rank = "CORPORAL";
+						position[] = {5,-5,0};
+					};
+					class Unit2
+					{
+						side = 0;
+						vehicle = "O_diver_F";
+						rank = "PRIVATE";
+						position[] = {-6,-6,0};
+					};
+					class Unit3
+					{
+						side = 0;
+						vehicle = "O_diver_F";
+						rank = "PRIVATE";
+						position[] = {11,-11,0};
+					};
+					class Unit4
+					{
+						side = 0;
+						vehicle = "O_SDV_01_F";
+						rank = "PRIVATE";
+						position[] = {-16,-16,0};
+					};
+					class Unit5
+					{
+						side = 0;
+						vehicle = "O_SDV_01_F";
+						rank = "PRIVATE";
+						position[] = {21,-21,0};
+					};
+				};
+			};
 		};
 		class OPF_G_F
 		{
@@ -1000,7 +1151,7 @@ class CfgGroups
 						rank = "PRIVATE";
 						position[] = {10,-10,0};
 					};
-				};	
+				};
 				class ORG_InfTeam_AA
 				{
 					name = "$STR_A3_CfgGroups_East_OPF_G_F_Infantry_ORG_InfTeam_AA0";  // name = "Air-defense Team";
@@ -1397,4 +1548,322 @@ class CfgGroups
 			};
 		};
 	};
+
+	class West
+	{
+		class BLU_F
+		{
+			class Naval
+			{
+				name = "$STR_A3_CfgGroups_West_BLU_F_Naval";
+				class BUS_sentryTeam_SpeedBoat
+				{
+					name = "$STR_A3_CfgGroups_East_OPF_F_Naval_OIA_sentryTeam_Boat0";
+					side = 0;
+					faction = "BLU_F";
+					icon = "\A3\ui_f\data\map\markers\nato\b_naval.paa";
+					class Unit0
+					{
+						side = 0;
+						vehicle = "B_soldier_TL_F";
+						rank = "SERGEANT";
+						position[] = {0,0,0};
+					};
+					class Unit1
+					{
+						side = 0;
+						vehicle = "B_Boat_Armed_01_minigun_F";
+						rank = "PRIVATE";
+						position[] = {-32,-57,0};
+					};
+				};
+				class BUS_DiverTeam
+				{
+					name = "$STR_A3_CfgGroups_West_BLU_F_SpecOps_BUS_DiverTeam0";
+					side = 1;
+					faction = "BLU_F";
+					icon = "\A3\ui_f\data\map\markers\nato\b_naval.paa";
+					class Unit0
+					{
+						side = 1;
+						vehicle = "B_diver_TL_F";
+						rank = "SERGEANT";
+						position[] = {0,0,0};
+					};
+					class Unit1
+					{
+						side = 1;
+						vehicle = "B_diver_exp_F";
+						rank = "CORPORAL";
+						position[] = {5,-5,0};
+					};
+					class Unit2
+					{
+						side = 1;
+						vehicle = "B_diver_F";
+						rank = "PRIVATE";
+						position[] = {-5,-5,0};
+					};
+					class Unit3
+					{
+						side = 1;
+						vehicle = "B_diver_F";
+						rank = "PRIVATE";
+						position[] = {10,-10,0};
+					};
+				};
+				class BUS_DiverTeam_Boat
+				{
+					name = "$STR_A3_CfgGroups_West_BLU_F_SpecOps_BUS_DiverTeam_Boat0";
+					side = 1;
+					faction = "BLU_F";
+					icon = "\A3\ui_f\data\map\markers\nato\b_naval.paa";
+					class Unit0
+					{
+						side = 1;
+						vehicle = "B_diver_TL_F";
+						rank = "SERGEANT";
+						position[] = {0,0,0};
+					};
+					class Unit1
+					{
+						side = 1;
+						vehicle = "B_diver_exp_F";
+						rank = "CORPORAL";
+						position[] = {5,-5,0};
+					};
+					class Unit2
+					{
+						side = 1;
+						vehicle = "B_diver_F";
+						rank = "PRIVATE";
+						position[] = {-5,-5,0};
+					};
+					class Unit3
+					{
+						side = 1;
+						vehicle = "B_diver_F";
+						rank = "PRIVATE";
+						position[] = {10,-10,0};
+					};
+					class Unit4
+					{
+						side = 1;
+						vehicle = "B_Boat_Transport_01_F";
+						rank = "PRIVATE";
+						position[] = {-32,-57,0};
+					};
+				};
+				class BUS_DiverTeam_SDV
+				{
+					name = "$STR_A3_cfggroups_West_BLU_F_SpecOps_BUS_DiverTeam_SDV0";
+					side = 1;
+					faction = "BLU_F";
+					icon = "\A3\ui_f\data\map\markers\nato\b_naval.paa";
+					class Unit0
+					{
+						side = 1;
+						vehicle = "B_diver_TL_F";
+						rank = "SERGEANT";
+						position[] = {0,0,0};
+					};
+					class Unit1
+					{
+						side = 1;
+						vehicle = "B_diver_exp_F";
+						rank = "CORPORAL";
+						position[] = {5,-5,0};
+					};
+					class Unit2
+					{
+						side = 1;
+						vehicle = "B_diver_F";
+						rank = "PRIVATE";
+						position[] = {-6,-6,0};
+					};
+					class Unit3
+					{
+						side = 1;
+						vehicle = "B_diver_F";
+						rank = "PRIVATE";
+						position[] = {11,-11,0};
+					};
+					class Unit4
+					{
+						side = 1;
+						vehicle = "B_SDV_01_F";
+						rank = "PRIVATE";
+						position[] = {-16,-16,0};
+					};
+					class Unit5
+					{
+						side = 1;
+						vehicle = "B_SDV_01_F";
+						rank = "PRIVATE";
+						position[] = {21,-21,0};
+					};
+				};
+			};
+		};
+	};
+	class Indep
+	{
+		class IND_F
+		{
+			class Naval
+			{
+				name = "$STR_A3_CfgGroups_West_BLU_F_Naval";
+				class HAF_sentryTeam_SpeedBoat
+				{
+					name = "$STR_A3_CfgGroups_East_OPF_F_Naval_OIA_sentryTeam_Boat0";
+					side = 0;
+					faction = "IND_F";
+					icon = "\A3\ui_f\data\map\markers\nato\n_naval.paa";
+					class Unit0
+					{
+						side = 0;
+						vehicle = "I_soldier_TL_F";
+						rank = "SERGEANT";
+						position[] = {0,0,0};
+					};
+					class Unit1
+					{
+						side = 0;
+						vehicle = "I_Boat_Armed_01_minigun_F";
+						rank = "PRIVATE";
+						position[] = {-32,-57,0};
+					};
+				};
+				class HAF_DiverTeam
+				{
+					name = "$STR_A3_CfgGroups_West_BLU_F_SpecOps_BUS_DiverTeam0";
+					side = 2;
+					faction = "IND_F";
+					icon = "\A3\ui_f\data\map\markers\nato\n_naval.paa";
+					class Unit0
+					{
+						side = 2;
+						vehicle = "I_diver_TL_F";
+						rank = "SERGEANT";
+						position[] = {0,0,0};
+					};
+					class Unit1
+					{
+						side = 2;
+						vehicle = "I_diver_exp_F";
+						rank = "CORPORAL";
+						position[] = {5,-5,0};
+					};
+					class Unit2
+					{
+						side = 2;
+						vehicle = "I_diver_F";
+						rank = "PRIVATE";
+						position[] = {-5,-5,0};
+					};
+					class Unit3
+					{
+						side = 2;
+						vehicle = "I_diver_F";
+						rank = "PRIVATE";
+						position[] = {10,-10,0};
+					};
+				};
+				class HAF_DiverTeam_Boat
+				{
+					name = "$STR_A3_CfgGroups_West_BLU_F_SpecOps_BUS_DiverTeam_Boat0";
+					side = 2;
+					faction = "IND_F";
+					icon = "\A3\ui_f\data\map\markers\nato\n_naval.paa";
+					class Unit0
+					{
+						side = 2;
+						vehicle = "I_diver_TL_F";
+						rank = "SERGEANT";
+						position[] = {0,0,0};
+					};
+					class Unit1
+					{
+						side = 2;
+						vehicle = "I_diver_exp_F";
+						rank = "CORPORAL";
+						position[] = {5,-5,0};
+					};
+					class Unit2
+					{
+						side = 2;
+						vehicle = "I_diver_F";
+						rank = "PRIVATE";
+						position[] = {-5,-5,0};
+					};
+					class Unit3
+					{
+						side = 2;
+						vehicle = "I_diver_F";
+						rank = "PRIVATE";
+						position[] = {10,-10,0};
+					};
+					class Unit4
+					{
+						side = 2;
+						vehicle = "I_Boat_Transport_01_F";
+						rank = "PRIVATE";
+						position[] = {-32,-57,0};
+					};
+				};
+				class HAF_DiverTeam_SDV
+				{
+					name = "$STR_A3_CfgGroups_West_BLU_F_SpecOps_BUS_DiverTeam_SDV0";
+					side = 2;
+					faction = "IND_F";
+					icon = "\A3\ui_f\data\map\markers\nato\n_naval.paa";
+					class Unit0
+					{
+						side = 2;
+						vehicle = "I_diver_TL_F";
+						rank = "SERGEANT";
+						position[] = {0,0,0};
+					};
+					class Unit1
+					{
+						side = 2;
+						vehicle = "I_diver_exp_F";
+						rank = "CORPORAL";
+						position[] = {5,-5,0};
+					};
+					class Unit2
+					{
+						side = 2;
+						vehicle = "I_diver_F";
+						rank = "PRIVATE";
+						position[] = {-6,-6,0};
+					};
+					class Unit3
+					{
+						side = 2;
+						vehicle = "I_diver_F";
+						rank = "PRIVATE";
+						position[] = {11,-11,0};
+					};
+					class Unit4
+					{
+						side = 2;
+						vehicle = "I_SDV_01_F";
+						rank = "PRIVATE";
+						position[] = {-16,-16,0};
+					};
+					class Unit5
+					{
+						side = 2;
+						vehicle = "I_SDV_01_F";
+						rank = "PRIVATE";
+						position[] = {21,-21,0};
+					};
+				};
+			};
+		};
+	};
 };
+
+
+

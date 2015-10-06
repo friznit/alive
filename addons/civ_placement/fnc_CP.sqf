@@ -38,6 +38,7 @@ ARJay
 #define DEFAULT_SIZE "100"
 #define DEFAULT_WITH_PLACEMENT true
 #define DEFAULT_OBJECTIVES []
+#define DEFAULT_OBJECTIVES_MARINE []
 #define DEFAULT_TAOR []
 #define DEFAULT_BLACKLIST []
 #define DEFAULT_SIZE_FILTER "160"
@@ -49,6 +50,7 @@ ARJay
 #define DEFAULT_NO_TEXT ""
 #define DEFAULT_READINESS_LEVEL "1"
 #define DEFAULT_RB "10"
+#define DEFAULT_SEAPATROL_CHANCE 0
 
 private ["_logic","_operation","_args","_result"];
 
@@ -124,6 +126,19 @@ switch(_operation) do {
 			_result = ["Armored","Mechanized","Motorized","Infantry","Air"] call BIS_fnc_selectRandom;
 			_logic setVariable ["type", _result];
 		};
+	};
+	case "placeSeaPatrols": {
+		if (typeName _args == "SCALAR") then {
+			_logic setVariable ["placeSeaPatrols", _args];
+		} else {
+			_args = _logic getVariable ["placeSeaPatrols", DEFAULT_SEAPATROL_CHANCE];
+		};
+		if (typeName _args == "STRING") then {
+			_logic setVariable ["placeSeaPatrols", parseNumber _args];
+		};
+		ASSERT_TRUE(typeName _args == "SCALAR",str _args);
+
+		_result = _args;
 	};
 	case "customInfantryCount": {
         _result = [_logic,_operation,_args,DEFAULT_NO_TEXT] call ALIVE_fnc_OOsimpleOperation;
@@ -336,6 +351,7 @@ switch(_operation) do {
                 _blacklist = [_logic, "blacklist"] call MAINCLASS;
                 _sizeFilter = parseNumber([_logic, "sizeFilter"] call MAINCLASS);
                 _priorityFilter = parseNumber([_logic, "priorityFilter"] call MAINCLASS);
+    			_placeSeaPatrols = [_logic, "placeSeaPatrols"] call MAINCLASS;
 
 
                 // check markers for existance
@@ -426,7 +442,7 @@ switch(_operation) do {
                         };
                     };
                     case "Marine": {
-                        ["SF: %1, %2", _sizeFilter, typeName _sizeFilter] call ALIVE_fnc_dump;
+
                         if(_sizeFilter == 160) then {
                             _sizeFilter = 0;
                         };
@@ -499,6 +515,37 @@ switch(_operation) do {
                           };
                     };
                 };
+
+                // If sea patrols are to be placed, store the marine objectives.
+                if (_placeSeaPatrols > 0) then {
+
+	                if !(isnil "ALIVE_clustersCivMarine") then {
+	                    _marineClusters = ALIVE_clustersCivMarine select 2;
+
+						//["ALIVE CP [%1] - Marine Clusters Count: %2",_faction, count _marineClusters] call ALIVE_fnc_dump;
+
+	                    _marineClusters = [_marineClusters,0,_priorityFilter] call ALIVE_fnc_copyClusters;
+
+						//["ALIVE CP [%1] - Marine Clusters Filtered Count: %2 - Size: %3 - Prio: %4",_faction, count _marineClusters, _sizeFilter, _priorityFilter] call ALIVE_fnc_dump;
+
+	                    _marineClusters = [_marineClusters, _taor] call ALIVE_fnc_clustersInsideMarker;
+
+						//["ALIVE CP [%1] - Marine Clusters TAOR Count: %2",_faction, count _marineClusters] call ALIVE_fnc_dump;
+
+	                    _marineClusters = [_marineClusters, _blacklist] call ALIVE_fnc_clustersOutsideMarker;
+
+						["ALIVE CP [%1] - Marine Clusters Count: %2",_faction, count _marineClusters] call ALIVE_fnc_dump;
+
+						/*
+	                    {
+	                        [_x, "debug", [_logic, "debug"] call MAINCLASS] call ALIVE_fnc_cluster;
+	                    } forEach _marineClusters;
+						*/
+	                	[_logic, "objectivesMarine", _marineClusters] call MAINCLASS;
+	                };
+	        	};
+
+
 
                 // DEBUG -------------------------------------------------------------------------------------
                 if(_debug) then {
@@ -642,14 +689,13 @@ switch(_operation) do {
 
 			private ["_countArmored","_countMechanized","_countMotorized","_countInfantry",
 			"_countAir","_countSpecOps","_groups","_motorizedGroups","_infantryGroups","_group","_groupPerCluster","_totalCount","_center","_size","_position",
-			"_groupCount","_clusterCount"];
+			"_groupCount","_clusterCount","_countSeaPatrols"];
 
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE CP [%1] - Size: %2",_faction,_size] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
-
 
 			_countArmored = 0;
 			_countMechanized = 0;
@@ -811,7 +857,6 @@ switch(_operation) do {
 			_groups = _groups - ALiVE_PLACEMENT_GROUPBLACKLIST;
 			_infantryGroups = _infantryGroups - ALiVE_PLACEMENT_GROUPBLACKLIST;
 
-
 			// Position and create groups
 			_groupCount = count _groups;
 			_clusterCount = count _clusters;
@@ -822,6 +867,68 @@ switch(_operation) do {
             _readiness = (1 - _readiness) * _groupCount;
 
 			GVAR(ROADBLOCK_LOCATIONS) = [];
+
+			_countSeaPatrols = 0;
+
+			// Place Sea Patrols (if available) near Marine Objectives
+			_placeSeaPatrols = [_logic, "placeSeaPatrols"] call MAINCLASS;
+			if (_placeSeaPatrols > 0) then {
+
+				// Check to see if there are any marine objectives
+				_marineClusters = [_logic, "objectivesMarine"] call MAINCLASS;
+
+				if(_debug) then {
+					["ALIVE CP [%1] - Placing Sea Patrols at %2 marine clusters",_faction, count _marineClusters] call ALIVE_fnc_dump;
+				};
+
+				{ // For each marine cluster
+
+					// Get naval group
+					_seaPatrolGroup = ["Naval", _faction] call ALIVE_fnc_configGetRandomGroup;
+
+					// Check to see if a naval group is available
+					if (_seaPatrolGroup != "FALSE") then {
+
+						// Find nearest sea sector
+						_center = [_x, "center"] call ALIVE_fnc_hashGet;
+						_pos = [_center, true] call ALiVE_fnc_getClosestSea;
+
+						// Ensure position is in the water
+						if (surfaceIsWater _pos) then {
+
+							//chance of sea patrol
+							if ((random 1) < _placeSeaPatrols) then {
+								// Create a sea patrol profile (mark it busy)
+								_seaPatrol = [_seaPatrolGroup, _pos, random(360), true, _faction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+								// Set Waypoints for patrol
+								{
+									if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
+										[_x, [1000,"AWARE",_center,_debug]] call ALiVE_fnc_SeaPatrol;
+										_countSeaPatrols = _countSeaPatrols + 1;
+									};
+								} foreach _seaPatrol;
+		                    };
+						} else {
+
+							// Didn't find a position in the sea
+							if(_debug) then {
+								["ALIVE CP [%1] - Pos: %2 - Didn't find sea sector for naval patrol",_faction,_pos] call ALIVE_fnc_dump;
+							};
+						};
+					} else {
+
+						// Didn't find a naval group
+						if(_debug) then {
+							["ALIVE CP [%1] - Size: %2 - Didn't find group for naval patrol",_faction,_size] call ALIVE_fnc_dump;
+						};
+					};
+				} forEach _marineClusters;
+
+				if(true) then {
+					["ALIVE CP [%1] - Created %2 Sea Patrols",_faction, _countSeaPatrols] call ALIVE_fnc_dump;
+				};
+			};
 
 			{
                 private ["_guardGroup","_guards","_center","_size"];
@@ -932,13 +1039,13 @@ switch(_operation) do {
 					_timer = time;
 					{
 						private ["_position","_size","_spawn"];
-                        
+
                         if (typeName _x == "ARRAY") then {
 							_position  = _x select 0;
 							_size = _x select 1;
-	
+
 							_spawn = false;
-	
+
 							if ([_position, ALIVE_spawnRadius,ALIVE_spawnRadiusJet,ALIVE_spawnRadiusHeli] call ALiVE_fnc_anyPlayersInRangeIncludeAir) then {
 							    _spawn = true;
 							} else {
@@ -946,17 +1053,17 @@ switch(_operation) do {
 					                _spawn = true;
 					            };
 							};
-	
+
 							if (_spawn) then {
 								[_position, _size + 150, ceil(_roadblocks / 30), _debug] call ALiVE_fnc_createRoadblock;
-	
+
 								GVAR(ROADBLOCK_LOCATIONS) set [_foreachIndex, -1];
 							};
                     	};
 					} foreach GVAR(ROADBLOCK_LOCATIONS);
-                    
+
                     GVAR(ROADBLOCK_LOCATIONS) = GVAR(ROADBLOCK_LOCATIONS) - [-1];
-                    
+
                     if (_debug) then {["ALiVE Roadblock iteration time: %1 secs for %2 entries...", time - _timer, count GVAR(ROADBLOCK_LOCATIONS)] call ALiVE_fnc_Dump};
 
 					sleep 1;
