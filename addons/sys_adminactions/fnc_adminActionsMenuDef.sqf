@@ -251,7 +251,7 @@ if (_menuName == "adminOptions") then {
 	                -1,
 	                !isNil QMOD(sys_statistics_ENABLED),
 	                !isNil QMOD(statistics) && call ALIVE_fnc_isServerAdmin
-				],
+				]/*,
 				[localize "STR_ALIVE_Data" + " >",
 					"",
 					"",
@@ -260,7 +260,7 @@ if (_menuName == "adminOptions") then {
 	                -1,
 	                !isNil QMOD(sys_data) && {!MOD(sys_data_DISABLED)},
 	                !isNil QMOD(sys_data) && call ALIVE_fnc_isServerAdmin
-				]
+				]*/
 			]
 		]
 	];
