@@ -44,8 +44,8 @@ if (GVAR(ENABLED)) then {
 	};
 
 	// Cater for non player situations
-	if (_uid == "") exitWith {
-		diag_log["SYS_STATS: PLAYER DOES NOT HAVE UID, EXITING."];
+	if (_uid == "" || isHC) exitWith {
+		diag_log["SYS_STATS: PLAYER DOES NOT HAVE UID OR IS HEADLESS, EXITING."];
 	};
 
 	{
@@ -91,16 +91,23 @@ if (GVAR(ENABLED)) then {
 		// Grab shots fired data
 		_shotsfired = [GVAR(shotsFired), _uid, []] call ALiVE_fnc_hashGet;
 
-		_shotsFiredData = [];
-		{
-			private ["_weaponCount","_weapon","_count","_muzzle","_shotsFiredHash"];
-			_shotsFiredHash = [] call CBA_fnc_hashCreate;
-			[_shotsFiredHash, "weaponMuzzle", _x select 0] call CBA_fnc_hashSet;
-			[_shotsFiredHash, "count", _x select 1] call CBA_fnc_hashSet;
-			[_shotsFiredHash, "weaponType", _x select 2] call CBA_fnc_hashSet;
-			[_shotsFiredHash, "weaponName", _x select 3] call CBA_fnc_hashSet;
-			_shotsFiredData = _shotsFiredData + [ _shotsFiredHash ] ;
-		} foreach _shotsFired;
+		if (!isNil "_shotsfired") then {
+
+			_shotsFiredData = [];
+			{
+				private ["_weaponCount","_weapon","_count","_muzzle","_shotsFiredHash"];
+				if (typename _x == "ARRAY") then {
+					_shotsFiredHash = [] call CBA_fnc_hashCreate;
+					[_shotsFiredHash, "weaponMuzzle", _x select 0] call CBA_fnc_hashSet;
+					[_shotsFiredHash, "count", _x select 1] call CBA_fnc_hashSet;
+					[_shotsFiredHash, "weaponType", _x select 2] call CBA_fnc_hashSet;
+					[_shotsFiredHash, "weaponName", _x select 3] call CBA_fnc_hashSet;
+					_shotsFiredData = _shotsFiredData + [ _shotsFiredHash ] ;
+				};
+			} foreach _shotsFired;
+		} else {
+			_shotsFiredData = [];
+		};
 
 	};
 
