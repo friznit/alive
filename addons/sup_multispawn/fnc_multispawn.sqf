@@ -394,7 +394,7 @@ switch(_operation) do {
 
             _side = _args;
 
-            {if ((_x call ALiVE_fnc_ClassSide) == _side) then {_result = _x}} foreach ["B_Heli_Transport_01_F","O_Heli_Transport_01_F","I_Heli_Transport_02_F"];
+            {if ((_x call ALiVE_fnc_ClassSide) == _side) then {_result = _x}} foreach ["B_Heli_Transport_01_F","O_Heli_Light_02_F","I_Heli_Transport_02_F"];
         };
 
         case "convertStringToArray": {
