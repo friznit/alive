@@ -8,6 +8,6 @@
 
 class CfgCommands {
     allowedHTMLLoadURIs[] += {
-        "http://alivemod.com/alive_news.php";
+        "http://alivemod.com/alive_news.php*";
     };
 };
