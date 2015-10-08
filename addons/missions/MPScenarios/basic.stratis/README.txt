@@ -1,2 +1,0 @@
-- Mission updated for ALiVE 0.9.8 release. -Tupolov
-- Mission updated for ALiVE 0.9.5 release. -Hazey
