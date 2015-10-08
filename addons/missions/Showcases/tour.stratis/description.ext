@@ -1,7 +1,7 @@
 author = ALiVE Mod Team || Mission by ARJay;
 onLoadMission = "Discover the features and functions of ALiVE";
-onLoadIntroTime = true;
-onLoadMissionTime = true;
+onLoadIntroTime = 1;
+onLoadMissionTime = 1;
 onLoadName = ALiVE | Tour;
 loadScreen = "x\alive\addons\missions\logo_alive.paa";
 aiKills = 0;

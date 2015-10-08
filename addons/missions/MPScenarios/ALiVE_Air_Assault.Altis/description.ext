@@ -8,8 +8,8 @@ class header {
 
 author = ALiVE Mod Team ||  Mission by Highhead;
 onLoadMission = "Steal the prototype MI-48 from the airbase at Salakano and bring it to your Command base in the north! Try to survive!";
-onLoadIntroTime = true;
-onLoadMissionTime = true;
+onLoadIntroTime = 1;
+onLoadMissionTime = 1;
 onLoadName = ALiVE | Airport Assault;
 loadScreen = "x\alive\addons\missions\logo_alive.paa";
 overviewPicture = "x\alive\addons\missions\logo_alive.paa";

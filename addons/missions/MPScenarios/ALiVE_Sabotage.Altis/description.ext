@@ -9,8 +9,8 @@ class header {
 author = ALiVE Studios | Mission by Highhead;
 onLoadMission = "Lead an insurgency on Altis, use sabotage and subterfuge to capture weapons and establish safe houses across the island!";
 overviewText = "Lead an insurgency on Altis, use sabotage and subterfuge to capture weapons and establish safe houses across the island.";
-onLoadIntroTime = true;
-onLoadMissionTime = true;
+onLoadIntroTime = 1;
+onLoadMissionTime = 1;
 onLoadName = ALiVE | Sabotage;
 loadScreen = "x\alive\addons\ui\logo_alive.paa";
 overviewPicture = "x\alive\addons\missions\logo_alive.paa";

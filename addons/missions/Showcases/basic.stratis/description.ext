@@ -8,8 +8,8 @@ class header {
 
 author = ALiVE Mod Team || Mission by Tupolov;
 onLoadMission = "Stratis is occupied by CSAT forces, your pathfinding unit supported by CAS and Air assets need to drive back the occupying force!";
-onLoadIntroTime = true;
-onLoadMissionTime = true;
+onLoadIntroTime = 1;
+onLoadMissionTime = 1;
 onLoadName = ALiVE | Getting Started;
 loadScreen = "x\alive\addons\missions\logo_alive.paa";
 overviewPicture = "x\alive\addons\missions\logo_alive.paa";
