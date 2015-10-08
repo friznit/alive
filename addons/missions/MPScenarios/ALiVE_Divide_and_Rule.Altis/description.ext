@@ -53,3 +53,5 @@ enableDebugConsole = 1;
 allowFunctionsRecompile = 1;
 
 respawnTemplates[] = {"MenuPosition"};
+
+//
