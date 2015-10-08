@@ -7,4 +7,6 @@
 LOG(MSG_INIT);
 
 // Auto enable the data module
-[nil,1] call ALiVE_fnc_DataInit;
+if (isDedicated) then {
+	[nil,1] call ALiVE_fnc_DataInit;
+};

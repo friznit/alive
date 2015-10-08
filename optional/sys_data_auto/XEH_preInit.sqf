@@ -7,4 +7,6 @@
 LOG(MSG_INIT);
 
 // Auto enable the data module
-[] call ALiVE_fnc_DataInit;
+if (isDedicated) then {
+	[] call ALiVE_fnc_DataInit;
+};
