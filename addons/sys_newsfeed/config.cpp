@@ -5,9 +5,8 @@
 #include <CfgFunctions.hpp>
 #include <eventhandlers.hpp>
 
-
 class CfgCommands {
-    allowedHTMLLoadURIs += {
-        "http://alivemod.com/alive_news.php*";
+    allowedHTMLLoadURIs[] += {
+        "http://alivemod.com/alive_news.php*"
     };
 };
