@@ -1,9 +1,9 @@
 @echo off
 rem set exe=echo
-set exe=MakePBO.exe -A -BD -L -Z default
+set exe=MakePBO -A -BD -L -P -U -X=thumbs.db,*.h,*.dep,*.bak,*.png,*.log,*.pew -Z=default 
 set source=P:\x\alive\addons
 
-set exeuncommpressed=MakePBO.exe -A -BD -L
+set exeuncommpressed=MakePBO.exe -A -BD -L -P -X=thumbs.db,*.h,*.dep,*.bak,*.png,*.log,*.pew
 set uncommpressedsource=P:\x\alive\addons\mil_OPCOM
 
 rem ********************
@@ -34,7 +34,9 @@ rem arma2 not there
 IF NOT DEFINED _ARMA3PATH (GOTO ENDfailA2) ELSE (GOTO v64_path_a2oa)
 
 :v64_path_a2oa
-echo %_ARMA3PATH%
+echo PATH - %_ARMA3PATH%
+echo EXE - %exe%
+echo SOURCE - %source%
 
 set target="%_ARMA3PATH%\@alive\addons"
 
