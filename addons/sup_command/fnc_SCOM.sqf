@@ -1868,9 +1868,9 @@ switch(_operation) do {
             				_m setMarkerColorLocal "ColorIndependent";
             			};
             		};
-            	};
 
-            	_markers = _markers + [_m];
+            		_markers = _markers + [_m];
+            	};
 
             } forEach allGroups;
 
