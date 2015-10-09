@@ -883,9 +883,9 @@ switch(_operation) do {
                         _opcom_state = [_x,"opcom_state","unassigned"] call ALIVE_fnc_hashGet;
                         _section = [_x,"section"] call ALIVE_fnc_hashGet;
 
-                        if!(isNil "_section") then {
+                        _sections = [];
 
-                            _sections = [];
+                        if!(isNil "_section") then {
 
                             {
                                 _profileID = _x;
