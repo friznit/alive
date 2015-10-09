@@ -95,8 +95,6 @@ switch(_operation) do {
         };
         case "init": {
 
-                if (_logic getVariable ["enablePlayerPersistence","true"] == "false") exitWith {_logic setVariable ["bis_fnc_initModules_activate",true]; ["ALiVE SYS PLAYER - Feature turned off! Exiting..."] call ALiVE_fnc_Dump};
-
                 //Only one init per instance is allowed
             	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS PLAYER - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
 
@@ -113,22 +111,25 @@ switch(_operation) do {
                 MOD(sys_player) = _logic;
 
                 // Set Module Parameters as booleans
-                MOD(sys_player) setVariable ["allowReset", call compile (_logic getvariable "allowReset")];
-                MOD(sys_player) setVariable ["allowDiffClass", call compile (_logic getvariable "allowDiffClass")];
-                MOD(sys_player) setVariable ["allowManualSave", call compile (_logic getvariable "allowManualSave")];
-                MOD(sys_player) setVariable ["storeToDB", call compile (_logic getvariable "storeToDB")];
-                MOD(sys_player) setVariable ["autoSaveTime", call compile (_logic getvariable "autoSaveTime")];
+                MOD(sys_player) setVariable ["enablePlayerPersistence", call compile (_logic getvariable "enablePlayerPersistence"), true];
+                MOD(sys_player) setVariable ["allowReset", call compile (_logic getvariable "allowReset"), true];
+                MOD(sys_player) setVariable ["allowDiffClass", call compile (_logic getvariable "allowDiffClass"), true];
+                MOD(sys_player) setVariable ["allowManualSave", call compile (_logic getvariable "allowManualSave"), true];
+                MOD(sys_player) setVariable ["storeToDB", call compile (_logic getvariable "storeToDB"), true];
+                MOD(sys_player) setVariable ["autoSaveTime", call compile (_logic getvariable "autoSaveTime"), true];
 
-                MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout")];
-                MOD(sys_player) setVariable ["saveAmmo", call compile (_logic getvariable "saveAmmo")];
-                MOD(sys_player) setVariable ["saveHealth", call compile (_logic getvariable "saveHealth")];
-                MOD(sys_player) setVariable ["savePosition", call compile (_logic getvariable "savePosition")];
-                MOD(sys_player) setVariable ["saveScores", call compile (_logic getvariable "saveScores")];
+                MOD(sys_player) setVariable ["saveLoadout", call compile (_logic getvariable "saveLoadout"), true];
+                MOD(sys_player) setVariable ["saveAmmo", call compile (_logic getvariable "saveAmmo"), true];
+                MOD(sys_player) setVariable ["saveHealth", call compile (_logic getvariable "saveHealth"), true];
+                MOD(sys_player) setVariable ["savePosition", call compile (_logic getvariable "savePosition"), true];
+                MOD(sys_player) setVariable ["saveScores", call compile (_logic getvariable "saveScores"), true];
 
-                MOD(sys_player) setVariable ["saved", false];
+                MOD(sys_player) setVariable ["saved", false, true];
 
-               MOD(sys_player) setVariable ["super", QUOTE(SUPERCLASS)];
-               MOD(sys_player) setVariable ["class", QUOTE(MAINCLASS)];
+               MOD(sys_player) setVariable ["super", QUOTE(SUPERCLASS), true];
+               MOD(sys_player) setVariable ["class", QUOTE(MAINCLASS), true];
+
+               if !(_logic getVariable ["enablePlayerPersistence",true]) exitWith {_logic setVariable ["bis_fnc_initModules_activate",true]; ["ALiVE SYS PLAYER - Feature turned off! Exiting..."] call ALiVE_fnc_Dump};
 
                 // DEFINE PLAYER DATA
                 #include <playerData.hpp>
@@ -199,11 +200,6 @@ switch(_operation) do {
                     MOD(sys_player) setVariable ["init", true, true];
 
 
-                    // Setup OPC and OPD events
-                    //[QGVAR(OPC), "OnPlayerConnected","ALIVE_fnc_player_OnPlayerConnected"] call BIS_fnc_addStackedEventHandler;
-                   // [QGVAR(OPD), "OnPlayerDisconnected","ALIVE_fnc_player_OnPlayerDisconnected"] call BIS_fnc_addStackedEventHandler;
-
-
             } else {
                     if (!isServer && !isHC && (!isNil "ALIVE_sys_data" && {!ALIVE_sys_data_DISABLED})) then {
                         // any client side logic for model
@@ -220,8 +216,7 @@ switch(_operation) do {
                                 _gearHash = [MOD(sys_player), "setGear", [player]] call ALIVE_fnc_player;
                                 _unit = _this select 0;
                                 [[MOD(sys_player), "updateGear", [_unit, _gearHash]], "ALiVE_fnc_player", false, false] call BIS_fnc_MP;
-                                //[0, {[ALIVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [_unit, _gearHash] ] call CBA_fnc_globalExecute;
-                                //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", _this] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
+
                             }];
                             player addEventHandler ["Take", {
                                 private ["_gearHash","_unit"];
@@ -230,8 +225,7 @@ switch(_operation) do {
                                 // Get player gear
                                 _gearHash = [MOD(sys_player), "setGear", [player]] call ALIVE_fnc_player;
                                 [[MOD(sys_player), "updateGear", [_unit, _gearHash]], "ALiVE_fnc_player", false, false] call BIS_fnc_MP;
-                                //[0, {[ALiVE_sys_player,"updateGear", _this] call ALIVE_fnc_player}, [_unit, _gearHash] ] call CBA_fnc_globalExecute;
-                               //["server",QMOD(sys_player),[[player, _gearHash],{[MOD(sys_player),"updateGear", _this] call ALIVE_fnc_player;}]] call ALIVE_fnc_BUS;
+
                             }];
                         };
                     };
