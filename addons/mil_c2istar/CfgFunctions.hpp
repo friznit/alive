@@ -221,6 +221,11 @@ class CfgFunctions {
                 file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskCreateReward.sqf";
                 recompile = RECOMPILE;
             };
+            class taskGetInsurgencyLocation {
+                description = "Utility to find insurgency location from asymetrical opcoms";
+                file = "\x\alive\addons\mil_C2ISTAR\utils\fnc_taskGetInsurgencyLocation.sqf";
+                recompile = RECOMPILE;
+            };
             class taskMilAssault {
                 description = "Task Mil Assault";
                 file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskMilAssault.sqf";
@@ -259,6 +264,16 @@ class CfgFunctions {
             class taskSabotageBuilding {
                 description = "Task Destroy Infantry";
                 file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskSabotageBuilding.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskInsurgencyPatrol {
+                description = "Task Insurgency Patrol";
+                file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskInsurgencyPatrol.sqf";
+                recompile = RECOMPILE;
+            };
+            class taskInsurgencyDestroyAssets {
+                description = "Task Insurgency Destroy Assets";
+                file = "\x\alive\addons\mil_C2ISTAR\tasks\fnc_taskInsurgencyDestroyAssets.sqf";
                 recompile = RECOMPILE;
             };
         };
