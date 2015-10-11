@@ -241,7 +241,7 @@ if (_menuName == "adminOptions") then {
 	                ["call ALiVE_fnc_playerMenuDef", "playeradmin", 1],
 	                 -1,
 	                 1,
-	                !isNil QMOD(sys_player) && MOD(sys_player) getVariable ["enablePlayerPersistence",false] && call ALIVE_fnc_isServerAdmin
+	                !isNil QMOD(sys_player) && {MOD(sys_player) getVariable ["enablePlayerPersistence",false]} && {call ALIVE_fnc_isServerAdmin}
 				],
 				[localize "STR_ALIVE_STATISTICS" + " >",
 					"",
