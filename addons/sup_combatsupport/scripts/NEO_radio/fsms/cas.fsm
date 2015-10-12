@@ -8,7 +8,7 @@ item3[] = {"New_Task",4,218,-37.668053,138.662827,52.331947,188.662827,10.000000
 item4[] = {"_",2,250,-37.496964,235.797745,52.503052,285.797729,0.000000,""};
 item5[] = {"",7,210,-190.932526,257.277374,-182.932526,265.277374,0.000000,""};
 item6[] = {"",7,210,-190.273483,159.833786,-182.273483,167.833786,0.000000,""};
-item7[] = {"circle",4,218,-36.830444,500.030273,53.169525,550.030273,0.000000,"circle"};
+item7[] = {"circle",4,4314,-36.830444,500.030273,53.169525,550.030273,0.000000,"circle"};
 item8[] = {"SAD",4,218,-37.646278,331.839966,52.353722,381.839966,0.000000,"SAD"};
 item9[] = {"__1",2,250,-43.171074,400.398499,46.828926,450.398499,0.000000,""};
 item10[] = {"",7,210,-190.843689,431.611511,-182.843689,439.611511,0.000000,""};
@@ -84,7 +84,7 @@ link44[] = {32,28};
 link45[] = {33,34};
 link46[] = {34,15};
 globals[] = {0.000000,0,0,0,0,640,480,1,66,6316128,1,-641.528320,932.245544,1142.036621,-165.687851,1118,929,1};
-window[] = {2,-1,-1,-1,-1,957,220,1480,220,3,1135};
+window[] = {2,-1,-1,-1,-1,759,22,1282,22,3,1135};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -334,8 +334,6 @@ class FSM
            "_posCircle = [_posCas, _radiusCas, _dirCas] call BIS_fnc_relPos;" \n
            "[_veh, _posCircle] call ALiVE_fnc_doMoveRemote;" \n
            "" \n
-           "[""unitready #1 %1 on unit %2 HC %3 server %4 local %5"",unitready _veh,_veh,isHC,isServer,local _veh] call ALiVE_fnc_DumpR;" \n
-           "" \n
            "[_veh,_callsign,_pos] spawn" \n
            "{" \n
            "private [""_veh"", ""_callsign"",""_pos""];" \n
@@ -370,10 +368,7 @@ class FSM
        "	sleep 5;" \n
        "	" \n
        "	[[_veh,format[""Copy that, %1 is moving to %2%3 to locate targets. Out."",_callsign,_coord select 0, _coord select 1],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
-       "};" \n
-       "" \n
-       "[""unitready #2 %1 on unit %2 HC %3 server %4 local %5"",unitready _veh,_veh,isHC,isServer,local _veh] call ALiVE_fnc_DumpR;" \n
-       ""/*%FSM</STATEINIT""">*/;
+       "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
       {
@@ -425,8 +420,6 @@ class FSM
           condition=/*%FSM<CONDITION""">*/"_veh call ALiVE_fnc_unitReadyRemote" \n
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"//Reveal Targets" \n
-           "" \n
-           "[""unitready final %1 on unit %2 HC %3 server %4 local %5 allReady %6"",unitready _veh,_veh,isHC,isServer,local _veh,{!unitready _x} count units _grp == 0] call ALiVE_fnc_DumpR;" \n
            "" \n
            "{" \n
            "  if (alive _x && side _x != side _veh) then" \n
