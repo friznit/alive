@@ -3,20 +3,20 @@
 [SIZE=4]The next generation dynamic persistent mission addon for ArmA3
 Release 0.9.10[/SIZE][/B][/CENTER]
 
-[B][U]Major new features for ALiVE in this release: Headless Client, Linux Persistence Support and new Tactical Support Tools![/U][/B]
-We are very excited to release a completely rewritten plugin that supports both Windows and Linux dedicated servers.  Massive thanks to Secure for his code magic and dedication over the last few months making Linux persistence a reality. Follow the instructions on War Room to setup your server. The latest plugin is REQUIRED for ALiVE 0.9.10 and old plugins will no longer work.
+[B][U]Major new features for ALiVE in this release: Headless Client, Linux Persistence, Command & Control Tablet, Group Manager[/U][/B]
+We are very excited to release a completely rewritten plugin that supports both Windows and Linux dedicated servers.  Massive thanks to Secure for his code magic and dedication over the last few months making Linux persistence a reality. Follow the instructions on War Room to setup your server. The latest plugin is REQUIRED for all ALiVE 0.9.10 servers, both Windows and Linux.  The old plugins will no longer work.
 
 Meanwhile, Highhead solved one of our biggest challenges of how to spawn all ALiVE Virtual AI onto Headless Client.  The option to use Headless Client for all AI Placement modules represents a huge performance boost for those who enjoy full scale dynamic campaigns with thousands of AI and lots of players in different parts of the map.  The option to use Headless Client can be found in the ALiVE (Required) module.
 
 In addition, Tupolov has been working to improve the Server Performance Monitoring suite, which now has the option to autorun on any mission even without an ALiVE module placed.  This requires an optional pbo to be run on the server and of course you need to login to War Room and set up your server details there to see the stats.  Thanks to Dwarden for the feedback!
 
-Some people have already seen SpyderBlack's fantastic Command & Control tablet, which enables players to create map overlays of operational activity, tactical intelligence and even take over control of the battle from the AI Commander.  We loved it so much that we have fully integrated it into ALiVE and will continue to work with Spyder to develop it further.  Alongside this, ArJay has been hard at work developing a Group Manager (for both Player AND AI groups), which has long been a popular request by the community.
+Some people have already seen SpyderBlack's fantastic Command & Control tablet, which enables players to create map overlays of operational activity, tactical intelligence and even take over control of the battle from the AI Commander.  We loved it so much that we have fully integrated it into ALiVE and will continue to work with Spyder to develop it further.  Alongside this, ArJay has been hard at work developing a Group Manager (for both Player and AI groups), which has long been a popular request by the community.
 
-Tupolov has made some enhancements to the IED module, allowing you to use custom assets for urban and roadside IEDs as well as clutter to help disguise them. He has also improved the Suicide Bomber code to make things more "fun". 
+Tupolov has made some enhancements to the IED module, allowing you to use custom assets for urban and roadside IEDs as well as clutter to help disguise them. He has also improved the Suicide Bomber code to make things a little more..."fun". 
 
-We've also added ambient Sea Patrols to our Military Objectives (civilian) module. OPFOR and BLUFOR will now execute both surface and subsurface patrols near strategic maritime locations. Configure custom "Naval" groups to use maritime mod assets.
+We've also added ambient Sea Patrols to our Military Objectives (Civilian) module. OPFOR and BLUFOR will now execute both surface and subsurface patrols near strategic maritime locations. You will need to configure custom "Naval" groups to use maritime groups with mods that don't have them defined already.  See the wiki for details of custom mappings.
 
-Finally, you will find another update to the ALiVE Menu system. We've tidied it up and now provide 4 sub menus - Player Options, Admin Actions, Commander Actions and Module Settings. Player Options allow you to configure your player experience, while Admin Actions give you some tools to help mission creation/management. Module Settings is new and we will building on this, allowing you to change module settings on the fly (where appropriate). IED module is a good example of this. Commander Actions is available if you place the C2ISTAR module and gives you access to lots of goodies such as the Combat Support, Resupply, Intel, Group Manager, Task Manager and much much more!
+Finally, you will find another update to the ALiVE Menu system. We've tidied it up and now provide 4 sub menus - Player Options, Admin Actions, Commander Actions and Module Settings. Player Options allow you to configure your player experience, while Admin Actions give you some tools to help mission creation/management. Module Settings is new and we will building on this, allowing you to change module settings on the fly (where appropriate), such as the IED module for example. Commander Actions is available if you place the C2ISTAR module and gives you access to lots of tools such as Combat Support, Resupply, Intel, Group Manager and Task Manager.
 
 The rest of the team has been busy with fixes and enhancements - full change log below!
 
@@ -56,12 +56,134 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [B][U]Changelog[/U][/B]
 [SPOILER]
 - Build 0.9.10
-
-
+[ALL] Updated version to 0.9.10.1510121 
+[SYS ADMINACTIONS] Fixed regression with new module settings tab, when player options module wasnt in place 
+[C2ISTAR] Created 2 new insurgency tasks - patrol and destroy assets 
+[sys_player] Removed unnecessary broadcasting of logic variables. 
+[SCOM] small fix to scom command handler & spelling in group manager cfgfunctions
+[MISSIONS] Fixed onLoadIntroTime and onLoadMissionTime didnt have a number set
+[sup_multispawn] FIXED:  Multispawn Insertion not working for OPF_F #150
+[sys_newsfeed] Changed newsfeed to use wildcards for URL config (thank you BIS)
+[sys_statistic] Fixed: Headless Client errors when disconnecting due to issue with stats. Improved shots fired error handling
+[civ_placement] Added Sea Patrols (compatible with virtual AI/profiles) with new Naval group configs for A3 vanilla assets #16
+[mil_IED] Added custom IED classes (road, urban and clutter) #147
+[mil_IED] Added menu option to set IED threat levels during mission (only applied prior to visiting a location the first time) #15
+[mil_IED] Added menu option to debug IEDs
+[mil_IED] Fixed: Sometimes Suicide Bomber donned go kart gear...
+[mil_IED] Changed: Suicide bombers will carry a radio or mobile phone, a suicide vest and explosives
+[mil_IED] Changed: Sometimes the suicide bomber explosive will malfunction
+[mil_IED] Changed: Sometimes a suicide bomber will have a dead man switch
+[sys_adminactions] Disabled data menu in module options for now
+[sys_newsfeed] Fixed issue where Arma 3 1.52 allowedHTMLLoadURIs does not support scripted params
+[sys_adminactions] Updated Module Settings menu to check to see if player persistence is enabled
+[mil_opcom] Improved mobile phone inventory picture
+[sys_player] CHANGED player save data menu items and moved them to player options
+[Misc] Map index nam
+[Misc] Fixes for default value errors in modules
+[Misc] Map indexes MSKE, Lingor3
+[fnc_analysis] Fixed getClosestSea function, was using incorrect sectorFilter to find sea areas. Added option to find a nearby sector as well as closest.
+[sys_profile] Fixed issue where by vehicle count can be 0 in certain circumstances when spawning profiles.
+[UI] Stringtable fixes for tuplicates
+[Misc] Map indexing. Esseker, Mogadishu, Gunkizli
+[Module Init] Changed module functionPriority to reflect what is expected
+[sys_logistics] Fixed multiple player option menu entries (check for player options module)
+[UI] Updated Menu UI for Logistics actions
+[sys_marker] Fixed issue where group ID and server time were not properly stored in marker, spotrep, sitrep or patrolrep database entries
+[sys_data] Additional debugging code
+[UI] Changed Admin Options to Module Settings
+[Misc] Added options to c2istar to disable spectate and join for command. Fixed a few issues in SpyderTab
+[ALL] Updated version to 0.9.10.1509261
+[SUP GROUP MANAGER] Small fix
+[SUP GROUP MANAGER] Tidy up of group manager. Fixed group manager and spyder tablet in dedicated server. Added some function from tour to spyder tablet
+[sys_player] Option to auto save player data to DB should only appear if Data module is enabled.
+[sys_data] Added new optional PBO to allow auto start of just perfmon data component. Default Date/Time save is now disabled.
+[X LIB] Fixed ALiVE_fnc_DumpMPH wasnt showing structured text correctly
+[MIL CQB] Removed Locality settings (main setting is still there for backward compatibility (to be removed on ALiVE 1.0)
+[MAIN] Added dynamic AI Distribution
+[sys_data] Fixed: don't let data init twice if sys_data_auto is used with a mission that has the data module.
+[MIL OPCOM] Fixed: on long operations Insurgents could have recruited too many groups from conquered civilians areas.  There are now a limited number of recruits available. Also fixed if the Recruitment HQs have been destroyed there was still recruitment going on.
+[SYS PROFILE | AMB CIVS] Killed groups/agents were not removed from virtual space if the locality was remote
+[UI] Fixed player logistics button did not appear when player options module was not placed.
+[sys_data] Handle error returned if access is denied.
+[UI] Update menu to handle player persistence admin options etc
+[UI] Changed Menu layout and put in place modular system for expansion of menu
+[VARIOUS] Fixed groups not beeing deleted (THX BIS), added landRemote and landAtRemote (still WIP)
+[Main] Reindex Australia v3. Some weird script error in the map.  Index is imperfect but best we can do for now.
+[VARIOUS] Added ALiVE_fnc_unitReadyRemote to improve AI behaviour on HC (WIP)
+[VARIOUS] Added functions ALiVE_fnc_doMoveRemote and ALiVE_fnc_moveRemote to enable remote orders and provide HC compatibility for all modules dynamically.
+[sup_PR] Fixed - player support logistics not available if C2ISTAR not there.
+[mil_C2ISTAR] Tidied up menu ready for Group Manager and Tactical Command functionality
+[sup_player_resupply] Moved logistics to C2ISTAR menu, cleaned up C2ISTAR menu
+[@ALiVEServer] Added Linux shared library extension for Linux Dedicated Server data and persistence (thanks to Secure!) #111
+[X LIB | MAIN | SUP RESUPPLY] Added whitelist field, improved selection method of allowed/blacklisted vehicles (quicker and cleaner now). Use the field on the module or the ALiVE_PR_WHITELIST variable (array of types you wanna have in your list).
+[SYS PROFILE] Fixed bug with cycle waypoints not being applied correctly (causing stuck groups and other weird behaviours).
+[ALiVE_Tablet] Fixed: Alive_tablet not detected by Virtual Arsenal #118
+[mil_IED] Added more sound effects for IED detection
+[mil_C2ISTAR] Updated menu choices to include new group manager, intel, tasks and logistics
+[GM] Initial group manager stuff
+[VARIOUS] Persisted active military commands (needed change in params to have consistent data)
+[sys_data] FIXED: Perf monitor didn't launch with sys_data_auto.
+[MAIN] Missed to commit the ALiVE_PR_CUSTOM_BLACKLIST option to staticData
+[Main] Bornholm re-index (v4)
+[mil_IED] Fixed issue where ALiVE IEDs fell through floor (ThingX), added options to module for detection and detecting device.#107
+[sys_data] Default date/time persistence has been set to false
+[optional] Added a sys_data_auto module, place this in an addons folder on the server to auto start the data module. Atm requires @ALiVE on both client and server as well as @ALiVEServer on the server.
+[@ALiVEServer] New plugin fixes window crash on JIP.
+[sys_data] FIXED:  If plugin fails to initialise and admin tries to Save Server and Exit it errors #126
+[main] FIXED: Server attempts to save even if data module is disabled, leading to errors
+[sys_stats] FIXED: Server attempts to update shots fired to DB even when data module is disabled
+[x_lib] FIXED: ALIVE_fnc_createLineMarker Doesn't make use of color parameter #124
+[sys_data] Handle error if there is a problem with the plugin
+[PLAYER COMBAT LOGISTICS] Added Blacklist (including module field) to allow for more customization of the request list! Detailed examples in the Wiki!
+[sys_statistics] Incorrect variable passed if UID is not found
+[sys_perf] Fixed error when sys_perf is disabled.
+[X LIB] Improved debug output on ALiVE_fnc_HashGet
+[ SYS PROFILE] Multiple Improvements and fixes to Virtual AI System
+- Added default value for limiter to 144 (do not limit)
+- Removed unneeded debug in ALiVE_fnc_getNearProfiles
+- Fixed script error if roadsConnected failed when finding a good spawn position
+- Improved virtual AI simulation performance, update speed and virtual combat by 7 times
+[MIL OPCOM] Several improvements to OPCOM esp. when reinforcements were called
+- Fixed reinforcements were not called reliably,
+- Added information if no insertion position is available for reinforcements,
+- Added limiter to reduce reinforcements called at once (sometimes over 100 profiles were created),
+- improved debug
+[MIL C2ISTAR] Workaround for freezes with ALIVE_fnc_taskGetSideSectorEntities, ALIVE_fnc_taskGetRandomSideEntityFromSector, etc. (some fnc. that use BattlefieldAnalysis). Still some optimastions to be done on some missions
+[SUP_CS]/[XLIB] Fix to BUS_MotInf_MortTeam
+[SYS Profile] Improved spawn positioning further!
+[MIL COMMAND] Primarily select roads for ambient vehicle patrol waypoints
+[SYS PROFILE] Improved spawn quality of vehicles esp. vehicle groups
+[SYS PROFILE] Fixed error if no hash was given to fnc_profileWaypointToWaypoint
+[SUP_COMBATSUPPORT] Ability to Add and remove Units via script added  functions to add and remove CAS and Transport units via script
+[X-Lib] removed Dump Left dump in oops
+[XLIB] Amended Arty Functions To select only 1st returned Mag for Task Type
+[CS]added Dynamic Arty Mags,Rounds and Distance. Added doe that dynamically gathers the Magazines, Rounds and min max distance of the Arty Type
+[CS] Added the new Arty Functions. Added getArtyMagazineTypes and getArtyRounds Functions
+[CS] New Arty Functions to CfgFunctions. Added New Arty Functions to CfgFunctions for Dynamic Ammo Mags and Tyoes
+[MIL Logistics] Fixed Logistics wasnt completing waypoint check under some circumstances and threw an error
+[X LIB] Fixed CBA_fnc_HashGet error on wrong input
+[AMB CIV | MIL CQB | SYS PROFILE] Improved spawn performance
+[FNC ANALYSIS] Fixed ALiVE_fnc_getClosestLand always defaulted to the units position if it was over water and near a shore, spawning "swimming units"
+[MIL CQB] Fixed on HC and JIP clients only groupsize of pair spawned!
+[MIL C2ISTAR] [MAIN] Fixed default value was not selected correctly, hopefully fixing No entry 'bin\config.bin/CfgVehicles/ALiVE_MIL_C2ISTAR/Arguments/debug/Values/Yes.default
+[MAIN] Complete index of Isla Duala v3.33
+[MIL OPCOM] Added variety level of 20%-33% to opcom objective priorities so it is less predictable
+[MIL IED] A Suicidebomber was created everytime the trigger area was entered, resulting in suicide bombers havoc in some situations...
+[MIL OPCOM] Added start occupation option for asymmetric installations like factories, ieds, HQs, etc.! Fixed: OPCOM was able to start before a synced CQB was initialized, resulting in uncached positions
+[AMB Civs] Fixed Unit was not returned to side civilian after arresting and releasing
+[MIL OPCOM] Fixed: Insurgency was not pausing if told so
+[MAIN] Added option to autopause ALiVE modules if no players are present on server
+[sys_data] Major commit to include new Plugin and sys_data, sys_data_couchdb and other persistence code changes. Goodbye arma2net, it's been doog teims.
+[AMB CIVs | SYS PROFILE] Implemented Smooth Spawn System(tm)
+[FNC Analysis | MIL C2ISTAR] Fixed: Battlefield Analysis failed to retrieve data if a string was passed to getClustersOwnedBySide and getClustersOwnedBySideAndType and an error was thrown, putting C2ISTAR to halt (also affected SYS Tour).
+[X LIB | MIL C2ISTAR] Fixed: Several bugs and script errors, added defaults and fallbacks, fixed wrong variable in ALiVE_fnc_SpawnRandomPopulatedComposition
+[SYS Logistics] Fixed: Carry option broke occasionally, actions were visible on killed players, action broke if player was killed during operating
+[MAIN] Fixed: ZEUS didnt recognize created troops of class CAManBase when added with XEH
+[MIL OPCOM] Fixed: Objective in suicidebomber-state couldnt find civilians on mission reload with persistence
 [/SPOILER]
 
-[B][U]Want to join our team?[/U][/B]
-We are still on the look out for a web dev, ideally with Laravel experience, to develop the War Room further.  We are bursting with ideas but simply don't have the manpower to deliver!
+[B][U]Work In Progress?[/U][/B]
+This is essentially our 1.0 Release Candidate but there are a few things we'd like to fix still.  Headless Client introduces several locality challenges with commands and War Room stats that we'd like to iron out.  There is also an annoying button rsc error in arma3 rpt since the last patch that we need to squash.  Elsewhere we're beginning to look at greater ACE3 support and integration.
 
 [B][U]Disclaimer[/U][/B]
 ALiVE is still in BETA and subject to change.  We may need to clear persistent database data from the War Room before major updates but we will try to let you know well in advance if this happens.  We have done our best to ensure backward compatibility for your missions. However, in case you get a new error with an existing mission, please delete and replace the offending module in the editor and you should be good to go again.  As usual, please post any issues or feature requests on our tracker.
