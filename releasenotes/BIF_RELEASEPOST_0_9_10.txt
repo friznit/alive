@@ -6,7 +6,7 @@ Release 0.9.10[/SIZE][/B][/CENTER]
 [B][U]Major new features for ALiVE in this release: Headless Client, Linux Persistence, Command & Control Tablet, Group Manager[/U][/B]
 We are very excited to release a completely rewritten plugin that supports both Windows and Linux dedicated servers.  Massive thanks to Secure for his code magic and dedication over the last few months making Linux persistence a reality. Follow the instructions on War Room to setup your server. The latest plugin is REQUIRED for all ALiVE 0.9.10 servers, both Windows and Linux.  The old plugins will no longer work.
 
-Meanwhile, Highhead solved one of our biggest challenges of how to spawn all ALiVE Virtual AI onto Headless Client.  The option to use Headless Client for all AI Placement modules represents a huge performance boost for those who enjoy full scale dynamic campaigns with thousands of AI and lots of players in different parts of the map.  The option to use Headless Client can be found in the ALiVE (Required) module.
+Meanwhile, Highhead solved one of our biggest challenges of how to spawn all ALiVE Virtual AI onto Headless Client.  The option to use Headless Client for all AI Placement modules represents a huge performance boost for those who enjoy full scale dynamic campaigns with thousands of AI and lots of players in different parts of the map.  The option to use Headless Client can be found in the ALiVE (Required) module. Furthermore there were several improvements made to our AI virtualisation system including a 7x performance boost in virtual simulation & combat and slowed down unit-creation to minimize micro-freezes when virtual groups were spawned. Please note that the latter is subject to tweaking and balancing, your feedback is always welcome.
 
 In addition, Tupolov has been working to improve the Server Performance Monitoring suite, which now has the option to autorun on any mission even without an ALiVE module placed.  This requires an optional pbo to be run on the server and of course you need to login to War Room and set up your server details there to see the stats.  Thanks to Dwarden for the feedback!
 
@@ -157,7 +157,7 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [SUP_COMBATSUPPORT] Ability to Add and remove Units via script added  functions to add and remove CAS and Transport units via script
 [X-Lib] removed Dump Left dump in oops
 [XLIB] Amended Arty Functions To select only 1st returned Mag for Task Type
-[CS]added Dynamic Arty Mags,Rounds and Distance. Added doe that dynamically gathers the Magazines, Rounds and min max distance of the Arty Type
+[CS] added Dynamic Arty Mags,Rounds and Distance. Added doe that dynamically gathers the Magazines, Rounds and min max distance of the Arty Type
 [CS] Added the new Arty Functions. Added getArtyMagazineTypes and getArtyRounds Functions
 [CS] New Arty Functions to CfgFunctions. Added New Arty Functions to CfgFunctions for Dynamic Ammo Mags and Tyoes
 [MIL Logistics] Fixed Logistics wasnt completing waypoint check under some circumstances and threw an error
