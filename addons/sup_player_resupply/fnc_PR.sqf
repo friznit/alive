@@ -81,6 +81,11 @@ Peer Reviewed:
 #define PRTablet_CTRL_PayloadListTitle 60020
 #define PRTablet_CTRL_StatusTitle 60021
 #define PRTablet_CTRL_StatusText 60022
+#define PRTablet_CTRL_StatusList 60024
+#define PRTablet_CTRL_ButtonStatus 60025
+#define PRTablet_CTRL_ButtonL1 60026
+#define PRTablet_CTRL_ButtonR1 60027
+#define PRTablet_CTRL_StatusMap 60028
 
 
 // Control Macros
@@ -289,6 +294,22 @@ switch(_operation) do {
     };
     case "requestStatus": {
         _result = [_logic,_operation,_args,DEFAULT_REQUEST_STATUS] call ALIVE_fnc_OOsimpleOperation;
+    };
+
+    case "statusListOptions": {
+        _result = [_logic,_operation,_args,DEFAULT_SELECTED_OPTIONS] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "statusListValues": {
+        _result = [_logic,_operation,_args,DEFAULT_SELECTED_VALUES] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "statusListIndex": {
+        _result = [_logic,_operation,_args,DEFAULT_SELECTED_INDEX] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "statusListValue": {
+        _result = [_logic,_operation,_args,DEFAULT_SELECTED_VALUE] call ALIVE_fnc_OOsimpleOperation;
+    };
+    case "statusMarker": {
+        _result = [_logic,_operation,_args,DEFAULT_MARKER] call ALIVE_fnc_OOsimpleOperation;
     };
 
 	case "blacklist": {
@@ -602,7 +623,7 @@ switch(_operation) do {
 	case "listen": {
         private["_listenerID"];
 
-        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["LOGCOM_RESPONSE"]]] call ALIVE_fnc_eventLog;
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["LOGCOM_RESPONSE","LOGCOM_STATUS_RESPONSE"]]] call ALIVE_fnc_eventLog;
         _logic setVariable ["listenerID", _listenerID];
     };
     case "handleEvent": {
@@ -676,8 +697,6 @@ switch(_operation) do {
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
 
-                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
-
 
                 };
                 case "REQUEST_INSERTION":{
@@ -700,8 +719,6 @@ switch(_operation) do {
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
 
-                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
-
 
                 };
                 case "REQUEST_ENROUTE":{
@@ -721,8 +738,6 @@ switch(_operation) do {
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
 
-                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
-
 
                 };
                 case "REQUEST_ARRIVED":{
@@ -741,8 +756,6 @@ switch(_operation) do {
                     _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
-
-                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
 
 
                 };
@@ -778,8 +791,6 @@ switch(_operation) do {
                     _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
-
-                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
 
 
                     // clear request markers
@@ -840,8 +851,6 @@ switch(_operation) do {
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
 
-                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
-
                     // clear request markers
 
                     _markers = [_logic,"marker"] call MAINCLASS;
@@ -868,8 +877,6 @@ switch(_operation) do {
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
 
-                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
-
                     // clear request markers
 
                     _markers = [_logic,"marker"] call MAINCLASS;
@@ -894,8 +901,6 @@ switch(_operation) do {
                     _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
-
-                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
 
                     // clear request markers
 
@@ -922,8 +927,6 @@ switch(_operation) do {
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
 
-                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
-
                     // clear request markers
 
                     _markers = [_logic,"marker"] call MAINCLASS;
@@ -948,8 +951,6 @@ switch(_operation) do {
                     _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
-
-                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
 
                     // clear request markers
 
@@ -976,8 +977,6 @@ switch(_operation) do {
 
                     [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
 
-                    [_logic,"updateRequestStatus",_radioMessage] call MAINCLASS;
-
                     // clear request markers
 
                     _markers = [_logic,"marker"] call MAINCLASS;
@@ -993,61 +992,137 @@ switch(_operation) do {
                     [_logic,"state","RESET"] call MAINCLASS;
 
                 };
+                case "STATUS":{
+
+                    // LOGCOM has responded with the current request status
+
+                    disableSerialization;
+
+                    [_logic,"statusListOptions",[]] call MAINCLASS;
+                    [_logic,"statusListValues",[]] call MAINCLASS;
+                    [_logic,"statusListIndex",DEFAULT_SELECTED_INDEX] call MAINCLASS;
+                    [_logic,"statusListValue",DEFAULT_SELECTED_VALUE] call MAINCLASS;
+
+                    private ["_payloadStatusList","_payloadRequests","_options","_values","_payloadRequest","_payloadState",
+                    "_stateLabel","_rowData","_payloadID","_payloadPositions","_payloadDistance","_payloadType","_typeLabel"];
+
+                    _payloadStatusList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusList);
+                    _payloadStatusList ctrlShow true;
+
+                    lbClear _payloadStatusList;
+
+                    _payloadRequests = _eventData select 2;
+                    _options = [];
+                    _values = [];
+
+                    {
+
+                        _payloadRequest = _x;
+                        _payloadType = _payloadRequest select 0;
+                        _payloadID = _payloadRequest select 1;
+                        _payloadState = _payloadRequest select 2;
+                        _payloadPositions = _payloadRequest select 3;
+
+                        _typeLabel = '';
+
+                        switch(_payloadType) do {
+                            case 'PR_STANDARD':{
+                                _typeLabel = 'Convoy Request';
+                            };
+                            case 'PR_HELI_INSERT':{
+                                _typeLabel = 'Heli Insert Request';
+                            };
+                            case 'PR_AIRDROP':{
+                                _typeLabel = 'Airdrop Request';
+                            };
+                        };
+
+                        _payloadID = format["ID: %1",_payloadID];
+
+                        _payloadDistance = 'Unknown';
+
+                        if(count _payloadPositions > 0) then {
+                            _payloadDistance = player distance (_payloadPositions select 0);
+                            _payloadDistance = format["%1m",_payloadDistance];
+                        };
+
+                        _stateLabel = '';
+
+                        switch(_payloadState) do {
+                            case 'playerRequested':{
+                                _stateLabel = 'Requested';
+                            };
+                            case 'transportLoad':{
+                                _stateLabel = 'Loading';
+                            };
+                            case 'transportLoadWait':{
+                                _stateLabel = 'Loading';
+                            };
+                            case 'transportStart':{
+                                _stateLabel = 'Loading';
+                            };
+                            case 'transportTravel':{
+                                _stateLabel = 'Enroute';
+                            };
+                            case 'transportComplete':{
+                                _stateLabel = 'Enroute';
+                            };
+                            case 'transportUnloadWait':{
+                                _stateLabel = 'Unloading';
+                            };
+                            case 'transportReturn':{
+                                _stateLabel = 'RTB';
+                            };
+                            case 'transportReturnWait':{
+                                _stateLabel = 'RTB';
+                            };
+                            case 'airdropWait':{
+                                _stateLabel = 'Loading';
+                            };
+                            case 'heliTransportStart':{
+                                _stateLabel = 'Loading';
+                            };
+                            case 'heliTransport':{
+                                _stateLabel = 'Enroute';
+                            };
+                            case 'heliTransportUnloadWait':{
+                                _stateLabel = 'Unloading';
+                            };
+                            case 'heliTransportComplete':{
+                                _stateLabel = 'Complete';
+                            };
+                            case 'heliTransportReturn':{
+                                _stateLabel = 'RTB';
+                            };
+                            case 'heliTransportReturnWait':{
+                                _stateLabel = 'RTB';
+                            };
+                            case 'eventComplete':{
+                                _stateLabel = 'Complete';
+                            };
+                        };
+
+                        _rowData = [];
+
+                        _options pushBack _payloadRequest;
+
+                        _values pushBack _payloadID;
+
+                        _rowData pushBack format['%1 %2 %3 %4', _payloadID, _typeLabel, _stateLabel, _payloadDistance];
+
+                        _payloadStatusList lnbAddRow _rowData;
+
+                    } foreach _payloadRequests;
+
+                    [_logic,"statusListOptions",_options] call MAINCLASS;
+                    [_logic,"statusListValues",_values] call MAINCLASS;
+
+                    _payloadStatusList ctrlSetEventHandler ["LBSelChanged", "['STATUS_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+                };
             };
 
         };
-
-    };
-    case "updateRequestStatus": {
-
-        // adds a status message to the
-        // status array
-
-        private ["_message","_date","_hour","_minutes","_minutesArray","_time","_requestStatus"];
-
-        _message = _args;
-
-        _date = date;
-        _hour = _date select 3;
-        _minutes = _date select 4;
-        _minutesArray = toArray format["%1",_minutes];
-
-        if(count _minutesArray == 1) then {
-            _minutes = format["0%1",_minutes];
-        };
-
-        _time = format["%1:%2",_hour,_minutes];
-
-        _message = format["[%1] %2",_time,_message];
-
-        _requestStatus = [_logic,"requestStatus"] call MAINCLASS;
-
-        _requestStatus set [count _requestStatus,_message];
-
-        [_logic,"requestStatus",_requestStatus] call MAINCLASS;
-
-        [_logic,"displayRequestStatus"] call MAINCLASS;
-
-    };
-    case "displayRequestStatus": {
-
-        // updates the request status text
-
-        disableSerialization;
-
-        private ["_payloadStatusText","_requestText","_requestStatus"];
-
-        _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
-        _payloadStatusText ctrlShow true;
-
-        _requestStatus = [_logic,"requestStatus"] call MAINCLASS;
-        _requestText = "";
-
-        {
-            _requestText = format["%1\n%2",_requestText,_x];
-        } forEach _requestStatus;
-
-        _payloadStatusText ctrlSetText _requestText;
 
     };
 	case "tabletOnLoad": {
@@ -1076,64 +1151,7 @@ switch(_operation) do {
                         // the interface is opened
                         // for the first time
 
-                        // setup the delivery type list
-
-                        private ["_deliveryList","_deliveryListOptions","_deliveryListValues","_selectedDeliveryListIndex"];
-
-                        _deliveryList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_DeliveryList);
-                        _deliveryListOptions = [_logic,"deliveryListOptions"] call MAINCLASS;
-                        _deliveryListValues = [_logic,"deliveryListValues"] call MAINCLASS;
-
-                        lbClear _deliveryList;
-
-                        {
-                            _deliveryList lbAdd format["%1", _x];
-                        } forEach _deliveryListOptions;
-
-                        _deliveryList ctrlSetEventHandler ["LBSelChanged", "['DELIVERY_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // disable delete button
-
-                        private ["_payloadDeleteButton"];
-
-                        _payloadDeleteButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadDelete);
-                        _payloadDeleteButton ctrlShow false;
-
-                        // setup and disable payload selection combo
-
-                        private ["_payloadOptionsCombo","_payloadComboOptions","_payloadComboValues","_selectedPayloadComboIndex"];
-
-                        _payloadOptionsCombo = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadOptions);
-                        _payloadOptionsCombo ctrlShow false;
-
-                        _payloadComboOptions = [_logic,"payloadComboOptions"] call MAINCLASS;
-                        _payloadComboValues = [_logic,"payloadComboValues"] call MAINCLASS;
-                        _selectedPayloadComboIndex = [_logic,"payloadComboIndex"] call MAINCLASS;
-
-                        lbClear _payloadOptionsCombo;
-
-                        {
-                            _payloadOptionsCombo lbAdd format["%1", _x];
-                        } forEach _payloadComboOptions;
-
-                        _payloadOptionsCombo ctrlSetEventHandler ["LBSelChanged", "['PAYLOAD_COMBO_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // disable request button
-
-                        private ["_payloadRequestButton"];
-
-                        _payloadRequestButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonRequest);
-                        _payloadRequestButton ctrlShow false;
-
-                        // disable the request status fields
-
-                        private ["_payloadStatusTitle","_payloadStatusText"];
-
-                        _payloadStatusTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusTitle);
-                        _payloadStatusTitle ctrlShow false;
-
-                        _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
-                        _payloadStatusText ctrlShow false;
+                        [_logic,"showInit"] call MAINCLASS;
 
                     };
 
@@ -1143,134 +1161,7 @@ switch(_operation) do {
                         // but not yet sent
                         // restore the values of the request
 
-                        private ["_map"];
-
-                        // setup the map
-
-                        _map = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_Map);
-
-                        _map ctrlSetEventHandler ["MouseButtonDown", "['MAP_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // restore the delivery type list
-
-                        private ["_deliveryList","_deliveryListOptions","_deliveryListValues","_selectedDeliveryListIndex"];
-
-                        _deliveryList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_DeliveryList);
-                        _deliveryListOptions = [_logic,"deliveryListOptions"] call MAINCLASS;
-                        _deliveryListValues = [_logic,"deliveryListValues"] call MAINCLASS;
-                        _selectedDeliveryListIndex = [_logic,"selectedDeliveryListIndex"] call MAINCLASS;
-
-                        lbClear _deliveryList;
-
-                        {
-                            _deliveryList lbAdd format["%1", _x];
-                        } forEach _deliveryListOptions;
-
-                        _deliveryList lbSetCurSel _selectedDeliveryListIndex;
-
-                        _deliveryList ctrlSetEventHandler ["LBSelChanged", "['DELIVERY_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // restore the payload list
-
-                        private ["_payloadListOptions","_payloadListValues","_payloadList"];
-
-                        _payloadList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadList);
-                        _payloadListOptions = [_logic,"payloadListOptions"] call MAINCLASS;
-                        _payloadListValues = [_logic,"payloadListValues"] call MAINCLASS;
-
-                        lbClear _payloadList;
-
-                        {
-                            _payloadList lbAdd format["%1", _x];
-                        } forEach _payloadListOptions;
-
-                        _payloadList ctrlSetEventHandler ["LBSelChanged", "['PAYLOAD_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // setup the supply list
-
-                        private ["_supplyList","_selectedSupplyListOptions","_selectedSupplyListValues","_selectedSupplyListDepth"];
-
-                        _supplyList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_SupplyList);
-
-                        _selectedSupplyListOptions = [_logic,"selectedSupplyListOptions"] call MAINCLASS;
-                        _selectedSupplyListValues = [_logic,"selectedSupplyListValues"] call MAINCLASS;
-                        [_logic,"selectedSupplyListDepth",0] call MAINCLASS;
-
-                        lbClear _supplyList;
-
-                        {
-                            _supplyList lbAdd format["%1", _x];
-                        } forEach (_selectedSupplyListOptions select 0);
-
-                        _supplyList ctrlSetEventHandler ["LBSelChanged", "['SUPPLY_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // setup the reinforce list
-
-                        private ["_reinforceList","_selectedReinforceListOptions","_selectedReinforceListValues","_selectedReinforceListDepth"];
-
-                        _reinforceList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ReinforceList);
-
-                        _selectedReinforceListOptions = [_logic,"selectedReinforceListOptions"] call MAINCLASS;
-                        _selectedReinforceListValues = [_logic,"selectedReinforceListValues"] call MAINCLASS;
-                        [_logic,"selectedReinforceListDepth",0] call MAINCLASS;
-
-                        lbClear _reinforceList;
-
-                        {
-                            _reinforceList lbAdd format["%1", _x];
-                        } forEach (_selectedReinforceListOptions select 0);
-
-                        _reinforceList ctrlSetEventHandler ["LBSelChanged", "['REINFORCE_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // disable delete button
-
-                        private ["_payloadDeleteButton"];
-
-                        _payloadDeleteButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadDelete);
-
-                        _payloadDeleteButton ctrlShow false;
-
-                        // setup and disable payload selection combo
-
-                        private ["_payloadOptionsCombo","_payloadComboOptions","_payloadComboValues","_selectedPayloadComboIndex"];
-
-                        _payloadOptionsCombo = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadOptions);
-
-                        _payloadOptionsCombo ctrlShow false;
-
-                        _payloadComboOptions = [_logic,"payloadComboOptions"] call MAINCLASS;
-                        _payloadComboValues = [_logic,"payloadComboValues"] call MAINCLASS;
-                        _selectedPayloadComboIndex = [_logic,"payloadComboIndex"] call MAINCLASS;
-
-                        lbClear _payloadOptionsCombo;
-
-                        {
-                            _payloadOptionsCombo lbAdd format["%1", _x];
-                        } forEach _payloadComboOptions;
-
-                        _payloadOptionsCombo ctrlSetEventHandler ["LBSelChanged", "['PAYLOAD_COMBO_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // enable request button
-
-                        private ["_payloadRequestButton"];
-
-                        _payloadRequestButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonRequest);
-                        _payloadRequestButton ctrlShow true;
-                        _payloadRequestButton ctrlSetEventHandler ["MouseButtonClick", "['PAYLOAD_REQUEST_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // disable the request status fields
-
-                        private ["_payloadStatusTitle","_payloadStatusText"];
-
-                        _payloadStatusTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusTitle);
-                        _payloadStatusTitle ctrlShow false;
-
-                        _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
-                        _payloadStatusText ctrlShow false;
-
-                        // set paylist
-
-                        [_logic,"payloadUpdated"] call MAINCLASS;
+                        [_logic,"showRequest"] call MAINCLASS;
 
                     };
 
@@ -1279,7 +1170,7 @@ switch(_operation) do {
                         // request has been sent
                         // display the status interface
 
-                        [_logic,"payloadRequested"] call MAINCLASS;
+                        [_logic,"resetRequest"] call MAINCLASS;
 
                     };
                     case "RESET":{
@@ -1288,151 +1179,7 @@ switch(_operation) do {
                         // and the request has been completed
                         // reset the request interface objects
 
-                        // reset map marker
-
-                        private ["_markers","_destinationMarkers"];
-
-                        _markers = [_logic,"marker"] call MAINCLASS;
-
-                        if(count _markers > 0) then {
-                            deleteMarkerLocal (_markers select 0);
-                        };
-
-                        [_logic,"marker",[]] call MAINCLASS;
-                        [_logic,"destination",[]] call MAINCLASS;
-
-                        _destinationMarkers = [_logic,"destinationMarker"] call MAINCLASS;
-
-                        if(count _destinationMarkers > 0) then {
-                            {
-                                deleteMarkerLocal _x;
-                            } forEach _destinationMarkers;
-
-                        };
-
-                        [_logic,"destinationMarker",[]] call MAINCLASS;
-
-                        // restore the delivery type list
-
-                        private ["_deliveryList","_deliveryListOptions","_deliveryListValues","_selectedDeliveryListIndex"];
-
-                        _deliveryList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_DeliveryList);
-                        _deliveryListOptions = [_logic,"deliveryListOptions"] call MAINCLASS;
-                        _deliveryListValues = [_logic,"deliveryListValues"] call MAINCLASS;
-                        _selectedDeliveryListIndex = [_logic,"selectedDeliveryListIndex"] call MAINCLASS;
-
-                        lbClear _deliveryList;
-
-                        {
-                            _deliveryList lbAdd format["%1", _x];
-                        } forEach _deliveryListOptions;
-
-                        _deliveryList lbSetCurSel _selectedDeliveryListIndex;
-
-                        _deliveryList ctrlSetEventHandler ["LBSelChanged", "['DELIVERY_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // reset the payload list
-
-                        private ["_payloadListOptions","_payloadListValues","_payloadList"];
-
-                        [_logic,"payloadListOptions",[]] call MAINCLASS;
-                        [_logic,"payloadListValues",[]] call MAINCLASS;
-
-                        _payloadList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadList);
-                        _payloadListOptions = [_logic,"payloadListOptions"] call MAINCLASS;
-                        _payloadListValues = [_logic,"payloadListValues"] call MAINCLASS;
-
-                        lbClear _payloadList;
-
-                        {
-                            _payloadList lbAdd format["%1", _x];
-                        } forEach _payloadListOptions;
-
-                        _payloadList ctrlSetEventHandler ["LBSelChanged", "['PAYLOAD_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // setup the supply list
-
-                        private ["_supplyList","_selectedSupplyListOptions","_selectedSupplyListValues","_selectedSupplyListDepth"];
-
-                        _supplyList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_SupplyList);
-
-                        _selectedSupplyListOptions = [_logic,"selectedSupplyListOptions"] call MAINCLASS;
-                        _selectedSupplyListValues = [_logic,"selectedSupplyListValues"] call MAINCLASS;
-                        [_logic,"selectedSupplyListDepth",0] call MAINCLASS;
-
-                        lbClear _supplyList;
-
-                        {
-                            _supplyList lbAdd format["%1", _x];
-                        } forEach (_selectedSupplyListOptions select 0);
-
-                        _supplyList ctrlSetEventHandler ["LBSelChanged", "['SUPPLY_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // setup the reinforce list
-
-                        private ["_reinforceList","_selectedReinforceListOptions","_selectedReinforceListValues","_selectedReinforceListDepth"];
-
-                        _reinforceList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ReinforceList);
-
-                        _selectedReinforceListOptions = [_logic,"selectedReinforceListOptions"] call MAINCLASS;
-                        _selectedReinforceListValues = [_logic,"selectedReinforceListValues"] call MAINCLASS;
-                        [_logic,"selectedReinforceListDepth",0] call MAINCLASS;
-
-                        lbClear _reinforceList;
-
-                        {
-                            _reinforceList lbAdd format["%1", _x];
-                        } forEach (_selectedReinforceListOptions select 0);
-
-                        _reinforceList ctrlSetEventHandler ["LBSelChanged", "['REINFORCE_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // disable delete button
-
-                        private ["_payloadDeleteButton"];
-
-                        _payloadDeleteButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadDelete);
-
-                        _payloadDeleteButton ctrlShow false;
-
-                        // setup and disable payload selection combo
-
-                        private ["_payloadOptionsCombo","_payloadComboOptions","_payloadComboValues","_selectedPayloadComboIndex"];
-
-                        _payloadOptionsCombo = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadOptions);
-
-                        _payloadOptionsCombo ctrlShow false;
-
-                        _payloadComboOptions = [_logic,"payloadComboOptions"] call MAINCLASS;
-                        _payloadComboValues = [_logic,"payloadComboValues"] call MAINCLASS;
-                        _selectedPayloadComboIndex = [_logic,"payloadComboIndex"] call MAINCLASS;
-
-                        lbClear _payloadOptionsCombo;
-
-                        {
-                            _payloadOptionsCombo lbAdd format["%1", _x];
-                        } forEach _payloadComboOptions;
-
-                        _payloadOptionsCombo ctrlSetEventHandler ["LBSelChanged", "['PAYLOAD_COMBO_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // enable request button
-
-                        private ["_payloadRequestButton"];
-
-                        _payloadRequestButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonRequest);
-                        _payloadRequestButton ctrlShow true;
-                        _payloadRequestButton ctrlSetEventHandler ["MouseButtonClick", "['PAYLOAD_REQUEST_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
-                        // disable the request status fields
-
-                        private ["_payloadStatusTitle","_payloadStatusText"];
-
-                        [_logic,"requestStatus",[]] call MAINCLASS;
-
-                        _payloadStatusTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusTitle);
-                        _payloadStatusTitle ctrlShow false;
-
-                        _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
-                        _payloadStatusText ctrlShow false;
+                        [_logic,"resetRequest"] call MAINCLASS;
 
                     };
                 };
@@ -2490,7 +2237,6 @@ switch(_operation) do {
                                 [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                             }else{
                                 [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
-                                //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                             };
 
                             // display radio message
@@ -2506,14 +2252,6 @@ switch(_operation) do {
 
                             [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
 
-                            // update the request status
-
-                            [_logic,"updateRequestStatus","Requested"] call MAINCLASS;
-
-                            // set the interface state
-
-                            [_logic,"payloadRequested"] call MAINCLASS;
-
                         }else{
                             _status ctrlSetText "Payload refused adjust payload settings";
                             _status ctrlSetTextColor [0.729,0.216,0.235,1];
@@ -2523,6 +2261,193 @@ switch(_operation) do {
                         _status ctrlSetText "Select destination point on map";
                         _status ctrlSetTextColor [0.729,0.216,0.235,1];
                     };
+
+                };
+
+                case "SHOW_STATUS_CLICK": {
+
+                    private ["_side","_faction","_destination","_deliveryType","_selectedDeliveryValue","_payloadListValues","_emptyVehicles",
+                    "_payload","_staticIndividuals","_joinIndividuals","_reinforceIndividuals","_staticGroups","_joinGroups",
+                    "_reinforceGroups","_payloadClass","_payloadInfo","_payloadType","_payloadOrders","_requestID","_forceMakeup",
+                    "_event","_eventID","_playerID"];
+
+                    _side = [_logic,"side"] call MAINCLASS;
+                    _faction = [_logic,"faction"] call MAINCLASS;
+                    _requestID = floor(time);
+                    _playerID = getPlayerUID player;
+
+                    _event = ['LOGCOM_STATUS_REQUEST', [_faction,_side,_requestID,_playerID],"PR"] call ALIVE_fnc_event;
+
+                    if(isServer) then {
+                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                    }else{
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                    };
+
+                    // set the interface state
+
+                    [_logic,"showStatus"] call MAINCLASS;
+
+                };
+
+                case "SHOW_REQUEST_CLICK": {
+
+                    // set the interface state
+
+                    [_logic,"showRequest"] call MAINCLASS;
+
+                };
+
+                case "STATUS_LIST_SELECT": {
+
+                    // user selects one of the payload items
+
+                    private ["_statusList","_statusIndex","_statusListOptions","_statusListValues","_selectedOption","_selectedValue"];
+
+                    _statusList = _args select 0 select 0;
+                    _statusIndex = _args select 0 select 1;
+                    _statusListOptions = [_logic,"statusListOptions"] call MAINCLASS;
+                    _statusListValues = [_logic,"statusListValues"] call MAINCLASS;
+
+                    _selectedOption = _statusListOptions select _statusIndex;
+                    _selectedValue = _statusListValues select _statusIndex;
+
+                    [_logic,"statusListIndex",_selectedIndex] call MAINCLASS;
+                    [_logic,"statusListValue",_selectedValue] call MAINCLASS;
+
+                    // enable delete button
+
+                    private ["_payloadType","_payloadStatusButtonL1","_payloadStatusButtonR1"];
+
+                    _payloadType = _selectedOption select 0;
+
+                    _payloadStatusButtonL1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonL1);
+                    _payloadStatusButtonL1 ctrlSetText "Cancel Request";
+                    _payloadStatusButtonL1 ctrlShow true;
+                    _payloadStatusButtonL1 ctrlSetEventHandler ["MouseButtonClick", "['STATUS_CANCEL_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+                    if(_payloadType == 'PR_STANDARD' || _payloadType == 'PR_HELI_INSERT') then {
+
+                        _payloadStatusButtonR1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonR1);
+                        _payloadStatusButtonR1 ctrlSetText "Show Details";
+                        _payloadStatusButtonR1 ctrlShow true;
+                        _payloadStatusButtonR1 ctrlSetEventHandler ["MouseButtonClick", "['STATUS_DETAILS_SHOW',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+                    };
+
+                };
+
+                case "STATUS_CANCEL_CLICK": {
+
+                    private ["_statusListOptions","_statusListIndex","_statusListValue","_selectedOption"];
+
+                    _statusListOptions = [_logic,"statusListOptions"] call MAINCLASS;
+
+                    _statusListIndex = [_logic,"statusListIndex"] call MAINCLASS;
+                    _statusListValue = [_logic,"statusListValue"] call MAINCLASS;
+
+                    _selectedOption = _statusListOptions select _statusListIndex;
+
+                    private ["_selectedRequestID","_side","_faction","_requestID","_playerID","_event"];
+
+                    _selectedRequestID = _selectedOption select 1;
+
+                    _side = [_logic,"side"] call MAINCLASS;
+                    _faction = [_logic,"faction"] call MAINCLASS;
+                    _requestID = floor(time);
+                    _playerID = getPlayerUID player;
+
+                    _event = ['LOGCOM_CANCEL_REQUEST', [_faction,_side,_requestID,_playerID,_selectedRequestID],"PR"] call ALIVE_fnc_event;
+
+                    if(isServer) then {
+                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                    }else{
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                    };
+
+                };
+
+                case "STATUS_DETAILS_SHOW": {
+
+                    private ["_statusListOptions","_statusListIndex","_statusListValue","_selectedOption"];
+
+                    _statusListOptions = [_logic,"statusListOptions"] call MAINCLASS;
+
+                    _statusListIndex = [_logic,"statusListIndex"] call MAINCLASS;
+                    _statusListValue = [_logic,"statusListValue"] call MAINCLASS;
+
+                    _selectedOption = _statusListOptions select _statusListIndex;
+
+                    private ["_positions","_payloadStatusButtonL1","_payloadStatusButtonR1","_payloadStatusMap","_markers","_marker"];
+
+                    _positions = _selectedOption select 3;
+
+                    _payloadStatusButtonL1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonL1);
+                    _payloadStatusButtonL1 ctrlShow false;
+
+                    _payloadStatusButtonR1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonR1);
+                    _payloadStatusButtonR1 ctrlSetText "Hide Details";
+                    _payloadStatusButtonR1 ctrlShow true;
+                    _payloadStatusButtonR1 ctrlSetEventHandler ["MouseButtonClick", "['STATUS_DETAILS_HIDE',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+                    _payloadStatusMap = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusMap);
+                    _payloadStatusMap ctrlShow true;
+
+                    if(count _positions > 0) then {
+
+                        _position = _positions select 0;
+
+                        ctrlMapAnimClear _payloadStatusMap;
+                        _payloadStatusMap ctrlMapAnimAdd [0.5, ctrlMapScale _payloadStatusMap, _position];
+                        ctrlMapAnimCommit _payloadStatusMap;
+
+                        _markers = [];
+
+                        _marker = createMarkerLocal ["PR_STATUS_M1", _position];
+                        _marker setMarkerShapeLocal "Icon";
+                        _marker setMarkerSizeLocal [0.75, 0.75];
+                        _marker setMarkerTypeLocal "mil_dot";
+                        _marker setMarkerColorLocal "ColorYellow";
+                        _marker setMarkerTextLocal "Request Location";
+                        _markers set [count _markers, _marker];
+
+                        _marker = createMarkerLocal ["PR_STATUS_M2", _position];
+                        _marker setMarkerShape "Ellipse";
+                        _marker setMarkerSize [150, 150];
+                        _marker setMarkerColor "ColorYellow";
+                        _marker setMarkerAlpha 0.5;
+                        _markers set [count _markers, _marker];
+
+                        [_logic,"statusMarker",_markers] call MAINCLASS;
+
+                    };
+
+                };
+
+                case "STATUS_DETAILS_HIDE": {
+
+                    private ["_statusMarker","_payloadStatusButtonL1","_payloadStatusButtonR1","_payloadStatusMap"];
+
+                    _statusMarker = [_logic,"statusMarker"] call MAINCLASS;
+
+                    if(count _statusMarker > 0) then {
+                        {
+                            deleteMarkerLocal _x;
+                        } foreach _statusMarker;
+                    };
+
+                    [_logic,"statusMarker",[]] call MAINCLASS;
+
+                    _payloadStatusButtonL1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonL1);
+                    _payloadStatusButtonL1 ctrlShow true;
+
+                    _payloadStatusButtonR1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonR1);
+                    _payloadStatusButtonR1 ctrlSetText "Show Details";
+                    _payloadStatusButtonR1 ctrlShow true;
+                    _payloadStatusButtonR1 ctrlSetEventHandler ["MouseButtonClick", "['STATUS_DETAILS_SHOW',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+                    _payloadStatusMap = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusMap);
+                    _payloadStatusMap ctrlShow false;
 
                 };
 
@@ -2668,7 +2593,551 @@ switch(_operation) do {
 
     };
 
-    case "payloadRequested": {
+    case "showInit": {
+
+        // reset status markers
+
+        private ["_statusMarker"];
+
+        _statusMarker = [_logic,"statusMarker"] call MAINCLASS;
+
+        if(count _statusMarker > 0) then {
+            {
+                deleteMarkerLocal _x;
+            } foreach _statusMarker;
+        };
+
+        [_logic,"statusMarker",[]] call MAINCLASS;
+
+        // setup the delivery type list
+
+        private ["_deliveryList","_deliveryListOptions","_deliveryListValues","_selectedDeliveryListIndex"];
+
+        _deliveryList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_DeliveryList);
+        _deliveryListOptions = [_logic,"deliveryListOptions"] call MAINCLASS;
+        _deliveryListValues = [_logic,"deliveryListValues"] call MAINCLASS;
+
+        lbClear _deliveryList;
+
+        {
+            _deliveryList lbAdd format["%1", _x];
+        } forEach _deliveryListOptions;
+
+        _deliveryList ctrlSetEventHandler ["LBSelChanged", "['DELIVERY_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        // disable delete button
+
+        private ["_payloadDeleteButton"];
+
+        _payloadDeleteButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadDelete);
+        _payloadDeleteButton ctrlShow false;
+
+        // setup and disable payload selection combo
+
+        private ["_payloadOptionsCombo","_payloadComboOptions","_payloadComboValues","_selectedPayloadComboIndex"];
+
+        _payloadOptionsCombo = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadOptions);
+        _payloadOptionsCombo ctrlShow false;
+
+        _payloadComboOptions = [_logic,"payloadComboOptions"] call MAINCLASS;
+        _payloadComboValues = [_logic,"payloadComboValues"] call MAINCLASS;
+        _selectedPayloadComboIndex = [_logic,"payloadComboIndex"] call MAINCLASS;
+
+        lbClear _payloadOptionsCombo;
+
+        {
+            _payloadOptionsCombo lbAdd format["%1", _x];
+        } forEach _payloadComboOptions;
+
+        _payloadOptionsCombo ctrlSetEventHandler ["LBSelChanged", "['PAYLOAD_COMBO_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        // disable request button
+
+        private ["_payloadRequestButton"];
+
+        _payloadRequestButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonRequest);
+        _payloadRequestButton ctrlShow false;
+
+        // disable the request status fields
+
+        private ["_payloadStatusTitle","_payloadStatusText","_payloadStatusList","_payloadStatusButton","_payloadStatusButtonL1","_payloadStatusButtonR1","_payloadStatusMap"];
+
+        _payloadStatusButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonStatus);
+        _payloadStatusButton ctrlShow true;
+        _payloadStatusButton ctrlSetText "Show Status";
+        _payloadStatusButton ctrlSetEventHandler ["MouseButtonClick", "['SHOW_STATUS_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        _payloadStatusTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusTitle);
+        _payloadStatusTitle ctrlShow false;
+
+        _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
+        _payloadStatusText ctrlShow false;
+
+        _payloadStatusList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusList);
+        _payloadStatusList ctrlShow false;
+
+        _payloadStatusButtonL1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonL1);
+        _payloadStatusButtonL1 ctrlShow false;
+
+        _payloadStatusButtonR1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonR1);
+        _payloadStatusButtonR1 ctrlShow false;
+
+        _payloadStatusMap = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusMap);
+        _payloadStatusMap ctrlShow false;
+
+    };
+
+    case "showRequest": {
+
+        // a request is in progress
+        // but not yet sent
+        // restore the values of the request
+
+        private ["_map"];
+
+        // setup the map
+
+        _map = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_Map);
+
+        _map ctrlSetEventHandler ["MouseButtonDown", "['MAP_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        _map ctrlShow true;
+
+        // reset status markers
+
+        private ["_statusMarker"];
+
+        _statusMarker = [_logic,"statusMarker"] call MAINCLASS;
+
+        if(count _statusMarker > 0) then {
+            {
+                deleteMarkerLocal _x;
+            } foreach _statusMarker;
+        };
+
+        [_logic,"statusMarker",[]] call MAINCLASS;
+
+        // restore other ui elements
+
+        private ["_deliveryTitle","_supplyTitle","_reinforceTitle","_payloadTitle","_payloadInfo","_payloadStatus","_payloadWeight","_payloadSize","_payloadGroups","_payloadVehicles","_payloadIndividuals"];
+
+        _deliveryTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_DeliveryTypeTitle);
+        _deliveryTitle ctrlShow true;
+
+        _supplyTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_SupplyListTitle);
+        _supplyTitle ctrlShow true;
+
+        _reinforceTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ReinforceListTitle);
+        _reinforceTitle ctrlShow true;
+
+        _payloadTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadListTitle);
+        _payloadTitle ctrlShow true;
+
+        _payloadInfo = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadInfo);
+        _payloadInfo ctrlShow true;
+
+        _payloadStatus = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadStatus);
+        _payloadStatus ctrlShow true;
+
+        _payloadWeight = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadWeight);
+        _payloadWeight ctrlShow true;
+
+        _payloadSize = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadSize);
+        _payloadSize ctrlShow true;
+
+        _payloadGroups = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadGroups);
+        _payloadGroups ctrlShow true;
+
+        _payloadVehicles = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadVehicles);
+        _payloadVehicles ctrlShow true;
+
+        _payloadIndividuals = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadIndividuals);
+        _payloadIndividuals ctrlShow true;
+
+        // restore the delivery type list
+
+        private ["_deliveryList","_deliveryListOptions","_deliveryListValues","_selectedDeliveryListIndex"];
+
+        _deliveryList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_DeliveryList);
+        _deliveryListOptions = [_logic,"deliveryListOptions"] call MAINCLASS;
+        _deliveryListValues = [_logic,"deliveryListValues"] call MAINCLASS;
+        _selectedDeliveryListIndex = [_logic,"selectedDeliveryListIndex"] call MAINCLASS;
+
+        lbClear _deliveryList;
+
+        {
+            _deliveryList lbAdd format["%1", _x];
+        } forEach _deliveryListOptions;
+
+        _deliveryList lbSetCurSel _selectedDeliveryListIndex;
+
+        _deliveryList ctrlSetEventHandler ["LBSelChanged", "['DELIVERY_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        _deliveryList ctrlShow true;
+
+        // restore the payload list
+
+        private ["_payloadListOptions","_payloadListValues","_payloadList"];
+
+        _payloadList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadList);
+        _payloadListOptions = [_logic,"payloadListOptions"] call MAINCLASS;
+        _payloadListValues = [_logic,"payloadListValues"] call MAINCLASS;
+
+        lbClear _payloadList;
+
+        {
+            _payloadList lbAdd format["%1", _x];
+        } forEach _payloadListOptions;
+
+        _payloadList ctrlSetEventHandler ["LBSelChanged", "['PAYLOAD_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        _payloadList ctrlShow true;
+
+        // setup the supply list
+
+        private ["_supplyList","_selectedSupplyListOptions","_selectedSupplyListValues","_selectedSupplyListDepth"];
+
+        _supplyList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_SupplyList);
+
+        _selectedSupplyListOptions = [_logic,"selectedSupplyListOptions"] call MAINCLASS;
+        _selectedSupplyListValues = [_logic,"selectedSupplyListValues"] call MAINCLASS;
+        [_logic,"selectedSupplyListDepth",0] call MAINCLASS;
+
+        lbClear _supplyList;
+
+        {
+            _supplyList lbAdd format["%1", _x];
+        } forEach (_selectedSupplyListOptions select 0);
+
+        _supplyList ctrlSetEventHandler ["LBSelChanged", "['SUPPLY_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        _supplyList ctrlShow true;
+
+        // setup the reinforce list
+
+        private ["_reinforceList","_selectedReinforceListOptions","_selectedReinforceListValues","_selectedReinforceListDepth"];
+
+        _reinforceList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ReinforceList);
+
+        _selectedReinforceListOptions = [_logic,"selectedReinforceListOptions"] call MAINCLASS;
+        _selectedReinforceListValues = [_logic,"selectedReinforceListValues"] call MAINCLASS;
+        [_logic,"selectedReinforceListDepth",0] call MAINCLASS;
+
+        lbClear _reinforceList;
+
+        {
+            _reinforceList lbAdd format["%1", _x];
+        } forEach (_selectedReinforceListOptions select 0);
+
+        _reinforceList ctrlSetEventHandler ["LBSelChanged", "['REINFORCE_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        _reinforceList ctrlShow true;
+
+        // disable delete button
+
+        private ["_payloadDeleteButton"];
+
+        _payloadDeleteButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadDelete);
+
+        _payloadDeleteButton ctrlShow false;
+
+        // setup and disable payload selection combo
+
+        private ["_payloadOptionsCombo","_payloadComboOptions","_payloadComboValues","_selectedPayloadComboIndex"];
+
+        _payloadOptionsCombo = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadOptions);
+
+        _payloadOptionsCombo ctrlShow false;
+
+        _payloadComboOptions = [_logic,"payloadComboOptions"] call MAINCLASS;
+        _payloadComboValues = [_logic,"payloadComboValues"] call MAINCLASS;
+        _selectedPayloadComboIndex = [_logic,"payloadComboIndex"] call MAINCLASS;
+
+        lbClear _payloadOptionsCombo;
+
+        {
+            _payloadOptionsCombo lbAdd format["%1", _x];
+        } forEach _payloadComboOptions;
+
+        _payloadOptionsCombo ctrlSetEventHandler ["LBSelChanged", "['PAYLOAD_COMBO_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        // enable request button
+
+        private ["_payloadRequestButton"];
+
+        _payloadRequestButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonRequest);
+        _payloadRequestButton ctrlShow true;
+        _payloadRequestButton ctrlSetText "Send Request";
+        _payloadRequestButton ctrlSetEventHandler ["MouseButtonClick", "['PAYLOAD_REQUEST_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        // disable the request status fields
+
+        private ["_payloadStatusTitle","_payloadStatusText","_payloadStatusList","_payloadStatusButton","_payloadStatusButtonL1","_payloadStatusButtonR1","_payloadStatusMap"];
+
+        _payloadStatusButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonStatus);
+        _payloadStatusButton ctrlShow true;
+        _payloadStatusButton ctrlSetText "Show Status";
+        _payloadStatusButton ctrlSetEventHandler ["MouseButtonClick", "['SHOW_STATUS_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        _payloadStatusTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusTitle);
+        _payloadStatusTitle ctrlShow false;
+
+        _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
+        _payloadStatusText ctrlShow false;
+
+        _payloadStatusList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusList);
+        _payloadStatusList ctrlShow false;
+
+        _payloadStatusButtonL1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonL1);
+        _payloadStatusButtonL1 ctrlShow false;
+
+        _payloadStatusButtonR1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonR1);
+        _payloadStatusButtonR1 ctrlShow false;
+
+        _payloadStatusMap = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusMap);
+        _payloadStatusMap ctrlShow false;
+
+        // set paylist
+
+        [_logic,"payloadUpdated"] call MAINCLASS;
+
+    };
+
+    case "resetRequest": {
+
+        // the tablet has just made a request
+        // and the request has been completed
+        // reset the request interface objects
+
+        // reset map marker
+
+        private ["_markers","_destinationMarkers"];
+
+        _markers = [_logic,"marker"] call MAINCLASS;
+
+        if(count _markers > 0) then {
+            deleteMarkerLocal (_markers select 0);
+        };
+
+        [_logic,"marker",[]] call MAINCLASS;
+        [_logic,"destination",[]] call MAINCLASS;
+
+        _destinationMarkers = [_logic,"destinationMarker"] call MAINCLASS;
+
+        if(count _destinationMarkers > 0) then {
+            {
+                deleteMarkerLocal _x;
+            } forEach _destinationMarkers;
+
+        };
+
+        [_logic,"destinationMarker",[]] call MAINCLASS;
+
+        // reset status markers
+
+        private ["_statusMarker"];
+
+        _statusMarker = [_logic,"statusMarker"] call MAINCLASS;
+
+        if(count _statusMarker > 0) then {
+            {
+                deleteMarkerLocal _x;
+            } foreach _statusMarker;
+        };
+
+        [_logic,"statusMarker",[]] call MAINCLASS;
+
+        // restore other ui elements
+
+        private ["_map","_deliveryTitle","_supplyTitle","_reinforceTitle","_payloadTitle","_payloadInfo","_payloadStatus","_payloadWeight","_payloadSize","_payloadGroups","_payloadVehicles","_payloadIndividuals"];
+
+        _map = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_Map);
+        _map ctrlShow true;
+
+        _deliveryTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_DeliveryTypeTitle);
+        _deliveryTitle ctrlShow true;
+
+        _supplyTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_SupplyListTitle);
+        _supplyTitle ctrlShow true;
+
+        _reinforceTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ReinforceListTitle);
+        _reinforceTitle ctrlShow true;
+
+        _payloadTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadListTitle);
+        _payloadTitle ctrlShow true;
+
+        _payloadInfo = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadInfo);
+        _payloadInfo ctrlShow true;
+
+        _payloadStatus = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadStatus);
+        _payloadStatus ctrlShow true;
+
+        _payloadWeight = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadWeight);
+        _payloadWeight ctrlShow true;
+
+        _payloadSize = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadSize);
+        _payloadSize ctrlShow true;
+
+        _payloadGroups = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadGroups);
+        _payloadGroups ctrlShow true;
+
+        _payloadVehicles = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadVehicles);
+        _payloadVehicles ctrlShow true;
+
+        _payloadIndividuals = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadIndividuals);
+        _payloadIndividuals ctrlShow true;
+
+        // restore the delivery type list
+
+        private ["_deliveryList","_deliveryListOptions","_deliveryListValues","_selectedDeliveryListIndex"];
+
+        _deliveryList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_DeliveryList);
+        _deliveryListOptions = [_logic,"deliveryListOptions"] call MAINCLASS;
+        _deliveryListValues = [_logic,"deliveryListValues"] call MAINCLASS;
+        _selectedDeliveryListIndex = [_logic,"selectedDeliveryListIndex"] call MAINCLASS;
+
+        lbClear _deliveryList;
+
+        {
+            _deliveryList lbAdd format["%1", _x];
+        } forEach _deliveryListOptions;
+
+        _deliveryList lbSetCurSel _selectedDeliveryListIndex;
+
+        _deliveryList ctrlSetEventHandler ["LBSelChanged", "['DELIVERY_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        _deliveryList ctrlShow true;
+
+        // reset the payload list
+
+        private ["_payloadListOptions","_payloadListValues","_payloadList"];
+
+        [_logic,"payloadListOptions",[]] call MAINCLASS;
+        [_logic,"payloadListValues",[]] call MAINCLASS;
+
+        _payloadList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadList);
+        _payloadListOptions = [_logic,"payloadListOptions"] call MAINCLASS;
+        _payloadListValues = [_logic,"payloadListValues"] call MAINCLASS;
+
+        lbClear _payloadList;
+
+        {
+            _payloadList lbAdd format["%1", _x];
+        } forEach _payloadListOptions;
+
+        _payloadList ctrlSetEventHandler ["LBSelChanged", "['PAYLOAD_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        _payloadList ctrlShow true;
+
+        // setup the supply list
+
+        private ["_supplyList","_selectedSupplyListOptions","_selectedSupplyListValues","_selectedSupplyListDepth"];
+
+        _supplyList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_SupplyList);
+
+        _selectedSupplyListOptions = [_logic,"selectedSupplyListOptions"] call MAINCLASS;
+        _selectedSupplyListValues = [_logic,"selectedSupplyListValues"] call MAINCLASS;
+        [_logic,"selectedSupplyListDepth",0] call MAINCLASS;
+
+        lbClear _supplyList;
+
+        {
+            _supplyList lbAdd format["%1", _x];
+        } forEach (_selectedSupplyListOptions select 0);
+
+        _supplyList ctrlSetEventHandler ["LBSelChanged", "['SUPPLY_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        _supplyList ctrlShow true;
+
+        // setup the reinforce list
+
+        private ["_reinforceList","_selectedReinforceListOptions","_selectedReinforceListValues","_selectedReinforceListDepth"];
+
+        _reinforceList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ReinforceList);
+
+        _selectedReinforceListOptions = [_logic,"selectedReinforceListOptions"] call MAINCLASS;
+        _selectedReinforceListValues = [_logic,"selectedReinforceListValues"] call MAINCLASS;
+        [_logic,"selectedReinforceListDepth",0] call MAINCLASS;
+
+        lbClear _reinforceList;
+
+        {
+            _reinforceList lbAdd format["%1", _x];
+        } forEach (_selectedReinforceListOptions select 0);
+
+        _reinforceList ctrlSetEventHandler ["LBSelChanged", "['REINFORCE_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        _reinforceList ctrlShow true;
+
+        // disable delete button
+
+        private ["_payloadDeleteButton"];
+
+        _payloadDeleteButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadDelete);
+
+        _payloadDeleteButton ctrlShow false;
+
+        // setup and disable payload selection combo
+
+        private ["_payloadOptionsCombo","_payloadComboOptions","_payloadComboValues","_selectedPayloadComboIndex"];
+
+        _payloadOptionsCombo = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadOptions);
+
+        _payloadOptionsCombo ctrlShow false;
+
+        _payloadComboOptions = [_logic,"payloadComboOptions"] call MAINCLASS;
+        _payloadComboValues = [_logic,"payloadComboValues"] call MAINCLASS;
+        _selectedPayloadComboIndex = [_logic,"payloadComboIndex"] call MAINCLASS;
+
+        lbClear _payloadOptionsCombo;
+
+        {
+            _payloadOptionsCombo lbAdd format["%1", _x];
+        } forEach _payloadComboOptions;
+
+        _payloadOptionsCombo ctrlSetEventHandler ["LBSelChanged", "['PAYLOAD_COMBO_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        // enable request button
+
+        private ["_payloadRequestButton"];
+
+        _payloadRequestButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonRequest);
+        _payloadRequestButton ctrlShow true;
+        _payloadRequestButton ctrlSetText "Send Request";
+        _payloadRequestButton ctrlSetEventHandler ["MouseButtonClick", "['PAYLOAD_REQUEST_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+        // disable the request status fields
+
+        private ["_payloadStatusTitle","_payloadStatusText","_payloadStatusList","_payloadStatusButton","_payloadStatusButtonL1","_payloadStatusButtonR1","_payloadStatusMap"];
+
+        [_logic,"requestStatus",[]] call MAINCLASS;
+
+        _payloadStatusButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonStatus);
+        _payloadStatusButton ctrlShow true;
+        _payloadStatusButton ctrlSetText "Show Status";
+        _payloadStatusButton ctrlSetEventHandler ["MouseButtonClick", "['SHOW_STATUS_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction","_payloadStatusButtonL1","_payloadStatusButtonR1"];
+
+        _payloadStatusTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusTitle);
+        _payloadStatusTitle ctrlShow false;
+
+        _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
+        _payloadStatusText ctrlShow false;
+
+        _payloadStatusList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusList);
+        _payloadStatusList ctrlShow false;
+
+        _payloadStatusButtonL1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonL1);
+        _payloadStatusButtonL1 ctrlShow false;
+
+        _payloadStatusButtonR1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonR1);
+        _payloadStatusButtonR1 ctrlShow false;
+
+        _payloadStatusMap = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusMap);
+        _payloadStatusMap ctrlShow false;
+
+    };
+
+    case "showStatus": {
 
         // payload requested
         // disable request inerface
@@ -2681,9 +3150,7 @@ switch(_operation) do {
             "_payloadIndividuals","_payloadDeleteButton","_payloadOptionsCombo","_payloadRequestButton"];
 
             _map = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_Map);
-
             _map ctrlSetEventHandler ["MouseButtonDown", "['MAP_CLICK_NULL',[_this]] call ALIVE_fnc_PRTabletOnAction"];
-
 
             _deliveryTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_DeliveryTypeTitle);
             _deliveryTitle ctrlShow false;
@@ -2736,22 +3203,41 @@ switch(_operation) do {
             _payloadOptionsCombo = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_PayloadOptions);
             _payloadOptionsCombo ctrlShow false;
 
-            _payloadRequestButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonRequest);
-            _payloadRequestButton ctrlShow false;
-
+            _map = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_Map);
+            _map ctrlShow false;
 
             // display request status text
 
-            private ["_payloadStatusTitle","_payloadStatusText"];
+            private ["_payloadRequestButton","_payloadStatusButton","_payloadStatusList","_payloadStatusTitle","_payloadStatusButtonL1","_payloadStatusButtonR1","_payloadStatusMap"];
+
+            _payloadRequestButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonRequest);
+            _payloadRequestButton ctrlShow false;
+
+            _payloadStatusButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonStatus);
+            _payloadStatusButton ctrlShow true;
+            _payloadStatusButton ctrlSetText "Back to Requests";
+            _payloadStatusButton ctrlSetEventHandler ["MouseButtonClick", "['SHOW_REQUEST_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+            _payloadStatusList = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusList);
+            _payloadStatusList ctrlShow true;
 
             _payloadStatusTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusTitle);
             _payloadStatusTitle ctrlShow true;
             _payloadStatusTitle ctrlSetText "Request Status";
 
+            _payloadStatusButtonL1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonL1);
+            _payloadStatusButtonL1 ctrlShow false;
+
+            _payloadStatusButtonR1 = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonR1);
+            _payloadStatusButtonR1 ctrlShow false;
+
+            _payloadStatusMap = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusMap);
+            _payloadStatusMap ctrlShow false;
+
+            /*
             _payloadStatusText = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusText);
             _payloadStatusText ctrlShow true;
-
-            [_logic,"displayRequestStatus"] call MAINCLASS;
+            */
 
             [_logic,"state","REQUEST_SENT"] call MAINCLASS;
         };

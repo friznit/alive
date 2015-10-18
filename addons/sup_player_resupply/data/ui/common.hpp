@@ -111,6 +111,48 @@ class PRTablet_RscListBox {
     };
 };
 
+class PRTablet_RscListNBox {
+    style = ST_LEFT + LB_TEXTURES;
+    type = 102;
+    shadow = 0;
+    font = "PuristaMedium";
+    sizeEx = (safeZoneH / 100) + (safeZoneH / 100);
+    x = "safeZoneX + (safeZoneW / 5)";
+    y = "safeZoneY + (safeZoneH / 2.25)";
+    w = "(safeZoneW / 10)";
+    h = "(safeZoneH / 17)";
+    color[] = {1, 1, 1, 1};
+    colorText[] = {0.8,0.8,0.8,1};
+    colorScrollbar[] = {0.95, 0.95, 0.95, 1};
+    colorSelect[] = {0.023529, 0, 0.0313725, 1};
+    colorSelect2[] = {0.023529, 0, 0.0313725, 1};
+    colorSelectBackground[] = {0.173,0.173,0.173,1};
+    colorSelectBackground2[] = {0.3,0.3,0.3,1};
+    colorPicture[] = {1,1,1,1};
+    colorPictureSelected[] = {1,1,1,1};
+    colorPictureDisabled[] = {1,1,1,1};
+    period = 1;
+    colorBackground[] = {0,0,0,0};
+    maxHistoryDelay = 1.0;
+    autoScrollSpeed = -1;
+    autoScrollDelay = 5;
+    autoScrollRewind = 0;
+    soundSelect[] = {"",0.1,1};
+    soundExpand[] = {"",0.1,1};
+    soundCollapse[] = {"",0.1,1};
+    colorDisabled[] = {0,0,0,0};
+    class ListScrollBar
+    {
+        color[] = {1, 1, 1, 0.6};
+        colorActive[] = {1, 1, 1, 1};
+        colorDisabled[] = {1, 1, 1, 0.3};
+        arrowEmpty = "\A3\ui_f\data\gui\cfg\scrollbar\arrowEmpty_ca.paa";
+        arrowFull = "\A3\ui_f\data\gui\cfg\scrollbar\arrowFull_ca.paa";
+        border = "\A3\ui_f\data\gui\cfg\scrollbar\border_ca.paa";
+        thumb = "\A3\ui_f\data\gui\cfg\scrollbar\thumb_ca.paa";
+    };
+};
+
 class PRTablet_RscGUIListBox : PRTablet_RscListBox {
     color[] = {1, 1, 1, 1};
     colorText[] = {1, 1, 1, 0.75};

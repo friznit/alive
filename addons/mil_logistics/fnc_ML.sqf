@@ -500,10 +500,329 @@ switch(_operation) do {
 	case "listen": {
         private["_listenerID"];
 
-        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["LOGCOM_REQUEST"]]] call ALIVE_fnc_eventLog;
+        _listenerID = [ALIVE_eventLog, "addListener",[_logic, ["LOGCOM_REQUEST","LOGCOM_STATUS_REQUEST","LOGCOM_CANCEL_REQUEST"]]] call ALIVE_fnc_eventLog;
         _logic setVariable ["listenerID", _listenerID];
     };
     case "handleEvent": {
+        private["_event","_type","_eventData"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _event = _args;
+            _type = [_event, "type"] call ALIVE_fnc_hashGet;
+
+            [_logic, _type, _event] call MAINCLASS;
+
+        };
+    };
+    case "LOGCOM_STATUS_REQUEST": {
+
+        private["_debug","_event","_eventData","_eventQueue","_side","_factions","_eventFaction","_eventSide","_factionFound",
+        "_moduleFactions","_eventPlayerID","_eventRequestID"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _event = _args;
+            _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
+
+            _side = [_logic, "side"] call MAINCLASS;
+            _factions = [_logic, "factions"] call MAINCLASS;
+
+            _eventFaction = _eventData select 0;
+            _eventSide = _eventData select 1;
+            _eventRequestID = _eventData select 2;
+            _eventPlayerID = _eventData select 3;
+
+            // check if the faction in the event is handled
+            // by this module
+            _factionFound = false;
+
+            {
+                _moduleFactions = _x select 1;
+                if(_eventFaction in _moduleFactions) then {
+                    _factionFound = true;
+                };
+            } forEach _factions;
+
+            // faction not handled by this mil logistics module
+            if!(_factionFound) then {
+
+                private ["_sideOPCOMModules","_factionOPCOMModules","_checkModule","_moduleType","_handler","_OPCOMSide","_OPCOMFactions","_OPCOMHasLogistics","_mod"];
+
+                _sideOPCOMModules = [];
+                _factionOPCOMModules = [];
+
+                // loop through OPCOM modules with mil logistics synced and find any matching the events side and faction
+                {
+
+                    _checkModule = _x;
+                    _moduleType = _x getVariable "moduleType";
+
+                    if!(isNil "_moduleType") then {
+
+                        if(_moduleType == "ALIVE_OPCOM") then {
+
+                            _handler = _checkModule getVariable "handler";
+                            _OPCOMSide = [_handler,"side"] call ALIVE_fnc_hashGet;
+                            _OPCOMFactions = [_handler,"factions"] call ALIVE_fnc_hashGet;
+                            _OPCOMHasLogistics = false;
+
+                            for "_i" from 0 to ((count synchronizedObjects _checkModule)-1) do {
+
+                                _mod = (synchronizedObjects _checkModule) select _i;
+
+                                if ((typeof _mod) == "ALiVE_mil_logistics") then {
+                                    _OPCOMHasLogistics = true;
+                                };
+                            };
+
+                            if(_OPCOMHasLogistics) then {
+
+                                if(_OPCOMSide == _eventSide) then {
+                                    _sideOPCOMModules pushback _checkModule;
+                                };
+
+                                {
+                                    if(_x == _eventFaction) then {
+                                        _factionOPCOMModules pushback _checkModule;
+                                    };
+
+                                } forEach _OPCOMFactions;
+
+                            };
+                        };
+                    };
+                } forEach (entities "Module_F");
+
+                // if no mil logistics handles this faction, and there is more than one mil
+                // logistics for this side return an error
+                if(((count _factionOPCOMModules == 0) && (count _sideOPCOMModules > 1)) || ((count _factionOPCOMModules == 0) && (count _sideOPCOMModules == 0))) then {
+                    _factionFound = false;
+                };
+
+                // if no mil logistics handles this faction, and there is one mil
+                // logistics for this side and this module handles that side
+                if((count _factionOPCOMModules == 0) && (count _sideOPCOMModules == 1) && (_side == _eventSide)) then {
+                    _factionFound = true;
+                };
+
+            };
+
+            if!(_factionFound) exitWith {};
+
+            if(_factionFound) then {
+
+                private ["_eventQueue","_response","_responseItem","_playerRequested","_eventData","_logEvent","_playerID",
+                "_eventState","_eventType","_eventForceMakeup","_requestID","_transportProfiles","_position","_playerRequestProfileID","_profile"];
+
+                // get the event data for this player
+
+                _eventQueue = [_logic, "eventQueue"] call MAINCLASS;
+
+                _response = [];
+
+                if((count (_eventQueue select 2)) > 0) then {
+
+                    {
+                        _playerRequested = [_x, "playerRequested"] call ALIVE_fnc_hashGet;
+
+                        if(_playerRequested) then {
+                            _eventData = [_x, "data"] call ALIVE_fnc_hashGet;
+                            _playerID = _eventData select 5;
+                            _eventType = _eventData select 4;
+                            _eventForceMakeup = _eventData select 3;
+
+                            if(_eventPlayerID == _playerID) then {
+
+                                _responseItem = [];
+
+                                _requestID = _eventForceMakeup select 0;
+                                _eventState = [_x, "state"] call ALIVE_fnc_hashGet;
+                                _transportProfiles = [_x, "transportProfiles"] call ALIVE_fnc_hashGet;
+
+                                _positions = [];
+
+                                if(count _transportProfiles > 0) then {
+
+                                    {
+                                        _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+
+                                        if!(isNil "_profile") then {
+                                            _position = _profile select 2 select 2;
+                                            _positions pushBack _position;
+                                        };
+
+                                    } forEach _transportProfiles;
+
+                                };
+
+                                _responseItem pushBack _eventType;
+                                _responseItem pushBack _requestID;
+                                _responseItem pushBack _eventState;
+                                _responseItem pushBack _positions;
+
+                                _response pushBack _responseItem;
+                            };
+                        };
+
+                    } forEach (_eventQueue select 2);
+
+                };
+
+                // respond to player request
+                _logEvent = ['LOGCOM_RESPONSE', [_eventRequestID,_eventPlayerID,_response],"Logistics","STATUS"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+
+            };
+        };
+    };
+    case "LOGCOM_CANCEL_REQUEST": {
+
+        private["_debug","_event","_eventData","_eventQueue","_side","_factions","_eventFaction","_eventSide","_factionFound",
+        "_moduleFactions","_eventPlayerID","_eventRequestID","_eventCancelRequestID"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _event = _args;
+            _eventData = [_event, "data"] call ALIVE_fnc_hashGet;
+
+            _side = [_logic, "side"] call MAINCLASS;
+            _factions = [_logic, "factions"] call MAINCLASS;
+
+            _eventFaction = _eventData select 0;
+            _eventSide = _eventData select 1;
+            _eventRequestID = _eventData select 2;
+            _eventPlayerID = _eventData select 3;
+            _eventCancelRequestID = _eventData select 4;
+
+            // check if the faction in the event is handled
+            // by this module
+            _factionFound = false;
+
+            {
+                _moduleFactions = _x select 1;
+                if(_eventFaction in _moduleFactions) then {
+                    _factionFound = true;
+                };
+            } forEach _factions;
+
+            // faction not handled by this mil logistics module
+            if!(_factionFound) then {
+
+                private ["_sideOPCOMModules","_factionOPCOMModules","_checkModule","_moduleType","_handler","_OPCOMSide","_OPCOMFactions","_OPCOMHasLogistics","_mod"];
+
+                _sideOPCOMModules = [];
+                _factionOPCOMModules = [];
+
+                // loop through OPCOM modules with mil logistics synced and find any matching the events side and faction
+                {
+
+                    _checkModule = _x;
+                    _moduleType = _x getVariable "moduleType";
+
+                    if!(isNil "_moduleType") then {
+
+                        if(_moduleType == "ALIVE_OPCOM") then {
+
+                            _handler = _checkModule getVariable "handler";
+                            _OPCOMSide = [_handler,"side"] call ALIVE_fnc_hashGet;
+                            _OPCOMFactions = [_handler,"factions"] call ALIVE_fnc_hashGet;
+                            _OPCOMHasLogistics = false;
+
+                            for "_i" from 0 to ((count synchronizedObjects _checkModule)-1) do {
+
+                                _mod = (synchronizedObjects _checkModule) select _i;
+
+                                if ((typeof _mod) == "ALiVE_mil_logistics") then {
+                                    _OPCOMHasLogistics = true;
+                                };
+                            };
+
+                            if(_OPCOMHasLogistics) then {
+
+                                if(_OPCOMSide == _eventSide) then {
+                                    _sideOPCOMModules pushback _checkModule;
+                                };
+
+                                {
+                                    if(_x == _eventFaction) then {
+                                        _factionOPCOMModules pushback _checkModule;
+                                    };
+
+                                } forEach _OPCOMFactions;
+
+                            };
+                        };
+                    };
+                } forEach (entities "Module_F");
+
+                // if no mil logistics handles this faction, and there is more than one mil
+                // logistics for this side return an error
+                if(((count _factionOPCOMModules == 0) && (count _sideOPCOMModules > 1)) || ((count _factionOPCOMModules == 0) && (count _sideOPCOMModules == 0))) then {
+                    _factionFound = false;
+                };
+
+                // if no mil logistics handles this faction, and there is one mil
+                // logistics for this side and this module handles that side
+                if((count _factionOPCOMModules == 0) && (count _sideOPCOMModules == 1) && (_side == _eventSide)) then {
+                    _factionFound = true;
+                };
+
+            };
+
+            if!(_factionFound) exitWith {};
+
+            if(_factionFound) then {
+
+                private ["_eventQueue","_response","_responseItem","_playerRequested","_eventID","_eventData","_logEvent","_playerID",
+                "_eventState","_eventType","_eventForceMakeup","_requestID","_transportProfiles","_position","_playerRequestProfileID","_profile"];
+
+                // get the event data for this player
+
+                _eventQueue = [_logic, "eventQueue"] call MAINCLASS;
+
+                _response = [];
+
+                if((count (_eventQueue select 2)) > 0) then {
+
+                    {
+                        _playerRequested = [_x, "playerRequested"] call ALIVE_fnc_hashGet;
+
+                        if(_playerRequested) then {
+                            _eventID = [_x, "id"] call ALIVE_fnc_hashGet;
+                            _eventData = [_x, "data"] call ALIVE_fnc_hashGet;
+                            _playerID = _eventData select 5;
+                            _eventType = _eventData select 4;
+                            _eventForceMakeup = _eventData select 3;
+
+                            if(_eventPlayerID == _playerID) then {
+
+                                _responseItem = [];
+
+                                _requestID = _eventForceMakeup select 0;
+
+                                if(_requestID == _eventCancelRequestID) then {
+
+                                    // set state to event complete
+                                    [_x, "state", "eventComplete"] call ALIVE_fnc_hashSet;
+                                    [_eventQueue, _eventID, _x] call ALIVE_fnc_hashSet;
+
+                                };
+                            };
+                        };
+
+                    } forEach (_eventQueue select 2);
+
+                };
+
+                // respond to player request
+                _logEvent = ['LOGCOM_RESPONSE', [_eventRequestID,_eventPlayerID,_response],"Logistics","STATUS"] call ALIVE_fnc_event;
+                [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+
+            };
+        };
+    };
+    case "LOGCOM_REQUEST": {
 
         private["_debug","_event","_eventQueue","_side","_factions","_eventFaction","_eventSide","_factionFound","_moduleFactions","_forcePool","_type","_eventID",
         "_eventData","_eventType","_eventForceMakeup","_eventForceInfantry","_eventForceMotorised","_eventForceMechanised","_eventForceArmour",

@@ -9,10 +9,8 @@ class PRTablet
     onLoad = "[] call ALIVE_fnc_PRTabletOnLoad;";
     onUnload = "[] call ALIVE_fnc_PRTabletOnUnLoad;";
 
-    class controls
-    {
-
-        class PRTablet_background : RscPicture
+    class controlsBackground {
+        class GMTablet_background : RscPicture
         {
             idc = -1;
             x = 0.142424 * safezoneW + safezoneX;
@@ -23,6 +21,10 @@ class PRTablet
             moving = 0;
             colorBackground[] = {0,0,0,0};
         };
+    };
+
+    class controls
+    {
 
         class PRTablet_map : PRTablet_RscMap
         {
@@ -33,13 +35,28 @@ class PRTablet
             h = 0.4 * safezoneH;
         };
 
+        class PRTablet_status : PRTablet_RscButton
+        {
+            idc = 60025;
+            text = "Show Status";
+            style = 0x02;
+            x = 0.519796 * safezoneW + safezoneX;
+            y = 0.7000 * safezoneH + safezoneY;
+            w = 0.216525 * safezoneW;
+            h = 0.028 * safezoneH;
+            colorBackground[] = {0.384,0.439,0.341,1};
+            sizeEx = 0.8 * GUI_GRID_H;
+            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
+            colorFocused[] = {0.706,0.706,0.706,1};
+        };
+
         class PRTablet_request : PRTablet_RscButton
         {
             idc = 60003;
             text = "Send Request";
             style = 0x02;
             x = 0.519796 * safezoneW + safezoneX;
-            y = 0.6900 * safezoneH + safezoneY;
+            y = 0.6650 * safezoneH + safezoneY;
             w = 0.216525 * safezoneW;
             h = 0.028 * safezoneH;
             colorBackground[] = {0.384,0.439,0.341,1};
@@ -54,7 +71,7 @@ class PRTablet
             text = "Close";
             style = 0x02;
             x = 0.519796 * safezoneW + safezoneX;
-            y = 0.7300 * safezoneH + safezoneY;
+            y = 0.7350 * safezoneH + safezoneY;
             w = 0.216525 * safezoneW;
             h = 0.028 * safezoneH;
             sizeEx = 0.8 * GUI_GRID_H;
@@ -176,9 +193,9 @@ class PRTablet
             text = "";
             idc = 60016;
             x = 0.519796 * safezoneW + safezoneX;
-            y = 0.6500 * safezoneH + safezoneY;
+            y = 0.6450 * safezoneH + safezoneY;
             w = 0.159596 * safezoneW;
-            h = 0.0308 * safezoneH;
+            h = 0.025 * safezoneH;
             colorBackground[] = {0,0,0,0};
             class Attributes
             {
@@ -381,7 +398,7 @@ class PRTablet
             text = "";
             idc = 60021;
             x = 0.271203 * safezoneW + safezoneX;
-            y = 0.2000 * safezoneH + safezoneY;
+            y = 0.1430 * safezoneH + safezoneY;
             w = 0.159596 * safezoneW;
             h = 0.0308 * safezoneH;
             colorBackground[] = {0,0,0,0};
@@ -417,6 +434,65 @@ class PRTablet
                 shadowColor = "#000000";
                 size = 0.8;
             };
+        };
+
+        class PRTablet_mainList : PRTablet_RscListNBox
+        {
+            idc = 60024;
+            text = "";
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.1600 * safezoneH + safezoneY;
+            w = 0.465 * safezoneW;
+            h = 0.45 * safezoneH;
+            colorBackground[] = {0.173,0.173,0.173,1};
+            colorSelectBackground[] = {0.3,0.3,0.3,1};
+            colorSelectBackground2[] = {0.3,0.3,0.3,1};
+            colorText[] = {0.6,0.6,0.6,1};
+            color[] = {0.8,0.8,0.8,1};
+            colorActive[] = {0.384,0.439,0.341,1};
+            sizeEx = (safeZoneW / 75) + (safeZoneH / 275);
+            rowHeight = (safeZoneW / 75) + (safeZoneH / 275);
+            columns[] = {0,0.07,0.6,0.8};
+            drawSideArrows = false;
+            idcLeft = -1;
+            idcRight = -1;
+        };
+
+        class PRTablet_1ButtonL : PRTablet_RscButton
+        {
+            idc = 60026;
+            x = 0.271203 * safezoneW + safezoneX;
+            y = 0.6150 * safezoneH + safezoneY;
+            w = 0.2325 * safezoneW;
+            h = 0.028 * safezoneH;
+            text = "Button1";
+            sizeEx = 0.8 * GUI_GRID_H;
+            colorBackground[] = {0.384,0.439,0.341,1};
+            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
+            colorFocused[] = {0.706,0.706,0.706,1};
+        };
+
+        class PRTablet_1ButtonR : PRTablet_RscButton
+        {
+            idc = 60027;
+            x = 0.507 * safezoneW + safezoneX;
+            y = 0.6150 * safezoneH + safezoneY;
+            w = 0.2325 * safezoneW;
+            h = 0.028 * safezoneH;
+            text = "Button1";
+            sizeEx = 0.8 * GUI_GRID_H;
+            colorBackground[] = {0.384,0.439,0.341,1};
+            colorBackgroundFocused[] = {0.706,0.706,0.706,1};
+            colorFocused[] = {0.706,0.706,0.706,1};
+        };
+
+        class PRTablet_status_map : PRTablet_RscMap
+        {
+            idc = 60028;
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.1600 * safezoneH + safezoneY;
+            w = 0.465 * safezoneW;
+            h = 0.45 * safezoneH;
         };
 
     };
