@@ -82,7 +82,7 @@ switch(_operation) do {
                 - server side object only
                                 - enabled/disabled
                 */
-                if (_logic getVariable ["crewinfo_ui_setting","Left"] == "None") exitWith {["ALiVE SYS CREWINFO - Feature turned off! Exiting..."] call ALiVE_fnc_Dump};
+                if (_logic getVariable ["crewinfo_ui_setting","Left"] == "0") exitWith {["ALiVE SYS CREWINFO - Feature turned off! Exiting..."] call ALiVE_fnc_Dump};
 
                 //Only one init per instance is allowed
                 if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS CREWINFO - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
