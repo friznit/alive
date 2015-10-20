@@ -5877,7 +5877,6 @@ SUD_RU_typeMappings = [] call ALIVE_fnc_hashCreate;
 // ---------------------------------------------------------------------------------------------------------------------
 
 
-
 // CUP
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -6254,6 +6253,54 @@ CUP_I_PMC_ION_typeMappings = [] call ALIVE_fnc_hashCreate;
 
 [CUP_I_PMC_ION_mappings, "GroupFactionTypes", CUP_I_PMC_ION_typeMappings] call ALIVE_fnc_hashSet;
 [ALIVE_factionCustomMappings, "CUP_I_PMC_ION", CUP_I_PMC_ION_mappings] call ALIVE_fnc_hashSet;
+
+
+
+// Ryanzombies
+// ---------------------------------------------------------------------------------------------------------------------
+
+// Ryanzombiesfaction
+
+Ryanzombiesfaction_mappings = [] call ALIVE_fnc_hashCreate;
+
+Ryanzombiesfaction_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
+[Ryanzombiesfaction_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
+[Ryanzombiesfaction_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
+[Ryanzombiesfaction_mappings, "FactionName", "Ryanzombiesfaction"] call ALIVE_fnc_hashSet;
+[Ryanzombiesfaction_mappings, "GroupFactionName", "Ryanzombiesfaction"] call ALIVE_fnc_hashSet;
+
+Ryanzombiesfaction_typeMappings = [] call ALIVE_fnc_hashCreate;
+
+[Ryanzombiesfaction_mappings, "GroupFactionTypes", Ryanzombiesfaction_typeMappings] call ALIVE_fnc_hashSet;
+
+[Ryanzombiesfaction_factionCustomGroups, "Infantry", ["Ryanzombiesgroupfast1","Ryanzombiesgroupfast2","Ryanzombiesgroupmedium1","Ryanzombiesgroupmedium2","Ryanzombiesgroupslow1","Ryanzombiesgroupslow2","Ryanzombiesgroupdemon1","Ryanzombiesgroupspider1"]] call ALIVE_fnc_hashSet;
+
+[Ryanzombiesfaction_mappings, "Groups", Ryanzombiesfaction_factionCustomGroups] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionCustomMappings, "Ryanzombiesfaction", Ryanzombiesfaction_mappings] call ALIVE_fnc_hashSet;
+
+
+// Ryanzombiesfactionopfor
+
+Ryanzombiesfactionopfor_mappings = [] call ALIVE_fnc_hashCreate;
+
+Ryanzombiesfactionopfor_factionCustomGroups = [] call ALIVE_fnc_hashCreate;
+
+[Ryanzombiesfactionopfor_mappings, "Side", "EAST"] call ALIVE_fnc_hashSet;
+[Ryanzombiesfactionopfor_mappings, "GroupSideName", "EAST"] call ALIVE_fnc_hashSet;
+[Ryanzombiesfactionopfor_mappings, "FactionName", "Ryanzombiesfactionopfor"] call ALIVE_fnc_hashSet;
+[Ryanzombiesfactionopfor_mappings, "GroupFactionName", "Ryanzombiesfactionopfor"] call ALIVE_fnc_hashSet;
+
+Ryanzombiesfactionopfor_typeMappings = [] call ALIVE_fnc_hashCreate;
+
+[Ryanzombiesfactionopfor_mappings, "GroupFactionTypes", Ryanzombiesfactionopfor_typeMappings] call ALIVE_fnc_hashSet;
+
+[Ryanzombiesfactionopfor_factionCustomGroups, "Infantry", ["Ryanzombiesgroupspider1opfor","Ryanzombiesgroupdemon1opfor","Ryanzombiesgroupslow1opfor","Ryanzombiesgroupslow2opfor","Ryanzombiesgroupmedium1opfor","Ryanzombiesgroupmedium2opfor","Ryanzombiesgroupfast1opfor","Ryanzombiesgroupfast2opfor"]] call ALIVE_fnc_hashSet;
+
+[Ryanzombiesfactionopfor_mappings, "Groups", Ryanzombiesfactionopfor_factionCustomGroups] call ALIVE_fnc_hashSet;
+
+[ALIVE_factionCustomMappings, "Ryanzombiesfactionopfor", Ryanzombiesfactionopfor_mappings] call ALIVE_fnc_hashSet;
 
 
 

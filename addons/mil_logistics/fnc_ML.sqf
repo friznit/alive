@@ -775,7 +775,9 @@ switch(_operation) do {
             if(_factionFound) then {
 
                 private ["_eventQueue","_response","_responseItem","_playerRequested","_eventID","_eventData","_logEvent","_playerID",
-                "_eventState","_eventType","_eventForceMakeup","_requestID","_transportProfiles","_position","_playerRequestProfileID","_profile"];
+                "_eventState","_eventType","_eventForceMakeup","_responseItem","_eventCargoProfiles","_infantryProfiles","_armourProfiles",
+                "_mechanisedProfiles","_motorisedProfiles","_planeProfiles","_heliProfiles","_eventAssets","_allRequestedProfiles","_anyActive",
+                "_transportProfiles","_transportVehiclesProfiles","_requestID","_position","_playerRequestProfileID","_profile","_active","_profileType"];
 
                 // get the event data for this player
 
@@ -803,10 +805,164 @@ switch(_operation) do {
 
                                 if(_requestID == _eventCancelRequestID) then {
 
-                                    // set state to event complete
-                                    [_x, "state", "eventComplete"] call ALIVE_fnc_hashSet;
-                                    [_eventQueue, _eventID, _x] call ALIVE_fnc_hashSet;
+                                    _x call ALIVE_fnc_inspectHash;
 
+                                    _eventCargoProfiles = [_x, "cargoProfiles"] call ALIVE_fnc_hashGet;
+
+                                    _transportProfiles = [_x, "transportProfiles"] call ALIVE_fnc_hashGet;
+                                    _transportVehiclesProfiles = [_x, "transportVehiclesProfiles"] call ALIVE_fnc_hashGet;
+
+                                    _infantryProfiles = [_eventCargoProfiles, 'infantry'] call ALIVE_fnc_hashGet;
+                                    _armourProfiles = [_eventCargoProfiles, 'armour'] call ALIVE_fnc_hashGet;
+                                    _mechanisedProfiles = [_eventCargoProfiles, 'mechanised'] call ALIVE_fnc_hashGet;
+                                    _motorisedProfiles = [_eventCargoProfiles, 'motorised'] call ALIVE_fnc_hashGet;
+                                    _planeProfiles = [_eventCargoProfiles, 'plane'] call ALIVE_fnc_hashGet;
+                                    _heliProfiles = [_eventCargoProfiles, 'heli'] call ALIVE_fnc_hashGet;
+
+                                    _allRequestedProfiles = [];
+                                    _anyActive = false;
+
+                                    {
+                                        _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                                        if!(isNil "_profile") then {
+                                            _active = _profile select 2 select 1;
+                                            if(_active) then {
+                                                _anyActive = true;
+                                            };
+                                            _allRequestedProfiles pushBack _profile;
+                                        };
+
+                                    } forEach _transportProfiles;
+
+                                    {
+                                        _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                                        if!(isNil "_profile") then {
+                                            _active = _profile select 2 select 1;
+                                            if(_active) then {
+                                                _anyActive = true;
+                                            };
+                                            _allRequestedProfiles pushBack _profile;
+                                        };
+
+                                    } forEach _transportVehiclesProfiles;
+
+                                    {
+                                        _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+                                        if!(isNil "_profile") then {
+                                            _active = _profile select 2 select 1;
+                                            if(_active) then {
+                                                _anyActive = true;
+                                            };
+                                            _allRequestedProfiles pushBack _profile;
+                                        };
+
+                                    } forEach _infantryProfiles;
+
+                                    {
+                                        {
+                                            _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                                            if!(isNil "_profile") then {
+                                                _active = _profile select 2 select 1;
+                                                if(_active) then {
+                                                    _anyActive = true;
+                                                };
+                                                _allRequestedProfiles pushBack _profile;
+                                            };
+                                        } forEach _x;
+
+                                    } forEach _armourProfiles;
+
+                                    {
+                                        {
+                                            _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                                            if!(isNil "_profile") then {
+                                                _active = _profile select 2 select 1;
+                                                if(_active) then {
+                                                    _anyActive = true;
+                                                };
+                                                _allRequestedProfiles pushBack _profile;
+                                            };
+                                        } forEach _x;
+
+                                    } forEach _mechanisedProfiles;
+
+                                    {
+                                        {
+                                            _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                                            if!(isNil "_profile") then {
+                                                _active = _profile select 2 select 1;
+                                                if(_active) then {
+                                                    _anyActive = true;
+                                                };
+                                                _allRequestedProfiles pushBack _profile;
+                                            };
+                                        } forEach _x;
+
+                                    } forEach _motorisedProfiles;
+
+                                    {
+                                        {
+                                            _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                                            if!(isNil "_profile") then {
+                                                _active = _profile select 2 select 1;
+                                                if(_active) then {
+                                                    _anyActive = true;
+                                                };
+                                                _allRequestedProfiles pushBack _profile;
+                                            };
+                                        } forEach _x;
+
+                                    } forEach _planeProfiles;
+
+                                    {
+                                        {
+                                            _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
+                                            if!(isNil "_profile") then {
+                                                _active = _profile select 2 select 1;
+                                                if(_active) then {
+                                                    _anyActive = true;
+                                                };
+                                                _allRequestedProfiles pushBack _profile;
+                                            };
+                                        } forEach _x;
+
+                                    } forEach _heliProfiles;
+
+                                    if(_anyActive) then {
+
+                                        // respond to player request
+                                        _logEvent = ['LOGCOM_RESPONSE', [_eventRequestID,_eventPlayerID,_response],"Logistics","CANCEL_FAILED"] call ALIVE_fnc_event;
+                                        [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+
+                                    }else{
+
+                                        // delete all profiles
+
+                                        {
+                                            _profileType = _x select 2 select 5;
+                                            if(_profileType == 'entity') then {
+                                                [_x, "destroy"] call ALIVE_fnc_profileEntity;
+                                            }else{
+                                                [_x, "destroy"] call ALIVE_fnc_profileVehicle;
+                                            };
+
+                                        } forEach _allRequestedProfiles;
+
+                                        _eventAssets = [_x, "eventAssets"] call ALIVE_fnc_hashGet;
+
+                                        {
+                                            deleteVehicle _x;
+                                        } forEach _eventAssets;
+
+                                        // set state to event complete
+                                        [_x, "state", "eventComplete"] call ALIVE_fnc_hashSet;
+                                        [_eventQueue, _eventID, _x] call ALIVE_fnc_hashSet;
+
+                                        // respond to player request
+                                        _logEvent = ['LOGCOM_RESPONSE', [_eventRequestID,_eventPlayerID,_response],"Logistics","CANCEL_OK"] call ALIVE_fnc_event;
+                                        [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
+
+                                    };
                                 };
                             };
                         };
@@ -814,11 +970,6 @@ switch(_operation) do {
                     } forEach (_eventQueue select 2);
 
                 };
-
-                // respond to player request
-                _logEvent = ['LOGCOM_RESPONSE', [_eventRequestID,_eventPlayerID,_response],"Logistics","STATUS"] call ALIVE_fnc_event;
-                [ALIVE_eventLog, "addEvent",_logEvent] call ALIVE_fnc_eventLog;
-
             };
         };
     };

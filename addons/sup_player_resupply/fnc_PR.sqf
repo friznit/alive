@@ -686,6 +686,8 @@ switch(_operation) do {
             _sideObject = [_side] call ALIVE_fnc_sideTextToObject;
             _selectedDeliveryValue = [_logic,"selectedDeliveryListValue"] call MAINCLASS;
 
+            _radioMessage = "";
+
             switch(_message) do {
                 case "ACKNOWLEDGED":{
 
@@ -1118,6 +1120,56 @@ switch(_operation) do {
                     [_logic,"statusListValues",_values] call MAINCLASS;
 
                     _payloadStatusList ctrlSetEventHandler ["LBSelChanged", "['STATUS_LIST_SELECT',[_this]] call ALIVE_fnc_PRTabletOnAction"];
+
+                };
+                case "CANCEL_FAILED":{
+
+                    // LOGCOM has denied the request because no mil logistics modules for this faction have been found
+
+                    _radioMessage = "Your request to cancel has been denied. Requested units cannot RTB at this time.";
+
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    // clear request markers
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    [_logic,"marker",[]] call MAINCLASS;
+
+                    // set the tablet state to reset
+
+                    [_logic,"state","RESET"] call MAINCLASS;
+
+                };
+                case "CANCEL_OK":{
+
+                    // LOGCOM has denied the request because no mil logistics modules for this faction have been found
+
+                    _radioMessage = "Your request for support has been cancelled.";
+
+                    _radioBroadcast = [player,_radioMessage,"side",_sideObject,false,true,false,true,"HQ"];
+
+                    [_radioBroadcast,"ALIVE_fnc_radioBroadcast",true,true] spawn BIS_fnc_MP;
+
+                    // clear request markers
+
+                    _markers = [_logic,"marker"] call MAINCLASS;
+
+                    if(count _markers > 0) then {
+                        deleteMarkerLocal (_markers select 0);
+                    };
+
+                    [_logic,"marker",[]] call MAINCLASS;
+
+                    // set the tablet state to reset
+
+                    [_logic,"state","RESET"] call MAINCLASS;
 
                 };
             };
@@ -2222,7 +2274,6 @@ switch(_operation) do {
 
                             } forEach _payloadListValues;
 
-
                             _requestID = floor(time);
 
                             _forceMakeup = [_requestID,_payload,_emptyVehicles,_staticIndividuals,_joinIndividuals,_reinforceIndividuals,_staticGroups,_joinGroups,_reinforceGroups];
@@ -3115,7 +3166,7 @@ switch(_operation) do {
         _payloadStatusButton = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_ButtonStatus);
         _payloadStatusButton ctrlShow true;
         _payloadStatusButton ctrlSetText "Show Status";
-        _payloadStatusButton ctrlSetEventHandler ["MouseButtonClick", "['SHOW_STATUS_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction","_payloadStatusButtonL1","_payloadStatusButtonR1"];
+        _payloadStatusButton ctrlSetEventHandler ["MouseButtonClick", "['SHOW_STATUS_CLICK',[_this]] call ALIVE_fnc_PRTabletOnAction"];
 
         _payloadStatusTitle = PR_getControl(PRTablet_CTRL_MainDisplay,PRTablet_CTRL_StatusTitle);
         _payloadStatusTitle ctrlShow false;
