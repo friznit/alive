@@ -37,7 +37,7 @@ if (isServer && !isHC) then {
 		GVAR(VEHICLEID) = 0;
 	};
 
-	if ((_vehicle getVariable ["vehicleID","MISSING"]) == "MISSING") then {
+	if ((_vehicle getVariable ["vehicleID","MISSING"]) == "MISSING" && vehicleVarName _vehicle == "") then {
 		_vehicleID = format ["vehicle_%1",GVAR(VEHICLEID)];
 
 		TRACE_2("SYS_PLAYER giving vehicle an ID", _vehicle, _vehicleID);
