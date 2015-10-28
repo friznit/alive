@@ -61,6 +61,14 @@ class CfgMusic
 		theme = "safe";
 		musicClass = "Lead";
 	};
+	class ALiVE_Bonus
+	{
+		name = "ALiVE - Everest - Johari";
+		sound[] = {"\x\alive\addons\intro\Music\EverestInstrumental.ogg",1.0,1.0};
+		duration = 255;
+		theme = "safe";
+		musicClass = "Lead";
+	};	
 };
 
 
