@@ -102,6 +102,9 @@ if ((count _waypoints == 0) && {isnil "_parkedAir"}) then {
             _pos = position _location;
         } else {
             _pos = [_startPos,_radius] call CBA_fnc_RandPos;
+            if (surfaceIsWater _pos) then {
+                _pos = [_pos] call ALiVE_fnc_getClosestLand;
+            };
         };
         
         if (_roads) then {
