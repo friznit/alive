@@ -84,6 +84,9 @@ for "_j" from 1 to (count _roadpoints) do {
 
 	if ({_roadpos distance _x < 60} count GVAR(ROADBLOCKS) > 0) exitWith {["ALiVE Roadblock to close to another! Not created..."] call ALiVE_fnc_Dump};
 
+	// check for non road position
+	if (!isOnRoad _roadpos) exitWith {["ALiVE Roadblock is not on a road! Not created..."] call ALiVE_fnc_Dump};
+
 	_roadConnectedTo = roadsConnectedTo _roadpos;
 
     if (count _roadConnectedTo == 0) exitWith {["ALiVE Selected road for roadblock is a dead end! Not created..."] call ALiVE_fnc_Dump};
@@ -105,7 +108,11 @@ for "_j" from 1 to (count _roadpoints) do {
         [format["roadblock_%1", _id], _roadpos, "Icon", [1,1], "TYPE:", "mil_dot", "TEXT:", "RoadBlock",  "GLOBAL"] call CBA_fnc_createMarker;
 	};
 
-	_checkpointComp = ["smallCheckpoint1", "smallCheckpoint2", "smallCheckpoint3", "mediumCheckpoint2", "smallroadblock1" , "smallroadblock2"];
+	If (!isNil "ALiVE_compositions_roadblocks") then {
+		_checkpointComp = ALiVE_compositions_roadblocks;
+	} else {
+		_checkpointComp = [ALiVE_compositions, "roadblocks"] call ALiVE_fnc_hashGet;
+	};
 
 	_checkpoint = [_checkpointComp call BIS_fnc_selectRandom] call ALiVE_fnc_findComposition;
 	[_checkpoint,_roadpos,_direction] spawn {[_this select 0, position (_this select 1), _this select 2] call ALiVE_fnc_spawnComposition};

@@ -507,6 +507,7 @@ ALIVE_compositions = [] call ALIVE_fnc_hashCreate;
 [ALIVE_compositions, "crashsites", ["smallOspreyCrashsite1","smallAH99Crashsite1","mediumc192Crash1"]] call ALIVE_fnc_hashSet;
 [ALIVE_compositions, "objectives", ["largeMilitaryOutpost1","mediumMilitaryOutpost1","hugeSupplyOutpost1","hugeMilitaryOutpost1"]] call ALIVE_fnc_hashSet;
 [ALIVE_compositions, "other", ["smallATNest1","smallMGNest1","smallCheckpoint1","smallRoadblock1","mediumCheckpoint1","largeGarbageCamp1"]] call ALIVE_fnc_hashSet;
+[ALIVE_compositions, "roadblocks", ["smallCheckpoint1","smallCheckpoint2","smallCheckpoint3","mediumCheckpoint2","smallroadblock1","smallroadblock2"]] call ALIVE_fnc_hashSet;
 
 /*
  * Task Objects
@@ -1568,7 +1569,7 @@ if(_worldName == "HinduKush") then {
     ];
 
     ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
-		"bunker"		
+		"bunker"
     ];
 
     ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
@@ -1979,11 +1980,11 @@ if(_worldName == "panthera3") then {
 
 // Isla Duala A3 v3.33
 if(_worldName == "isladuala3") then {
- 
+
 	ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
 		"hangar"
 	];
- 
+
 	ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
 		"barrack",
 		"mil_house",
@@ -1994,14 +1995,14 @@ if(_worldName == "isladuala3") then {
 		"misc_deerstand",
 		"deerstand"
 	];
- 
+
 	ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
 		"barrack",
 		"mil_house",
 		"mil_controltower",
 		"mil_guardhouse"
 	];
- 
+
 	ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
 		"barrack",
 		"barracks",
@@ -2009,10 +2010,10 @@ if(_worldName == "isladuala3") then {
 		"mil_house",
 		"mil_controltower"
 	];
- 
+
 	ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
 	];
- 
+
 	ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
 		"ss_hangar",
 		"airport",
@@ -2023,13 +2024,13 @@ if(_worldName == "isladuala3") then {
 		"runway_main",
 		"runway_secondary"
 	];
- 
+
 	ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
 	];
- 
+
 	ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
 	];
- 
+
 	ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
 		"deerstand",
 		"vez",
@@ -2044,17 +2045,17 @@ if(_worldName == "isladuala3") then {
 		"misc_deerstand",
 		"deerstand"
 	];
- 
+
 	ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
 		"a_office01"
 	];
- 
+
 	ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
 		"pec_",
 		"powerstation",
 		"trafostanica"
 	];
- 
+
 	ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
 		"illuminanttower",
 		"vysilac_fm",
@@ -2062,7 +2063,7 @@ if(_worldName == "isladuala3") then {
 		"telek1",
 		"tvtower"
 	];
- 
+
 	ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
 		"crane",
 		"lighthouse",
@@ -2071,11 +2072,11 @@ if(_worldName == "isladuala3") then {
 		"pier_",
 		"pier"
 	];
- 
+
 	ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
 		 "rail_loco"
 	];
- 
+
 	ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
 		"fuelstation",
 		"expedice",
@@ -2083,7 +2084,7 @@ if(_worldName == "isladuala3") then {
 		"komin",
 		"ind_tankbig"
 	];
- 
+
 	ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
 		"wip",
 		"ind_",
@@ -2092,7 +2093,7 @@ if(_worldName == "isladuala3") then {
 		"sawmillpen",
 		"workshop"
 	];
- 
+
 	ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
 		"generalstore",
 		"budova",
@@ -2116,9 +2117,9 @@ if(_worldName == "isladuala3") then {
 		"barn_",
 		"hut_"
 	];
- 
+
 	ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
-		]; 
+		];
 };
 
 // Lingor A3
