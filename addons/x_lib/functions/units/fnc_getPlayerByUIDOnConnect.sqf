@@ -25,15 +25,17 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_playerUID","_unit"];
+private ["_playerUID","_unit","_time"];
 
 _playerUID = _this select 0;
-
 _unit = objNull;
 
+if (_playerUID == "") exitWith {diag_log "Null playerUID sent to getPlayerByUIDOnConnect"; _unit};
 
-if (_playerUID == "") exitWith {diag_log "Null playerUID sent to getPlayerByUIDOnConnect";_unit;};
-
+//Is there a special need for a delayed execution (why not only use foreach)?
+//Causes script to hang and never finish under some circumstances (like HC usage).
+//Workaround, to not potentially impact current func. -> timeout of 5 seconds
+_time = time;
 waitUntil {
     sleep 0.3;
 
@@ -41,6 +43,7 @@ waitUntil {
 
     _players = call BIS_fnc_listPlayers;
     _found = false;
+    _timeout = time - _time > 5;
 
     {
         _player = _x;
@@ -52,8 +55,7 @@ waitUntil {
         };
     } foreach _players;
 
-    _found
-
+    _found || {_timeout};
 };
 
 _unit
