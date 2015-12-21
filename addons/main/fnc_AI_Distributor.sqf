@@ -43,7 +43,7 @@ GVAR(AI_DISTRIBUTOR) = [] spawn {
         GVAR(AI_LOCALITIES) = [] call ALiVE_fnc_HashCreate;
 	
 		{
-			if (local _x && {{alive _x} count units _x > 0}) then {
+			if (local _x && {{alive _x && {!((vehicle _x) getvariable ["ALiVE_CombatSupport",false])}} count units _x > 0}) then {
 		
 				//Distribute to all available HCs
 				if (_HC_index > ((count HEADLESSCLIENTS)-1)) then {_HC_index = 0};
