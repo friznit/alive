@@ -1,0 +1,99 @@
+[center][url=http://alivemod.com/][img=http://alivemod.com/img/alive_logo_bif.jpg][/url]
+[b][url=http://alivemod.com/]alivemod.com[/url]
+[size=4]The next generation dynamic persistent mission addon for ArmA3
+Release 1.0[/size][/b][/center]
+[center] [/center]
+[b][u]After just over 3 years of development, we are proud to release 1.0 of ALiVE![/u][/b]
+
+It's an absolutely huge moment for the ALiVE team to announce final 1.0 release of this mod.
+
+We have been in RC mode pretty much since November collecting feedback and bugs on any final things we needed to do before 1.0 release.
+
+To celebrate our release we are including a new Johari Bonus Track called Everest. The track is particularly fitting as its taken a team of dedicated people to reach the summit of ALiVE 1.0! We hope you enjoy it and it features in 2 out of the 4 intro missions we have on the Arma 3 main menu (alongside the ALiVE exclusive Arma 3 cover This is War by Johari).
+
+This release covers a number of key fixes, namely Headless Client integration with Combat Support, plugin fixes to avoid persistence failing, fixes to our client connection code, support for custom compositions, updates to player resupply and some other minor fixes - full change log below!
+ 
+[center][img=http://i.imgur.com/8PwKqxO.png][/center]
+
+We wanted to take this chance to thank the following key people for their support and recognize the efforts of those that have dedicated so much time to this project:
+[LIST]
+[*][b]Wolffy.au[/b] - One of original developers of MSO and helped kick off the MSO Next Gen idea that became ALiVE[/*]
+[*][b]Tupolov[/b] - A key contributor to MSO and the driving force behind the development of ALiVE and in particular the cloud-based persistence system, sitreps/spotreps/stats, IED system, ALiVE War Room and much more.[/*]
+[*][b]Highhead[/b] - Another former MSO developer who has driven much of AI based gameplay in ALiVE as well as logistics, insurgency, OPCOM and much more. Highhead implemented support for headless client as well as innovative systems such as CQB.[/*]
+[*][b]ARJay[/b] - ALiVE would not scale without the immense Virtual AI system created by ARJay, this system has been interwoven into many aspects of ALiVE and ARJay has contributed across pretty much most of the ALIVE codebase as well as lead developer of the ALiVE War Room, C2ISTAR and lots more.[/*]
+[*][b]Friznit[/b] - We could not get anything done without a key focus on how ALiVE is used, implemented and simulates modern warfare. Friznit brought much focus and organisation to the team along with his military experience, unique brand of PR and of course documentation![/*]
+[*][b]Jman[/b] - Our release master and general all round good bean who has contributed to the original persistence system and many admin and player helper systems.[/*]
+[*][b]Gunny[/b] - Shepherded much of the ported combat support system (thank you Neo!) into ALiVE and assisted with a number of other systems.[/*]
+[*][b]Secure[/b] - In our desire to remove dependence on .NET and Windows, Secure completely rewrote the plugin/extension system to make it multi-platform and faster[/*]
+[*][b]Hazy[/b] - Helped with testing and support as well as custom compositions and the original insurgency mission for ALiVE[/*]
+[*][b]SpyderBlack[/b] - Has been a huge help in supporting the community with his expertise as a mission maker and even has written add-ons to ALiVE that have been incorporated.[/*]
+[/LIST]
+The following people have supported us either during the life of the project or contributed at certain times - we thank you for your contribution and support!
+[LIST]
+[*][b]VRCRaptor, Sacha Ligthert, Cameroon, Naught, Rye, Singleton, SavageCDN, Kremator, WobbleyHeadedBob[/b][/*]
+[/LIST]
+We want to take this opportunity to also thank the following groups for their support:
+[LIST]
+[*][b]CBA Team[/b][/*]
+[*][b]VOLCBAT[/b][/*]
+[*][b]Kelly's Heroes[/b][/*]
+[*][b]VRC[/b][/*]
+[*][b]Bohemia Interactive [/b]for the incredible military sandbox that is Arma 3[/*]
+[/LIST]
+
+[b]What's Next?[/b]
+With the release of 1.0, ALiVE will be making a [b]strategic change in direction[/b]! We have made the decision to move to an [b]open source approach[/b] to the development of ALiVE. Times change and when we started, MSO was a niche within the Arma MP community. With the widespread adoption of ALiVE, the [b]mod needs the combined resources of the community[/b] to allow it to develop and flourish. There is still so much to do with ALiVE as a mod and as a platform. We hope to announce our plans to support this approach in the near future!
+ 
+[center]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
+
+[size=4][b][u][url=http://alivemod.com/#Download]Download[/url][/u][/b][/size]
+Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+Also available from PlayWithSix and ArmAholic.
+
+Note for server admins that this build absolutely requires the new @ALiVEServer package. The old one should not be used and in most cases won't work (or will crash).
+ [/center]
+[center][size=4][b][url=http://alivemod.com/#ALiVEWarRoom]Join the War Room Now![/url][/b][/size][/center]
+[b][u]Manual[/u][/b]
+Please refer to the [url=http://www.alivemod.com/wiki]ALiVE Wiki[/url]. All the info you need is there. If anything is missing or unclear, please let us know by submitting a ticket on our [url=http://dev.withsix.com/projects/alive/issues]Development Tracker[/url] and we'll look to fix it.
+
+[b][u]Support Forum[/u][/b]
+For direct support and feedback from the ALiVE dev team, join us on our forum at [url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url]
+
+[b][u]Release Highlights[/u][/b]
+[LIST]
+[*]Added Johari ALiVE Bonus Track called Everest[/*]
+[*]Final fixes to new plugin[/*]
+[*]Support for custom compositions[/*]
+[*]Major fix for Combat support with Headless Client[/*]
+[*]Updates to player resupply[/*]
+[*]Minor Fixes[/*]
+[/LIST]
+[b][u]Changelog[/u][/b]
+
+[spoiler]- Build 1,0
+[Main] Added RHS and CUP faction compatibility update
+[SUP CS] Fixed Combat support was not working properly due to [url=http://feedback.arma3.com/view.php?id=26091]http://feedback.arma3.com/view.php?id=26091[/url] ([url=https://github.com/ALiVEmod/alive/issues/162]https://github.com/ALiVEmod/alive/issues/162[/url] and [url=https://github.com/ALiVEmod/alive/issues/140]https://github.com/ALiVEmod/alive/issues/140[/url]).
+[XLIB] Fixed ALiVE_fnc_getPlayerByUIDOnConnect was caught in a loop that never finished (f.e. during HC usage)
+[civ_placement] ADDED: custom roadblock compositions can be listed in the array ALiVE_compositions_roadblocks
+[mil_command] Updated: Avoid patrol movement waypoints in the sea
+[intro] Added ALiVE Bonus track for v1.0 - Everest by Johari
+[sys_player] Fixed: Vehicles names defined in the editor are overwritten by sys_player #152
+[AliveServer] * 9a98f0e0 - Dump perfmon to a file for debugging purposes * ed54e183 - Show Auth URI in log
+[AliveServer] 19c0e3a - Added thread error code to debug output.
+[SYS AI SKILL] Fixed ALiVE_fnc_AIskillSetter waiting for AI Skill module even if it wasn't used in the mission [url=http://dev.withsix.com/issues/76331]http://dev.withsix.com/issues/76331[/url]
+[sup_player_resupply] made logistics player requests cancellable if still virtual
+[SYS CREWINFO] Fixed CrewInfo was always running if playeroptions-module was placed, ignoring the "None" setting in the module parameters.
+[AliveServer] - Fixes * [cmdStartALiVE] Fixed typo in error logging * ce7aa4e Fixed a bug where Linux was unabled to do a regex search on large strings. * 1f5e14d Added a thread counter. * a212ff6 Flush logs immediately. * c323c61 Changed the name of Linux plugin.
+[sup_player_resupply] added initial functionality to handle multiple player requests, view status on existing requests, cancel existing requests
+[AliveServer] Updated plugin to hash 9563efa
+[SUP CS] Removed leftover debug lines[/spoiler]
+
+[b][u]Disclaimer[/u][/b]
+ALiVE is now GA. However, we may need to prune persistent database data from the War Room resonably regularly - eliminating data that is older than 6-12 months. The ALiVE War Room database is run on a voluntary basis at a cost to the ALiVE development team. No guarantees can be given on the mission data stored or the availability of the service. We apologise for any downtime that may impact your MP persistent missions.
+
+[b][u]ALiVE has transformed my Arma 3 experience, how can I thank you?[/u][/b]
+Please feel free to donate! It costs us about $65 per month to run our War Room website and ALiVE Database servers. Donate here [url=http://www.alivemod.com/#Donate]http://www.alivemod.com/#Donate[/url]
+
+Special thanks to everyone here for supporting us with donations to the ALiVE mod development effort.
+
+Have fun!

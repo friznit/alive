@@ -2,19 +2,19 @@
 #define PREFIX ALiVE
 
 // TODO: Consider Mod-wide or Component-narrow versions (or both, depending on wishes!)
-#define MAJOR 0
+#define MAJOR 1
 #define MINOR 0
 #define PATCHLVL 0
 // BUILD should be YYMMDDR eg 1311211
 #define BUILD 0
 
-#define CLUSTERBUILD "Arma 3","Arma3",142,130340,"Stable"
+#define CLUSTERBUILD "Arma 3","Arma3",154,132676,"Stable"
 
 #define VERSION MAJOR.MINOR.PATCHLVL.BUILD
 #define VERSION_AR MAJOR,MINOR,PATCHLVL,BUILD
 
 // MINIMAL required version for the Mod. Components can specify others..
-#define REQUIRED_VERSION 1.0
+#define REQUIRED_VERSION 1.54
 
 /*
  // Defined DEBUG_MODE_NORMAL in a few CBA_fncs to prevent looped logging :)
@@ -48,6 +48,7 @@
 //	#define DEBUG_ENABLED_SYS_patrolrep
 //	#define DEBUG_ENABLED_X_LIB
 //	#define DEBUG_ENABLED_mil_ied
+//	#define DEBUG_ENABLED_sup_submarine
 
 // Set automated tests
 // #define AUTOMATED_TESTS QUOTE(MAIN),QUOTE(SYS_LOGISTICS),QUOTE(SYS_GC),QUOTE(MIL_CQB),QUOTE(MIL_OPCOM)
