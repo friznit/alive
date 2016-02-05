@@ -17,7 +17,7 @@ switch true do {
 
 
 				//--- Play ALiVE Intro Music.
-				playMusic "ALiVE_Intro";
+				playMusic "ALiVE_Bonus";
 				addMusicEventHandler ["MusicStop", {[] spawn {sleep 12; playMusic "Track14_MainMenu"}}];
 
 				//--- Define Cam Positions

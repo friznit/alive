@@ -1,21 +1,26 @@
 [center][url=http://alivemod.com/][img=http://alivemod.com/img/alive_logo_bif.jpg][/url]
-[b][url=http://alivemod.com/]alivemod.com[/url]
-[size=4]The next generation dynamic persistent mission addon for ArmA3
+ [/center]
+[center][b][url=http://alivemod.com/]ALiVEmod.com[/url]
+[size=4]The leading dynamic persistent mission addon for ArmA3
 Release 1.0[/size][/b][/center]
 [center] [/center]
 [b][u]After just over 3 years of development, we are proud to release 1.0 of ALiVE![/u][/b]
 
-It's an absolutely huge moment for the ALiVE team to announce final 1.0 release of this mod.
-
-We have been in RC mode pretty much since November collecting feedback and bugs on any final things we needed to do before 1.0 release.
+It's an absolutely huge moment for the ALiVE team to announce the 1.0 release of this mod.
+ 
+ALiVE represents literally thousands of hours of volunteer time, from a small team, working evening and weekends. The mod started with just 3 developers and pretty much through out its development only had 3-5 active developers at any one time.
 
 To celebrate our release we are including a new Johari Bonus Track called Everest. The track is particularly fitting as its taken a team of dedicated people to reach the summit of ALiVE 1.0! We hope you enjoy it and it features in 2 out of the 4 intro missions we have on the Arma 3 main menu (alongside the ALiVE exclusive Arma 3 cover This is War by Johari).
+ 
+Anyway, less of that, what have we been doing? We have been in RC mode pretty much since November collecting feedback and bugs on any final things we needed to do before 1.0 release.
+ 
+From a feature perspective we are pretty much at around 95% of what we wanted to accomplish with ALiVE. It is way beyond anything MSO ever did, performs better and is fully up to date with the Arma 3 engine.
 
 This release covers a number of key fixes, namely Headless Client integration with Combat Support, plugin fixes to avoid persistence failing, fixes to our client connection code, support for custom compositions, updates to player resupply and some other minor fixes - full change log below!
- 
+
 [center][img=http://i.imgur.com/8PwKqxO.png][/center]
 
-We wanted to take this chance to thank the following key people for their support and recognize the efforts of those that have dedicated so much time to this project:
+We wanted to take this chance to thank the following key people for their support and recognize the efforts of those that have[b] dedicated so much time[/b] to this project:
 [LIST]
 [*][b]Wolffy.au[/b] - One of original developers of MSO and helped kick off the MSO Next Gen idea that became ALiVE[/*]
 [*][b]Tupolov[/b] - A key contributor to MSO and the driving force behind the development of ALiVE and in particular the cloud-based persistence system, sitreps/spotreps/stats, IED system, ALiVE War Room and much more.[/*]
@@ -40,7 +45,6 @@ We want to take this opportunity to also thank the following groups for their su
 [*][b]VRC[/b][/*]
 [*][b]Bohemia Interactive [/b]for the incredible military sandbox that is Arma 3[/*]
 [/LIST]
-
 [b]What's Next?[/b]
 With the release of 1.0, ALiVE will be making a [b]strategic change in direction[/b]! We have made the decision to move to an [b]open source approach[/b] to the development of ALiVE. Times change and when we started, MSO was a niche within the Arma MP community. With the widespread adoption of ALiVE, the [b]mod needs the combined resources of the community[/b] to allow it to develop and flourish. There is still so much to do with ALiVE as a mod and as a platform. We hope to announce our plans to support this approach in the near future!
  
@@ -69,8 +73,8 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [*]Minor Fixes[/*]
 [/LIST]
 [b][u]Changelog[/u][/b]
-
-[spoiler]- Build 1,0
+[spoiler]
+- Build 1,0
 [Main] Added RHS and CUP faction compatibility update
 [SUP CS] Fixed Combat support was not working properly due to [url=http://feedback.arma3.com/view.php?id=26091]http://feedback.arma3.com/view.php?id=26091[/url] ([url=https://github.com/ALiVEmod/alive/issues/162]https://github.com/ALiVEmod/alive/issues/162[/url] and [url=https://github.com/ALiVEmod/alive/issues/140]https://github.com/ALiVEmod/alive/issues/140[/url]).
 [XLIB] Fixed ALiVE_fnc_getPlayerByUIDOnConnect was caught in a loop that never finished (f.e. during HC usage)
@@ -86,10 +90,11 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [AliveServer] - Fixes * [cmdStartALiVE] Fixed typo in error logging * ce7aa4e Fixed a bug where Linux was unabled to do a regex search on large strings. * 1f5e14d Added a thread counter. * a212ff6 Flush logs immediately. * c323c61 Changed the name of Linux plugin.
 [sup_player_resupply] added initial functionality to handle multiple player requests, view status on existing requests, cancel existing requests
 [AliveServer] Updated plugin to hash 9563efa
-[SUP CS] Removed leftover debug lines[/spoiler]
+[SUP CS] Removed leftover debug lines
+[/spoiler]
 
 [b][u]Disclaimer[/u][/b]
-ALiVE is now GA. However, we may need to prune persistent database data from the War Room resonably regularly - eliminating data that is older than 6-12 months. The ALiVE War Room database is run on a voluntary basis at a cost to the ALiVE development team. No guarantees can be given on the mission data stored or the availability of the service. We apologise for any downtime that may impact your MP persistent missions.
+ALiVE is now GA. However, we may need to prune persistent database data from the War Room reasonably regularly - eliminating data that is older than 6-12 months. The ALiVE War Room database is run on a voluntary basis at a cost to the ALiVE development team. No guarantees can be given on the mission data stored or the availability of the service. We apologise for any downtime that may impact your MP persistent missions.
 
 [b][u]ALiVE has transformed my Arma 3 experience, how can I thank you?[/u][/b]
 Please feel free to donate! It costs us about $65 per month to run our War Room website and ALiVE Database servers. Donate here [url=http://www.alivemod.com/#Donate]http://www.alivemod.com/#Donate[/url]

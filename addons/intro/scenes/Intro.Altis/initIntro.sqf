@@ -52,7 +52,7 @@ playMusic "ALiVE_Intro";
 
 		sleep 3;
 
-playMusic "ALiVE_Intro";
+playMusic "ALiVE_Bonus";
 		addMusicEventHandler ["MusicStop", {[] spawn {sleep 12; playMusic "Track14_MainMenu"}}];
 	};
 };
