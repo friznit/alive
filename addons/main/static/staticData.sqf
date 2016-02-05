@@ -6167,26 +6167,26 @@ CUP_I_UN_typeMappings = [] call ALIVE_fnc_hashCreate;
 [ALIVE_factionCustomMappings, "CUP_I_UN", CUP_I_UN_mappings] call ALIVE_fnc_hashSet;
 
 
-// CUP_I_SLA
+// CUP_O_SLA
 
-CUP_I_SLA_mappings = [] call ALIVE_fnc_hashCreate;
-[CUP_I_SLA_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
-[CUP_I_SLA_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
-[CUP_I_SLA_mappings, "FactionName", "CUP_I_SLA"] call ALIVE_fnc_hashSet;
-[CUP_I_SLA_mappings, "GroupFactionName", "CUP_I_SLA"] call ALIVE_fnc_hashSet;
+CUP_O_SLA_mappings = [] call ALIVE_fnc_hashCreate;
+[CUP_O_SLA_mappings, "Side", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_O_SLA_mappings, "GroupSideName", "GUER"] call ALIVE_fnc_hashSet;
+[CUP_O_SLA_mappings, "FactionName", "CUP_I_SLA"] call ALIVE_fnc_hashSet;
+[CUP_O_SLA_mappings, "GroupFactionName", "CUP_I_SLA"] call ALIVE_fnc_hashSet;
 
-CUP_I_SLA_typeMappings = [] call ALIVE_fnc_hashCreate;
-[CUP_I_SLA_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
-[CUP_I_SLA_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
-[CUP_I_SLA_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
-[CUP_I_SLA_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
-[CUP_I_SLA_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
-[CUP_I_SLA_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
-[CUP_I_SLA_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
-[CUP_I_SLA_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
+CUP_O_SLA_typeMappings = [] call ALIVE_fnc_hashCreate;
+[CUP_O_SLA_typeMappings, "Air", "Air"] call ALIVE_fnc_hashSet;
+[CUP_O_SLA_typeMappings, "Armored", "Armored"] call ALIVE_fnc_hashSet;
+[CUP_O_SLA_typeMappings, "Infantry", "Infantry"] call ALIVE_fnc_hashSet;
+[CUP_O_SLA_typeMappings, "Mechanized", "Mechanized"] call ALIVE_fnc_hashSet;
+[CUP_O_SLA_typeMappings, "Motorized", "Motorized"] call ALIVE_fnc_hashSet;
+[CUP_O_SLA_typeMappings, "Motorized_MTP", "Motorized_MTP"] call ALIVE_fnc_hashSet;
+[CUP_O_SLA_typeMappings, "SpecOps", "SpecOps"] call ALIVE_fnc_hashSet;
+[CUP_O_SLA_typeMappings, "Support", "Support"] call ALIVE_fnc_hashSet;
 
-[CUP_I_SLA_mappings, "GroupFactionTypes", CUP_I_SLA_typeMappings] call ALIVE_fnc_hashSet;
-[ALIVE_factionCustomMappings, "CUP_I_SLA", CUP_I_SLA_mappings] call ALIVE_fnc_hashSet;
+[CUP_O_SLA_mappings, "GroupFactionTypes", CUP_O_SLA_typeMappings] call ALIVE_fnc_hashSet;
+[ALIVE_factionCustomMappings, "CUP_I_SLA", CUP_O_SLA_mappings] call ALIVE_fnc_hashSet;
 
 
 // CUP_I_RACS
@@ -6209,7 +6209,6 @@ CUP_I_RACS_typeMappings = [] call ALIVE_fnc_hashCreate;
 
 [CUP_I_RACS_mappings, "GroupFactionTypes", CUP_I_RACS_typeMappings] call ALIVE_fnc_hashSet;
 [ALIVE_factionCustomMappings, "CUP_I_RACS", CUP_I_RACS_mappings] call ALIVE_fnc_hashSet;
-*/
 
 
 // CUP_B_GB
