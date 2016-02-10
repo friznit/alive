@@ -27,21 +27,20 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_type","_faction","_side","_factionConfig","_factionSide","_typeConfig","_groups","_class","_countUnits",
-"_unit","_group","_groupName","_customMappings","_groupFactionTypes","_customGroup","_mappedType"];
+private ["_type","_typeg","_faction","_side","_factionConfig","_factionSide","_typeConfig","_groups","_class","_countUnits", "_unit","_group","_groupName","_customMappings","_groupFactionTypes","_customGroup","_mappedType"];
 
 _type = if(count _this > 0) then {_this select 0} else {"Infantry"};
 _faction = if(count _this > 1) then {_this select 1} else {"OPF_F"};
 _side = if(count _this > 2) then {_this select 2} else {"EAST"};
 
-//["Side: %1 Type: %2 Faction: %3",_side,_type,_faction] call ALIVE_fnc_dump;
+// ["Side: %1 Type: %2 Faction: %3",_side,_type,_faction] call ALIVE_fnc_dump;
 
 _customGroup = false;
 
 if(!isNil "ALIVE_factionCustomMappings") then {
     if(_faction in (ALIVE_factionCustomMappings select 1)) then {
         _customMappings = [ALIVE_factionCustomMappings, _faction] call ALIVE_fnc_hashGet;
-        //_customMappings call ALIVE_fnc_inspectHash;
+        // _customMappings call ALIVE_fnc_inspectHash;
         _side = [_customMappings, "GroupSideName"] call ALIVE_fnc_hashGet;
         //_faction = [_customMappings, "FactionName"] call ALIVE_fnc_hashGet;
         _faction = [_customMappings, "GroupFactionName"] call ALIVE_fnc_hashGet;
@@ -56,20 +55,34 @@ if(!isNil "ALIVE_factionCustomMappings") then {
 
             _groups = [_customMappings, "Groups"] call ALIVE_fnc_hashGet;
 
-            if(_type in (_groups select 1)) then {
+            //["Groups: %1",_groups] call ALIVE_fnc_dump;
 
-                _groups = [_groups, _type] call ALIVE_fnc_hashGet;
+            if (count (_groups select 1) > 0) then {
 
-                if(count _groups > 0) then {
-                    _groupName = _groups select floor(random count _groups);
-                }else{
-                    _groupName = "FALSE";
+                if(_type in (_groups select 1)) then {
+
+                    _groups = [_groups, _type] call ALIVE_fnc_hashGet;
+
+                    if(count _groups > 0) then {
+                        _groupName = _groups select floor(random count _groups);
+                    }else{
+                        _groupName = "FALSE";
+                    };
+
+                    _customGroup = true;
+
+                } else {
+                    ["Warning Side: %1 Faction: %3 could not find a %2 group",_side,_type,_faction] call ALIVE_fnc_dump;
+                    _factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
+                    _factionSide = getNumber(_factionConfig >> "side");
+                    _side = _factionSide call ALIVE_fnc_sideNumberToText;
                 };
-
-                _customGroup = true;
-
+            } else {
+                ["Warning Side: %1 Faction: %3 maybe incorrectly configured for ALiVE (Group Type: %2)",_side,_type,_faction] call ALIVE_fnc_dump;
+                _factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
+                _factionSide = getNumber(_factionConfig >> "side");
+                _side = _factionSide call ALIVE_fnc_sideNumberToText;
             };
-
         };
     }else{
         _factionConfig = (configFile >> "CfgFactionClasses" >> _faction);
@@ -86,15 +99,19 @@ if(_side == "GUER") then {
 	_side = "INDEP";
 };
 
+// If someone accidentally defined mappings as groups revert back to basics
+if(typename _type == "ARRAY") then {
+    _type = _this select 0;
+};
 
-//["Side: %1 Type: %2 Faction: %3",_side,_type,_faction] call ALIVE_fnc_dump;
+// ["Side: %1 Type: %2 Faction: %3",_side,_type,_faction] call ALIVE_fnc_dump;
 
 if!(_customGroup) then {
 
     _typeConfig = (configFile >> "CfgGroups" >> _side >> _faction >> _type);
     _groups = [];
 
-    //["Config: %1",_typeConfig] call ALIVE_fnc_dump;
+    // ["Config: %1",_typeConfig] call ALIVE_fnc_dump;
 
     for "_i" from 0 to count _typeConfig -1 do {
         _class = _typeConfig select _i;
