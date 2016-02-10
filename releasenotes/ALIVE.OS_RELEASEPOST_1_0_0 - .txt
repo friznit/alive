@@ -1,0 +1,45 @@
+[center][url=http://alivemod.com/][img=http://alivemod.com/img/alive_logo_bif.jpg][/url]
+ [/center]
+[center][b][url=http://alivemod.com/]ALiVEmod.com[/url]
+[size=4]The next generation dynamic persistent mission addon for ArmA3
+Open Source[/size][/b][/center]
+[center] [/center]
+[b][u]ALiVE.OS[/u][/b]
+
+[center][img=http://i.imgur.com/8PwKqxO.png][/center]
+We kept ALiVE source code private during development for source control and to facilitiate support and error fixing.  Having achieved the 1.0 milestone after 3 years of development, we are now delighted to declare the code repo open.  We believe that the mod will benefit from the combined resources of the community to allow it to continue to develop and flourish. There is still so much more that could be done with ALiVE both as a mod and a platform and we hope this will give the community the opportunity to take it to the next level.
+
+Branch ALiVE on Github [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+
+[b][u]License[/u][/b]
+ALiVE.OS is subject to Creative Commons Attribution-NonCommercial-ShareAlike (CC BY-NC-SA).  Full details are included in the repo.
+ 
+[b][u]Terms & Conditions[/u][/b]
+Code branches are for private use only (e.g. on your private clan server).  Please do not publicly release alternative code branches.
+Submit Pull Requests to the public Develop branch for inclusion in future official releases of ALiVE (e.g. for maps that you have indexed)
+@aliveserver code remains closed for the moment.
+War Room continues to be the ALiVE persistence as a service for now.  Details for running private persistent databases will follow in due course.
+We reserve the right to edit, modify or tweak any code submitted to the Develop branch in order to ensure it plays nice with the rest of ALiVE
+
+If you have any questions relating to the Terms or the License, please contact one of the Dev team and we will be happy to discuss.
+
+[b][u]Code Branches[/u][/b]
+[b]Master[/b] branch is our baseline and remains closed.
+[b]Staging[/b] is a our release management branch and remains closed.
+[b]Develop[/b] is publicly available for anyone to branch or submit Pull Requests.  We request that branches are used privately only and that you do not publicly release any alternative branches to the main ALiVE code as this could cause confusion and difficulties with support.  If you wish to contribute code to future official releases, please submit a Pull Request to Develop branch and we will merge it after review.
+
+[b][u]Guides & Instructions[/u][/b]
+Please refer to the [url=https://github.com/ALiVEmod/alive/wiki]ALiVE Github Wiki[/url].  This includes Dev Environment setup instructions as well as details of the ALiVE folder structure and a Map Indexing guide.  You need to set up a dev environment in order to index maps.
+
+[b]Functions List[/b] is availablel in the utils folder of the code repo.
+
+[b][u]Support Forum[/u][/b]
+For direct support and feedback from the ALiVE dev team, join us on our forum at [url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url]
+
+[b][u]Slack Collaboration Environment[/u][/b]
+ALiVEmod has a public presence on Slack.  Poke us for an invite!
+
+[b][u]ALiVE has transformed my Arma 3 experience, how can I thank you?[/u][/b]
+Please feel free to donate! It costs us about $65 per month to run our War Room website and ALiVE Database servers. Donate here [url=http://www.alivemod.com/#Donate]http://www.alivemod.com/#Donate[/url]
+
+Have fun!
