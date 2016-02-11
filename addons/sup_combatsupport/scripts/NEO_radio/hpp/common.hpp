@@ -1,10 +1,16 @@
+#define GUI_GRID_X  (0)
+#define GUI_GRID_Y  (0)
+#define GUI_GRID_W  (0.025)
+#define GUI_GRID_H  (0.04)
+#define GUI_GRID_WAbs (1)
+#define GUI_GRID_HAbs (1)
 
 /***************************
 //BACKGROUND
 ***************************/
 class NEO_RscBackground
 {
-	idc = -1; 
+	idc = -1;
 	type = 0;
 	style = 128;
 	colorbackground[] = {0,0,0,1};
@@ -13,8 +19,8 @@ class NEO_RscBackground
 	sizeEx = 0;
 	moving = 0;
 	shadow =0;
-	x = "(safeZoneX + (safeZoneW / 1.8))"; 
-	y = "(safeZoneY + (safeZoneH / 3.25))"; 
+	x = "(safeZoneX + (safeZoneW / 1.8))";
+	y = "(safeZoneY + (safeZoneH / 3.25))";
 	w = "(safeZoneW / 3)";
 	h = "(safeZoneH / 2)";
 };
@@ -22,7 +28,7 @@ class NEO_RscBackground
 /***************************
 Edit
 ***************************/
-class NEO_RscEdit 
+class NEO_RscEdit
 {
 	idc = -1;
 	type = 2;
@@ -31,11 +37,11 @@ class NEO_RscEdit
 	y = "1";
 	w = "safeZoneW / 25";
 	h = "safeZoneH / 30";
-	
+
 	sizeEx = 0.03;
 	font = "PuristaMedium";
 	text = "";
-	
+
 	colorText[] = {1,1,1,1};
 	autocomplete = 0;
 	colorSelection[] = {0,0,0,1};
@@ -45,24 +51,24 @@ class NEO_RscEdit
 Text
 ***************************/
 class NEO_RscText
-{ 
-	idc = -1; 
-	type = 13; 
+{
+	idc = -1;
+	type = 13;
 	style = 0x00;
 	colorBackground[] = { 0, 0, 0, 0 };
 	size = "((safeZoneW / 75) + (safeZoneH / 225))";
-	x = "safeZoneX + (safeZoneW / 6)"; 
-	y = "safeZoneY + (safeZoneH / 6)"; 
-	w = "safeZoneW / 5"; 
+	x = "safeZoneX + (safeZoneW / 6)";
+	y = "safeZoneY + (safeZoneH / 6)";
+	w = "safeZoneW / 5";
 	h = "safeZoneH / 10";
 	text = "SUPPORT MENU";
-	class Attributes 
-	{ 
-		font = "PuristaMedium"; 
-		color = "#C0C0C0"; 
-		align = "center"; 
-		valign = "middle"; 
-		shadow = true; 
+	class Attributes
+	{
+		font = "PuristaMedium";
+		color = "#C0C0C0";
+		align = "center";
+		valign = "middle";
+		shadow = true;
 		shadowColor = "#000000";
 	};
 };
@@ -71,7 +77,7 @@ class NEO_RscText
 //Slider
 ***************************/
 class NEO_RscSlider
-{ 
+{
 	idc = -1;
 	type = 43;
 	style = 0x400 + 0x10;
@@ -201,7 +207,7 @@ class NEO_RscComboBox
 class NEO_RscButton
 {
 	idc = -1;
-	type = 16;
+	type = 1;
 	style = 0x00;
 	default = 0;
 	shadow = 2;
@@ -209,37 +215,23 @@ class NEO_RscButton
 	y = "safeZoneY + (safeZoneH / 1.525)";
 	w = "(safeZoneW / 12.5)";
 	h = "(safeZoneH / 20)";
+  colorBackgroundActive[] = {0, 0, 0, 1};
+  colorBackgroundDisabled[] = {0, 0, 0, 0.5};
 	color[] = {0.8784, 0.8471, 0.651, 1.0};
 	color2[] = {0.95, 0.95, 0.95, 1};
 	colorBackground[] = {1, 1, 1, 1};
 	colorbackground2[] = {1, 1, 1, 0.4};
+  colorText[] = {1, 1, 1, 1};
 	colorDisabled[] = {1, 1, 1, 0.25};
+  colorShadow[] = {0, 0, 0, 1};
+  colorBorder[] = {0, 0, 0, 1};
+  borderSize = 0;
 	periodFocus = 1.2;
 	periodOver = 0.8;
-	
-	class HitZone
-	{
-		left = 0;
-    top = 0;
-    right = 0;
-    bottom = 0;
-	};
-	
-	class ShortcutPos
-	{
-		left = "safeZoneW / 100";
-		top = "safeZoneH / 100";
-		w = "safeZoneW / 100";
-		h = "safeZoneH / 100";
-	};
-
-	class TextPos
-	{
-		left = "(((1 / 1.2) / 20) * 0.9) * (3/4)";
-    top = "(      (     (1 / 1.2) / 20) -     (     (     (1 / 1.2) / 20) * 0.9)) / 2";
-    right = 0.005;
-    bottom = 0;
-	};
+  offsetX = 0;
+  offsetY = 0;
+  offsetPressedX = 0;
+  offsetPressedY = 0;
 	animTextureDefault = "#(argb,8,8,3)color(1,1,1,1)";
   animTextureDisabled = "#(argb,8,8,3)color(1,1,1,1)";
   animTextureFocused = "#(argb,8,8,3)color(1,1,1,1)";
@@ -256,7 +248,7 @@ class NEO_RscButton
  soundEscape[] = {"\A3\ui_f\data\sound\RscButton\soundEscape",0.09,1};
 	textureNoShortcut = "";
 	action = "";
-	
+
 	class Attributes
 	{
 		font = "PuristaMedium";
@@ -264,20 +256,15 @@ class NEO_RscButton
 		align = "left";
 		shadow = "true";
 	};
-	
-	class AttributesImage
-	{
-		font = "PuristaMedium";
-		color = "#E5E5E5";
-		align = "left";
-	};
+
+
 };
 
 /***********************
 //Map Resource
 ***********************/
 class NEO_RscMap
-{	
+{
 	 access = 0;
   alphaFadeEndScale = 0.4;
   alphaFadeStartScale = 0.35;
@@ -658,7 +645,7 @@ class RscPicture
   type = 0;
   idc = -1;
   style = 48;
-    font = "PuristaMedium"; 
+    font = "PuristaMedium";
   sizeEx = 0;
   lineSpacing = 0;
   text = "";

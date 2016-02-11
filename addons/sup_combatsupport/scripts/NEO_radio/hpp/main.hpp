@@ -59,7 +59,7 @@ class NEO_resourceRadio
                 {
                         idc = 655561;
                         text = "Close";
-                        style = 0x02;
+                        style = 2;
                         x = 0.519796 * safezoneW + safezoneX;
                         y = 0.7184 * safezoneH + safezoneY;
                         w = 0.216525 * safezoneW;
