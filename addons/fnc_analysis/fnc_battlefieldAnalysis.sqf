@@ -255,6 +255,7 @@ switch(_operation) do {
 
         _sectorData = [_eventSector,"data"] call ALIVE_fnc_hashGet;
         
+
         if (isnil "_sectorData") exitwith {};
 
         if!("casualties" in (_sectorData select 1)) then {
@@ -468,8 +469,9 @@ switch(_operation) do {
 	            _clusters = [_sectorData,"activeClusters"] call ALIVE_fnc_hashGet;
 	
 	            {
-	                _owner = str([_x,"owner"] call ALIVE_fnc_hashGet);
                     
+	                _owner = [_x,"owner"] call ALIVE_fnc_hashGet;
+                    _owner = if (typeName _owner == "SIDE") then {str(_owner)} else {_owner};
                     if (_owner == "GUER") then {_owner = "INDEP"};
                     
 	                if (_owner == _side) then {
@@ -501,7 +503,8 @@ switch(_operation) do {
 	            _clusters = [_sectorData,"activeClusters"] call ALIVE_fnc_hashGet;
 	
 	            {
-	                _owner = str([_x,"owner"] call ALIVE_fnc_hashGet);
+	                _owner = [_x,"owner"] call ALIVE_fnc_hashGet;
+                    _owner = if (typeName _owner == "SIDE") then {str(_owner)} else {_owner};
 	                _clusterType = [_x,"type"] call ALIVE_fnc_hashGet;
                     
                     if (_owner == "GUER") then {_owner = "INDEP"};
