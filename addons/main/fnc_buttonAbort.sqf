@@ -82,11 +82,13 @@ _exitPlayer = {
     if (!isNil QMOD(sys_statistics) && (MOD(sys_statistics_ENABLED))) then {
 	    ["ALiVE Exit - Player Stats OPD"] call ALIVE_fnc_dump;
 
-        // diag_log str(ALIVE_sys_statistics_playerShotsFired);
-        _shotsFired = ALIVE_sys_statistics_playerShotsFired;
+        if (!isNil "ALIVE_sys_statistics_playerShotsFired") then {
+            // diag_log str(ALIVE_sys_statistics_playerShotsFired);
+            _shotsFired = ALIVE_sys_statistics_playerShotsFired;
 
-        // Send the player's shots fired data to the server and add it to the hash
-        [[_uid, _shotsFired],"ALiVE_fnc_updateShotsFired", false, true] call BIS_fnc_MP;
+            // Send the player's shots fired data to the server and add it to the hash
+            [[_uid, _shotsFired],"ALiVE_fnc_updateShotsFired", false, true] call BIS_fnc_MP;
+        };
 
 		// Stats module onPlayerDisconnected call
 		[[_id, _name, _uid],"ALIVE_fnc_stats_onPlayerDisconnected", false, false] call BIS_fnc_MP;
