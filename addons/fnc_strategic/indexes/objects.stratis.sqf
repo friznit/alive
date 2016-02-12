@@ -32,8 +32,8 @@ Reading MapInfo @17D4DDA...
 */
 wrp_objects=
 [
-//	p3dname,[
-//		[ID,[X,Y]]]
+	//	p3dname,[
+	//		[ID,[X,Y]]]
 	["a3\structures_f\walls\slums01_8m.p3d",
 		[
 			[154988,[2432,824]],
@@ -7276,4 +7276,5 @@ wrp_objects=
 			[60145,[2955,6216]],
 			[60146,[2945,6215]]
 		]
-	],
+	]
+]
