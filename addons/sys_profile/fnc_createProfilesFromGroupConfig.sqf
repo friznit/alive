@@ -39,11 +39,19 @@ _busy = if(count _this > 5) then {_this select 5} else {false};
 
 _groupProfiles = [];
 
-//["Group Class: %1",_groupClass] call ALIVE_fnc_dump;
+// Check to see if faction has a mapping
+if(!isNil "ALIVE_factionCustomMappings") then {
+    if(_prefix in (ALIVE_factionCustomMappings select 1)) then {
+        _customMappings = [ALIVE_factionCustomMappings, _prefix] call ALIVE_fnc_hashGet;
+        _prefix = [_customMappings, "GroupFactionName"] call ALIVE_fnc_hashGet;
+    };
+};
 
-_config = _groupClass call ALIVE_fnc_configGetGroup;
+["Group faction: %1",_prefix] call ALIVE_fnc_dump;
 
-//["Group Config: %1 %2",_config,_groupClass] call ALIVE_fnc_dump;
+_config = [_prefix, _groupClass] call ALIVE_fnc_configGetGroup;
+
+["Group Config: %1 %2",_config,_groupClass] call ALIVE_fnc_dump;
 
 if(count _config > 0) then {
 
@@ -98,16 +106,16 @@ if(count _config > 0) then {
 			_rank = getText(_class >> "rank");
 			_vehicle = getText(_class >> "vehicle");
 			_vehicleType = _vehicle call ALIVE_fnc_configGetVehicleClass;
-			
+
 			//["CGROUP Name: %1 VehicleType: %2 vehicle: %3",_groupName,_vehicleType,_vehicle] call ALIVE_fnc_dump;
-			
+
 			// seperate vehicles and units in the group
 			//if((_vehicleType == "Car")||(_vehicleType == "Truck")||(_vehicleType == "Tank")||(_vehicleType == "Armored")||(_vehicleType == "Ship")||(_vehicleType == "Air")||(_vehicleType == "LIB_Medium_Tanks")||(_vehicleType == "LIB_Heavy_Tanks")) then {
 			if!(_vehicle isKindOf "Man") then {
-				_groupVehicles pushback [_vehicle,_rank];			
+				_groupVehicles pushback [_vehicle,_rank];
 			} else {
 				_groupUnits pushback [_vehicle,_rank];
-			};		
+			};
 		};
 	};
 
@@ -144,18 +152,18 @@ if(count _config > 0) then {
 
 	{
 		// create the profile for the vehicle
-		
-		_vehicle = _x;	
+
+		_vehicle = _x;
 		_vehicleID = [ALIVE_profileHandler, "getNextInsertVehicleID"] call ALIVE_fnc_profileHandler;
 		_vehicleClass = _vehicle select 0;
 		_vehicleRank = _vehicle select 1;
-		
+
 	    //["V: %1 %2",_vehicle,_vehicleClass] call ALIVE_fnc_dump;
-		
+
 		_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
 
 		_vehiclePosition = [_position, (20 * ((_forEachIndex)+1)), random(360)] call BIS_fnc_relPos;
-										
+
 		_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "profileID", format["%1-%2",_prefix,_vehicleID]] call ALIVE_fnc_profileVehicle;
@@ -167,37 +175,37 @@ if(count _config > 0) then {
 		[_profileVehicle, "damage", 0] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "fuel", 1] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "busy", _busy] call ALIVE_fnc_profileVehicle;
-		
+
 		if(_vehicleKind == "Plane" || _vehicleKind == "Helicopter") then {
 			[_profileVehicle, "spawnType", ["preventDespawn"]] call ALIVE_fnc_profileVehicle;
 		};
-		
+
 		if!(_spawnGoodPosition) then {
 			[_profileVehicle, "despawnPosition", _vehiclePosition] call ALIVE_fnc_profileVehicle;
 		};
-		
-		_groupProfiles pushback _profileVehicle;	
+
+		_groupProfiles pushback _profileVehicle;
 		[ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
-		
+
 		// create crew members for the vehicle
-		
+
 		_crew = _vehicleClass call ALIVE_fnc_configGetVehicleCrew;
 		_vehiclePositions = [_vehicleClass] call ALIVE_fnc_configGetVehicleEmptyPositions;
 		_countCrewPositions = 0;
-		
+
 		//["VP: %1 %2",_vehiclePositions, count _vehiclePositions] call ALIVE_fnc_dump;
 		//_vehiclePositions call ALIVE_fnc_inspectArray;
-		
+
 		// count all non cargo positions
 		for "_i" from 0 to count _vehiclePositions -3 do {
 			_countCrewPositions = _countCrewPositions + (_vehiclePositions select _i);
 		};
-		
+
 		// for all crew positions add units to the entity group
-		for "_i" from 0 to _countCrewPositions -1 do {		
+		for "_i" from 0 to _countCrewPositions -1 do {
 			[_profileEntity, "addUnit", [_crew,_position,0,_vehicleRank]] call ALIVE_fnc_profileEntity;
 		};
-		
+
 		[_profileEntity,_profileVehicle] call ALIVE_fnc_createProfileVehicleAssignment;
 
 	} forEach _groupVehicles;

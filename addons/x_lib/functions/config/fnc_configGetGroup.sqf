@@ -25,14 +25,17 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_groupClass","_result","_groupData","_config"];
+private ["_groupClass","_result","_groupData","_config","_factionGroups","_faction"];
 
-_groupClass = _this;
+_faction = _this select 0;
+_groupClass = _this select 1;
 
 // instantiate static vehicle position data
 if(isNil "ALIVE_groupConfig") then {
 	[] call ALIVE_fnc_groupGenerateConfigData;
 };
+
+_groupClass = format ["%1_%2", _faction, _groupClass];
 
 // get the class config path from the static group config data store
 _groupData = [ALIVE_groupConfig, _groupClass] call ALIVE_fnc_hashGet;
