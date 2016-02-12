@@ -1112,7 +1112,7 @@ switch(_operation) do {
             _house = _args select 0;
             _faction = _args select 1;
             _factions = (_logic getvariable ["factions",["OPF_F"]]);
-
+            _blacklist = (_logic getvariable ["UnitsBlackList",GVAR(UNITBLACKLIST)]);
             _debug = _logic getVariable ["debug",false];
            
             private ["_side","_units"];
@@ -1130,9 +1130,9 @@ switch(_operation) do {
                 private ["_amount"];
                 
                 _amount = ceil(random(_logic getVariable ["amount",2]));
-                
-                _units = [[_faction],_amount,[],true] call ALiVE_fnc_chooseRandomUnits;
-                
+
+                _units = [[_faction],_amount, _blacklist, true] call ALiVE_fnc_chooseRandomUnits;
+
                 _house setVariable ["unittypes", _units, true];
                 _house setVariable ["faction", _faction, true];
 			};
