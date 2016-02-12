@@ -47,11 +47,11 @@ if(!isNil "ALIVE_factionCustomMappings") then {
     };
 };
 
-["Group faction: %1",_prefix] call ALIVE_fnc_dump;
+// ["Group faction: %1",_prefix] call ALIVE_fnc_dump;
 
 _config = [_prefix, _groupClass] call ALIVE_fnc_configGetGroup;
 
-["Group Config: %1 %2",_config,_groupClass] call ALIVE_fnc_dump;
+// ["Group Config: %1 %2",_config,_groupClass] call ALIVE_fnc_dump;
 
 if(count _config > 0) then {
 
