@@ -171,7 +171,7 @@ switch(_operation) do {
                                     _id = [_position] call ALiVE_fnc_getNearestAirportID;
                                     _height = parsenumber(_heightset);
                                     _code = ((synchronizedObjects _logic) select _i) getvariable ["cas_code",""];
-                                    _code = [_code,"this","_this select 0"] call CBA_fnc_replace;
+                                    _code = [_code,"this","(_this select 0)"] call CBA_fnc_replace;
 
                                     _casArray = [_position,_direction, _type, _callsign, _id,_code,_height];
                                     _casArrays set [count _casArrays,_casArray];
@@ -186,7 +186,7 @@ switch(_operation) do {
                                     _height = parsenumber(_heightset);
                                     _direction =  getDir ((synchronizedObjects _logic) select _i);
                                     _code = ((synchronizedObjects _logic) select _i) getvariable ["transport_code",""];
-                                    _code = [_code,"this","_this select 0"] call CBA_fnc_replace;
+                                    _code = [_code,"this","(_this select 0)"] call CBA_fnc_replace;
 
 
 
