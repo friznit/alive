@@ -131,6 +131,7 @@ _totalEntities = 0;
 					_activeWaypoint = _waypoints select 0;
 					_type = [_activeWaypoint,"type"] call ALIVE_fnc_hashGet;
 					_speed = [_activeWaypoint,"speed"] call ALIVE_fnc_hashGet;
+					_speedModifier = [ALiVE_profileSystem,"speedModifier",1] call ALiVE_fnc_HashGet;
 					_destination = [_activeWaypoint,"position"] call ALIVE_fnc_hashGet;
 					_statements = [_activeWaypoint,"statements"] call ALIVE_fnc_hashGet;
 					_distance = _currentPosition distance _destination;
@@ -142,7 +143,7 @@ _totalEntities = 0;
 						case default {_speedPerSecond = _speedPerSecondArray select 1};
 					};
 								
-					_moveDistance = floor(_speedPerSecond * _cycleTime);
+					_moveDistance = floor(_speedPerSecond * _cycleTime * _speedModifier);
 					_direction = 0;
 					
 					// DEBUG -------------------------------------------------------------------------------------
