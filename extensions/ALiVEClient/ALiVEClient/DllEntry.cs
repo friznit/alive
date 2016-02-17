@@ -9,6 +9,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Diagnostics;
 
 namespace ALiVEClient
 {
@@ -69,6 +70,7 @@ namespace ALiVEClient
                     break;
                 }
                 case "CreateIntelDir":
+                    result = "UNKNOWN";
                     if (!System.IO.Directory.Exists(Path.Combine(System.IO.Directory.GetCurrentDirectory(), "ALiVEIntel")))
                     {
                         //Create folder
@@ -82,6 +84,7 @@ namespace ALiVEClient
                     break;
                 case "SendMap":
                 {
+                    result = "UNKNOWN";
                     string imageFile = callParams[0].ToString(); // C:\test.emf
                     string fileName = imageFile.Split(new char[] { '.' })[0] + ".png"; // C:\test.png
                     string user = callParams[1].ToString();
@@ -160,6 +163,163 @@ namespace ALiVEClient
                     }
                     break;
                 }
+                case "StartIndex":
+                {
+                    // Creates the objects file for the map
+
+                    // Init result
+                    result = "UNKNOWN";
+
+                    // Path to map pbo
+                    string pathToMap =  Path.Combine(System.IO.Directory.GetCurrentDirectory(), callParams[0].ToString()); // "Addons\map_altis.pbo"
+
+                    // Path to indexing
+                    string folder = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "ALiVE_Indexing");
+                    if (!Directory.Exists(folder))
+                    {
+                        Directory.CreateDirectory(folder);
+                    }
+
+                    // Map Name
+                    string mapName = callParams[1].ToString(); // "altis"
+
+                    // Log file
+                    string logfile = Path.Combine(folder, mapName + "\\log.txt");
+
+                    // Path to dev folder
+                    string pathToObjects = Path.Combine(folder, mapName + "\\fnc_strategic\\indexes");
+
+                    // Index Files
+                    string indexFile = String.Format("{0}\\objects.{1}.sqf", pathToObjects, mapName);
+                    string parsedIndexFile = String.Format("{0}\\parsed.objects.{1}.sqf", pathToObjects, mapName);
+
+                    // Blacklist
+                    string blacklistfile = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "@ALIVE\\alive_object_blacklist.txt");
+                    string[] blacklist = LoadBlackList(blacklistfile);
+
+                    // Create folder structure for map indexing
+                    if (!Directory.Exists(Path.Combine(folder, mapName)))
+                    {
+                        Directory.CreateDirectory(Path.Combine(folder, mapName));
+                        Directory.CreateDirectory(Path.Combine(folder, mapName + "\\fnc_strategic"));
+                        Directory.CreateDirectory(pathToObjects);
+                    }
+
+                    //Logging
+                    System.IO.StreamWriter lfile = new System.IO.StreamWriter(logfile, true);
+                    lfile.AutoFlush = true;
+                    lfile.WriteLine(">>>>>>>>>>>>>>>>>> Starting Map Index for " + mapName + " on " + DateTime.Now.ToString());
+
+                    if (blacklist == null)
+                    {
+                        lfile.WriteLine("Couldn't find blacklist, exiting");
+                        break;
+                    }
+
+                    // Create Index of map
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    startInfo.CreateNoWindow = false;
+                    startInfo.UseShellExecute = false;
+                    startInfo.FileName = "cmd.exe";
+                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    startInfo.Arguments = "/c DeWrp.exe -O \"" + pathToMap + "\"" + " > \"" + indexFile + "\"";
+                    startInfo.RedirectStandardOutput = false;
+                    lfile.WriteLine("Executing deWrp: " + startInfo.FileName + " " + startInfo.Arguments);
+                    try
+                    {
+                        Process exeProcess = Process.Start(startInfo);
+                        exeProcess.WaitForExit();
+                        exeProcess.Close();
+                        lfile.WriteLine("deWrp analysis completed");
+                    }
+                    catch
+                    {
+                        lfile.WriteLine("deWrp Error");
+                        result = "ERROR with deWrp";
+                        lfile.Close();
+                        break;
+                    }
+
+                    // Process indexFile
+                    CreateParsedFile(parsedIndexFile);
+                    try
+                    {
+                        //Read in all lines from Index
+                        var lines = File.ReadLines(indexFile);
+                        bool ignore = false;
+                        foreach (var line in lines)
+                        {
+                            if (line == null)
+                            {
+                                break;
+                            }
+
+                            if (line.Contains("\""))
+                            {
+                                lfile.WriteLine(String.Format(" -- Parsing {0}", line));
+
+                                //If line contains any value form black list ignore block, else write the block
+                                if (blacklist.Any(line.Contains))
+                                {
+                                    lfile.WriteLine(String.Format(" ----- Ignoring : {0}", line));
+                                    ignore = true;
+                                }
+                                else
+                                {
+                                    // lfile.WriteLine(String.Format(" ----- Writing : {0}", line));
+                                    ignore = false;
+                                }
+                            }
+                            if (!ignore)
+                            {
+                                // lfile.WriteLine(String.Format(" ----- Committing to parsedIndexFile : {0}", line));
+                                File.AppendAllText(parsedIndexFile, line.ToString() + Environment.NewLine);
+                            }
+                        }
+                    }
+                    catch (UnauthorizedAccessException UAEx)
+                    {
+                        lfile.WriteLine(UAEx.Message);
+
+                    }
+                    catch (PathTooLongException PathEx)
+                    {
+
+                        lfile.WriteLine(PathEx.Message);
+
+                    }
+
+                    lfile.WriteLine("Parsing Complete");
+                    result = "SUCCESS";
+                    lfile.Close();
+                    break;
+                }
+                case "staticData":
+                {
+                    result = "ERROR";
+                    // Creates the Static data entry for the map
+
+                    // Map Name
+                    string mapName = callParams[0].ToString(); // "altis"
+
+                    // Directories
+                    string mil_cluster_path = "P:\\x\\alive\\addons\\mil_placement\\clusters\\";
+                    string civ_cluster_path = "P:\\x\\alive\\addons\\civ_placement\\clusters\\";
+                    string analysis_path = "P:\\x\\alive\\addons\\fnc_analysis\\data\\";
+
+                    // Files
+                    string mil_cluster_file = mil_cluster_path + "clusters." + mapName + "_mil.sqf";
+                    string civ_cluster_file = civ_cluster_path + "clusters." + mapName + "_civ.sqf";
+                    string analysis_file = analysis_path + "data." + mapName + ".sqf";
+
+                    // Create cluster file
+
+
+                    // Create staticData file
+
+                    //
+                    break;
+                }
                 default:
                     result = "UNKNOWN FUNCTION";
                     break;
@@ -189,7 +349,31 @@ namespace ALiVEClient
                 ALiVEClient.DllEntry.UploadCompleted = true;
             }
         }
+        public static void CreateParsedFile(string fileName)
+        {
 
+            if (File.Exists(fileName))
+            {
+
+                Console.WriteLine("Previous Parsed Index file exists, deleting old file");
+                File.Delete(fileName);
+
+            }
+
+            File.Create(fileName).Dispose();
+
+        }
+        public static string[] LoadBlackList(string fileName)
+        {
+            if (File.Exists(fileName))
+            {
+                return File.ReadAllLines(fileName);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 
 }
