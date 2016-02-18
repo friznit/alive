@@ -27,7 +27,7 @@ nil
 
 private ["_file","_obj_array","_types","_clusters","_clusters_tmp","_size"];
 
-_file = format["@ALiVE\%1\main\static\%1_staticData.sqf", worldName];
+_file = format["@ALiVE\indexing\%1\main\static\%1_staticData.sqf", worldName];
 call compile preprocessFileLineNumbers _file;
 
 // Find HQ locations
@@ -234,12 +234,13 @@ _clusterCount = _clusterCount + (count _clusters_copy_hq);
 
 if(count _clusters_copy_power > 0) then {
 	_objectivesName = "ALIVE_clustersCivPower";
-			diag_log _objectivesName;
+	_result = [_clusters_copy_power, _objectivesName, _clusterCount,"civ"] call ALIVE_fnc_auto_staticClusterOutput;
+	diag_log _objectivesName;
 
 }else{
     _objectivesName = "ALIVE_clustersCivPower";
 	_result = [_clusters_copy_comms, _objectivesName, _clusterCount,"civ"] call ALIVE_fnc_auto_staticClusterOutput;
-			diag_log _objectivesName;
+	diag_log _objectivesName;
 };
 
 _clusterCount = _clusterCount + (count _clusters_copy_power);

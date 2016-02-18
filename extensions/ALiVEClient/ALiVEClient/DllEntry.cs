@@ -175,12 +175,14 @@ namespace ALiVEClient
                     string pathToMap =  Path.Combine(System.IO.Directory.GetCurrentDirectory(), callParams[0].ToString()); // "Addons\map_altis.pbo"
 
                     // Path to indexing
-                    string folder = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "@ALiVE");
-                    if (!Directory.Exists(folder))
+                    string root = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "@ALiVE");
+                    if (!Directory.Exists(root))
                     {
                         result = "ERROR";
                         break;
                     }
+
+                    string folder = Path.Combine(root, "indexing");
 
                     // Map Name
                     string mapName = callParams[1].ToString(); // "altis"
@@ -196,7 +198,7 @@ namespace ALiVEClient
                     string parsedIndexFile = String.Format("{0}\\parsed.objects.{1}.sqf", pathToObjects, mapName);
 
                     // Blacklist
-                    string blacklistfile = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "@ALIVE\\alive_object_blacklist.txt");
+                    string blacklistfile = Path.Combine(root, "alive_object_blacklist.txt");
                     string[] blacklist = LoadBlackList(blacklistfile);
 
                     // Create folder structure for map indexing
@@ -256,7 +258,7 @@ namespace ALiVEClient
 
                             if (line.Contains("\""))
                             {
-                                lfile.WriteLine(String.Format(" -- Parsing {0}", line));
+                                // lfile.WriteLine(String.Format(" -- Parsing {0}", line));
 
                                 //If line contains any value form black list ignore block, else write the block
                                 if (blacklist.Any(line.Contains))
@@ -304,7 +306,7 @@ namespace ALiVEClient
                         {
                             lines[lines.Length - 3] = "        ]";
                         }
-                        lfile.WriteLine("Corrected objects file as there was an unecessary comma");
+                        lfile.WriteLine("Corrected objects file as there was an unnecessary comma");
                         File.WriteAllLines(indexFile, lines);  
                     }
                     else
@@ -326,7 +328,7 @@ namespace ALiVEClient
                     string mapName = callParams[0].ToString(); // "altis"
 
                     // Path to indexing
-                    string file = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "@ALiVE\\" + mapName + "\\main\\static\\" + mapName + "_staticData.sqf");
+                    string file = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "@ALiVE\\indexing\\" + mapName + "\\main\\static\\" + mapName + "_staticData.sqf");
                     if (!File.Exists(file))
                     {
                         result = "SUCCESS";
@@ -346,17 +348,17 @@ namespace ALiVEClient
                     string mapName = callParams[0].ToString(); // "altis"
 
                     // Directories
-                    string mil_cluster_path = "@ALiVE\\" + mapName + "\\mil_placement\\clusters\\";
+                    string mil_cluster_path = "@ALiVE\\indexing\\" + mapName + "\\mil_placement\\clusters\\";
                     Directory.CreateDirectory(mil_cluster_path);
 
-                    string civ_cluster_path = "@ALiVE\\" + mapName + "\\civ_placement\\clusters\\";
+                    string civ_cluster_path = "@ALiVE\\indexing\\" + mapName + "\\civ_placement\\clusters\\";
                     Directory.CreateDirectory(civ_cluster_path);
 
-                    string analysis_path = "@ALiVE\\" + mapName + "\\fnc_analysis\\data\\";
+                    string analysis_path = "@ALiVE\\indexing\\" + mapName + "\\fnc_analysis\\data\\";
                     Directory.CreateDirectory(analysis_path);                  
                     
                     // Logging
-                    File.AppendAllText("@ALiVE\\" + mapName + "\\log.txt", "Starting Cluster Generation, check in game RPT for more details." + Environment.NewLine);
+                    File.AppendAllText("@ALiVE\\indexing\\" + mapName + "\\log.txt", "Starting Cluster Generation, check in game RPT for more details." + Environment.NewLine);
                     break;
                 }
                 case "indexData":
@@ -365,7 +367,7 @@ namespace ALiVEClient
                     // Map Name
                     string mapName = callParams[0].ToString(); // "altis"
                     string idata = callParams[1].ToString();
-                    string analysis_path = "@ALiVE\\" + mapName + "\\fnc_analysis\\data\\";
+                    string analysis_path = "@ALiVE\\indexing\\" + mapName + "\\fnc_analysis\\data\\";
                     string analysis_file = analysis_path + "data." + mapName + ".sqf";
 
                     File.AppendAllText(analysis_file, idata + Environment.NewLine);
@@ -385,18 +387,18 @@ namespace ALiVEClient
                     string cfile = "";
                     if (type == "mil")
                     {
-                        string cpath = "@ALiVE\\" + mapName + "\\mil_placement\\clusters\\";
+                        string cpath = "@ALiVE\\indexing\\" + mapName + "\\mil_placement\\clusters\\";
                         cfile = cpath + "clusters." + mapName + "_mil.sqf";
                     }
                     else
                     {
-                        string cpath = "@ALiVE\\" + mapName + "\\civ_placement\\clusters\\";
+                        string cpath = "@ALiVE\\indexing\\" + mapName + "\\civ_placement\\clusters\\";
                         cfile = cpath + "clusters." + mapName + "_civ.sqf";
                     }
 
                     if (idata.Contains("e-00"))
                     {
-                        File.AppendAllText("@ALiVE\\" + mapName + "\\log.txt", "Cluster small number erased: " + idata + Environment.NewLine);
+                        File.AppendAllText("@ALiVE\\indexing\\" + mapName + "\\log.txt", type + " Cluster small number erased: " + idata + Environment.NewLine);
                         idata = Regex.Replace(idata, @"e-00\d", "");
                     }
                     if (!idata.Contains("null"))
@@ -405,7 +407,35 @@ namespace ALiVEClient
                     }
                     else
                     {
-                        File.AppendAllText("@ALiVE\\" + mapName + "\\log.txt", "Cluster null: " + idata + Environment.NewLine);
+                        File.AppendAllText("@ALiVE\\indexing\\" + mapName + "\\log.txt", type + " Cluster null: " + idata + Environment.NewLine);
+                    }
+                    result = "SUCCESS";
+                    break;
+                }
+                case "sectorData":
+                {
+                    result = "ERROR";
+
+                    // Map Name
+                    string mapName = callParams[0].ToString(); // "altis"
+                    string type = callParams[1].ToString();
+                    string idata = callParams[2].ToString();
+
+                    string analysis_path = "@ALiVE\\indexing\\" + mapName + "\\fnc_analysis\\data\\";
+                    string analysis_file = analysis_path + "data." + mapName + ".sqf";
+
+                    if (idata.Contains("e-00"))
+                    {
+                        File.AppendAllText("@ALiVE\\indexing\\" + mapName + "\\log.txt", type + " sector small number erased: " + idata + Environment.NewLine);
+                        idata = Regex.Replace(idata, @"e-00\d", "");
+                    }
+                    if (!idata.Contains("null"))
+                    {
+                        File.AppendAllText(analysis_file, idata + Environment.NewLine);
+                    }
+                    else
+                    {
+                        File.AppendAllText("@ALiVE\\indexing\\" + mapName + "\\log.txt", type + " sector null: " + idata + Environment.NewLine);
                     }
                     result = "SUCCESS";
                     break;
