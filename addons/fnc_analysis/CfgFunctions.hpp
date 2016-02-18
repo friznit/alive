@@ -50,7 +50,12 @@ class cfgFunctions {
 				description = "gridMapAnalysis";
 				file = "\x\alive\addons\fnc_analysis\fnc_gridMapAnalysis.sqf";
 				recompile = RECOMPILE;
-			};			
+			};
+			class auto_gridMapAnalysis {
+				description = "auto_gridMapAnalysis";
+				file = "\x\alive\addons\fnc_analysis\fnc_auto_gridMapAnalysis.sqf";
+				recompile = RECOMPILE;
+			};
 			class sectorAnalysisBestPlaces {
 				description = "sectorAnalysisBestPlaces";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorAnalysisBestPlaces.sqf";
@@ -110,7 +115,7 @@ class cfgFunctions {
 				description = "sectorAnalysisElevation";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorAnalysisElevation.sqf";
 				recompile = RECOMPILE;
-			};			
+			};
 			class sectorFilterElevation {
 				description = "sectorFilterElevation";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorFilterElevation.sqf";
@@ -120,7 +125,7 @@ class cfgFunctions {
 				description = "sectorAnalysisRoads";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorAnalysisRoads.sqf";
 				recompile = RECOMPILE;
-			};			
+			};
 			class sectorFilterRoads {
 				description = "sectorFilterRoads";
 				file = "\x\alive\addons\fnc_analysis\fnc_sectorFilterRoads.sqf";

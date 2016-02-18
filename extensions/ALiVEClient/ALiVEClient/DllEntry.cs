@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace ALiVEClient
 {
@@ -33,7 +34,7 @@ namespace ALiVEClient
             string callfunction = arguments[0].ToString();
             IList<object> callParams;
 
-            callParams = arguments[1].ToString().Split(new char[] { ',' });
+            callParams = arguments[1].ToString().Split(new char[] { '|' });
 
             switch (callfunction)
             {   
@@ -174,10 +175,11 @@ namespace ALiVEClient
                     string pathToMap =  Path.Combine(System.IO.Directory.GetCurrentDirectory(), callParams[0].ToString()); // "Addons\map_altis.pbo"
 
                     // Path to indexing
-                    string folder = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "ALiVE_Indexing");
+                    string folder = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "@ALiVE");
                     if (!Directory.Exists(folder))
                     {
-                        Directory.CreateDirectory(folder);
+                        result = "ERROR";
+                        break;
                     }
 
                     // Map Name
@@ -198,10 +200,8 @@ namespace ALiVEClient
                     string[] blacklist = LoadBlackList(blacklistfile);
 
                     // Create folder structure for map indexing
-                    if (!Directory.Exists(Path.Combine(folder, mapName)))
+                    if (!Directory.Exists(pathToObjects))
                     {
-                        Directory.CreateDirectory(Path.Combine(folder, mapName));
-                        Directory.CreateDirectory(Path.Combine(folder, mapName + "\\fnc_strategic"));
                         Directory.CreateDirectory(pathToObjects);
                     }
 
@@ -270,6 +270,10 @@ namespace ALiVEClient
                                     ignore = false;
                                 }
                             }
+                            if (line.Contains("];"))
+                            {
+                                ignore = false;
+                            }
                             if (!ignore)
                             {
                                 // lfile.WriteLine(String.Format(" ----- Committing to parsedIndexFile : {0}", line));
@@ -289,12 +293,51 @@ namespace ALiVEClient
 
                     }
 
+                    // Check for any messed up array at end
+                    List <string> text = File.ReadLines(parsedIndexFile).Reverse().Take(3).ToList();
+                    //lfile.WriteLine(text.ElementAt(2).ToString());
+                    if (text.ElementAt(2).Contains("],"))
+                    {
+                        string[] lines = File.ReadAllLines(parsedIndexFile);
+                        //lfile.WriteLine(lines[lines.Length - 3].ToString());
+                        if (lines[lines.Length - 3].Contains("],"))
+                        {
+                            lines[lines.Length - 3] = "        ]";
+                        }
+                        lfile.WriteLine("Corrected objects file as there was an unecessary comma");
+                        File.WriteAllLines(indexFile, lines);  
+                    }
+                    else
+                    {
+                        File.Copy(parsedIndexFile, indexFile, true);
+                    }
+
+                    File.Delete(parsedIndexFile);
+
                     lfile.WriteLine("Parsing Complete");
                     result = "SUCCESS";
                     lfile.Close();
                     break;
                 }
-                case "staticData":
+                case "checkStatic":
+                {
+                    result = "FALSE";
+                    // Map Name
+                    string mapName = callParams[0].ToString(); // "altis"
+
+                    // Path to indexing
+                    string file = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "@ALiVE\\" + mapName + "\\main\\static\\" + mapName + "_staticData.sqf");
+                    if (!File.Exists(file))
+                    {
+                        result = "SUCCESS";
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                case "startClusters":
                 {
                     result = "ERROR";
                     // Creates the Static data entry for the map
@@ -303,21 +346,68 @@ namespace ALiVEClient
                     string mapName = callParams[0].ToString(); // "altis"
 
                     // Directories
-                    string mil_cluster_path = "P:\\x\\alive\\addons\\mil_placement\\clusters\\";
-                    string civ_cluster_path = "P:\\x\\alive\\addons\\civ_placement\\clusters\\";
-                    string analysis_path = "P:\\x\\alive\\addons\\fnc_analysis\\data\\";
+                    string mil_cluster_path = "@ALiVE\\" + mapName + "\\mil_placement\\clusters\\";
+                    Directory.CreateDirectory(mil_cluster_path);
 
-                    // Files
-                    string mil_cluster_file = mil_cluster_path + "clusters." + mapName + "_mil.sqf";
-                    string civ_cluster_file = civ_cluster_path + "clusters." + mapName + "_civ.sqf";
+                    string civ_cluster_path = "@ALiVE\\" + mapName + "\\civ_placement\\clusters\\";
+                    Directory.CreateDirectory(civ_cluster_path);
+
+                    string analysis_path = "@ALiVE\\" + mapName + "\\fnc_analysis\\data\\";
+                    Directory.CreateDirectory(analysis_path);                  
+                    
+                    // Logging
+                    File.AppendAllText("@ALiVE\\" + mapName + "\\log.txt", "Starting Cluster Generation, check in game RPT for more details." + Environment.NewLine);
+                    break;
+                }
+                case "indexData":
+                {
+                    result = "ERROR";
+                    // Map Name
+                    string mapName = callParams[0].ToString(); // "altis"
+                    string idata = callParams[1].ToString();
+                    string analysis_path = "@ALiVE\\" + mapName + "\\fnc_analysis\\data\\";
                     string analysis_file = analysis_path + "data." + mapName + ".sqf";
 
-                    // Create cluster file
+                    File.AppendAllText(analysis_file, idata + Environment.NewLine);
+                    result = "SUCCESS";
+                    break;
+                }
 
+                case "clusterData":
+                {
+                    result = "ERROR";
 
-                    // Create staticData file
+                    // Map Name
+                    string mapName = callParams[0].ToString(); // "altis"
+                    string type = callParams[1].ToString();
+                    string idata = callParams[2].ToString();
 
-                    //
+                    string cfile = "";
+                    if (type == "mil")
+                    {
+                        string cpath = "@ALiVE\\" + mapName + "\\mil_placement\\clusters\\";
+                        cfile = cpath + "clusters." + mapName + "_mil.sqf";
+                    }
+                    else
+                    {
+                        string cpath = "@ALiVE\\" + mapName + "\\civ_placement\\clusters\\";
+                        cfile = cpath + "clusters." + mapName + "_civ.sqf";
+                    }
+
+                    if (idata.Contains("e-00"))
+                    {
+                        File.AppendAllText("@ALiVE\\" + mapName + "\\log.txt", "Cluster small number erased: " + idata + Environment.NewLine);
+                        idata = Regex.Replace(idata, @"e-00\d", "");
+                    }
+                    if (!idata.Contains("null"))
+                    {
+                        File.AppendAllText(cfile, idata + Environment.NewLine);
+                    }
+                    else
+                    {
+                        File.AppendAllText("@ALiVE\\" + mapName + "\\log.txt", "Cluster null: " + idata + Environment.NewLine);
+                    }
+                    result = "SUCCESS";
                     break;
                 }
                 default:

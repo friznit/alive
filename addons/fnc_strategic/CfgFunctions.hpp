@@ -51,6 +51,11 @@ class cfgFunctions {
 				file = "\x\alive\addons\fnc_strategic\fnc_staticClusterOutput.sqf";
 				recompile = RECOMPILE;
 			};
+			class auto_staticClusterOutput {
+				description = "Returns clusters in string format for static file storage";
+				file = "\x\alive\addons\fnc_strategic\fnc_auto_staticClusterOutput.sqf";
+				recompile = RECOMPILE;
+			};
 			class copyClusters {
 				description = "Duplicate an array of clusters";
 				file = "\x\alive\addons\fnc_strategic\fnc_copyClusters.sqf";
