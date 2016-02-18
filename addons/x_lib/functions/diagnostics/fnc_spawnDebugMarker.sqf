@@ -27,8 +27,8 @@ ARJay
 
 private ["_indicators","_position","_type","_err","_class","_result"];
 
-_indicators = ["Sign_Sphere100cm_F", "Sign_Sphere25cm_F", "Sign_Sphere10cm_F", "Sign_Pointer_Green_F", "Sign_Pointer_Blue_F", "Sign_Pointer_Pink_F", "Sign_Pointer_Yellow_F", "Sign_Pointer_Cyan_F"];
-	
+_indicators = ["Sign_Pointer_Green_F", "Sign_Pointer_Blue_F", "Sign_Pointer_Pink_F", "Sign_Pointer_Yellow_F", "Sign_Pointer_Cyan_F"];
+
 _position = _this select 0;
 _type = if(count _this > 1) then {_this select 1} else {0};
 
