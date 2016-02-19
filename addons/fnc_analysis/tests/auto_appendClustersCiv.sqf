@@ -330,11 +330,11 @@ _gridData = [] call ALIVE_fnc_hashCreate;
 	_costructionClusters = [_sectorData, "construction"] call ALIVE_fnc_hashGet;
 	_settlementClusters = [_sectorData, "settlement"] call ALIVE_fnc_hashGet;
 
-	"ALiVEClient" callExtension format['sectorData~%1|%2|_sectorData = [ALIVE_gridData, "%1"] call ALIVE_fnc_hashGet;',worldname,"civ",_sectorID];
+	"ALiVEClient" callExtension format['sectorData~%1|%2|_sectorData = [ALIVE_gridData, "%3"] call ALIVE_fnc_hashGet;',worldname,"civ",_sectorID];
 	//_exportString = _exportString + '_sectorData = [_sector, "data"] call ALIVE_fnc_sector;';
 
 	"ALiVEClient" callExtension format['sectorData~%1|%2|_clustersCiv = [] call ALIVE_fnc_hashCreate;',worldname,"civ"];
-	"ALiVEClient" callExtension format['sectorData~%1|%2|[_clustersCiv,"consolidated",%1] call ALIVE_fnc_hashSet;',worldname,"civ",_consolidatedClusters];
+	"ALiVEClient" callExtension format['sectorData~%1|%2|[_clustersCiv,"consolidated",%3] call ALIVE_fnc_hashSet;',worldname,"civ",_consolidatedClusters];
 	"ALiVEClient" callExtension format['sectorData~%1|%2|[_clustersCiv,"power",%3] call ALIVE_fnc_hashSet;',worldname,"civ",_powerClusters];
 	"ALiVEClient" callExtension format['sectorData~%1|%2|[_clustersCiv,"comms",%3] call ALIVE_fnc_hashSet;',worldname,"civ",_commsClusters];
 	"ALiVEClient" callExtension format['sectorData~%1|%2|[_clustersCiv,"marine",%3] call ALIVE_fnc_hashSet;',worldname,"civ",_marineClusters];

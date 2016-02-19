@@ -50,9 +50,6 @@ _path = _this select 0;
 		["Tuplindexinator","There was a problem, exiting indexing"] call ALiVE_fnc_sendHint;
 	};
 
-	["Tuplindexinator","Starting Object Categorization"] call ALiVE_fnc_sendHint;
-	[">>>>>>>>>>>>>>>>>> Starting Object Categorization"] call ALiVE_fnc_dump;
-
 	// Load in new object array
 	_file = format["@ALiVE\indexing\%1\fnc_strategic\indexes\objects.%1.sqf", worldName];
 	call compile (preprocessFile _file);
@@ -62,27 +59,10 @@ _path = _this select 0;
 
 	If (_result == "SUCCESS") then {
 
-		{
+		["Tuplindexinator","Starting Object Categorization"] call ALiVE_fnc_sendHint;
+		[">>>>>>>>>>>>>>>>>> Starting Object Categorization"] call ALiVE_fnc_dump;
 
-			private ["_model","_samples"];
-			_model = _x select 0;
-			_samples = _x select 1;
-			ALIVE_map_index_choice = "";
-			// createDialog "ALiVE_map_index";
-			_i = 0;
-			while {ALIVE_map_index_choice == ""} do
-			{
-				_o = _samples select _i;
-				_id = _o select 0;
-				_pos = _o select 1;
-				_obj = _pos nearestObject _id;
-				[_obj, false] call ALiVE_fnc_addCamera;
-				sleep 5;
-				_i = _i + 1;
-				if (_i == count _samples) then {_i = 0;};
-			};
-
-		} foreach wrp_objects;
+		_result = [] call ALiVE_fnc_auto_staticObjects;
 
 	};
 
