@@ -7,3 +7,4 @@
 #include <Eventhandlers.hpp>
 #include <CfgHints.hpp>
 #include <\x\alive\addons\main\data\ui\main.hpp>
+#include <\x\alive\addons\main\static\dialog.hpp>
