@@ -26,7 +26,7 @@ class alive_indexing_list
 			access = 0; // Control access (0 - ReadAndWrite, 1 - ReadAndCreate, 2 - ReadOnly, 3 - ReadOnlyVerified)
 			idc = 5; // Control identification (without it, the control won't be displayed)
 			type = CT_LISTBOX; // Type is 5
-			style = ST_LEFT + LB_TEXTURES; // Style
+			style = 0x00 + 0x10; // Style
 			default = 0; // Control selected by default (only one within a display can be used)
 			blinkingPeriod = 0; // Time in which control will fade out and back in. Use 0 to disable the effect.
 
@@ -51,7 +51,7 @@ class alive_indexing_list
 			pictureColorSelect[] = {1,1,1,1}; // Selected picture color
 			pictureColorDisabled[] = {1,1,1,0.5}; // Disabled picture color
 
-			tooltip = "CT_LISTBOX"; // Tooltip text
+			tooltip = "Choose Object Category"; // Tooltip text
 			tooltipColorShade[] = {0,0,0,1}; // Tooltip background color
 			tooltipColorText[] = {1,1,1,1}; // Tooltip text color
 			tooltipColorBox[] = {1,1,1,1}; // Tooltip frame color
