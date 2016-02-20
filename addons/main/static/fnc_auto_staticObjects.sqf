@@ -30,12 +30,10 @@ _categories = [
 	ALIVE_map_index_choice = "";
 	_i = 0;
 
-
-
-	/* createDialog "alive_indexing_list";
+	createDialog "alive_indexing_list";
 	{
 		lbAdd [(findDisplay 1601) displayCtrl 1, _x];
-	} foreach _categories; */
+	} foreach _categories;
 
 	while {ALIVE_map_index_choice == ""} do
 	{
@@ -47,17 +45,18 @@ _categories = [
 
 		_cam = [_obj, false, "HIGH"] call ALiVE_fnc_addCamera;
 		[_cam, true] call ALIVE_fnc_startCinematic;
-
-		diag_log str(_obj);
-		hint str(typeof _obj);
-
+		cutText [format["Object: %1, Model: %2", typeof _obj, str(_model)],"PLAIN DOWN"];
 		// ["ALiVE Indexer", format["Object: %2<br/>Model: %1", _model, typeof _obj]] call ALiVE_fnc_sendHint;
 
-		[_cam,_obj,4] call ALIVE_fnc_staticShot;
-		sleep 4;
+		[_cam,_obj,2] call ALIVE_fnc_chaseShot;
+		sleep 2;
 		camDestroy _cam;
 		_i = _i + 1;
 		if (_i == count _samples) then {ALIVE_map_index_choice = "1";};
 	};
 
+	// Once choice made, record choice in array
+
 } foreach wrp_objects;
+
+// Dump arrays to extension that can write the staticData file

@@ -185,7 +185,7 @@ namespace ALiVEClient
                     string folder = Path.Combine(root, "indexing");
 
                     // Map Name
-                    string mapName = callParams[1].ToString(); // "altis"
+                    string mapName = callParams[1].ToString().ToLower(); // "altis"
 
                     // Log file
                     string logfile = Path.Combine(folder, mapName + "\\log.txt");
@@ -325,7 +325,7 @@ namespace ALiVEClient
                 {
                     result = "FALSE";
                     // Map Name
-                    string mapName = callParams[0].ToString(); // "altis"
+                    string mapName = callParams[0].ToString().ToLower(); // "altis"
 
                     // Path to indexing
                     string file = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "@ALiVE\\indexing\\" + mapName + "\\main\\static\\" + mapName + "_staticData.sqf");
@@ -345,7 +345,7 @@ namespace ALiVEClient
                     // Creates the Static data entry for the map
 
                     // Map Name
-                    string mapName = callParams[0].ToString(); // "altis"
+                    string mapName = callParams[0].ToString().ToLower(); // "altis"
 
                     // Directories
                     string mil_cluster_path = "@ALiVE\\indexing\\" + mapName + "\\mil_placement\\clusters\\";
@@ -365,7 +365,7 @@ namespace ALiVEClient
                 {
                     result = "ERROR";
                     // Map Name
-                    string mapName = callParams[0].ToString(); // "altis"
+                    string mapName = callParams[0].ToString().ToLower(); // "altis"
                     string idata = callParams[1].ToString();
                     string analysis_path = "@ALiVE\\indexing\\" + mapName + "\\fnc_analysis\\data\\";
                     string analysis_file = analysis_path + "data." + mapName + ".sqf";
@@ -380,7 +380,7 @@ namespace ALiVEClient
                     result = "ERROR";
 
                     // Map Name
-                    string mapName = callParams[0].ToString(); // "altis"
+                    string mapName = callParams[0].ToString().ToLower(); // "altis"
                     string type = callParams[1].ToString();
                     string idata = callParams[2].ToString();
 
@@ -417,7 +417,7 @@ namespace ALiVEClient
                     result = "ERROR";
 
                     // Map Name
-                    string mapName = callParams[0].ToString(); // "altis"
+                    string mapName = callParams[0].ToString().ToLower(); // "altis"
                     string type = callParams[1].ToString();
                     string idata = callParams[2].ToString();
 
