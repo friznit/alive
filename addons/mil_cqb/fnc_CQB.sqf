@@ -1284,7 +1284,7 @@ switch(_operation) do {
 							{
 								_grp = _x;
 
-	                            if !(isnil "_grp") then {
+	                            if !(isnil "_grp" || {isnull _grp}) then {
 		                            _leader = leader _grp;
 
 		                            // get house in question
