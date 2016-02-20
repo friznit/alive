@@ -43,7 +43,8 @@ _path = _this select 0;
 	[">>>>>>>>>>>>>>>>>> Starting indexing for %1 map", worldName] call ALiVE_fnc_dump;
 
 	// Create parsed objects file for map
-	_result = "ALiVEClient" callExtension format["StartIndex~%1|%2",_path, worldName];
+	// _result = "ALiVEClient" callExtension format["StartIndex~%1|%2",_path, worldName];
+	_result = "SUCCESS";
 
 	If (_result != "SUCCESS") exitwith {
 		[">>>>>>>>>>>>>>>>>> There was a problem, exiting indexing"] call ALiVE_fnc_dump;
@@ -62,7 +63,7 @@ _path = _this select 0;
 		["Tuplindexinator","Starting Object Categorization"] call ALiVE_fnc_sendHint;
 		[">>>>>>>>>>>>>>>>>> Starting Object Categorization"] call ALiVE_fnc_dump;
 
-		_result = [] call ALiVE_fnc_auto_staticObjects;
+		[] call ALiVE_fnc_auto_staticObjects;
 
 	};
 

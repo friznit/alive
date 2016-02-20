@@ -93,7 +93,7 @@ class alive_indexing_list
 				color[] = {1,1,1,1}; // Scrollbar color
 			};
 
-			onLBDblClick = "systemChat format["%1 allocated to %2", wrp_model, (_this select 0) lbtext (lbCurSel 1)]; ALIVE_map_index_choice = lbCurSel 1; false";
+			onLBDblClick = "systemChat format['%1 allocated to %2', ALiVE_wrp_model, (_this select 0) lbtext (lbCurSel 1)]; ALIVE_map_index_choice = lbCurSel 1; false";
 
 		};
 	};

@@ -29,6 +29,7 @@ _categories = [
 } foreach _categories;
 
 createDialog "alive_indexing_list";
+// noesckey = (findDisplay 1601) displayAddEventHandler ["KeyDown", "if ((_this select 1) == 1) then { true }"];
 {
 	private ["_index"];
 	_index = ((findDisplay 1601) displayCtrl 1) lbAdd (_x select 1);
@@ -39,7 +40,7 @@ createDialog "alive_indexing_list";
 	private ["_model","_samples","_idc"];
 	_model = _x select 0;
 	_samples = _x select 1;
-	wrp_model = _model;
+	ALiVE_wrp_model = _model;
 	ALIVE_map_index_choice = 99;
 	_i = 0;
 
@@ -51,10 +52,9 @@ createDialog "alive_indexing_list";
 		_pos = _o select 1;
 		_obj = _pos nearestObject _id;
 
-
 		_cam = [_obj, false, "HIGH"] call ALiVE_fnc_addCamera;
 		[_cam, true] call ALIVE_fnc_startCinematic;
-		cutText [format["Object: %1, Model: %2", typeof _obj, str(_model)],"PLAIN DOWN"];
+		cutText [format["Progress:%3/%4 - Object: %1, Model: %2", typeof _obj, str(_model), _i, count wrp_objects],"PLAIN DOWN"];
 
 		[_cam,_obj,2] call ALIVE_fnc_chaseShot;
 		sleep 2;
@@ -68,5 +68,19 @@ createDialog "alive_indexing_list";
 
 } foreach wrp_objects;
 
-closeDialog 0
+// (findDisplay 1601) displayRemoveEventHandler ["KeyDown", noesckey];
+closeDialog 0;
+
 // Dump arrays to extension that can write the staticData file
+{
+	private ["_array","_arrayActual"];
+	_array = _x select 0;
+	_arrayActual = call compile _array;
+	diag_log format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
+	"ALiVEClient" callExtension format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
+
+} foreach _categories;
+
+"ALiVEClient" callExtension format['staticData~%1|};',worldName];
+
+true
