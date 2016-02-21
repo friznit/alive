@@ -18,6 +18,16 @@ class CfgFunctions {
                 file = "\x\alive\addons\ui\menu\fnc_displayMenu.sqf";
                 recompile = RECOMPILE;
             };
+            class RscDisplayLoadingALiVE {
+                description = "Hook loading screen";
+                file = "\x\alive\addons\ui\fnc_RscDisplayLoadingALiVE.sqf";
+                recompile = RECOMPILE;
+            };
+            class RscDisplayMPInterruptALiVE {
+                description = "Hook MP interrupt screen";
+                file = "\x\alive\addons\ui\fnc_RscDisplayMPInterruptALiVE.sqf";
+                recompile = RECOMPILE;
+            };
         };
     };
 };

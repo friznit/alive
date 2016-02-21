@@ -58,17 +58,28 @@ class cfgScriptPaths
 	alive = "\x\alive\addons\UI\";
 };
 
+class Extended_DisplayLoad_Eventhandlers 
+{
+	class RscDisplayLoadMission 
+	{
+		GVAR(onload) = QUOTE([(_this select 0)] call COMPILE_FILE(fnc_rscDisplayLoadingALiVE));
+	};
+	class RscDisplayMPInterrupt 
+	{
+		GVAR(onload) = QUOTE([(_this select 0)] call COMPILE_FILE(fnc_rscDisplayMPInterruptALiVE));
+	};
+};
+
 class RscDisplayLoadMission: RscStandardDisplay
 {
-	onLoad = "[""onLoad"",_this,""RscDisplayLoadingALIVE"",'Loading'] call compile preprocessfilelinenumbers ""\x\alive\addons\UI\initDisplay.sqf""";
 	class controls
 	{
 		class ALIVE_Logo: RscPictureKeepAspect
 		{
 			idc = 1202;
 			text = "\x\alive\addons\UI\logo_alive.paa";
-			x = 0.835156 * safezoneW + safezoneX;
-			y = 0.841 * safezoneH + safezoneY;
+			x = 0.01 * safezoneW + safezoneX;
+			y = 0.8 * safezoneH + safezoneY;
 			w = 0.154687 * safezoneW;
 			h = 0.143 * safezoneH;
 			colorText[] = {1,1,1,0.5};
@@ -106,8 +117,6 @@ class RscDisplayMain: RscStandardDisplay
 
 class RscDisplayMPInterrupt: RscStandardDisplay
 {
-	// Needing to do this due to broken serverCommandAvailable in 1.32
-	onLoad = "[""onLoad"",_this,""RscDisplayMPInterruptALIVE"",'Loading'] call compile preprocessfilelinenumbers ""\x\alive\addons\UI\initDisplay.sqf""";	
 	class controls
 	{
 		delete ButtonAbort;
