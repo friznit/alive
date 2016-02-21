@@ -60,7 +60,7 @@ class cfgScriptPaths
 
 class Extended_DisplayLoad_Eventhandlers 
 {
-	class RscDisplayLoadMission 
+	class RscDisplayLoading 
 	{
 		GVAR(onload) = QUOTE([(_this select 0)] call COMPILE_FILE(fnc_rscDisplayLoadingALiVE));
 	};
