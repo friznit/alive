@@ -1,4 +1,4 @@
-private ["_categories"];
+private ["_categories","_result"];
 
 _categories = [
 	["ALIVE_Indexing_Blacklist","Blacklist"],
@@ -54,10 +54,10 @@ createDialog "alive_indexing_list";
 
 		_cam = [_obj, false, "HIGH"] call ALiVE_fnc_addCamera;
 		[_cam, true] call ALIVE_fnc_startCinematic;
-		cutText [format["Progress:%3/%4 - Object: %1, Model: %2", typeof _obj, str(_model), _i, count wrp_objects],"PLAIN DOWN"];
+		cutText [format["Progress:%3/%4 - Object: %1, Model: %2", typeof _obj, str(_model), _foreachIndex + 1, count wrp_objects],"PLAIN DOWN"];
 
 		[_cam,_obj,2] call ALIVE_fnc_chaseShot;
-		sleep 2;
+		sleep 1;
 		camDestroy _cam;
 		_i = _i + 1;
 		if (_i == count _samples) then {_i = 0;};
@@ -73,14 +73,16 @@ closeDialog 0;
 
 // Dump arrays to extension that can write the staticData file
 {
-	private ["_array","_arrayActual"];
+	private ["_array","_arrayActual","_result"];
 	_array = _x select 0;
 	_arrayActual = call compile _array;
-	diag_log format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
-	"ALiVEClient" callExtension format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
+	//diag_log format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
+	_result = "ALiVEClient" callExtension format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
+	//diag_log str(_result);
 
 } foreach _categories;
 
-"ALiVEClient" callExtension format['staticData~%1|};',worldName];
+_result = "ALiVEClient" callExtension format['staticData~%1|};',worldName];
+// diag_log str(_result);
 
 true

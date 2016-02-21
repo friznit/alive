@@ -43,7 +43,7 @@ class alive_indexing_list
 
 			x = 0; // Horizontal coordinates
 			y = 0 * GUI_GRID_CENTER_H + GUI_GRID_CENTER_Y; // Vertical coordinates
-			w = 15 * GUI_GRID_CENTER_W; // Width
+			w = 10 * GUI_GRID_CENTER_W; // Width
 			h = 21 * GUI_GRID_CENTER_H; // Height
 
 			default = 0; // Control selected by default (only one within a display can be used)

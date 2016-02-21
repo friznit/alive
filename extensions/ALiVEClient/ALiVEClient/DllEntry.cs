@@ -326,16 +326,23 @@ namespace ALiVEClient
                     result = "FALSE";
                     // Map Name
                     string mapName = callParams[0].ToString().ToLower(); // "altis"
+                    string path = Path.Combine(System.IO.Directory.GetCurrentDirectory(),"@ALiVE\\indexing\\" + mapName + "\\main\\static\\");
 
                     // Path to indexing
-                    string file = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "@ALiVE\\indexing\\" + mapName + "\\main\\static\\" + mapName + "_staticData.sqf");
+                    string file = path + mapName + "_staticData.sqf";
                     if (!File.Exists(file))
                     {
-                        result = "SUCCESS";
+                        // Create folder structure for static data
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+                        result = "NO FILE";
                         break;
                     }
                     else
                     {
+                        result = "SUCCESS";
                         break;
                     }
                 }
@@ -451,39 +458,29 @@ namespace ALiVEClient
                     if (!File.Exists(static_file))
                     {
                         // Setup initial string to write
-                        string start = String.Format(@"
-                            private[""_worldName""];\n
-                            _worldName = worldName;\n
-                            [""ALiVE SETTING UP MAP: {0}""] call ALIVE_fnc_dump;\n
-                            \n
-                            ALIVE_airBuildingTypes = [];\n
-                            ALIVE_militaryParkingBuildingTypes = [];\n
-                            ALIVE_militarySupplyBuildingTypes = [];\n
-                            ALIVE_militaryHQBuildingTypes = [];\n
-                            ALIVE_militaryAirBuildingTypes = [];\n
-                            ALIVE_civilianAirBuildingTypes = [];\n
-                            ALIVE_militaryHeliBuildingTypes = [];\n
-                            ALIVE_civilianHeliBuildingTypes = [];\n
-                            ALIVE_militaryBuildingTypes = [];\n
-                            ALIVE_civilianPopulationBuildingTypes = [];\n
-                            ALIVE_civilianHQBuildingTypes = [];\n
-                            ALIVE_civilianPowerBuildingTypes = [];\n
-                            ALIVE_civilianCommsBuildingTypes = [];\n
-                            ALIVE_civilianMarineBuildingTypes = [];\n
-                            ALIVE_civilianRailBuildingTypes = [];\n
-                            ALIVE_civilianFuelBuildingTypes = [];\n
-                            ALIVE_civilianConstructionBuildingTypes = [];\n
-                            ALIVE_civilianSettlementBuildingTypes = [];\n
-                            \n
-                            if(_worldName == ""{0}"") then {\n
-                       ", mapName);
-
-                        File.AppendAllText(static_file, start);
+                        try
+                        {
+                            string start = String.Format("private[\"_worldName\"];\r\n _worldName = tolower(worldName);\r\n [\"ALiVE SETTING UP MAP: {0}\"] call ALIVE_fnc_dump;\r\n ALIVE_Indexing_Blacklist = [];\r\n ALIVE_airBuildingTypes = [];\r\n ALIVE_militaryParkingBuildingTypes = [];\r\n ALIVE_militarySupplyBuildingTypes = [];\r\n ALIVE_militaryHQBuildingTypes = [];\r\n ALIVE_militaryAirBuildingTypes = [];\r\n ALIVE_civilianAirBuildingTypes = [];\r\n ALIVE_militaryHeliBuildingTypes = [];\r\n ALIVE_civilianHeliBuildingTypes = [];\r\n ALIVE_militaryBuildingTypes = [];\r\n ALIVE_civilianPopulationBuildingTypes = [];\r\n ALIVE_civilianHQBuildingTypes = [];\r\n ALIVE_civilianPowerBuildingTypes = [];\r\n ALIVE_civilianCommsBuildingTypes = [];\r\n ALIVE_civilianMarineBuildingTypes = [];\r\n ALIVE_civilianRailBuildingTypes = [];\r\n ALIVE_civilianFuelBuildingTypes = [];\r\n ALIVE_civilianConstructionBuildingTypes = [];\r\n ALIVE_civilianSettlementBuildingTypes = [];\r\n if(_worldName == \"{0}\") then {{\r\n", mapName);
+                            File.AppendAllText(static_file, start);
+                        }
+                        catch (FormatException foex)
+                        {
+                            result = foex.Message;
+                            break;
+                        }
                     }
 
-                    File.AppendAllText(static_file, idata);
-                    result = "SUCCESS";
-                    break;
+                    try
+                    {
+                        File.AppendAllText(static_file, idata + Environment.NewLine);
+                        result = "SUCCESS";
+                        break;
+                    }
+                    catch (FormatException foex)
+                    {
+                        result = foex.Message;
+                        break;
+                    }
                 }
                 default:
                     result = "UNKNOWN FUNCTION";
