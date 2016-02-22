@@ -33,7 +33,7 @@ PARAMS_1(_pos);
 DEFAULT_PARAM(1,_dist,2500);
 DEFAULT_PARAM(2,_includeHelicopters,false);
 
-_players = [] call BIS_fnc_listPlayers;
+_players = ([] call BIS_fnc_listPlayers) + allCurators;
 _anyInRange = false;
 
 scopeName "main";

@@ -1031,8 +1031,6 @@ switch(_operation) do {
                 _roadBlocks = parsenumber([_logic, "roadBlocks"] call MAINCLASS);
                 _debug = [_logic, "debug"] call MAINCLASS;
 
-                waituntil {sleep 0.3; !(isNil "ALiVE_fnc_AllCurators")};
-
 				while {count GVAR(ROADBLOCK_LOCATIONS) > 0} do {
 					private ["_timer"];
 

@@ -10,7 +10,10 @@ Sets a clientside loop that merges ZEUS module position globally with the local 
 This way all localities know about ZEUS modules position and server can spawn ALiVE AI when the curator 
 moves around with the cam without the use of PVS/PV/BUS and minimising network traffic.
 
-Notes: dynamic helperfunctions to be removed when commands are available in public, start/end loop if EH for "Zeus called" exists
+Notes:
+dynamic helperfunctions to be removed when commands are available in public, start/end loop if EH for "Zeus called" exists
+Important, enable  in Post Init during XEH_postInit.sqf!
+
 Parameters:
 none
 
@@ -28,16 +31,20 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-//Important, enable this init function in XEH_postInit.sqf! Disabled until ZEUS is stable!
+//Exit if Zeus not placed with an empty default function to save perf
+if !(["ModuleCurator_F"] call ALiVE_fnc_isModuleAvailable) exitwith {ALiVE_fnc_ZeusRegister = {}};
 
-//Only for backward-Compatibility, may be removed after release
-if !(["ModuleCurator_F"] call ALiVE_fnc_isModuleAvailable) exitwith {
-    ALiVE_fnc_ZeusRegister = {};
-    ALiVE_fnc_AllCurators = {[]};
+//Register dynamic helperfunction on all localities
+ALiVE_fnc_ZeusRegister = {
+    [_this] spawn {
+        private ["_unit"];
+        _unit = _this select 0;
+        {_x addCuratorEditableObjects [_unit]} foreach allCurators;
+    };
 };
 
 //BIS give me an EH when Zeus is active so I can start and end that loop
-//Only on clients
+//Run loop only on clients
 if (hasInterface) then {
     [] spawn {
 		private ["_curatorLogic","_curatorCamPos"];
@@ -56,14 +63,3 @@ if (hasInterface) then {
 		};
     };
 };
-
-//Dynamic Helperfunctions for all localities
-ALiVE_fnc_ZeusRegister = {
-    [_this] spawn {
-        private ["_unit"];
-        _unit = _this select 0;
-        {_x addCuratorEditableObjects [_unit]} foreach allCurators;
-    };
-};
-
-ALiVE_fnc_allCurators = {allCurators};
