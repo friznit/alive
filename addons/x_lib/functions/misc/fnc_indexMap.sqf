@@ -38,7 +38,7 @@ _path = _this select 0;
 
 	waitUntil{!isNull player};
 
-	["Tuplindexinator","Starting Map Index"] call ALiVE_fnc_sendHint;
+	["ALiVE Map Indexer","Starting Map Index"] call ALiVE_fnc_sendHint;
 
 	[">>>>>>>>>>>>>>>>>> Starting indexing for %1 map", worldName] call ALiVE_fnc_dump;
 
@@ -48,7 +48,7 @@ _path = _this select 0;
 
 	If (_result != "SUCCESS") exitwith {
 		[">>>>>>>>>>>>>>>>>> There was a problem, exiting indexing"] call ALiVE_fnc_dump;
-		["Tuplindexinator","There was a problem, exiting indexing"] call ALiVE_fnc_sendHint;
+		["ALiVE Map Indexer","There was a problem, exiting indexing"] call ALiVE_fnc_sendHint;
 	};
 
 	// Load in new object array
@@ -60,7 +60,7 @@ _path = _this select 0;
 
 	If (_result != "SUCCESS") then {
 
-		["Tuplindexinator","Starting Object Categorization"] call ALiVE_fnc_sendHint;
+		["ALiVE Map Indexer","Starting Object Categorization"] call ALiVE_fnc_sendHint;
 		[">>>>>>>>>>>>>>>>>> Starting Object Categorization"] call ALiVE_fnc_dump;
 
 		[] call ALiVE_fnc_auto_staticObjects;
@@ -73,7 +73,7 @@ _path = _this select 0;
 
 	forceMap true;
 
-	["Tuplindexinator","Generating Sector Data"] call ALiVE_fnc_sendHint;
+	["ALiVE Map Indexer","Generating Sector Data"] call ALiVE_fnc_sendHint;
 	[">>>>>>>>>>>>>>>>>> Generating Sector Data"] call ALiVE_fnc_dump;
 
 	_result = "ALiVEClient" callExtension format["startClusters~%1", worldName];
@@ -81,13 +81,13 @@ _path = _this select 0;
 	_handle = [] execVM "\x\alive\addons\fnc_analysis\tests\auto_runMapAnalysis.sqf";
 	waitUntil {sleep 0.3; scriptDone _handle};
 
-	["Tuplindexinator","Generating Clusters: Military Objectives."] call ALiVE_fnc_sendHint;
+	["ALiVE Map Indexer","Generating Clusters: Military Objectives."] call ALiVE_fnc_sendHint;
 	[">>>>>>>>>>>>>>>>>> Generating Clusters:  Military Objectives."] call ALiVE_fnc_dump;
 
 	_handle = [] execVM "\x\alive\addons\mil_placement\tests\auto_clusterGeneration.sqf";
 	waitUntil {sleep 0.3; scriptDone _handle};
 
-	["Tuplindexinator","Generating Clusters: Civilian Objectives."] call ALiVE_fnc_sendHint;
+	["ALiVE Map Indexer","Generating Clusters: Civilian Objectives."] call ALiVE_fnc_sendHint;
 	[">>>>>>>>>>>>>>>>>> Generating Clusters: Civilian Objectives."] call ALiVE_fnc_dump;
 
 	_handle =  [] execVM "\x\alive\addons\civ_placement\tests\auto_clusterGeneration.sqf";
@@ -95,19 +95,19 @@ _path = _this select 0;
 
 	// Merge sector/cluster data
 
-	["Tuplindexinator","Generating Clusters: Merging Military Sector/Cluster Data."] call ALiVE_fnc_sendHint;
+	["ALiVE Map Indexer","Generating Clusters: Merging Military Sector/Cluster Data."] call ALiVE_fnc_sendHint;
 	[">>>>>>>>>>>>>>>>>> Generating Clusters: Merging Military Sector/Cluster Data."] call ALiVE_fnc_dump;
 
 	_handle = [] execVM "\x\alive\addons\fnc_analysis\tests\auto_appendClustersMil.sqf";
 	waitUntil {sleep 0.3; scriptDone _handle};
 
-	["Tuplindexinator","Generating Clusters: Merging Civilian Sector/Cluster Data."] call ALiVE_fnc_sendHint;
+	["ALiVE Map Indexer","Generating Clusters: Merging Civilian Sector/Cluster Data."] call ALiVE_fnc_sendHint;
 	[">>>>>>>>>>>>>>>>>> Generating Clusters: Merging Civilian Sector/Cluster Data."] call ALiVE_fnc_dump;
 
 	_handle = [] execVM "\x\alive\addons\fnc_analysis\tests\auto_appendClustersCiv.sqf";
 	waitUntil {sleep 0.3; scriptDone _handle};
 
-	["Tuplindexinator","Map Indexing Completed!"] call ALiVE_fnc_sendHint;
+	["ALiVE Map Indexer","Map Indexing Completed!"] call ALiVE_fnc_sendHint;
 	[">>>>>>>>>>>>>>>>>> Map Indexing Completed!"] call ALiVE_fnc_dump;
 
 	forceMap false;
