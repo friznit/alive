@@ -25,7 +25,7 @@ class RscDisplayStart: RscStandardDisplay
 		class Logo: RscPictureKeepAspect
 		{
 			idc = 1200;
-			text = "\x\alive\addons\UI\logo_alive.paa";
+			// text = "\x\alive\addons\UI\logo_alive.paa";
 			x = "0.25 * safezoneW";
 			y = "0.3125 * safezoneH";
 			w = "0.5 * safezoneW";
