@@ -1,4 +1,6 @@
-private ["_categories","_result"];
+private ["_categories","_result","_default"];
+
+_default = _this select 0;
 
 _categories = [
 
@@ -29,51 +31,170 @@ _categories = [
 ];
 
 // Init arrays
-
-{
-	call compile format["%1 = []", _x select 0];
-} foreach _categories;
-
-{
-	private ["_model","_samples","_idc"];
-	_model = _x select 0;
-	_samples = _x select 1;
-	ALiVE_wrp_model = _model;
-	ALIVE_map_index_choice = 99;
-	_i = 0;
-	createDialog "alive_indexing_list";
-	while {ALIVE_map_index_choice == 99} do
+if (!_default) then {
 	{
-		private ["_o","_id","_pos","_obj","_cam"];
-		_o = _samples select _i;
-		_id = _o select 0;
-		_pos = _o select 1;
-		_obj = _pos nearestObject _id;
+		call compile format["%1 = []", _x select 0];
+	} foreach _categories;
 
-		_cam = [_obj, false, "HIGH"] call ALiVE_fnc_addCamera;
-		[_cam, true] call ALIVE_fnc_startCinematic;
-		cutText [format["Progress:%3/%4 - Object: %1, Model: %2", typeof _obj, str(_model), _foreachIndex + 1, count wrp_objects],"PLAIN DOWN"];
+	{
+		private ["_model","_samples","_idc"];
+		_model = _x select 0;
+		_samples = _x select 1;
+		ALiVE_wrp_model = _model;
+		ALIVE_map_index_choice = 99;
+		_i = 0;
+		createDialog "alive_indexing_list";
+		while {ALIVE_map_index_choice == 99} do
+		{
+			private ["_o","_id","_pos","_obj","_cam"];
+			_o = _samples select _i;
+			_id = _o select 0;
+			_pos = _o select 1;
+			_obj = _pos nearestObject _id;
 
-		[_cam,_obj,2] call ALIVE_fnc_chaseShot;
-		sleep 1;
-		camDestroy _cam;
-		_i = _i + 1;
-		if (_i == count _samples) then {_i = 0;};
-	};
+			_cam = [_obj, false, "HIGH"] call ALiVE_fnc_addCamera;
+			[_cam, true] call ALIVE_fnc_startCinematic;
+			cutText [format["Progress:%3/%4 - Object: %1, Model: %2", typeof _obj, str(_model), _foreachIndex + 1, count wrp_objects],"PLAIN DOWN"];
 
-	// Once choice made, record choice in array
-	// call compile format['%1 pushBack "%2"', ((_categories select ALIVE_map_index_choice) select 0), _model];
-	// Reset Checkboxes
-	closeDialog 0;
+			[_cam,_obj,2] call ALIVE_fnc_chaseShot;
+			sleep 1;
+			camDestroy _cam;
+			_i = _i + 1;
+			if (_i == count _samples) then {_i = 0;};
+		};
 
-} foreach wrp_objects;
+		// Once choice made, record choice in array
+		// call compile format['%1 pushBack "%2"', ((_categories select ALIVE_map_index_choice) select 0), _model];
+		// Reset Checkboxes
+		closeDialog 0;
+
+	} foreach wrp_objects;
+} else {
+
+
+	ALIVE_Indexing_Blacklist = [];
+
+	ALIVE_heliBuildingTypes = [
+		"helipads"
+	];
+
+ 	ALIVE_airBuildingTypes = [
+    	"hangar"
+    ];
+
+    ALIVE_militaryParkingBuildingTypes = [
+    	"bunker",
+    	"cargo_house_v",
+    	"cargo_patrol_",
+    	"research"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = [
+    	"barrack",
+    	"cargo_hq_",
+    	"miloffices",
+    	"cargo_house_v",
+    	"cargo_patrol_",
+    	"research"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = [
+    	"barrack",
+    	"cargo_hq_",
+    	"miloffices",
+    	"cargo_tower"
+    ];
+
+    ALIVE_militaryAirBuildingTypes = [
+    	"tenthangar"
+    ];
+
+    ALIVE_civilianAirBuildingTypes = [
+    	"hangar",
+    	"runway_beton",
+    	"runway_main",
+    	"runway_secondary"
+    ];
+
+    ALIVE_militaryHeliBuildingTypes = [
+    	"helipads"
+    ];
+
+    ALIVE_civilianHeliBuildingTypes = [
+    	"helipads"
+    ];
+
+    ALIVE_militaryBuildingTypes = [
+    	"airport_tower",
+    	"radar",
+    	"bunker",
+    	"cargo_house_v",
+    	"cargo_patrol_",
+    	"research",
+    	"mil_wall",
+    	"fortification",
+    	"razorwire",
+    	"dome"
+    ];
+
+    ALIVE_civilianPopulationBuildingTypes = [
+        "house_",
+        "shop_",
+        "garage_",
+        "stone_"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = [
+    	"offices"
+    ];
+
+    ALIVE_civilianPowerBuildingTypes = [
+    	"dp_main",
+    	"spp_t"
+    ];
+
+    ALIVE_civilianCommsBuildingTypes = [
+    	"communication_f",
+    	"ttowerbig_"
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = [
+    	"crane",
+    	"lighthouse",
+    	"nav_pier",
+    	"pier_"
+    ];
+
+    ALIVE_civilianRailBuildingTypes = [
+
+    ];
+
+    ALIVE_civilianFuelBuildingTypes = [
+    	"fuelstation",
+    	"dp_bigtank"
+    ];
+
+    ALIVE_civilianConstructionBuildingTypes = [
+    	"wip",
+    	"bridge_highway"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = [
+        "church",
+    	"hospital",
+    	"amphitheater",
+    	"chapel_v",
+    	"households"
+    ];
+};
+
 
 // Dump arrays to extension that can write the staticData file
 {
 	private ["_array","_arrayActual","_result"];
 	_array = _x select 0;
 	_arrayActual = call compile _array;
-	//diag_log format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
+	diag_log format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
 	_result = "ALiVEClient" callExtension format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
 	//diag_log str(_result);
 

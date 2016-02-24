@@ -28,13 +28,15 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_path"];
+private ["_path","_default"];
 
 _path = _this select 0;
+_default = _this select 1;
 
-[_path] spawn {
-	private ["_path","_file","_objects","_result","_handle"];
+[_path,_default] spawn {
+	private ["_path","_file","_objects","_result","_handle","_default"];
 	_path = _this select 0;
+	_default = _this select 1;
 
 	waitUntil{!isNull player};
 
@@ -63,7 +65,7 @@ _path = _this select 0;
 		["ALiVE Map Indexer","Starting Object Categorization"] call ALiVE_fnc_sendHint;
 		[">>>>>>>>>>>>>>>>>> Starting Object Categorization"] call ALiVE_fnc_dump;
 
-		[] call ALiVE_fnc_auto_staticObjects;
+		[_default] call ALiVE_fnc_auto_staticObjects;
 
 	};
 
