@@ -77,6 +77,7 @@ switch (_taskState) do {
         _taskEnemySide = _taskEnemyFaction call ALiVE_fnc_factionSide;
         _taskEnemySide = [_taskEnemySide] call ALIVE_fnc_sideObjectToNumber;
         _taskEnemySide = [_taskEnemySide] call ALIVE_fnc_sideNumberToText;
+        _targetBuildings = [];
 
         // establish the location for the task
         // get enemy location based on input
@@ -195,15 +196,12 @@ switch (_taskState) do {
                 };
 	        };
         };
-
    
         if (isnil "_taskLocation") exitwith {["C2ISTAR - Task SabotageBuilding - No location selected!"] call ALiVE_fnc_Dump};
 
-        if (isnil "_targetBuildings" || {(count _targetBuildings) == 0}) then {_targetBuildings = nearestObjects [_taskLocation,["House_F"],500]};        
-		
-        if (count _targetBuildings == 0) exitwith {["C2ISTAR - Task SabotageBuilding - There are no strategically relevant buildings to attack at the target area!"] call ALiVE_fnc_Dump};
-
-		//["Sorting buildings by height..."] call ALiVE_fnc_DumpR;
+        //["Sorting buildings by height..."] call ALiVE_fnc_DumpR;
+        //Led to Lampposts being selected, now going for buildings with most buildingpos and fallback to random building within 500m
+        /*
         _targetBuildings = [_targetBuildings,[],{
             
             _maxHeight = -999;
@@ -218,7 +216,65 @@ switch (_taskState) do {
 	        _maxHeight
             
         },"DESCEND"] call BIS_fnc_sortBy;
+
+		//Filter broken 
+        _targetBuildings = [_targetBuildings,[],{
+            _bbr = boundingBoxReal _x;
+	        _p1 = _bbr select 0; _p2 = _bbr select 1;
+			abs ((_p2 select 2) - (_p1 select 2));
+        },"DESCEND", {
+            alive _x &&
+            {_x isKindOf "House_Small_F"} &&
+            {!((getText(configfile >> "CfgVehicles" >> (typeOf _x) >> "destrType")) == "DestructNo")}
+        }] call BIS_fnc_sortBy;
+		
+        _targetBuildings = [_targetBuildings,[],{
+            
+			count ([getPosATL _x, 10] call ALIVE_fnc_findIndoorHousePositions);
+
+        },"DESCEND", {
+            _alive = alive _x;
+            _house = _x isKindOf "House_Small_F";
+            _destructable = !((getText(configfile >> "CfgVehicles" >> (typeOf _x) >> "destrType")) == "DestructNo");
+            _hasBuildingPos = count ([getPosATL _x, 10] call ALIVE_fnc_findIndoorHousePositions) > 0;
+            
+            _result = _alive && _house && _destructable && _hasBuildingPos;
+            _result;
+            
+        }] call BIS_fnc_sortBy;
+        */
         
+        //Pre-filter Array since BIS_fnc_SortBy is broken atm.
+        {
+            private ["_alive", "_house", "_destructable", "_hasBuildingPos"];
+            
+	        _alive = alive _x;
+	        _house = _x isKindOf "House_F";
+	        _destructable = !((getText(configfile >> "CfgVehicles" >> (typeOf _x) >> "destrType")) == "DestructNo");
+	        _hasBuildingPos = count ([getPosATL _x, 10] call ALIVE_fnc_findIndoorHousePositions) > 0;
+
+            if !(_alive && {_house} && {_destructable} && {_hasBuildingPos}) then {_targetBuildings set [_foreachindex,objNull]};
+        } foreach _targetBuildings;
+        _targetBuildings = _targetBuildings - [objNull];
+
+		//Sort by housepositions
+        _targetBuildings = [_targetBuildings,[],{
+            
+			count ([getPosATL _x, 10] call ALIVE_fnc_findIndoorHousePositions);
+
+        },"DESCEND"] call BIS_fnc_sortBy;
+  
+        
+        //Move on                        
+        if (count _targetBuildings < 1) then {
+            ["C2ISTAR - No enterable buildings found for sabotage task! Defaulting to random house within 500m"] call ALiVE_fnc_Dump;
+
+			_targetBuildings = nearestObjects [_taskLocation,["House_F"],500];
+	        _targetBuildings call BIS_fnc_arrayShuffle;            
+        };
+
+        if (count _targetBuildings == 0) exitwith {["C2ISTAR - Task SabotageBuilding - There are no buildings to attack at the target area!"] call ALiVE_fnc_Dump};
+
         _targetBuilding = _targetBuildings select 0;
 
         private["_targetPosition","_targetID","_targetDisplayType"];
