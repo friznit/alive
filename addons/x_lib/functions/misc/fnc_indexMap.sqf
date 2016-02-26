@@ -54,7 +54,7 @@ _default = _this select 1;
 	};
 
 	// Load in new object array
-	_file = format["@ALiVE\indexing\%1\fnc_strategic\indexes\objects.%1.sqf", worldName];
+	_file = format["@ALiVE\indexing\%1\fnc_strategic\indexes\objects.%1.sqf", tolower(worldName)];
 	call compile (preprocessFile _file);
 
 	// Check for static data
