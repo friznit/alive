@@ -269,7 +269,11 @@ switch (_taskState) do {
         if (count _targetBuildings < 1) then {
             ["C2ISTAR - No enterable buildings found for sabotage task! Defaulting to random house within 500m"] call ALiVE_fnc_Dump;
 
-			_targetBuildings = nearestObjects [_taskLocation,["House_F"],500];
+            _targetBuildings = _taskLocation nearObjects ["House_F",500];
+            _lamps = _taskLocation nearObjects ["Lamps_base_F",500];
+            
+            _targetBuildings = _targetBuildings - _lamps;
+            
 	        _targetBuildings call BIS_fnc_arrayShuffle;            
         };
 
@@ -291,11 +295,12 @@ switch (_taskState) do {
 	    _points = 0;
 	    _list = [];
 	    {
-	        private ["_object"];
+	        private ["_object","_model"];
 	        
-	        _object = _x;
+            _object = _x;
+            _model = getText(configfile >> "CfgVehicles" >> typeOf _object >> "model");
 	        
-	        if (!(isnil "_object") && {!isNull _x}) then {
+	        if (!(isnil "_object") && {!isNull _object}) then {
                 
 				{
 				    _type = _x select 0;
@@ -304,7 +309,10 @@ switch (_taskState) do {
 				    
 				    if (
                     	!(isnil {call compile _type}) &&
-                    	{{([toLower (typeOf _object), toLower _x] call CBA_fnc_find) > -1} count (call compile _type) > 0}
+                    	{
+                            {([toLower (_model), toLower _x] call CBA_fnc_find) > -1} count (call compile _type) > 0 || 
+                            {{([toLower (typeOf _object), toLower _x] call CBA_fnc_find) > -1} count (call compile _type) > 0} //Remove when all indexes have been rebuilt with CLIT
+                        }
                     ) exitwith {
                         _buildingType = _typeText;
                         _reward = _points;
@@ -331,7 +339,7 @@ switch (_taskState) do {
                     ["ALIVE_civilianPopulationBuildingTypes","civilian population building",10],
 					["ALIVE_civilianRailBuildingTypes","rail constructions",30],
 					["ALIVE_civilianConstructionBuildingTypes","construction site",10],
-					["ALIVE_civilianSettlementBuildingTypes1","civilian settlement building",10]
+					["ALIVE_civilianSettlementBuildingTypes","civilian settlement building",10]
 				];
             };
 	    } foreach [_targetBuilding];
