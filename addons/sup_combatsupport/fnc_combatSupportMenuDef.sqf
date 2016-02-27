@@ -45,7 +45,7 @@ _menuName = "";
 _menuRsc = "popup";
 _items = assignedItems player + items player;
 _backpacks = Backpack player;
-_userItems = [NEO_radioLogic getVariable ["combatsupport_item","LaserDesignator"],"ALIVE_Tablet"];
+_userItems = [NEO_radioLogic getVariable ["combatsupport_item","LaserDesignator"]];
 //Finds selected userItem-string(s) in assignedItems
 _result = (({([toLower(str(_items + [_backpacks])), toLower(_x)] call CBA_fnc_find) > -1} count _userItems) > 0);
 

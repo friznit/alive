@@ -50,12 +50,12 @@ _userItems = [[MOD(MIL_C2ISTAR),"c2_item"] call ALIVE_fnc_C2ISTAR,"ALIVE_Tablet"
 _result = (({([toLower(str(_items + [_backpacks])), toLower(_x)] call CBA_fnc_find) > -1} count _userItems) > 0);
 
 if ([QMOD(SUP_PLAYER_RESUPPLY)] call ALiVE_fnc_isModuleAvailable) then {
-	_prUserItems = [[MOD(SUP_PLAYER_RESUPPLY),"pr_item"] call ALIVE_fnc_PR,"ALIVE_Tablet"];
+	_prUserItems = [[MOD(SUP_PLAYER_RESUPPLY),"pr_item"] call ALIVE_fnc_PR];
 	_otherResult = (({([toLower(str(_items + [_backpacks])), toLower(_x)] call CBA_fnc_find) > -1} count _prUserItems) > 0);
 };
 
 if ([QMOD(SUP_COMBATSUPPORT)] call ALiVE_fnc_isModuleAvailable) then {
-	_csUserItems = [NEO_radioLogic getVariable ["combatsupport_item","LaserDesignator"],"ALIVE_Tablet"];
+	_csUserItems = [NEO_radioLogic getVariable ["combatsupport_item","LaserDesignator"]];
 	_csResult = (({([toLower(str(_items + [_backpacks])), toLower(_x)] call CBA_fnc_find) > -1} count _csUserItems) > 0);
 };
 
