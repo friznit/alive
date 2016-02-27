@@ -426,9 +426,10 @@ SABOTAGE_fnc_handleSabotageLocal = {
     _list = [];
     _objectsSave = [];
     {
-        private ["_object"];
+        private ["_object","_model"];
         
         _object = _x;
+        _model = getText(configfile >> "CfgVehicles" >> typeOf _object >> "model");
         
         if (!(isnil "_object") && {!isNull _x}) then {
             
@@ -441,7 +442,10 @@ SABOTAGE_fnc_handleSabotageLocal = {
 
 			    if (
                 	!(isnil {call compile _type}) &&
-                	{{([toLower (typeOf _object), toLower _x] call CBA_fnc_find) > -1} count (call compile _type) > 0}
+                	{
+                        {([toLower _model, toLower _x] call CBA_fnc_find) > -1} count (call compile _type) > 0 || 
+                        {{([toLower (typeOf _object), toLower _x] call CBA_fnc_find) > -1} count (call compile _type) > 0} //Remove when all indexes have been rebuilt with CLIT
+                    }
                 ) exitwith {
                     _buildingType = _typeText;
                     _list set [count _list, _object];
