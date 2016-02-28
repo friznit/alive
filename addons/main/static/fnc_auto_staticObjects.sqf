@@ -32,6 +32,7 @@ _categories = [
 
 // Init arrays
 if (!_default) then {
+	[">>>>>>>>>>>>>>>>>> Starting static data creation"] call ALiVE_fnc_dump;
 	{
 		call compile format["%1 = []", _x select 0];
 	} foreach _categories;
@@ -76,7 +77,7 @@ if (!_default) then {
 
 	} foreach wrp_objects;
 } else {
-
+	[">>>>>>>>>>>>>>>>>> Using default static data set"] call ALiVE_fnc_dump;
 
 	ALIVE_Indexing_Blacklist = [];
 
@@ -192,21 +193,128 @@ if (!_default) then {
     	"chapel_v",
     	"households"
     ];
+
+	ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + [
+        "hangar"
+    ];
+
+    ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [
+        "bunker"
+    ];
+
+    ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + [
+        "barrack",
+        "mil_house",
+        "mil_controltower"
+    ];
+
+    ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + [
+        "barrack",
+        "mil_house",
+        "mil_controltower"
+    ];
+
+    ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + [
+
+    ];
+
+    ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + [
+        "ss_hangar",
+        "hangar_2",
+        "hangar",
+        "runway_beton",
+        "runway_end",
+        "runway_main",
+        "runway_secondary"
+    ];
+
+    ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + [
+    ];
+
+    ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + [
+    ];
+
+    ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + [
+        "deerstand",
+        "vez"
+    ];
+
+    ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + [
+        "a_office01",
+        "a_office02",
+        "a_municipaloffice"
+    ];
+
+    ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + [
+        "pec_",
+        "powerstation",
+        "trafostanica"
+    ];
+
+    ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + [
+        "illuminanttower",
+        "vysilac_fm",
+        "telek",
+        "tvtower"
+    ];
+
+    ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + [
+        "crane",
+        "lighthouse",
+        "nav_pier",
+        "pier_",
+        "pier"
+    ];
+
+    ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + [
+        "rail_house",
+        "rail_station",
+        "rail_platform",
+        "rails_bridge",
+        "stationhouse"
+    ];
+
+    ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [
+        "fuelstation",
+        "expedice",
+        "indpipe",
+        "komin",
+        "ind_stack_big",
+        "ind_tankbig",
+        "fuel_tank_big"
+    ];
+
+    ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + [
+        "ind_mlyn_01",
+        "ind_pec_01",
+        "wip",
+        "sawmillpen",
+        "workshop"
+    ];
+
+    ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + [
+        "hospital",
+        "houseblock",
+        "generalstore",
+        "house"
+    ];
+
+    ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 };
 
 
 // Dump arrays to extension that can write the staticData file
+[">>>>>>>>>>>>>>>>>> Writing static data to file..."] call ALiVE_fnc_dump;
 {
 	private ["_array","_arrayActual","_result"];
 	_array = _x select 0;
 	_arrayActual = call compile _array;
-	// diag_log format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
+	diag_log format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
 	_result = "ALiVEClient" callExtension format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
 	//diag_log str(_result);
-
 } foreach _categories;
 
 _result = "ALiVEClient" callExtension format['staticData~%1|};',worldName];
 // diag_log str(_result);
-
+[">>>>>>>>>>>>>>>>>> Completed static data..."] call ALiVE_fnc_dump;
 true

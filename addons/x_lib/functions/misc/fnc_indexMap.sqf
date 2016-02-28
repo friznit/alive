@@ -45,6 +45,7 @@ _default = _this select 1;
 	[">>>>>>>>>>>>>>>>>> Starting indexing for %1 map", worldName] call ALiVE_fnc_dump;
 
 	// Create parsed objects file for map
+	[">>>>>>>>>>>>>>>>>> Calling DeWRP to get list of objects"] call ALiVE_fnc_dump;
 	_result = "ALiVEClient" callExtension format["StartIndex~%1|%2",_path, worldName];
 	//_result = "SUCCESS";
 
@@ -54,14 +55,16 @@ _default = _this select 1;
 	};
 
 	// Load in new object array
+	[">>>>>>>>>>>>>>>>>> Compiling list of objects from deWRP in wrp_objects array"] call ALiVE_fnc_dump;
 	_file = format["@ALiVE\indexing\%1\fnc_strategic\indexes\objects.%1.sqf", tolower(worldName)];
 	call compile (preprocessFile _file);
 
 	// Check for static data
+	[">>>>>>>>>>>>>>>>>> Checking for existing static data..."] call ALiVE_fnc_dump;
 	_result = "ALiVEClient" callExtension format["checkStatic~%1", worldName];
 
 	If (_result != "SUCCESS") then {
-
+		[">>>>>>>>>>>>>>>>>> No static data found"] call ALiVE_fnc_dump;
 		["ALiVE Map Indexer","Starting Object Categorization"] call ALiVE_fnc_sendHint;
 		[">>>>>>>>>>>>>>>>>> Starting Object Categorization"] call ALiVE_fnc_dump;
 
