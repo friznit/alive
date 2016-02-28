@@ -39,4 +39,4 @@ if (_enabled == 1) then {
 	call compile format["%1 = %1 - [ALiVE_wrp_model]",(_categories select _choice)];
 };
 
-systemchat format["%1 = %2",(_categories select _choice), call compile(_categories select _choice)];
+// systemchat format["%1 = %2",(_categories select _choice), call compile(_categories select _choice)];

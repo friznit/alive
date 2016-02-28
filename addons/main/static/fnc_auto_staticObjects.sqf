@@ -59,7 +59,7 @@ if (!_default) then {
 			_size = sizeOf (typeof _obj);
 			if (isnil "_size" || _size == 0) then {_size = 8};
 
-			diag_log str(_size);
+			// diag_log str(_size);
 
 			[_cam,_obj,2,false, -2 * _size, _size * 0.5] call ALIVE_fnc_chaseShot;
 
@@ -200,7 +200,7 @@ if (!_default) then {
 	private ["_array","_arrayActual","_result"];
 	_array = _x select 0;
 	_arrayActual = call compile _array;
-	diag_log format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
+	// diag_log format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
 	_result = "ALiVEClient" callExtension format['staticData~%1|%2 = %2 + %3;',worldName,_array, _arrayActual];
 	//diag_log str(_result);
 
