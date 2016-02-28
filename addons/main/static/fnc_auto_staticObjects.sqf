@@ -46,7 +46,7 @@ if (!_default) then {
 		createDialog "alive_indexing_list";
 		while {ALIVE_map_index_choice == 99} do
 		{
-			private ["_o","_id","_pos","_obj","_cam"];
+			private ["_o","_id","_pos","_obj","_cam","_size"];
 			_o = _samples select _i;
 			_id = _o select 0;
 			_pos = _o select 1;
@@ -56,7 +56,13 @@ if (!_default) then {
 			[_cam, true] call ALIVE_fnc_startCinematic;
 			cutText [format["Progress:%3/%4 - Object: %1, Model: %2", typeof _obj, str(_model), _foreachIndex + 1, count wrp_objects],"PLAIN DOWN"];
 
-			[_cam,_obj,2] call ALIVE_fnc_chaseShot;
+			_size = sizeOf (typeof _obj);
+			if (isnil "_size" || _size == 0) then {_size = 8};
+
+			diag_log str(_size);
+
+			[_cam,_obj,2,false, -2 * _size, _size * 0.5] call ALIVE_fnc_chaseShot;
+
 			sleep 1;
 			camDestroy _cam;
 			_i = _i + 1;

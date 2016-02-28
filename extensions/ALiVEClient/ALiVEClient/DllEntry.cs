@@ -248,6 +248,7 @@ namespace ALiVEClient
                     {
                         //Read in all lines from Index
                         var lines = File.ReadLines(indexFile);
+                        string objectslist = Environment.NewLine + "List of objects remaining:" + Environment.NewLine;
                         bool ignore = false;
                         foreach (var line in lines)
                         {
@@ -268,7 +269,7 @@ namespace ALiVEClient
                                 }
                                 else
                                 {
-                                    // lfile.WriteLine(String.Format(" ----- Writing : {0}", line));
+                                    objectslist = objectslist + line + Environment.NewLine;
                                     ignore = false;
                                 }
                             }
@@ -282,6 +283,7 @@ namespace ALiVEClient
                                 File.AppendAllText(parsedIndexFile, line.ToString() + Environment.NewLine);
                             }
                         }
+                        lfile.Write(objectslist);
                     }
                     catch (UnauthorizedAccessException UAEx)
                     {
