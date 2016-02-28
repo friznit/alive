@@ -890,7 +890,6 @@ _worldName = worldName;
 
 ["ALiVE SETTING UP MAP: %1",_worldName] call ALIVE_fnc_dump;
 
-
 ALIVE_airBuildingTypes = [];
 ALIVE_militaryParkingBuildingTypes = [];
 ALIVE_militarySupplyBuildingTypes = [];
@@ -900,7 +899,7 @@ ALIVE_civilianAirBuildingTypes = [];
 ALIVE_militaryHeliBuildingTypes = [];
 ALIVE_civilianHeliBuildingTypes = [];
 ALIVE_militaryBuildingTypes = [];
-
+ALIVE_heliBuildingTypes = [];
 ALIVE_civilianPopulationBuildingTypes = [];
 ALIVE_civilianHQBuildingTypes = [];
 ALIVE_civilianPowerBuildingTypes = [];
@@ -3002,6 +3001,29 @@ if(_worldName == "Chernarus" || _worldName == "Chernarus_Summer" || _worldName =
 
     ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianSettlementBuildingTypes;
 
+};
+
+// Chernarus Winter
+if(tolower(_worldName) == "chernarus_winter") then {
+	ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + ["airport_tower","radar","bunker","cargo_house_v","cargo_patrol_","research","mil_wall","fortification","razorwire","dome","deerstand","vez"];
+	ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + ["bunker","cargo_house_v","cargo_patrol_","research","bunker"];
+	ALIVE_militarySupplyBuildingTypes = ALIVE_militarySupplyBuildingTypes + ["barrack","cargo_hq_","miloffices","cargo_house_v","cargo_patrol_","research","barrack","mil_house","mil_controltower"];
+	ALIVE_militaryHQBuildingTypes = ALIVE_militaryHQBuildingTypes + ["barrack","cargo_hq_","miloffices","cargo_tower","barrack","mil_house","mil_controltower"];
+	ALIVE_airBuildingTypes = ALIVE_airBuildingTypes + ["hangar","hangar"];
+	ALIVE_militaryAirBuildingTypes = ALIVE_militaryAirBuildingTypes + ["tenthangar"];
+	ALIVE_civilianAirBuildingTypes = ALIVE_civilianAirBuildingTypes + ["hangar","runway_beton","runway_main","runway_secondary","ss_hangar","hangar_2","hangar","runway_beton","runway_end","runway_main","runway_secondary"];
+	ALIVE_heliBuildingTypes = ALIVE_heliBuildingTypes + ["helipads"];
+	ALIVE_militaryHeliBuildingTypes = ALIVE_militaryHeliBuildingTypes + ["helipads"];
+	ALIVE_civilianHeliBuildingTypes = ALIVE_civilianHeliBuildingTypes + ["helipads"];
+	ALIVE_civilianPopulationBuildingTypes = ALIVE_civilianPopulationBuildingTypes + ["church","hospital","amphitheater","chapel_v","households","hospital","houseblock","generalstore","house"];
+	ALIVE_civilianHQBuildingTypes = ALIVE_civilianHQBuildingTypes + ["offices","a_office01","a_office02","a_municipaloffice"];
+	ALIVE_civilianSettlementBuildingTypes = ALIVE_civilianSettlementBuildingTypes + ["church","hospital","amphitheater","chapel_v","households","hospital","houseblock","generalstore","house"];
+	ALIVE_civilianPowerBuildingTypes = ALIVE_civilianPowerBuildingTypes + ["dp_main","spp_t","pec_","powerstation","trafostanica"];
+	ALIVE_civilianCommsBuildingTypes = ALIVE_civilianCommsBuildingTypes + ["communication_f","ttowerbig_","illuminanttower","vysilac_fm","telek","tvtower"];
+	ALIVE_civilianMarineBuildingTypes = ALIVE_civilianMarineBuildingTypes + ["crane","lighthouse","nav_pier","pier_","crane","lighthouse","nav_pier","pier_","pier"];
+	ALIVE_civilianRailBuildingTypes = ALIVE_civilianRailBuildingTypes + ["rail_house","rail_station","rail_platform","rails_bridge","stationhouse"];
+	ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + ["fuelstation","dp_bigtank","fuelstation","expedice","indpipe","komin","ind_stack_big","ind_tankbig","fuel_tank_big"];
+	ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + ["wip","bridge_highway","ind_mlyn_01","ind_pec_01","wip","sawmillpen","workshop"];
 };
 
 // Helvantis
