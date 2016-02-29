@@ -1,4 +1,4 @@
-#include <\x\alive\addons\x_lib\script_component.hpp>
+#include <\x\alive\addons\sys_indexer\script_component.hpp>
 SCRIPT(indexMap);
 
 /* ----------------------------------------------------------------------------
@@ -28,15 +28,15 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_path","_default"];
+private ["_path","_custom"];
 
 _path = _this select 0;
-_default = _this select 1;
+_custom = _this select 1;
 
-[_path,_default] spawn {
-	private ["_path","_file","_objects","_result","_handle","_default"];
+[_path,_custom] spawn {
+	private ["_path","_file","_objects","_result","_handle","_custom"];
 	_path = _this select 0;
-	_default = _this select 1;
+	_custom = _this select 1;
 
 	waitUntil{!isNull player};
 
@@ -68,7 +68,7 @@ _default = _this select 1;
 		["ALiVE Map Indexer","Starting Object Categorization"] call ALiVE_fnc_sendHint;
 		[">>>>>>>>>>>>>>>>>> Starting Object Categorization"] call ALiVE_fnc_dump;
 
-		[_default] call ALiVE_fnc_auto_staticObjects;
+		[_custom] call ALiVE_fnc_auto_staticObjects;
 
 	};
 

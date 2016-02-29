@@ -37,6 +37,13 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_INDEXER_MAPPATH_COMMENT";
                                 defaultValue = "@CustomMap\Addons\custom_map.pbo";
                         };
+                        class customMapBound
+                        {
+                                typeName = "NUMBER";
+                                displayName = "$STR_ALIVE_INDEXER_MAPBOUND";
+                                description = "$STR_ALIVE_INDEXER_MAPBOUND_COMMENT";
+                                defaultValue = 0;
+                        };
                 };
 
         };

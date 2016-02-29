@@ -2,23 +2,23 @@ class cfgFunctions {
         class PREFIX {
                 class COMPONENT {
                     class indexer {
-                            description = "The main class";
-                            file = "\x\alive\addons\sys_indexer\fnc_indexer.sqf";
-                            recompile = RECOMPILE;
+                        description = "The main class";
+                        file = "\x\alive\addons\sys_indexer\fnc_indexer.sqf";
+                        recompile = RECOMPILE;
                     };
                     class indexerInit {
-                            description = "The module initialisation function";
-                            file = "\x\alive\addons\sys_indexer\fnc_indexerInit.sqf";
-                            recompile = RECOMPILE;
+                        description = "The module initialisation function";
+                        file = "\x\alive\addons\sys_indexer\fnc_indexerInit.sqf";
+                        recompile = RECOMPILE;
                     };
                     class indexerMenuDef {
-                            description = "The module menu definition";
-                            file = "\x\alive\addons\sys_indexer\fnc_indexerMenuDef.sqf";
-                            recompile = RECOMPILE;
+                        description = "The module menu definition";
+                        file = "\x\alive\addons\sys_indexer\fnc_indexerMenuDef.sqf";
+                        recompile = RECOMPILE;
                     };
                     class indexMap
                     {
-                        file = "\x\alive\addons\x_lib\functions\misc\fnc_indexMap.sqf";
+                        file = "\x\alive\addons\sys_indexer\fnc_indexMap.sqf";
                         ext = ".sqf";
                         recompile = RECOMPILE;
                     };

@@ -1,6 +1,6 @@
-private ["_categories","_result","_default"];
+private ["_categories","_result","_custom"];
 
-_default = _this select 0;
+_custom = _this select 0;
 
 _categories = [
 
@@ -31,7 +31,7 @@ _categories = [
 ];
 
 // Init arrays
-if (!_default) then {
+if (_custom) then {
 	[">>>>>>>>>>>>>>>>>> Starting static data creation"] call ALiVE_fnc_dump;
 	{
 		call compile format["%1 = []", _x select 0];
@@ -45,6 +45,7 @@ if (!_default) then {
 		ALIVE_map_index_choice = 99;
 		_i = 0;
 		createDialog "alive_indexing_list";
+
 		while {ALIVE_map_index_choice == 99} do
 		{
 			private ["_o","_id","_pos","_obj","_cam","_size"];
@@ -53,19 +54,23 @@ if (!_default) then {
 			_pos = _o select 1;
 			_obj = _pos nearestObject _id;
 
-			_cam = [_obj, false, "HIGH"] call ALiVE_fnc_addCamera;
-			[_cam, true] call ALIVE_fnc_startCinematic;
-			cutText [format["Progress:%3/%4 - Object: %1, Model: %2", typeof _obj, str(_model), _foreachIndex + 1, count wrp_objects],"PLAIN DOWN"];
+            if (!isNil "_obj") then {
+    			_cam = [_obj, false, "HIGH"] call ALiVE_fnc_addCamera;
+    			[_cam, true] call ALIVE_fnc_startCinematic;
+    			cutText [format["Progress:%3/%4 - Object: %1, Model: %2", typeof _obj, str(_model), _foreachIndex + 1, count wrp_objects],"PLAIN DOWN"];
 
-			_size = sizeOf (typeof _obj);
-			if (isnil "_size" || _size == 0) then {_size = 8};
+    			_size = sizeOf (typeof _obj);
+    			if (isnil "_size" || _size == 0) then {_size = 8};
 
-			// diag_log str(_size);
+    			// diag_log str(_size);
 
-			[_cam,_obj,2,false, -2 * _size, _size * 0.5] call ALIVE_fnc_chaseShot;
+    			[_cam,_obj,2,false, -2 * _size, _size * 0.5] call ALIVE_fnc_chaseShot;
 
-			sleep 1;
-			camDestroy _cam;
+    			sleep 1;
+    			camDestroy _cam;
+            } else {
+                [">>>>>>>>>>>>>>>>>>>>>>>>>>>> Warning: could not find object for %1 at %2", _model, _pos] call ALiVE_fnc_dump;
+            };
 			_i = _i + 1;
 			if (_i == count _samples) then {_i = 0;};
 		};
