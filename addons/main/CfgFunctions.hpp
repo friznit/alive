@@ -61,16 +61,6 @@ class cfgFunctions {
                 file = "\x\alive\addons\main\fnc_mainTablet.sqf";
                 recompile = RECOMPILE;
             };
-            class auto_staticObjects {
-                description = "ALiVE object viewer";
-                file = "\x\alive\addons\main\static\fnc_auto_staticObjects.sqf";
-                recompile = RECOMPILE;
-            };
-            class autoUpdateStaticData {
-                description = "ALiVE index static data update UI";
-                file = "\x\alive\addons\main\static\fnc_autoUpdateStaticData.sqf";
-                recompile = RECOMPILE;
-            };
 			class AI_Distributor {
                 description = "Distributes AI to all headless clients";
                 file = "\x\alive\addons\main\fnc_AI_Distributor.sqf";

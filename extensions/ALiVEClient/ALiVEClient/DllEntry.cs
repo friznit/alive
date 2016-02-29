@@ -174,6 +174,12 @@ namespace ALiVEClient
                     // Path to map pbo
                     string pathToMap =  Path.Combine(System.IO.Directory.GetCurrentDirectory(), callParams[0].ToString()); // "Addons\map_altis.pbo"
 
+                    if (!File.Exists(pathToMap))
+                    {
+                        result = "ERROR";
+                        break;
+                    }
+
                     // Path to indexing
                     string root = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "@ALiVE");
                     if (!Directory.Exists(root))
@@ -462,7 +468,7 @@ namespace ALiVEClient
                         // Setup initial string to write
                         try
                         {
-                            string start = String.Format("private[\"_worldName\"];\r\n _worldName = tolower(worldName);\r\n [\"ALiVE SETTING UP MAP: {0}\"] call ALIVE_fnc_dump;\r\n ALIVE_Indexing_Blacklist = [];\r\n ALIVE_airBuildingTypes = [];\r\n ALIVE_militaryParkingBuildingTypes = [];\r\n ALIVE_militarySupplyBuildingTypes = [];\r\n ALIVE_militaryHQBuildingTypes = [];\r\n ALIVE_militaryAirBuildingTypes = [];\r\n ALIVE_civilianAirBuildingTypes = [];\r\n ALIVE_militaryHeliBuildingTypes = [];\r\n ALIVE_civilianHeliBuildingTypes = [];\r\n ALIVE_militaryBuildingTypes = [];\r\n ALIVE_civilianPopulationBuildingTypes = [];\r\n ALIVE_civilianHQBuildingTypes = [];\r\n ALIVE_civilianPowerBuildingTypes = [];\r\n ALIVE_civilianCommsBuildingTypes = [];\r\n ALIVE_civilianMarineBuildingTypes = [];\r\n ALIVE_civilianRailBuildingTypes = [];\r\n ALIVE_civilianFuelBuildingTypes = [];\r\n ALIVE_civilianConstructionBuildingTypes = [];\r\n ALIVE_civilianSettlementBuildingTypes = [];\r\n if(_worldName == \"{0}\") then {{\r\n", mapName);
+                            string start = String.Format("private[\"_worldName\"];\r\n _worldName = tolower(worldName);\r\n [\"ALiVE SETTING UP MAP: {0}\"] call ALIVE_fnc_dump;\r\n ALIVE_Indexing_Blacklist = [];\r\n ALIVE_airBuildingTypes = [];\r\n ALIVE_militaryParkingBuildingTypes = [];\r\n ALIVE_militarySupplyBuildingTypes = [];\r\n ALIVE_militaryHQBuildingTypes = [];\r\n ALIVE_militaryAirBuildingTypes = [];\r\n ALIVE_civilianAirBuildingTypes = [];\r\n ALIVE_militaryHeliBuildingTypes = [];\r\n ALIVE_civilianHeliBuildingTypes = [];\r\n ALIVE_militaryBuildingTypes = [];\r\n ALIVE_civilianPopulationBuildingTypes = [];\r\n ALIVE_civilianHQBuildingTypes = [];\r\n ALIVE_civilianPowerBuildingTypes = [];\r\n ALIVE_civilianCommsBuildingTypes = [];\r\n ALIVE_civilianMarineBuildingTypes = [];\r\n ALIVE_civilianRailBuildingTypes = [];\r\n ALIVE_civilianFuelBuildingTypes = [];\r\n ALIVE_civilianConstructionBuildingTypes = [];\r\n ALIVE_civilianSettlementBuildingTypes = [];\r\n if(tolower(_worldName) == \"{0}\") then {{\r\n", mapName);
                             File.AppendAllText(static_file, start);
                         }
                         catch (FormatException foex)

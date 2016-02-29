@@ -1266,13 +1266,6 @@ class wait
 	recompile = RECOMPILE;
 };
 
-class indexMap
-{
-	file = "\x\alive\addons\x_lib\functions\misc\fnc_indexMap.sqf";
-	ext = ".sqf";
-	recompile = RECOMPILE;
-};
-
 class BUS
 {
 	file = "\x\alive\addons\x_lib\functions\network\fnc_BUS.sqf";
