@@ -51,20 +51,20 @@ if(isNil "ALIVE_civilianHQBuildingTypes") then {
 };
 
 
-STAT("Create SectorGrid instance");
+// STAT("Create SectorGrid instance");
 TIMERSTART
 _grid = [nil, "create"] call ALIVE_fnc_sectorGrid;
 [_grid, "init"] call ALIVE_fnc_sectorGrid;
 TIMEREND
 
 
-STAT("Create Grid");
+// STAT("Create Grid");
 TIMERSTART
 _result = [_grid, "createGrid"] call ALIVE_fnc_sectorGrid;
 TIMEREND
 
 
-STAT("Create Sector Plotter");
+// STAT("Create Sector Plotter");
 TIMERSTART
 _plotter = [nil, "create"] call ALIVE_fnc_plotSectors;
 [_plotter, "init"] call ALIVE_fnc_plotSectors;

@@ -33,12 +33,20 @@ private ["_path","_custom"];
 _path = _this select 0;
 _custom = _this select 1;
 
+
+
 [_path,_custom] spawn {
 	private ["_path","_file","_objects","_result","_handle","_custom"];
 	_path = _this select 0;
 	_custom = _this select 1;
 
 	waitUntil{!isNull player};
+
+	ALiVE_keypress_id = (findDisplay 46) displayAddEventHandler ["KeyDown", "ALiVE_keypress = true;"];
+
+	forceMap true;
+
+	ALiVE_keypress_id_map = (findDisplay 12) displayAddEventHandler ["KeyDown", "ALiVE_keypress = true;"];
 
 	["ALiVE Map Indexer","Starting Map Index"] call ALiVE_fnc_sendHint;
 
@@ -72,11 +80,14 @@ _custom = _this select 1;
 
 	};
 
-	sleep 2;
+	ALiVE_keypress = false;
+	cutText [format["HEY! %1, STATIC DATA GENERATED. PRESS ANY KEY TO CONTINUE", toUpper(name player)],"PLAIN", 1, true];
+	sleep 0.7;
+	waitUntil {sleep 0.3; cutText [format["HEY! %1, PRESS ANY KEY TO CONTINUE", toUpper(name player)],"PLAIN", 1, true]; ALiVE_keypress};
+	ALiVE_keypress = false;
+	cutText ["","PLAIN", 1, true];
 
 	// Generate Map Clusters
-
-	forceMap true;
 
 	["ALiVE Map Indexer","Generating Sector Data"] call ALiVE_fnc_sendHint;
 	[">>>>>>>>>>>>>>>>>> Generating Sector Data"] call ALiVE_fnc_dump;
@@ -112,8 +123,20 @@ _custom = _this select 1;
 	_handle = [] execVM "\x\alive\addons\fnc_analysis\tests\auto_appendClustersCiv.sqf";
 	waitUntil {sleep 0.3; scriptDone _handle};
 
+
+	ALiVE_keypress = false;
+	cutText [format["HEY! %1, MAP INDEXING COMPLETE. PRESS ANY KEY TO CONTINUE", toUpper(name player)],"PLAIN", 1, true];
+	sleep 0.7;
+	waitUntil {sleep 0.3; cutText [format["HEY! %1, PRESS ANY KEY TO CONTINUE", toUpper(name player)],"PLAIN", 1, true]; ALiVE_keypress};
+	ALiVE_keypress = false;
+	cutText ["","PLAIN", 1, true];
+
+	(findDisplay 12) displayRemoveEventHandler ["keyDown",ALiVE_keypress_id_map];
+
 	["ALiVE Map Indexer","Map Indexing Completed!"] call ALiVE_fnc_sendHint;
 	[">>>>>>>>>>>>>>>>>> Map Indexing Completed!"] call ALiVE_fnc_dump;
 
 	forceMap false;
+
+	(findDisplay 46) displayRemoveEventHandler ["keyDown",ALiVE_keypress_id];
 };

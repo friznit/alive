@@ -15,12 +15,12 @@ ASSERT_DEFINED("ALIVE_fnc_sectorGrid","");
 
 #define STAT(msg) sleep 3; \
 diag_log ["TEST("+str player+": "+msg]; \
-titleText [msg,"PLAIN"]
+// titleText [msg,"PLAIN"]
 
 #define STAT1(msg) CONT = false; \
 waitUntil{CONT}; \
 diag_log ["TEST("+str player+": "+msg]; \
-titleText [msg,"PLAIN"]
+// titleText [msg,"PLAIN"]
 
 #define DEBUGON STAT("Setup debug parameters"); \
 _result = [_grid, "debug", true] call ALIVE_fnc_sectorGrid; \
