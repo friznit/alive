@@ -217,6 +217,13 @@ namespace ALiVEClient
                     System.IO.StreamWriter lfile = new System.IO.StreamWriter(logfile, true);
                     lfile.AutoFlush = true;
                     lfile.WriteLine(">>>>>>>>>>>>>>>>>> Starting Map Index for " + mapName + " on " + DateTime.Now.ToString());
+                    lfile.WriteLine(">>>>>>>>>>>>>>>>>> pathToMap: " + pathToMap);
+                    lfile.WriteLine(">>>>>>>>>>>>>>>>>> root: " + root);
+                    lfile.WriteLine(">>>>>>>>>>>>>>>>>> folder: " + folder);
+                    lfile.WriteLine(">>>>>>>>>>>>>>>>>> logfile: " + logfile);
+                    lfile.WriteLine(">>>>>>>>>>>>>>>>>> indexfile: " + indexFile);
+                    lfile.WriteLine(">>>>>>>>>>>>>>>>>> parsedIndexfile: " + parsedIndexFile);
+                    lfile.WriteLine(">>>>>>>>>>>>>>>>>> blacklist file: " + blacklistfile);
 
                     if (blacklist == null)
                     {
@@ -287,6 +294,7 @@ namespace ALiVEClient
                             {
                                 // lfile.WriteLine(String.Format(" ----- Committing to parsedIndexFile : {0}", line));
                                 File.AppendAllText(parsedIndexFile, line.ToString() + Environment.NewLine);
+
                             }
                         }
                         lfile.Write(objectslist);
@@ -315,11 +323,13 @@ namespace ALiVEClient
                             lines[lines.Length - 3] = "        ]";
                         }
                         lfile.WriteLine("Corrected objects file as there was an unnecessary comma");
+                        lfile.WriteLine(">>>>>>>>>>>>>>>>>> About to overwrite index file: " + indexFile);
                         File.WriteAllLines(indexFile, lines);  
                     }
                     else
                     {
                         File.Copy(parsedIndexFile, indexFile, true);
+                        lfile.WriteLine(">>>>>>>>>>>>>>>>>> Copying " + parsedIndexFile + " to " +  indexFile);
                     }
 
                     File.Delete(parsedIndexFile);

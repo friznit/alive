@@ -65,6 +65,9 @@ _custom = _this select 1;
 	// Load in new object array
 	[">>>>>>>>>>>>>>>>>> Compiling list of objects from deWRP in wrp_objects array"] call ALiVE_fnc_dump;
 	_file = format["@ALiVE\indexing\%1\fnc_strategic\indexes\objects.%1.sqf", tolower(worldName)];
+
+	diag_log format["FILE CHECK: %1", _file];
+
 	call compile (preprocessFile _file);
 
 	// Check for static data
