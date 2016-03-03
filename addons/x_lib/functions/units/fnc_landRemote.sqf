@@ -26,8 +26,10 @@ Highhead
 
 private ["_unit","_args"];
 
-_unit = _this select 0;
-_args = _this select 1;
+_unit = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+_args = [_this, 1, [], [[]]] call bis_fnc_param;
+
+if !(alive _unit) exitwith {diag_log "landRemote failed - dead/empty unit"};
 
 //Flag for usage with ALiVE_fnc_unitReadyRemote
 _unit setvariable [QGVAR(MOVEDESTINATION),getpos _unit];
