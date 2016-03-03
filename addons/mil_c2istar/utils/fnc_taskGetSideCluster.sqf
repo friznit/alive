@@ -44,7 +44,7 @@ if(count _sideClusters > 0) then {
 
     // there are enemy held clusters
 
-    _sortedClusters = [_sideClusters,[],{_taskLocation distance ([_x, "position"] call ALIVE_fnc_hashGet)},"ASCEND"] call BIS_fnc_sortBy;
+    _sortedClusters = [_sideClusters,[],{_taskLocation distance ([_x, "position"] call ALIVE_fnc_hashGet)},"ASCEND"] call ALiVE_fnc_SortBy;
 
     _countClusters = count _sortedClusters;
 

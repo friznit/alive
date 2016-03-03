@@ -263,7 +263,7 @@ SABOTAGE_fnc_selectRespawnHideout = {
     _respawn = format["ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%1",faction _unit];
     _respawnBackUp = format["RESPAWN_%1",side _unit];
 
-    _hideOuts = [_hideOuts,[_pos],{_Input0 distance (getposATL _x)},"ASCEND"] call BIS_fnc_sortBy;
+    _hideOuts = [_hideOuts,[_pos],{_Input0 distance (getposATL _x)},"ASCEND"] call ALiVE_fnc_SortBy;
 
 	if ([_respawn] call ALiVE_fnc_markerExists) then {
         _respawn setMarkerPosLocal (getposATL (_hideOuts select 0));

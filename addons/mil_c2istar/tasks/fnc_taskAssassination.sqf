@@ -129,7 +129,7 @@ switch (_taskState) do {
 				        _side = [_opcom,"side",""] call ALiVE_fnc_HashGet;
 				        
 				        !([_pos,_side,500,true] call ALiVE_fnc_isEnemyNear) && {_pos distance _Input0 > 1200};
-				    }] call BIS_fnc_sortBy;
+				    }] call ALiVE_fnc_SortBy;
 	            
 	            	_targetPosition = [_objectives select 0,"center"] call ALiVE_fnc_HashGet;
 	            

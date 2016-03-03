@@ -78,7 +78,7 @@ if(count _objectives > 0) then {
 
     _objectives call ALIVE_fnc_inspectArray;
 
-    _sortedObjectives = [_objectives,[],{_taskLocation distance (_x select 1)},"ASCEND"] call BIS_fnc_sortBy;
+    _sortedObjectives = [_objectives,[],{_taskLocation distance (_x select 1)},"ASCEND"] call ALiVE_fnc_SortBy;
 
     _sortedObjectives call ALIVE_fnc_inspectArray;
 

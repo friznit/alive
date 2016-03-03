@@ -62,7 +62,7 @@ _result = [];
     };
 } foreach _facs;
 
-_result = [_result,[],{_x select 1},"DESCEND",{if (_noCiv) then {!(((_x select 0) call ALiVE_fnc_factionSide) == CIVILIAN)} else {true}}] call BIS_fnc_sortBy;
+_result = [_result,[],{_x select 1},"DESCEND",{if (_noCiv) then {!(((_x select 0) call ALiVE_fnc_factionSide) == CIVILIAN)} else {true}}] call ALiVE_fnc_SortBy;
 
 if ((count _result > 0) && {(_result select 0 select 1) > 0}) then {
 	(_result select 0) select 0;

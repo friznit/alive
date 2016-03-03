@@ -1841,7 +1841,7 @@ switch(_operation) do {
             } forEach _shuffledModules;
 
 
-            _sortedProfiles = [_profiles,[],{_x select 2},"ASCEND"] call BIS_fnc_sortBy;
+            _sortedProfiles = [_profiles,[],{_x select 2},"ASCEND"] call ALiVE_fnc_SortBy;
 
 
             {

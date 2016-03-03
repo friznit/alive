@@ -527,7 +527,7 @@ switch(_operation) do {
             };
             
             //Sort by distance
-            _troops = [_troopsUnsorted,[_pos],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_Input0] call ALiVE_fnc_HashGet) distance _Input0} else {99999}} else {99999}},"ASCEND"] call BIS_fnc_sortBy;
+            _troops = [_troopsUnsorted,[_pos],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_Input0] call ALiVE_fnc_HashGet) distance _Input0} else {99999}} else {99999}},"ASCEND"] call ALiVE_fnc_SortBy;
             
             //Collect section
             _section = [];
@@ -669,7 +669,7 @@ switch(_operation) do {
                 if (count _profiles > 0) then {
                     
                     _profilesUnsorted = _profiles;
-                    _profiles = [_profilesUnsorted,[_pos],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_Input0] call ALiVE_fnc_HashGet) distance _Input0} else {[0,0,0] distance _Input0}} else {[0,0,0] distance _Input0}},"ASCEND"] call BIS_fnc_sortBy;
+                    _profiles = [_profilesUnsorted,[_pos],{if !(isnil "_x") then {_p = nil; _p = [ALiVE_ProfileHandler,"getProfile",_x] call ALiVE_fnc_ProfileHandler; if !(isnil "_p") then {([_p,"position",_Input0] call ALiVE_fnc_HashGet) distance _Input0} else {[0,0,0] distance _Input0}} else {[0,0,0] distance _Input0}},"ASCEND"] call ALiVE_fnc_SortBy;
 
                     _i = 0;
 	                while {count _section < _size} do {
@@ -945,7 +945,7 @@ switch(_operation) do {
                                     //["ALiVE OPCOM Priority randomized with a variety of one third in relation to distance %1 ",_final] call ALiVE_fnc_DumpR;
                                     
                                     _final
-                                },"ASCEND"] call BIS_fnc_sortBy;
+                                },"ASCEND"] call ALiVE_fnc_SortBy;
 							};
                             
                             //by size and height
@@ -966,15 +966,15 @@ switch(_operation) do {
                                     //["ALiVE OPCOM Priority randomized with a variety of one third in relation to size, height, distance, cluster priority %1",_final] call ALiVE_fnc_DumpR;
                                     
                                     _final
-                            	},"DESCEND"] call BIS_fnc_sortBy;
+                            	},"DESCEND"] call ALiVE_fnc_SortBy;
                             };
                             case ("asymmetric") : {
                                 
                                 _objectivesCiv = +_objectives;
                                 _objectivesMil = +_objectives;
                                 
-                                _objectivesFilteredCiv = [_objectivesCiv,[_logic],{(([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))*(1-(random 0.20))},"ASCEND",{(_x select 2 select 3) == "CIV"}] call BIS_fnc_sortBy;
-                                _objectivesFilteredMil = [_objectivesMil,[_logic],{(([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))*(1-(random 0.20))},"ASCEND",{(_x select 2 select 3) == "MIL"}] call BIS_fnc_sortBy;
+                                _objectivesFilteredCiv = [_objectivesCiv,[_logic],{(([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))*(1-(random 0.20))},"ASCEND",{(_x select 2 select 3) == "CIV"}] call ALiVE_fnc_SortBy;
+                                _objectivesFilteredMil = [_objectivesMil,[_logic],{(([_Input0, "position"] call ALIVE_fnc_HashGet) distance (_x select 2 select 1))*(1-(random 0.20))},"ASCEND",{(_x select 2 select 3) == "MIL"}] call ALiVE_fnc_SortBy;
                                 
                                 _objectives = _objectivesFilteredCiv + _objectivesFilteredMil;
 
@@ -1019,7 +1019,7 @@ switch(_operation) do {
 										
 											if (count _settlementClusters <= 0) exitwith {};
 						
-											_settlementClusters = [_settlementClusters,[_center],{_Input0 distance (_x select 0)},"ASCEND"] call BIS_fnc_sortBy;
+											_settlementClusters = [_settlementClusters,[_center],{_Input0 distance (_x select 0)},"ASCEND"] call ALiVE_fnc_SortBy;
 											_agents =  ([_agentClusterData,_settlementClusters select 0 select 1,["",[],[],nil]] call ALiVE_fnc_HashGet) select 1;
 										
 											[_objective,"agents",_agents] call ALiVE_fnc_HashSet;
@@ -1159,7 +1159,7 @@ switch(_operation) do {
 				
 					if (count _settlementClusters <= 0) exitwith {};
 
-					_settlementClusters = [_settlementClusters,[_center],{_Input0 distance (_x select 0)},"ASCEND"] call BIS_fnc_sortBy;
+					_settlementClusters = [_settlementClusters,[_center],{_Input0 distance (_x select 0)},"ASCEND"] call ALiVE_fnc_SortBy;
 					_agents =  ([_agentClusterData,_settlementClusters select 0 select 1,["",[],[],nil]] call ALiVE_fnc_HashGet) select 1;
 				
 					[_objective,"agents",_agents] call ALiVE_fnc_HashSet;
@@ -1201,7 +1201,7 @@ switch(_operation) do {
 						    };
 						    _maxHeight
 						    
-						},"DESCEND"] call BIS_fnc_sortBy;
+						},"DESCEND"] call ALiVE_fnc_SortBy;
 		
 						if (count _buildings > 0) then {_target = _buildings select 0; _target = [[],"convertObject",_target] call ALiVE_fnc_OPCOM} else {_target = [[],"convertObject",objNull] call ALiVE_fnc_OPCOM};
 					};                    
@@ -1299,7 +1299,7 @@ switch(_operation) do {
 				} foreach ([_logic,"objectives",[]] call ALiVE_fnc_HashGet);
 				
 				if (count _FOB > 0 && {count _AO > 0}) then {
-					_FOB = [_FOB,[[_AO select 0,"center",[0,0,0]] call ALiVE_fnc_HashGet],{_input0 distance ([_x,"center",[0,0,0]] call ALiVE_fnc_HashGet)},"ASCEND"] call BIS_fnc_sortBy;
+					_FOB = [_FOB,[[_AO select 0,"center",[0,0,0]] call ALiVE_fnc_HashGet],{_input0 distance ([_x,"center",[0,0,0]] call ALiVE_fnc_HashGet)},"ASCEND"] call ALiVE_fnc_SortBy;
 					
                     _result = _FOB select 0;
                 } else {
@@ -1924,7 +1924,7 @@ switch(_operation) do {
 			if (count _objectives == 0) exitwith {_result = []};
 			
 			_tmp = []; {if (([_x,"opcom_state",""] call ALiVE_fnc_HashGet) == _state) then {_tmp pushback _x}} foreach _objectives;
-			_tmp = [_tmp,[_pos],{_Input0 distance ([_x,"center",[0,0,0]] call ALiVE_fnc_HashGet)},"ASCEND"] call BIS_fnc_sortBy;
+			_tmp = [_tmp,[_pos],{_Input0 distance ([_x,"center",[0,0,0]] call ALiVE_fnc_HashGet)},"ASCEND"] call ALiVE_fnc_SortBy;
 
 			_result = +_tmp;            
         };
@@ -2007,7 +2007,7 @@ switch(_operation) do {
             ALiVE_MIL_OPCOM_CLICKPOS = nil; hint "Objective selected! Please wait while OPCOM is preparing the operation...";
 			
             // Get nearest objective from that position
-            _objectives = [_objectives,[_pos],{_Input0 distance ([_x,"center"] call ALiVE_fnc_HashGet)},"ASCEND"] call BIS_fnc_sortBy;
+            _objectives = [_objectives,[_pos],{_Input0 distance ([_x,"center"] call ALiVE_fnc_HashGet)},"ASCEND"] call ALiVE_fnc_SortBy;
 			
 			[_logic,"joinObjectiveServer",[_unit,_objectives select 0]] call ALiVE_fnc_OPCOM;
 		

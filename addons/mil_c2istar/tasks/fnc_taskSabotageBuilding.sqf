@@ -124,7 +124,7 @@ switch (_taskState) do {
                         _side = [_opcom,"side",""] call ALiVE_fnc_HashGet;
                         
                         !([_pos,_side,500,true] call ALiVE_fnc_isEnemyNear);
-                    }] call BIS_fnc_sortBy;
+                    }] call ALiVE_fnc_SortBy;
 	                
                     _totalIndexes = (count _objectives)-1;
 	                _index = 0;
@@ -215,7 +215,7 @@ switch (_taskState) do {
             };
 	        _maxHeight
             
-        },"DESCEND"] call BIS_fnc_sortBy;
+        },"DESCEND"] call ALiVE_fnc_SortBy;
 
 		//Filter broken 
         _targetBuildings = [_targetBuildings,[],{
@@ -226,7 +226,7 @@ switch (_taskState) do {
             alive _x &&
             {_x isKindOf "House_Small_F"} &&
             {!((getText(configfile >> "CfgVehicles" >> (typeOf _x) >> "destrType")) == "DestructNo")}
-        }] call BIS_fnc_sortBy;
+        }] call ALiVE_fnc_SortBy;
 		
         _targetBuildings = [_targetBuildings,[],{
             
@@ -241,10 +241,10 @@ switch (_taskState) do {
             _result = _alive && _house && _destructable && _hasBuildingPos;
             _result;
             
-        }] call BIS_fnc_sortBy;
+        }] call ALiVE_fnc_SortBy;
         */
         
-        //Pre-filter Array since BIS_fnc_SortBy is broken atm.
+        //Pre-filter Array since ALiVE_fnc_SortBy is broken atm.
         {
             private ["_alive", "_house", "_destructable", "_hasBuildingPos"];
             
@@ -262,7 +262,7 @@ switch (_taskState) do {
             
 			count ([getPosATL _x, 10] call ALIVE_fnc_findIndoorHousePositions);
 
-        },"DESCEND"] call BIS_fnc_sortBy;
+        },"DESCEND"] call ALiVE_fnc_SortBy;
   
         
         //Move on                        

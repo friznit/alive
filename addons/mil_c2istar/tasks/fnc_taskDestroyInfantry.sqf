@@ -83,7 +83,7 @@ switch (_taskState) do {
             };
             
             _final
-		},"ASCEND"] call BIS_fnc_sortBy;
+		},"ASCEND"] call ALiVE_fnc_SortBy;
         
         _targetEntity = [ALiVE_ProfileHandler,"getProfile",_targets select 0] call ALiVE_fnc_ProfileHandler;
 

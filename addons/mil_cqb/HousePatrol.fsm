@@ -142,7 +142,7 @@ class FSM
        "if ((count _bldgpos) < (count units _grp)*1.2) then {" \n
        "	_pat = true;" \n
        "} else {" \n
-       "	_bldgpos = [_bldgpos,[],{_x select 2},""DESCEND""] call BIS_fnc_SortBy;" \n
+       "	_bldgpos = [_bldgpos,[],{_x select 2},""DESCEND""] call ALiVE_fnc_SortBy;" \n
        "};" \n
        "" \n
        "//[""Buildingpos: %1 - units: %2 - patrol %3"",_posNo,_grpTH,_pat] call ALiVE_fnc_DumpR;" \n

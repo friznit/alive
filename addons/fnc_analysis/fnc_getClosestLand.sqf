@@ -58,7 +58,7 @@ _getClosestLandFromSectors = {
 		        
 		        _samples = [_samples,[_position],{
 					_x distance _Input0
-		    	},"ASCEND"] call BIS_fnc_sortBy;
+		    	},"ASCEND"] call ALiVE_fnc_SortBy;
 		        
 		        if (count _samples > 10) then {_samples resize 10};
 		        
@@ -105,7 +105,7 @@ if(_sectorTerrain == "SHORE") then {
         
         _samples = [_samples,[_position],{
 			_x distance _Input0
-    	},"ASCEND"] call BIS_fnc_sortBy;
+    	},"ASCEND"] call ALiVE_fnc_SortBy;
         
         if (count _samples > 10) then {_samples resize 10};
         

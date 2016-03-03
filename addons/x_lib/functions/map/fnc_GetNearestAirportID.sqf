@@ -35,5 +35,5 @@ for "_i" from 0 to ((count _Secondary)-1) do {
 	_Airports pushback [_ILS,_i+1];
 };
 
-_Airports = [_Airports,[],{_pos distance (_x select 0)},"ASCEND"] call BIS_fnc_sortBy;
+_Airports = [_Airports,[],{_pos distance (_x select 0)},"ASCEND"] call ALiVE_fnc_SortBy;
 _Airports select 0 select 1;

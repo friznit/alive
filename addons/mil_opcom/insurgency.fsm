@@ -175,7 +175,7 @@ class FSM
        "" \n
        "       		!isnil ""_pf"" && {!([_pf,""busy"",false] call ALiVE_fnc_HashGet)} && {([_pf,""type"",""""] call ALiVE_fnc_HashGet) == ""entity""};" \n
        "   		 }" \n
-       "    ] call BIS_fnc_sortBy;" \n
+       "    ] call ALiVE_fnc_SortBy;" \n
        "    " \n
        "    if (count _section > _count) then {_section resize _count};" \n
        "    _section" \n
@@ -302,7 +302,7 @@ class FSM
        "		};" \n
        "	} forEach _settlementClusters;" \n
        "" \n
-       "	_settlementClusters = [_settlementClusters,[_center],{_Input0 distance (_x select 0)},""ASCEND""] call BIS_fnc_sortBy;" \n
+       "	_settlementClusters = [_settlementClusters,[_center],{_Input0 distance (_x select 0)},""ASCEND""] call ALiVE_fnc_SortBy;" \n
        "	_agents =  ([_agentClusterData,_settlementClusters select 0 select 1,["""",[],[],""""]] call ALiVE_fnc_HashGet) select 1;" \n
        "" \n
        "	[_objective,""agents"",_agents] call ALiVE_fnc_HashSet;" \n
@@ -533,7 +533,7 @@ class FSM
        "			_nearRoads = _pos nearRoads (_size + 200);" \n
        "" \n
        "			if (count _nearRoads > 0) then {" \n
-       "				_nearRoads = [_nearRoads,[_pos],{_Input0 distance _x},""DESCEND""] call BIS_fnc_sortBy;" \n
+       "				_nearRoads = [_nearRoads,[_pos],{_Input0 distance _x},""DESCEND""] call ALiVE_fnc_SortBy;" \n
        "				if (count _nearRoads > 5) then {_nearRoads resize 5; _road = _nearRoads call BIS_fnc_selectRandom} else {_road = _nearRoads select 0};" \n
        "			};" \n
        "" \n
@@ -777,7 +777,7 @@ class FSM
        "			if (!alive _building) then {" \n
        "				_buildings = [_center, _size + 300] call ALiVE_fnc_getEnterableHouses;" \n
        "				if (count _buildings == 0) then {_building = objNull; [""There is no suitable building for an IED factory!""] call ALiVE_fnc_Dump} else {" \n
-       "					_buildings = [_buildings,[_pos],{_Input0 distance _x},""DESCEND""] call BIS_fnc_sortBy;" \n
+       "					_buildings = [_buildings,[_pos],{_Input0 distance _x},""DESCEND""] call ALiVE_fnc_SortBy;" \n
        "" \n
        "					if (count _buildings > 5) then {_buildings resize 5; _building = _buildings call BIS_fnc_selectRandom} else {_building = _buildings select 0};" \n
        "				};" \n
@@ -878,7 +878,7 @@ class FSM
        "				    };" \n
        "				    _maxHeight" \n
        "				    " \n
-       "				},""DESCEND""] call BIS_fnc_sortBy;" \n
+       "				},""DESCEND""] call ALiVE_fnc_SortBy;" \n
        "" \n
        "				if (count _buildings > 0) then {_target = _buildings select 0};" \n
        "			};" \n

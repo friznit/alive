@@ -158,7 +158,7 @@ class FSM
        "							_objectives_unsorted pushback [(getmarkerpos format[""m_%1"",_i]),150,""civilian"",25];" \n
        "						};" \n
        "" \n
-       "						_objectives = [_objectives_unsorted,[],{([_OPCOM_HANDLER,""position""] call ALiVE_fnc_HashGet) distance (_x select 0)},""ASCEND""] call BIS_fnc_sortBy;" \n
+       "						_objectives = [_objectives_unsorted,[],{([_OPCOM_HANDLER,""position""] call ALiVE_fnc_HashGet) distance (_x select 0)},""ASCEND""] call ALiVE_fnc_SortBy;" \n
        "						" \n
        "						//Create objectives for OPCOM and set it on the OPCOM Handler " \n
        "						//GetObjectivesByPriority" \n

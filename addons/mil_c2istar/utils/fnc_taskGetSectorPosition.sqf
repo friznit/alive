@@ -43,7 +43,7 @@ switch(_positionType) do {
 
         private["_sortedElevations","_highestElevation"];
 
-        _sortedElevations = [_landElevation,[],{_x select 1},"ASCEND"] call BIS_fnc_sortBy;
+        _sortedElevations = [_landElevation,[],{_x select 1},"ASCEND"] call ALiVE_fnc_SortBy;
         _highestElevation = _sortedElevations select (count (_sortedElevations)-1);
         _targetPosition = [_highestElevation select 0 select 0, _highestElevation select 0 select 1, 0];
 

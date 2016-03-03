@@ -572,7 +572,7 @@ class FSM
        "" \n
        "							//Select nearest taken objective to regroup" \n
        "							_posP = [_profile, ""position""] call ALIVE_fnc_profileEntity;" \n
-       "							_objectivesX = [_objectives,[],{_posP distance (_x select 2 select 1)},""ASCEND""] call BIS_fnc_sortBy;" \n
+       "							_objectivesX = [_objectives,[],{_posP distance (_x select 2 select 1)},""ASCEND""] call ALiVE_fnc_SortBy;" \n
        "							" \n
        "							{" \n
        "								_state = [_x,""opcom_state""] call ALivE_fnc_HashGet;" \n

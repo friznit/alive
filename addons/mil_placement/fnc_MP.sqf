@@ -691,7 +691,7 @@ switch(_operation) do {
                 if(_countHQClusters > 0) then {
 
                     if(_countHQClusters > 1) then {
-                        _sortedData = [_HQClusters,[],{_modulePosition distance ([_x, "center"] call ALIVE_fnc_hashGet)},"ASCEND"] call BIS_fnc_sortBy;
+                        _sortedData = [_HQClusters,[],{_modulePosition distance ([_x, "center"] call ALIVE_fnc_hashGet)},"ASCEND"] call ALiVE_fnc_SortBy;
                         _closestHQCluster = _sortedData select 0;
                     }else{
                         _closestHQCluster = _HQClusters select 0;

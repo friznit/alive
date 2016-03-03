@@ -1246,7 +1246,7 @@ switch(_operation) do {
 	                                        };
                                             case ("client") : {
                                                 //Sort near players by FPS
-                                                _nearplayers = [_nearplayers,[],{_x getvariable ["averageFPS",30]},"DESCEND"] call BIS_fnc_sortBy;
+                                                _nearplayers = [_nearplayers,[],{_x getvariable ["averageFPS",30]},"DESCEND"] call ALiVE_fnc_SortBy;
                                                 _hosts = [_nearplayers select 0];
 	                                        };
                                             */

@@ -56,7 +56,7 @@ switch (_key) do {
 		_order = if(count _args > 1) then {_args select 1} else {"ASCEND"};
 		
 		_data = [_sectorData, _key] call ALIVE_fnc_hashGet;		
-		_sortedData = [_data,[],{_position distance _x},_order] call BIS_fnc_sortBy;
+		_sortedData = [_data,[],{_position distance _x},_order] call ALiVE_fnc_SortBy;
 		
 		_sortedData
 	};
@@ -66,7 +66,7 @@ switch (_key) do {
 		_order = if(count _args > 0) then {_args select 0} else {"ASCEND"};
 		
 		_data = [_sectorData, "elevationSamplesLand"] call ALIVE_fnc_hashGet;		
-		_sortedData = [_data,[],{_x select 1},_order] call BIS_fnc_sortBy;
+		_sortedData = [_data,[],{_x select 1},_order] call ALiVE_fnc_SortBy;
 		
 		_sortedData
 	};
@@ -76,7 +76,7 @@ switch (_key) do {
 		_order = if(count _args > 0) then {_args select 0} else {"ASCEND"};
 		
 		_data = [_sectorData, "elevationSamplesSea"] call ALIVE_fnc_hashGet;		
-		_sortedData = [_data,[],{_x select 1},_order] call BIS_fnc_sortBy;
+		_sortedData = [_data,[],{_x select 1},_order] call ALiVE_fnc_SortBy;
 		
 		_sortedData
 	};
@@ -89,7 +89,7 @@ switch (_key) do {
 		
 		_data = [_sectorData, "terrainSamples"] call ALIVE_fnc_hashGet;		
 		_terrainData = [_data, _terrainKey] call ALIVE_fnc_hashGet;		
-		_sortedData = [_terrainData,[],{_position distance _x},_order] call BIS_fnc_sortBy;
+		_sortedData = [_terrainData,[],{_position distance _x},_order] call ALiVE_fnc_SortBy;
 		
 		_sortedData
 	};
@@ -102,7 +102,7 @@ switch (_key) do {
 		
 		_data = [_sectorData, _key] call ALIVE_fnc_hashGet;		
 		_roadData = [_data, _roadKey] call ALIVE_fnc_hashGet;		
-		_sortedData = [_roadData,[],{_position distance (_x select 0)},_order] call BIS_fnc_sortBy;
+		_sortedData = [_roadData,[],{_position distance (_x select 0)},_order] call ALiVE_fnc_SortBy;
 		
 		_sortedData
 	};
@@ -115,7 +115,7 @@ switch (_key) do {
 		
 		_data = [_sectorData, _key] call ALIVE_fnc_hashGet;		
 		_placeData = [_data, _placeKey] call ALIVE_fnc_hashGet;		
-		_sortedData = [_placeData,[],{_position distance _x},_order] call BIS_fnc_sortBy;
+		_sortedData = [_placeData,[],{_position distance _x},_order] call ALiVE_fnc_SortBy;
 		
 		_sortedData
 	};
@@ -128,7 +128,7 @@ switch (_key) do {
 		
 		_data = [_sectorData, _key] call ALIVE_fnc_hashGet;		
 		_sideData = [_data, _sideKey] call ALIVE_fnc_hashGet;			
-		_sortedData = [_sideData,[],{_position distance (_x select 1)},_order] call BIS_fnc_sortBy;
+		_sortedData = [_sideData,[],{_position distance (_x select 1)},_order] call ALiVE_fnc_SortBy;
 		
 		_sortedData
 	};
@@ -141,7 +141,7 @@ switch (_key) do {
 		
 		_data = [_sectorData, _key] call ALIVE_fnc_hashGet;		
 		_sideData = [_data, _sideKey] call ALIVE_fnc_hashGet;			
-		_sortedData = [_sideData,[],{_position distance (_x select 1)},_order] call BIS_fnc_sortBy;
+		_sortedData = [_sideData,[],{_position distance (_x select 1)},_order] call ALiVE_fnc_SortBy;
 		
 		_sortedData
 	};

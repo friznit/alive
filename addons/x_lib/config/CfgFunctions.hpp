@@ -1203,6 +1203,13 @@ class getDominantFaction
 	recompile = RECOMPILE;
 };
 
+class sortBy
+{
+	file = "\x\alive\addons\x_lib\functions\misc\fnc_sortBy.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class getEnvironment
 {
 	file = "\x\alive\addons\x_lib\functions\misc\fnc_getEnvironment.sqf";

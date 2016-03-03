@@ -1438,7 +1438,7 @@ switch(_operation) do {
                         if(count _objectives > 0) then {
 
                             // sort objectives by distance to module
-                            _sortedObjectives = [_objectives,[],{(position _logic) distance (_x select 2 select 1)},"DESCEND"] call BIS_fnc_sortBy;
+                            _sortedObjectives = [_objectives,[],{(position _logic) distance (_x select 2 select 1)},"DESCEND"] call ALiVE_fnc_SortBy;
 
                             // get the highest priority objective
                             _primaryReinforcementObjective = _sortedObjectives select ((count _sortedObjectives)-1);
@@ -1510,7 +1510,7 @@ switch(_operation) do {
 
 
                         // sort reserved objectives by priority
-                        _sortedObjectives = [_reserve,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"ASCEND"] call BIS_fnc_sortBy;
+                        _sortedObjectives = [_reserve,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"ASCEND"] call ALiVE_fnc_SortBy;
 
                         // get the highest priority objective
                         _primaryReinforcementObjective = _sortedObjectives select ((count _sortedObjectives)-1);
@@ -1555,7 +1555,7 @@ switch(_operation) do {
 
                                 if(count(ALIVE_clustersMil select 2) > 0) then {
 
-                                    _sortedClusters = [ALIVE_clustersMil select 2,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"DESCEND"] call BIS_fnc_sortBy;
+                                    _sortedClusters = [ALIVE_clustersMil select 2,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"DESCEND"] call ALiVE_fnc_SortBy;
 
                                     // get the highest priority objective
                                     _primaryReinforcementObjective = _sortedClusters select ((count _sortedClusters)-1);
@@ -1572,7 +1572,7 @@ switch(_operation) do {
 
                             if(count(ALIVE_clustersMil select 2) > 0) then {
 
-                                _sortedClusters = [ALIVE_clustersMil select 2,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"DESCEND"] call BIS_fnc_sortBy;
+                                _sortedClusters = [ALIVE_clustersMil select 2,[],{([_x, "priority"] call ALIVE_fnc_hashGet)},"DESCEND"] call ALiVE_fnc_SortBy;
 
                                 // get the highest priority objective
                                 _primaryReinforcementObjective = _sortedClusters select ((count _sortedClusters)-1);

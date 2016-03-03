@@ -84,7 +84,7 @@ switch (_taskState) do {
             _side = [_profile,"side"] call ALiVE_fnc_HashGet;
             
             count ([_profile,"entitiesInCommandOf",[]] call ALiVE_fnc_HashGet) > 0 && {_side == _Input1};
-        }] call BIS_fnc_sortBy;
+        }] call ALiVE_fnc_SortBy;
         
         _targetVehicles = [_targets select 0];
         
