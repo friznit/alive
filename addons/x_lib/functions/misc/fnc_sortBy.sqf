@@ -50,8 +50,17 @@ _inputArray =+ _inputArray;
 
 if !(_filterFnc isEqualTo {}) then
 {
-	{if !(call _filterFnc) then {_inputArray set [_foreachIndex,objNull]}} forEach _inputArray;
-    _inputArray = _inputArray - [objNull]; //deleteAt will fuck up the array if used with foreach :(
+    _total = count _inputArray;
+   
+   //Sorting of max. 10.000 items possible in unscheduled, lets check
+    while {_total > 0} do {
+        _total = _total - 1;
+        
+        //do this to make defining the element from outside the function possible overwriting
+     	_x = _inputArray select _total;
+
+    	if !(call _filterFnc) then {_inputArray deleteAt _total};
+    };
 };
 
 if (_algorithmFnc isEqualTo {}) exitWith 
