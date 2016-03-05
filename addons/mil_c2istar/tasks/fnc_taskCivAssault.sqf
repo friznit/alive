@@ -158,7 +158,7 @@ switch (_taskState) do {
             _taskDescription = [_dialog,"description"] call ALIVE_fnc_hashGet;
             _newTaskID = format["%1_c2",_taskID];
             _taskSource = format["%1-CivAssault-Destroy",_taskID];
-            _newTask = [_newTaskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,"Created",_taskApplyType,"N",_taskID,_taskSource,true];
+            _newTask = [_newTaskID,_requestPlayerID,_taskSide,_targetPosition,_taskFaction,_taskTitle,_taskDescription,_taskPlayers,"Created",_taskApplyType,_taskCurrent,_taskID,_taskSource,true];
 
             _tasks set [count _tasks,_newTask];
             _taskIDs set [count _taskIDs,_newTaskID];

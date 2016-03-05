@@ -289,7 +289,7 @@ switch (_taskState) do {
 
             //["INF GROUPS: %1",_groups] call ALIVE_fnc_dump;
 
-            _remotePosition = [_taskPosition, 800, 5, true] call ALIVE_fnc_getPositionDistancePlayers;
+            _remotePosition = [_taskPosition, 500, 5, true] call ALIVE_fnc_getPositionDistancePlayers;
             _remotePosition = _remotePosition call BIS_fnc_selectRandom;
 
             {

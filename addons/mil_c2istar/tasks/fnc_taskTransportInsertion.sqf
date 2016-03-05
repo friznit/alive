@@ -325,57 +325,58 @@ switch (_taskState) do {
                     _nearVehicles = [_taskPosition,_taskPlayers,200] call ALIVE_fnc_taskGetNearPlayerVehicles;
                     _vehicles = [_nearVehicles,_infantryGroup] call ALIVE_fnc_taskDoVehiclesHaveRoomForGroup;
 
-                    // if there are nearby player vehicles with
-                    // room for the group assign it
-                    if(count _vehicles > 0) then {
-                        _vehicle = _vehicles select 0;
+                    if(count units _infantryGroup > 0) then {
 
-                        _assignments = [_infantryGroup, _vehicle, true] call ALIVE_fnc_vehicleAssignGroup;
+                        // if there are nearby player vehicles with
+                        // room for the group assign it
+                        if(count _vehicles > 0) then {
+                            _vehicle = _vehicles select 0;
 
-                        [_params,"pickupReached",true] call ALIVE_fnc_hashSet;
-                        [_params,"vehicle",_vehicle] call ALIVE_fnc_hashSet;
-                        [_params,"assignments",_assignments] call ALIVE_fnc_hashSet;
-                    }else{
-
-                        _vehicle = [_nearVehicles] call ALIVE_fnc_taskGetVehicleWithMaxRoom;
-                        _maxRoomVehicle = _vehicle select 0;
-
-                        // if there is a player vehicle that
-                        // has any available room
-                        // resize the profile group to fit in the vehicle
-                        // and then assign it
-                        if!(isNull _maxRoomVehicle) then {
-
-                            _room = _vehicle select 1;
-
-                            [_infantryProfile,"resize",_room] call ALIVE_fnc_profileEntity;
-
-                            _infantryGroup = _infantryProfile select 2 select 13;
-
-                            _assignments = [_infantryGroup, _maxRoomVehicle, true] call ALIVE_fnc_vehicleAssignGroup;
+                            _assignments = [_infantryGroup, _vehicle, true] call ALIVE_fnc_vehicleAssignGroup;
 
                             [_params,"pickupReached",true] call ALIVE_fnc_hashSet;
-                            [_params,"vehicle",_maxRoomVehicle] call ALIVE_fnc_hashSet;
+                            [_params,"vehicle",_vehicle] call ALIVE_fnc_hashSet;
                             [_params,"assignments",_assignments] call ALIVE_fnc_hashSet;
-
                         }else{
 
-                            // no player vehicles have any room - fail
+                            _vehicle = [_nearVehicles] call ALIVE_fnc_taskGetVehicleWithMaxRoom;
+                            _maxRoomVehicle = _vehicle select 0;
 
-                            [_infantryProfile,"busy",false] call ALIVE_fnc_profileEntity;
+                            // if there is a player vehicle that
+                            // has any available room
+                            // resize the profile group to fit in the vehicle
+                            // and then assign it
+                            if!(isNull _maxRoomVehicle) then {
 
-                            [_params,"nextTask",""] call ALIVE_fnc_hashSet;
+                                _room = _vehicle select 1;
 
-                            _task set [8,"Failed"];
-                            _task set [10, "N"];
-                            _result = _task;
+                                [_infantryProfile,"resize",_room] call ALIVE_fnc_profileEntity;
 
-                            ["chat_failed",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
+                                _infantryGroup = _infantryProfile select 2 select 13;
 
+                                _assignments = [_infantryGroup, _maxRoomVehicle, true] call ALIVE_fnc_vehicleAssignGroup;
+
+                                [_params,"pickupReached",true] call ALIVE_fnc_hashSet;
+                                [_params,"vehicle",_maxRoomVehicle] call ALIVE_fnc_hashSet;
+                                [_params,"assignments",_assignments] call ALIVE_fnc_hashSet;
+
+                            }else{
+
+                                // no player vehicles have any room - fail
+
+                                [_infantryProfile,"busy",false] call ALIVE_fnc_profileEntity;
+
+                                [_params,"nextTask",""] call ALIVE_fnc_hashSet;
+
+                                _task set [8,"Failed"];
+                                _task set [10, "N"];
+                                _result = _task;
+
+                                ["chat_failed",_currentTaskDialog,_taskSide,_taskPlayers] call ALIVE_fnc_taskCreateRadioBroadcastForPlayers;
+
+                            };
                         };
-
-                    }
-
+                    };
                 };
 
             }else{
