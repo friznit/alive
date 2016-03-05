@@ -1,6 +1,3 @@
-a_advertcolumn
-a_castle_stairs_a
-a_castle_walls_10
 a_castle_walls_5_d
 a_castle_walls_end
 a_statue01
@@ -44,6 +41,8 @@ asf3_6
 asf3_60 10
 asf3_6konec
 asf3_7 100
+bags_ep1
+bags_stack_ep1
 barel
 barrelsand_f
 barrelwater_f
@@ -74,6 +73,7 @@ bilboard_vodka
 bilboard_volte_cernaruske_hnuti
 bilboard_vstup_do_cdf
 bilboard_zlute_zgrynda
+billboard_1_ep1
 bmp2_wrecked
 boatsmall_1
 boatsmall_2a
@@ -91,6 +91,7 @@ bridge_asf1_25
 bridge_stone_asf2_25
 bridge_wood_25
 bucket_f
+cages_ep1
 cages_f
 calvaries
 campingchair_v1_folded_f
@@ -149,8 +150,10 @@ concrete_smallwall_4m_f
 concrete_smallwall_8m_f
 concretepipe_f
 corylus
+counter_ep1
 craet
 crash_barrier_f
+crates_ep1];
 cratesplastic_f
 cratesshabby_f
 crateswooden_f
@@ -162,6 +165,15 @@ datsun01t
 datsun02t
 decal_path_curve_f
 decal_path_direct_f
+dirt2_11000
+dirt2_12
+dirt2_2250
+dirt2_25
+dirt2_3025
+dirt2_6
+dirt2_6010
+dirt2_6konec
+dirt2_7100
 drevo
 fagus
 fallentree
@@ -276,6 +288,7 @@ kr_x_asf1_city
 kr_x_asf2_asf3
 kr_x_city_city
 kr_x_city_city_asf3
+lada_wrecked
 lampa_ind
 lampa_ind_zebr
 lampa_sidl
@@ -292,6 +305,8 @@ lavicka_4
 line_curve_f
 line_long_f
 line_short_f
+market_shelter_ep1
+market_stalls_02_ep1
 mb_veg
 metalbarrel_empty_f
 metalbarrel_f
@@ -315,6 +330,9 @@ misc_cargo2c
 misc_cargo2d
 misc_cargo2e
 misc_chickencoop
+misc_coil_ep1
+misc_coltan_heap_ep1
+misc_concpipeline_ep1
 misc_concrete_high
 misc_deerstand
 misc_drainage
@@ -323,8 +341,11 @@ misc_gcontainer_big
 misc_greenhouse
 misc_haystack
 misc_hutch
+misc_ironpipes_ep1
 misc_postbox
+misc_rubble_ep1
 misc_scaffolding
+misc_tram_ep1
 misc_well
 misc_wellpump
 misc_windbreak
@@ -544,6 +565,9 @@ sorbus
 sportground_fence_f
 ss_hangar
 stallwater_f
+stand_meat_ep1
+stand_small_ep1
+stand_water_ep1
 stodola_old_open
 stodola_open
 stoh
@@ -555,9 +579,11 @@ stone_pillar_f
 stoplight02
 sun_chair_f
 sunshade_f
+tires_ep1
 toiletbox_f
 torzo
 tovarna2
+transport_cart_ep1
 tree
 u_addon_01_v1_f
 u_addon_02_v1_f
@@ -588,6 +614,7 @@ wall_fen1_5_pole
 wall_fenw_7
 wall_fenw_7_d
 wall_fenw_7_s
+wall_fenw2_6_ep1
 wall_gate_ind1_l
 wall_gate_ind1_r
 wall_gate_ind2a_l
@@ -620,6 +647,14 @@ wall_indvar1_pole
 wall_indvar2_5
 wall_indvar2_5_d
 wall_indvar2_pole
+wall_l_2m5_corner_ep1
+wall_l_2m5_ep1
+wall_l_2m5_gate_ep1
+wall_l_5m_ep1
+wall_l1_5m_ep1
+wall_l1_gate_ep1
+wall_l2_5m_ep1
+wall_l5_10m_ep1
 wall_stone
 wall_stoned
 wall_tin_4
