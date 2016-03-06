@@ -27,7 +27,7 @@ Highhead
 private ["_unit","_args"];
 
 _unit = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
-_args = [_this, 1, [], [[]]] call bis_fnc_param;
+_args = [_this, 1, 1, [-1]] call bis_fnc_param;
 
 if !(alive _unit) exitwith {diag_log "landAtRemote failed - dead/empty unit"};
 
