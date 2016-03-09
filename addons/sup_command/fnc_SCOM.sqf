@@ -2982,7 +2982,7 @@ switch(_operation) do {
                             _x,
                             [0.502,1,0.635,1]
                         ];
-					}
+					};
                 };
             } foreach _plannedWaypoints;
         };
