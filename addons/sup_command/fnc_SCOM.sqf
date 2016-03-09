@@ -272,8 +272,6 @@ switch(_operation) do {
             [_commandState,"opsGroupSelectedProfile",[]] call ALIVE_fnc_hashSet;
             [_commandState,"opsGroupWaypoints",[]] call ALIVE_fnc_hashSet;
             [_commandState,"opsGroupPlannedWaypoints",[]] call ALIVE_fnc_hashSet;
-            [_commandState,"opsGroupPreviousWaypoints",[]] call ALIVE_fnc_hashSet;
-            [_commandState,"opsGroupArrowMarkers",[]] call ALIVE_fnc_hashSet;
             [_commandState,"opsGroupWaypointsPlanned",false] call ALIVE_fnc_hashSet;
 
             [_commandState,"opsGroupWaypointsSelectedOptions",[]] call ALIVE_fnc_hashSet;
@@ -536,7 +534,7 @@ switch(_operation) do {
         // The machine has an interface? Must be a MP client, SP client or a client that acts as host!
         if (hasInterface) then {
 
-            private ["_commandState","_markers","_groupWaypoints","_arrowMarkers","_plannedWaypoints"];
+            private ["_commandState","_markers","_groupWaypoints","_plannedWaypoints"];
 
             _commandState = [_logic,"commandState"] call MAINCLASS;
 
@@ -550,21 +548,8 @@ switch(_operation) do {
                 deleteMarkerLocal _x;
             } foreach _markers;
 
-            _groupWaypoints = [_commandState,"opsGroupWaypoints"] call ALIVE_fnc_hashGet;
-            _arrowMarkers = [_commandState,"opsGroupArrowMarkers"] call ALIVE_fnc_hashGet;
-            _plannedWaypoints = [_commandState,"opsGroupPlannedWaypoints"] call ALIVE_fnc_hashGet;
-
-            {
-                deleteMarkerLocal _x
-            } forEach _groupWaypoints;
-
-            {
-                deleteMarkerLocal _x
-            } forEach _arrowMarkers;
-
-            {
-                deleteMarkerLocal _x
-            } forEach _plannedWaypoints;
+            [_commandState,"opsGroupWaypoints", []] call ALIVE_fnc_hashSet;
+            [_commandState,"opsGroupPlannedWaypoints", []] call ALIVE_fnc_hashSet;
 
         };
 
@@ -1028,8 +1013,8 @@ switch(_operation) do {
 
                     // on click of edit map draw planned waypoint
 
-                    private ["_commandState","_button","_posX","_posY","_map","_position","_groupWaypoints","_plannedWaypoints","_previousWaypoints",
-                    "_arrowMarkers","_selectedProfile","_markerPos","_m","_waypointOptions","_waypoints","_newWaypointOption","_newWaypointValue",
+                    private ["_commandState","_button","_posX","_posY","_map","_position","_groupWaypoints","_plannedWaypoints",
+                    "_selectedProfile","_markerPos","_m","_waypointOptions","_waypoints","_newWaypointOption","_newWaypointValue",
                     "_waypointList"];
 
                     _button = _args select 0 select 1;
@@ -1048,42 +1033,12 @@ switch(_operation) do {
                         _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, _position];
                         ctrlMapAnimCommit _map;
 
-                        _groupWaypoints = [_commandState,"opsGroupWaypoints"] call ALIVE_fnc_hashGet;
                         _plannedWaypoints = [_commandState,"opsGroupPlannedWaypoints"] call ALIVE_fnc_hashGet;
-                        _previousWaypoints = [_commandState,"opsGroupPreviousWaypoints"] call ALIVE_fnc_hashGet;
-                        _arrowMarkers = [_commandState,"opsGroupArrowMarkers"] call ALIVE_fnc_hashGet;
                         _selectedProfile = [_commandState,"opsGroupSelectedProfile"] call ALIVE_fnc_hashGet;
-
-                        //-- Get info for line marker placement
-                        if (count _groupWaypoints > 0) then {
-                            if (count _plannedWaypoints == 0) then {
-                                _markerPos = getMarkerPos (_groupWaypoints select (count _groupWaypoints - 1));
-                            } else {
-                                _markerPos = getMarkerPos ((_plannedWaypoints select (count _plannedWaypoints - 1))); //select 0);
-                            };
-                        } else {
-                            if !(count _plannedWaypoints == 0) then {
-                                _markerPos = getMarkerPos ((_plannedWaypoints select (count _plannedWaypoints - 1))); //select 0);
-                            } else {
-                                _markerPos = _selectedProfile select 2;
-                            };
-                        };
-
-                        //-- Draw X marker
-                        _m = createMarkerLocal [str _position, _position];
-                        _m setMarkerSizeLocal [1.3,1.3];
-                        _m setMarkerShapeLocal "ICON";
-                        _m setMarkerTypeLocal "waypoint";
-                        _m setMarkerColorLocal "ColorBlue";
-
-                        _plannedWaypoints pushBack _m; //[_marker,STCWaypointType,STCWaypointSpeed,STCWaypointFormation,STCWaypointBehavior];
-
-                        //-- Create line marker
-                        _position params ["_1","_2"];
-                        _position = [_1,_2,0];
-                        _m = [str _markerPos, _markerPos, _position,20,"ColorGreen",.9] call ALIVE_fnc_createLineMarker;
-
-                        _arrowMarkers pushBack _m;
+						
+						// store position
+						
+						_plannedWaypoints pushback _position;
 
                         // add to the waypoints array
 
@@ -1093,7 +1048,7 @@ switch(_operation) do {
                         _newWaypointOption = format["Waypoint %1 [%2]",count(_waypoints),"MOVE"];
                         _newWaypointValue = [_position, 100] call ALIVE_fnc_createProfileWaypoint;
 
-                        _newWaypointValue call ALIVE_fnc_inspectHash;
+                        //_newWaypointValue call ALIVE_fnc_inspectHash;
 
                         _waypointOptions pushBack _newWaypointOption;
                         _waypoints pushBack (_newWaypointValue select 2);
@@ -1107,7 +1062,6 @@ switch(_operation) do {
                         [_commandState,"opsGroupWaypointsSelectedOptions",_waypointOptions] call ALIVE_fnc_hashSet;
                         [_commandState,"opsGroupWaypointsSelectedValues",_waypoints] call ALIVE_fnc_hashSet;
                         [_commandState,"opsGroupPlannedWaypoints",_plannedWaypoints] call ALIVE_fnc_hashSet;
-                        [_commandState,"opsGroupArrowMarkers",_arrowMarkers] call ALIVE_fnc_hashSet;
                         [_commandState,"opsGroupWaypointsPlanned",true] call ALIVE_fnc_hashSet;
 
                         [_logic,"commandState",_commandState] call MAINCLASS;
@@ -1402,6 +1356,10 @@ switch(_operation) do {
                     }else{
                         [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
                     };
+					
+					// clear planned waypoints
+					
+					[_commandState,"opsGroupPlannedWaypoints", []] call ALiVE_fnc_hashSet;
 
                     // show waiting until response comes back
 
@@ -1411,45 +1369,13 @@ switch(_operation) do {
 
                 case "OPS_CANCEL_WAYPOINTS": {
 
-                    private ["_commandState","_plannedWaypoints","_arrowMarkers","_countPlanned","_countArrows","_diffCount","_newArrowMarkers",
-                    "_selectedProfile","_profileID","_event","_requestID","_playerID"];
-
-                    // cancel any planned waypoints
+                    private ["_commandState","_plannedWaypoints","_selectedProfile","_profileID","_event","_requestID","_playerID"];
 
                     _commandState = [_logic,"commandState"] call MAINCLASS;
-
-                    _plannedWaypoints = [_commandState,"opsGroupPlannedWaypoints"] call ALIVE_fnc_hashGet;
-                    _arrowMarkers = [_commandState,"opsGroupArrowMarkers"] call ALIVE_fnc_hashGet;
-
-                    _countPlanned = count(_plannedWaypoints);
-                    _countArrows = count(_arrowMarkers);
-                    _diffCount = _countArrows - _countPlanned;
-
-                    {
-                        deleteMarkerLocal _x;
-                    } foreach _plannedWaypoints;
-
-                    _newArrowMarkers = [];
-
-                    {
-                        if(_forEachIndex < _diffCount) then {
-                            _newArrowMarkers pushBack _x;
-                        }else{
-                            deleteMarkerLocal _x;
-                        }
-
-                    } foreach _arrowMarkers;
-
-                    for "_i" from _diffCount to _countArrows do {
-                        deleteMarkerLocal (_arrowMarkers select _i);
-                    };
 
                     // store updates in state
 
                     [_commandState,"opsGroupPlannedWaypoints",[]] call ALIVE_fnc_hashSet;
-                    [_commandState,"opsGroupArrowMarkers",_newArrowMarkers] call ALIVE_fnc_hashSet;
-
-                    [_logic,"commandState",_commandState] call MAINCLASS;
 
                     // send the event to get further data from the command handler\
 
@@ -1504,6 +1430,10 @@ switch(_operation) do {
                     }else{
                         [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
                     };
+					
+                    // reset planned waypoints
+					
+                    [_commandState,"opsGroupPlannedWaypoints", []] call ALiVE_fnc_hashSet;
 
                     // hide editing buttons
 
@@ -2229,13 +2159,18 @@ switch(_operation) do {
             [_logic,"resetOps"] call MAINCLASS;
 
         };
+		
+        // add map draw eh
 
+        _editMap ctrlAddEventHandler ["Draw",{
+            [ALIVE_SUP_COMMAND,"opsDrawWaypoints", _this] call ALiVE_fnc_SCOM;
+        }];
     };
 
     case "resetOps": {
 
         private ["_commandState","_playerID","_requestID","_opsLimit","_side","_faction","_event","_editList",
-        "_groupWaypoints","_arrowMarkers","_plannedWaypoints"];
+        "_groupWaypoints","_plannedWaypoints"];
 
         // display the ops opcom side selection list to begin with
 
@@ -2247,31 +2182,11 @@ switch(_operation) do {
         _playerID = getPlayerUID player;
         _requestID = format["%1_%2",_faction,floor(time)];
 
-        // clear any markers
-
-        _groupWaypoints = [_commandState,"opsGroupWaypoints"] call ALIVE_fnc_hashGet;
-        _arrowMarkers = [_commandState,"opsGroupArrowMarkers"] call ALIVE_fnc_hashGet;
-        _plannedWaypoints = [_commandState,"opsGroupPlannedWaypoints"] call ALIVE_fnc_hashGet;
-
-        {
-            deleteMarkerLocal _x
-        } forEach _groupWaypoints;
-
-        {
-            deleteMarkerLocal _x
-        } forEach _arrowMarkers;
-
-        {
-            deleteMarkerLocal _x
-        } forEach _plannedWaypoints;
-
         // reset the waypoint data
 
         [_commandState,"opsGroupSelectedProfile",[]] call ALIVE_fnc_hashSet;
         [_commandState,"opsGroupWaypoints",[]] call ALIVE_fnc_hashSet;
         [_commandState,"opsGroupPlannedWaypoints",[]] call ALIVE_fnc_hashSet;
-        [_commandState,"opsGroupPreviousWaypoints",[]] call ALIVE_fnc_hashSet;
-        [_commandState,"opsGroupArrowMarkers",[]] call ALIVE_fnc_hashSet;
         [_commandState,"opsGroupWaypointsPlanned",false] call ALIVE_fnc_hashSet;
 
         [_logic,"commandState",_commandState] call MAINCLASS;
@@ -2416,13 +2331,10 @@ switch(_operation) do {
                 // store a combined array of all profiles to state
 
                 _combinedData = [];
-                for "_i" from 0 to ((count _groupData) - 1) do {
-                    _profileArray = _groupData select _i;
-
-                    {
-                        _combinedData pushBack _x;
-                    } forEach _profileArray;
-                };
+				
+                {
+                    _combinedData append _x;
+                } foreach _groupData;
 
                 _opsGroupsBySide = [_commandState,"opsGroupsBySide"] call ALIVE_fnc_hashGet;
                 [_opsGroupsBySide, _selectedSide, _combinedData] call ALIVE_fnc_hashSet;
@@ -2491,7 +2403,7 @@ switch(_operation) do {
                     _m setMarkerAlphaLocal _alpha;
                     _m setMarkerTextLocal format["e%1",_label];
 
-                    _markers = _markers + [_m];
+                    _markers pushback _m;
 
                 } forEach _infantry;
 
@@ -2517,7 +2429,7 @@ switch(_operation) do {
                     _m setMarkerAlphaLocal _alpha;
                     _m setMarkerTextLocal format["e%1",_label];
 
-                    _markers = _markers + [_m];
+                    _markers pushback _m;
 
                 } forEach _motorised;
 
@@ -2543,7 +2455,7 @@ switch(_operation) do {
                     _m setMarkerAlphaLocal _alpha;
                     _m setMarkerTextLocal format["e%1",_label];
 
-                    _markers = _markers + [_m];
+                    _markers pushback _m;
 
                 } forEach _mechanized;
 
@@ -2569,7 +2481,7 @@ switch(_operation) do {
                     _m setMarkerAlphaLocal _alpha;
                     _m setMarkerTextLocal format["e%1",_label];
 
-                    _markers = _markers + [_m];
+                    _markers pushback _m;
 
                 } forEach _armor;
 
@@ -2595,7 +2507,7 @@ switch(_operation) do {
                     _m setMarkerAlphaLocal _alpha;
                     _m setMarkerTextLocal format["e%1",_label];
 
-                    _markers = _markers + [_m];
+                    _markers pushback _m;
 
                 } forEach _air;
 
@@ -2621,7 +2533,7 @@ switch(_operation) do {
                     _m setMarkerAlphaLocal _alpha;
                     _m setMarkerTextLocal format["e%1",_label];
 
-                    _markers = _markers + [_m];
+                    _markers pushback _m;
 
                 } forEach _sea;
 
@@ -2647,7 +2559,7 @@ switch(_operation) do {
                     _m setMarkerAlphaLocal _alpha;
                     _m setMarkerTextLocal format["e%1",_label];
 
-                    _markers = _markers + [_m];
+                    _markers pushback _m;
 
                 } forEach _artillery;
 
@@ -2673,7 +2585,7 @@ switch(_operation) do {
                     _m setMarkerAlphaLocal _alpha;
                     _m setMarkerTextLocal format["e%1",_label];
 
-                    _markers = _markers + [_m];
+                    _markers pushback _m;
 
                 } forEach _AAA;
 
@@ -2746,8 +2658,8 @@ switch(_operation) do {
 
     case "enableOpsProfile": {
 
-        private["_buttonR3","_commandState","_status","_profile","_waypoints","_previousWaypoints","_groupWaypoints","_arrowMarkers",
-        "_position","_previousWaypointPos","_markerPos","_profilePosition"];
+        private["_buttonR3","_commandState","_status","_profile","_waypoints","_groupWaypoints",
+        "_position","_markerPos","_profilePosition"];
 
         // once the profile data has returned from the command handler
         // display the profiles waypoints
@@ -2780,53 +2692,15 @@ switch(_operation) do {
                 _waypoints = _profile select 4;
                 _profilePosition = _profile select 2;
 
-                _groupWaypoints = [_commandState,"opsGroupWaypoints"] call ALIVE_fnc_hashGet;
-                _previousWaypoints = [_commandState,"opsGroupPreviousWaypoints"] call ALIVE_fnc_hashGet;
-                _arrowMarkers = [_commandState,"opsGroupArrowMarkers"] call ALIVE_fnc_hashGet;
-
-                { deleteMarkerLocal _x } forEach _groupWaypoints;
-                { deleteMarkerLocal _x } forEach _arrowMarkers;
-
-                _previousWaypoints = [];
                 _groupWaypoints = [];
-                _arrowMarkers = [];
 
                 {
                     _position = _x;
-
-                    //-- Get arrow marker info
-                    if (count _previousWaypoints > 0) then {
-                        _previousWaypointPos = getMarkerPos (_previousWaypoints select (count _previousWaypoints - 1));
-                        _markerPos = _previousWaypointPos;
-                    } else {
-                        _markerPos = _profilePosition;
-
-                    };
-
-                    //-- Create line marker
-                    _m = [format ["%1",random 500], _markerPos, _position,20,"ColorBlue",.9] call ALIVE_fnc_createLineMarker;
-
-                    _arrowMarkers pushBack _m;
-
-                    //-- Draw X marker
-                    _m = createMarkerLocal [format ["%1",random 500], _position];
-                    _m setMarkerSizeLocal [1.3,1.3];
-                    _m setMarkerShapeLocal "ICON";
-                    _m setMarkerTypeLocal "waypoint";
-                    _m setMarkerColorLocal "ColorBlue";
-
-                    //-- Store marker
-                    {
-                        _x pushBack _m;
-                    } forEach [_previousWaypoints,_groupWaypoints];
-
+					_groupWaypoints pushback _position;
                 } forEach _waypoints;
 
                 [_commandState,"opsGroupSelectedProfile",_profile] call ALIVE_fnc_hashSet;
                 [_commandState,"opsGroupWaypoints",_groupWaypoints] call ALIVE_fnc_hashSet;
-                [_commandState,"opsGroupPreviousWaypoints",_previousWaypoints] call ALIVE_fnc_hashSet;
-                [_commandState,"opsGroupArrowMarkers",_arrowMarkers] call ALIVE_fnc_hashSet;
-
 
                 // enable interface elements for interacting with profile
 
@@ -2876,8 +2750,8 @@ switch(_operation) do {
 
     case "enableGroupWaypointEdit": {
 
-        private["_buttonR3","_commandState","_status","_profile","_waypoints","_previousWaypoints","_groupWaypoints","_arrowMarkers","_position",
-        "_previousWaypointPos","_markerPos","_rightMap","_editMap","_profilePosition","_waypointsOptions","_waypointsValues","_option","_waypointList",
+        private["_buttonR3","_commandState","_status","_profile","_waypoints","_groupWaypoints","_position",
+        "_markerPos","_rightMap","_editMap","_profilePosition","_waypointsOptions","_waypointsValues","_option","_waypointList",
         "_profileActive","_opsWPTypeOptions","_opsWPTypeValues"];
 
         // once the profile data has returned from the command handler
@@ -2932,16 +2806,7 @@ switch(_operation) do {
 
                 _waypoints = _profile select 4;
 
-                _groupWaypoints = [_commandState,"opsGroupWaypoints"] call ALIVE_fnc_hashGet;
-                _previousWaypoints = [_commandState,"opsGroupPreviousWaypoints"] call ALIVE_fnc_hashGet;
-                _arrowMarkers = [_commandState,"opsGroupArrowMarkers"] call ALIVE_fnc_hashGet;
-
-                { deleteMarkerLocal _x } forEach _groupWaypoints;
-                { deleteMarkerLocal _x } forEach _arrowMarkers;
-
-                _previousWaypoints = [];
                 _groupWaypoints = [];
-                _arrowMarkers = [];
 
                 _waypointsOptions = [];
                 _waypointsValues = [];
@@ -2956,31 +2821,7 @@ switch(_operation) do {
 
                     _position = _x select 0;
 
-                    //-- Get arrow marker info
-                    if (count _previousWaypoints > 0) then {
-                        _previousWaypointPos = getMarkerPos (_previousWaypoints select (count _previousWaypoints - 1));
-                        _markerPos = _previousWaypointPos;
-                    } else {
-                        _markerPos = _profilePosition;
-
-                    };
-
-                    //-- Create line marker
-                    _m = [format ["%1",random 500], _markerPos, _position,20,"ColorBlue",.9] call ALIVE_fnc_createLineMarker;
-
-                    _arrowMarkers pushBack _m;
-
-                    //-- Draw X marker
-                    _m = createMarkerLocal [format ["%1",random 500], _position];
-                    _m setMarkerSizeLocal [1.3,1.3];
-                    _m setMarkerShapeLocal "ICON";
-                    _m setMarkerTypeLocal "waypoint";
-                    _m setMarkerColorLocal "ColorBlue";
-
-                    //-- Store marker
-                    {
-                        _x pushBack _m;
-                    } forEach [_previousWaypoints,_groupWaypoints];
+					_groupWaypoints pushback _position;
 
                 } forEach _waypoints;
 
@@ -3013,8 +2854,6 @@ switch(_operation) do {
 
                 [_commandState,"opsGroupSelectedProfile",_profile] call ALIVE_fnc_hashSet;
                 [_commandState,"opsGroupWaypoints",_groupWaypoints] call ALIVE_fnc_hashSet;
-                [_commandState,"opsGroupPreviousWaypoints",_previousWaypoints] call ALIVE_fnc_hashSet;
-                [_commandState,"opsGroupArrowMarkers",_arrowMarkers] call ALIVE_fnc_hashSet;
 
                 [_logic,"commandState",_commandState] call MAINCLASS;
 
@@ -3079,6 +2918,75 @@ switch(_operation) do {
         };
 
     };
+	
+	case "opsDrawWaypoints": {
+        private ["_map","_commandState","_selectedProfile","_profilePos","_waypoint","_waypointPos",
+        "_waypoints","_plannedWaypoints"];
+		
+        _map = _args select 0;
+
+        // Get selected profile
+		
+        _commandState = [_logic,"commandState"] call MAINCLASS;
+        _selectedProfile = [_commandState,"opsGroupsSelectedValue"] call ALIVE_fnc_hashGet;
+
+        if (count _selectedProfile > 0) then {
+            _map = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_EditMap);
+            _profilePos = _selectedProfile select 1;
+			
+            // Draw active waypoints in blue
+
+            _waypoints = [_commandState,"opsGroupWaypoints", []] call ALiVE_fnc_hashGet;
+			
+            {
+                if (_forEachIndex > 0) then {
+                    // Draw line from waypoint to waypoint
+                    _map drawLine [
+                        _waypoints select (_forEachIndex - 1),
+                        _x,
+                        [0.427,0.463,0.988,1]
+                    ];
+                } else {
+                    // Draw line from profile to waypoint
+                    _map drawLine [
+                        _profilePos,
+                        _x,
+                        [0.427,0.463,0.988,1]
+                    ];
+                };
+            } foreach _waypoints;
+		
+            // Draw planned waypoints in green
+			
+            _plannedWaypoints = [_commandState,"opsGroupPlannedWaypoints", []] call ALiVE_fnc_hashGet;
+			
+            {
+                if (_forEachIndex > 0) then {
+                    // Draw line from planned waypoint to planned waypoint
+                    _map drawLine [
+                        _plannedWaypoints select (_forEachIndex - 1),
+                        _x,
+                        [0.502,1,0.635,1]
+                    ];
+                } else {
+                    if (count _waypoints > 0) then {
+                        // Draw line from last waypoint to planned waypoint
+                        _map drawLine [
+                            _waypoints select (count _waypoints - 1),
+                            _x,
+                            [0.502,1,0.635,1]
+                        ];
+                    } else {
+                        _map drawLine [
+                            _profilePos,
+                            _x,
+                            [0.502,1,0.635,1]
+                        ];
+					}
+                };
+            } foreach _plannedWaypoints;
+        };
+	};
 
     case "enableWaypointSelected": {
 
