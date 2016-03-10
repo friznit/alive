@@ -11,4 +11,10 @@
 <Key ID="STR_ALIVE_SCOM_COMMENT">
     <English>Group Management</English>
 </Key>
+<Key ID="STR_ALIVE_SCOM_INTEL_COMMENT">
+    <English>Battlefield Intelligence</English>
+</Key>
+<Key ID="STR_ALIVE_SCOM_OPS_COMMENT">
+    <English>Command/Control</English>
+</Key>
 </Container></Package></Project>

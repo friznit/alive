@@ -117,7 +117,7 @@ if (_menuName == "C2ISTAR") then {
                 ["Intel",
                     {["OPEN_INTEL",[]] call ALIVE_fnc_SCOMTabletOnAction},
                     "",
-                    localize "STR_ALIVE_SCOM_OPS_COMMENT",
+                    localize "STR_ALIVE_SCOM_INTEL_COMMENT",
                      "",
                      -1,
                      true,
