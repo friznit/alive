@@ -51,11 +51,11 @@ _playersNear = false;
 } forEach _taskPlayers;
 
 // there are players near the objective
-// check for near enemies
+// check for near enemies including profiles
 
 if(_playersNear) then {
 
-    _enemyNear = [_taskPosition, _taskSide, _radius] call ALIVE_fnc_isEnemyNear;
+    _enemyNear = [_taskPosition, _taskSide, _radius,true] call ALIVE_fnc_isEnemyNear;
 
     if!(_enemyNear) then {
 

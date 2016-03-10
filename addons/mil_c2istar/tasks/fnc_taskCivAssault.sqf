@@ -206,6 +206,9 @@ switch (_taskState) do {
 
             [_params,"lastState","Destroy"] call ALIVE_fnc_hashSet;
         };
+        
+        //Only ever check every 30 seconds to allow enough time for units to spawn
+        sleep 30;
 
         _areaClear = [_taskPosition,_taskPlayers,_taskSide,200] call ALIVE_fnc_taskIsAreaClearOfEnemies;
 
