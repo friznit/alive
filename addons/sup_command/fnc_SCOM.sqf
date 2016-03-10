@@ -368,7 +368,7 @@ switch(_operation) do {
                 _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
 
                 if !(isNull _player) then {
-                    [_event,"ALIVE_fnc_SCOMTabletEventToClient",_player,false,true] call BIS_fnc_MP;
+                    [_event,"ALIVE_fnc_SCOMTabletEventToClient",_player,false,false,true] call BIS_fnc_MP;
                 };
 
             }else{
@@ -641,7 +641,7 @@ switch(_operation) do {
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
+                            [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
                         };
 
                         // show waiting until response comes back
@@ -689,7 +689,7 @@ switch(_operation) do {
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
+                            [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
                         };
 
                         // show waiting until response comes back
@@ -748,7 +748,7 @@ switch(_operation) do {
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
+                            [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
                         };
 						*/
 
@@ -892,7 +892,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
                     };
 
                     // close the tablet
@@ -951,7 +951,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
                     };
 
                     // close the tablet
@@ -1003,7 +1003,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
                     };
 
                     // show waiting until response comes back
@@ -1357,7 +1357,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
                     };
 					
 					// clear planned waypoints
@@ -1396,7 +1396,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
                     };
 
                     // show waiting until response comes back
@@ -1431,7 +1431,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
                     };
 					
                     // reset planned waypoints
@@ -2209,7 +2209,7 @@ switch(_operation) do {
         if(isServer) then {
             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
         }else{
-            [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
+            [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
         };
 
         // show waiting until response comes back
@@ -2650,7 +2650,7 @@ switch(_operation) do {
         if(isServer) then {
             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
         }else{
-            [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
+            [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
         };
 
         // show waiting until response comes back
