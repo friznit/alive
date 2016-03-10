@@ -3273,8 +3273,6 @@ switch(_operation) do {
                     ["openSplash",0.25] call ALIVE_fnc_displayMenu;
                     ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
-                    deleteVehicle _target;
-
                     [player,false] call ALIVE_fnc_adminGhost;
 
                     player setPos _initialPosition;
@@ -3284,6 +3282,8 @@ switch(_operation) do {
                     [_logic, "deleteDynamicCamera"] call MAINCLASS;
 
                 };
+                
+                deleteVehicle _target;
 
                 [_commandState,"opsGroupSpectate",false] call ALIVE_fnc_hashSet;
 
