@@ -345,15 +345,13 @@ switch(_operation) do {
         };
     };
     case "opsOPCOMSelected": {
-        private["_data","_playerID","_side","_debug"];
+        private["_data","_playerID","_side"];
 
         if(typeName _args == "ARRAY") then {
 
             _data = _args;
             _playerID = _data select 1;
             _side = _data select 2;
-
-            _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
 
             private["_profileIDs","_groups","_opcom","_opcomSide","_data","_unitType"];
 
@@ -382,18 +380,25 @@ switch(_operation) do {
                                     _data pushBack [_x,_position];
                                 };
                             };
-                        } forEach _unitType;
+							false;
+                        } count _unitType;
                         _groups pushBack _data;
-                    } forEach ["infantry","motorized","mechanized","armored","air","sea","artillery","AAA"];
-
+						false;
+                    } count ["infantry","motorized","mechanized","armored","air","sea","artillery","AAA"];
+					false;
                 };
-
-            } foreach OPCOM_INSTANCES;
+            } count OPCOM_INSTANCES;
 
             // send the data back to the players SCOM tablet
-
+			
+			// easier to send data back via event because we can't directly pass ALiVE_SUP_COMMAND via remoteExecCall from the server, minimal speed loss
+			//_player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+			//[ALiVE_SUP_COMMAND,"enableOpsHighCommand",[_playerID,_side,_groups]] remoteExecCall [QUOTE(ALiVE_fnc_SCOM),_player]; // need the raw speed  from remoteExecCall
+			
+			///* gotta comment the comments
             _event = ['SCOM_UPDATED', [_playerID,_side,_groups], "COMMAND_HANDLER", "OPS_GROUPS"] call ALIVE_fnc_event;
             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+			//*/
 
         };
     };
@@ -899,12 +904,12 @@ switch(_operation) do {
                                     };
 
                                 };
-                            } forEach _section;
+                            } foreach _section;
                         };
 
                         _objectiveData pushBack [_size,_center,_tacom_state,_opcom_state,_sections];
 
-                    } forEach ([_opcom,"objectives",[]] call ALiVE_fnc_HashGet);
+                    } foreach ([_opcom,"objectives",[]] call ALiVE_fnc_HashGet);
 
                 };
 

@@ -368,7 +368,7 @@ switch(_operation) do {
                 _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
 
                 if !(isNull _player) then {
-                    [_event,"ALIVE_fnc_SCOMTabletEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                    [_event,"ALIVE_fnc_SCOMTabletEventToClient",_player,false,true] call BIS_fnc_MP;
                 };
 
             }else{
@@ -486,9 +486,9 @@ switch(_operation) do {
 
                 disableSerialization;
 
-                [_logic,"disableAll"] call MAINCLASS;
+                //[_logic,"disableAll"] call MAINCLASS; what is this?
 
-                sleep 0.5;
+                //sleep 0.5; Seems to work fine/better without sleeping
 
                 _state = [_logic,"state"] call MAINCLASS;
 
@@ -641,7 +641,7 @@ switch(_operation) do {
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                            [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
                         };
 
                         // show waiting until response comes back
@@ -689,7 +689,7 @@ switch(_operation) do {
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                            [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
                         };
 
                         // show waiting until response comes back
@@ -741,13 +741,16 @@ switch(_operation) do {
                         _playerID = getPlayerUID player;
                         _requestID = format["%1_%2",_faction,floor(time)];
 
+						[nil,"opsOPCOMSelected", [_requestID,_playerID,_selectedValue]] remoteExecCall [QUOTE(ALIVE_fnc_commandHandler),2]; // need the raw speed
+						
+						/*
                         _event = ['OPS_OPCOM_SELECT', [_requestID,_playerID,_selectedValue], "SCOM"] call ALIVE_fnc_event;
-
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                            [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
                         };
+						*/
 
                         // show waiting until response comes back
 
@@ -889,7 +892,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
                     };
 
                     // close the tablet
@@ -948,7 +951,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
                     };
 
                     // close the tablet
@@ -1000,7 +1003,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
                     };
 
                     // show waiting until response comes back
@@ -1354,7 +1357,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
                     };
 					
 					// clear planned waypoints
@@ -1393,7 +1396,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
                     };
 
                     // show waiting until response comes back
@@ -1428,7 +1431,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
                     };
 					
                     // reset planned waypoints
@@ -2206,7 +2209,7 @@ switch(_operation) do {
         if(isServer) then {
             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
         }else{
-            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+            [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
         };
 
         // show waiting until response comes back
@@ -2647,7 +2650,7 @@ switch(_operation) do {
         if(isServer) then {
             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
         }else{
-            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+            [[_event],"ALIVE_fnc_addEventToServer",false,true] call BIS_fnc_MP;
         };
 
         // show waiting until response comes back
@@ -2922,6 +2925,8 @@ switch(_operation) do {
 	case "opsDrawWaypoints": {
         private ["_map","_commandState","_selectedProfile","_profilePos","_waypoint","_waypointPos",
         "_waypoints","_plannedWaypoints"];
+		
+		disableSerialization;
 		
         _map = _args select 0;
 
