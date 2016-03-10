@@ -1320,7 +1320,9 @@ switch(_operation) do {
 										[_logic, "delGroup", _grp] call ALiVE_fnc_CQB;
 		                            };
 	                            } else {
-	                            	["CQB ERROR: No Group was defined! Moving on..."] call ALiVE_fnc_DumpR;
+	                            	["CQB ERROR: No Group was defined! Cleaning up..."] call ALiVE_fnc_DumpR;
+                                    
+                                    _logic setvariable ["groups",(_logic getVariable ["groups",[]]) - [grpNull]];
 	                            };
 
 							} forEach (_logic getVariable ["groups",[]]);
