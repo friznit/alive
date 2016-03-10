@@ -799,7 +799,7 @@ switch(_operation) do {
                     // on right map click
 
                     private ["_button","_posX","_posY","_commandState","_map","_cursorPosition","_listOptions","_listValues","_position",
-                    "_selectedIndex","_selectedOption","_selectedValue","_editList"];
+                    "_selectedIndex","_selectedOption","_selectedValue","_editList","_dist"];
 
                     _button = _args select 0 select 1;
                     _posX = _args select 0 select 2;
@@ -827,10 +827,10 @@ switch(_operation) do {
                         _listValues = [_commandState,"opsGroupsValues"] call ALIVE_fnc_hashGet;
 
                         _selectedIndex = -1;
-
+						_dist = (ctrlMapScale _map) * 77;
                         {
                             _position = _x select 1;
-                            if(_cursorPosition distance2d _position < 30) then {
+                            if(_cursorPosition distance2d _position < _dist) exitWith {
                                 _selectedIndex = _forEachIndex;
                             };
                         } foreach _listValues;
