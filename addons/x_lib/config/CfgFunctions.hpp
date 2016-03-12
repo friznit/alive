@@ -972,6 +972,13 @@ class getObjectsByType
 	recompile = RECOMPILE;
 };
 
+class findNearObjectsByType
+{
+	file = "\x\alive\addons\x_lib\functions\map\fnc_findNearObjectsByType.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class getRandomPositionLand
 {
 	file = "\x\alive\addons\x_lib\functions\map\fnc_getRandomPositionLand.sqf";
