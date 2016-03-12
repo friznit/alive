@@ -321,6 +321,25 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class createFieldHQ
+                        {
+                                displayName = "$STR_ALIVE_MP_CREATE_FIELDHQ";
+                                description = "$STR_ALIVE_MP_CREATE_FIELDHQ_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = 1;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };                        
 						class placeHelis
                         {
                                 displayName = "$STR_ALIVE_MP_PLACE_HELI";

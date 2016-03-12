@@ -555,7 +555,12 @@ switch(_operation) do {
 
                 _buildings = [_nodes, ALIVE_militaryHQBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
 
-                if(count _buildings > 0) then {
+                _buildings = [_buildings,[_modulePosition],{_Input0 distance _x},"ASCENDING",{[_x] call ALIVE_fnc_isHouseEnterable}] call ALiVE_fnc_SortBy;
+
+                if (count _buildings == 0) then {_buildings = [_modulePosition, _size, ALIVE_militaryBuildingTypes + ALIVE_militaryHQBuildingTypes] call ALIVE_fnc_findNearObjectsByType};
+                
+                if (count _buildings > 0) then {
+                    
                     _hqBuilding = _buildings select 0;
 
 

@@ -169,6 +169,20 @@ switch(_operation) do {
 
     		_result = _args;
     	};
+	case "createFieldHQ": {
+    		if (typeName _args == "BOOL") then {
+    			_logic setVariable ["createFieldHQ", _args];
+    		} else {
+    			_args = _logic getVariable ["createFieldHQ", false];
+    		};
+    		if (typeName _args == "STRING") then {
+    			if(_args == "true") then {_args = true;} else {_args = false;};
+    			_logic setVariable ["createFieldHQ", _args];
+    		};
+    		ASSERT_TRUE(typeName _args == "BOOL",str _args);
+
+    		_result = _args;
+    	};        
 	case "placeHelis": {
 		if (typeName _args == "BOOL") then {
 			_logic setVariable ["placeHelis", _args];
@@ -282,6 +296,10 @@ switch(_operation) do {
 	};
 	// Return the HQ Building
     case "HQBuilding": {
+        _result = [_logic,_operation,_args,DEFAULT_HQ_BUILDING] call ALIVE_fnc_OOsimpleOperation;
+    };
+    // Return the Field HQ Building
+    case "FieldHQBuilding": {
         _result = [_logic,_operation,_args,DEFAULT_HQ_BUILDING] call ALIVE_fnc_OOsimpleOperation;
     };
     // Return the HQ Cluster
@@ -583,7 +601,7 @@ switch(_operation) do {
 			"_placeHelis","_placeSupplies","_factionConfig","_factionSideNumber","_side","_countProfiles","_vehicleClass",
 			"_position","_direction","_unitBlackist","_vehicleBlacklist","_groupBlacklist","_heliClasses","_nodes",
 			"_airClasses","_node","_buildings","_customInfantryCount","_customMotorisedCount","_customMechanisedCount",
-			"_customArmourCount","_customSpecOpsCount","_countVehicleClusters","_createHQ","_file"];
+			"_customArmourCount","_customSpecOpsCount","_countVehicleClusters","_createHQ","_createFieldHQ","_file"];
 
 
 			_debug = [_logic, "debug"] call MAINCLASS;
@@ -656,6 +674,8 @@ switch(_operation) do {
 			_faction = [_logic, "faction"] call MAINCLASS;
 			_ambientVehicleAmount = parseNumber([_logic, "ambientVehicleAmount"] call MAINCLASS);
 			_createHQ = [_logic, "createHQ"] call MAINCLASS;
+            _createFieldHQ = [_logic, "createFieldHQ"] call MAINCLASS;
+            
 			_placeHelis = [_logic, "placeHelis"] call MAINCLASS;
 			_placeSupplies = [_logic, "placeSupplies"] call MAINCLASS;
 
@@ -668,7 +688,7 @@ switch(_operation) do {
 			// DEBUG -------------------------------------------------------------------------------------
 			if(_debug) then {
 				["ALIVE MP [%1] - Size: %2 Type: %3 SideNum: %4 Side: %5 Faction: %6",_faction,_size,_type,_factionSideNumber,_side,_faction] call ALIVE_fnc_dump;
-				["ALIVE MP [%1] - Ambient Vehicles: %2 Create HQ: %3 Place Helis: %4 Place Supplies: %5",_faction,_ambientVehicleAmount,_createHQ,_placeHelis,_placeSupplies] call ALIVE_fnc_dump;
+				["ALIVE MP [%1] - Ambient Vehicles: %2 Create HQ: %3 Create Field HQ: %4 Place Helis: %5 Place Supplies: %6",_faction,_ambientVehicleAmount,_createHQ,_createFieldHQ,_placeHelis,_placeSupplies] call ALIVE_fnc_dump;
 			};
 			// DEBUG -------------------------------------------------------------------------------------
 
@@ -680,7 +700,7 @@ switch(_operation) do {
 				call compile preprocessFileLineNumbers _file;
 			};
 
-			// Create HQ
+			// Create HQs
 
 			private ["_modulePosition","_sortedData","_closestHQCluster","_hqBuilding"];
 
@@ -700,7 +720,9 @@ switch(_operation) do {
                     _nodes = [_closestHQCluster, "nodes"] call ALIVE_fnc_hashGet;
 
                     _buildings = [_nodes, ALIVE_militaryHQBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
-
+                    
+                	_buildings = [_buildings,[_modulePosition],{_Input0 distance _x},"ASCENDING",{[_x] call ALIVE_fnc_isHouseEnterable}] call ALiVE_fnc_SortBy;
+                    
                     if(count _buildings > 0) then {
                         _hqBuilding = _buildings select 0;
 
@@ -721,14 +743,73 @@ switch(_operation) do {
                             };
                         } forEach _clusters;
 
+		                _group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
+		                _profiles = [_group, position _hqBuilding, random 360, true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+		
+		                {
+		                    if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
+		                        [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",50]] call ALIVE_fnc_profileEntity;
+		                    };
+		                } foreach _profiles;
+
                         [_logic, "HQBuilding", _hqBuilding] call MAINCLASS;
-                    }else{
+                        
+                        ["ALIVE MP - HQ building selected: %1",[_logic, "HQBuilding"] call MAINCLASS] call ALIVE_fnc_dump;
+                    } else {
                         ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dump;
                     }
-                }else{
+                } else {
                     ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dump;
                 };
 			};
+
+            if(_createFieldHQ) then {
+
+			    _modulePosition = position _logic;
+
+                if(_countHQClusters > 0) then {
+
+                    if(_countHQClusters > 1) then {
+                        _sortedData = [_HQClusters,[],{_modulePosition distance ([_x, "center"] call ALIVE_fnc_hashGet)},"ASCEND"] call ALiVE_fnc_SortBy;
+                        _closestHQCluster = _sortedData select 0;
+                    }else{
+                        _closestHQCluster = _HQClusters select 0;
+                    };
+                    
+                    _pos = [_closestHQCluster,"center"] call ALiVE_fnc_HashGet;
+                    _size = [_closestHQCluster,"size",150] call ALiVE_fnc_HashGet;
+                    
+                    _flatPos = [_pos,_size] call ALiVE_fnc_findFlatArea;
+                    
+                    _compositions = [ALiVE_compositions, "FieldHQ",[ALiVE_compositions, "HQ",[]] call ALiVE_fnc_hashGet] call ALiVE_fnc_hashGet;
+
+					_HQ = [_compositions call BIS_fnc_selectRandom] call ALiVE_fnc_findComposition;
+                    _nearRoads = _flatpos nearRoads 1000;
+                    _direction = if (count _nearRoads > 0) then {direction (_nearRoads select 0)} else {random 360};
+                        
+                    [_HQ, _flatPos, _direction] call ALiVE_fnc_spawnComposition;
+                    [_logic, "FieldHQBuilding", nearestObject [_flatPos, "building"]] call MAINCLASS;
+                    
+                    _group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
+                    _profiles = [_group, _flatPos, random 360, true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
+
+                    {
+                        if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
+                            [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",50]] call ALIVE_fnc_profileEntity;
+                        };
+                    } foreach _profiles;
+
+                    // DEBUG -------------------------------------------------------------------------------------
+                    if(_debug) then {
+                        [_flatPos, 4] call ALIVE_fnc_placeDebugMarker;
+                        
+                        ["ALIVE MP - Field HQ building created: %1",[_logic, "FieldHQBuilding"] call MAINCLASS] call ALIVE_fnc_dump;
+                    };
+                    // DEBUG -------------------------------------------------------------------------------------                    
+                } else {
+                    ["ALIVE MP - Warning no Field HQ locations found"] call ALIVE_fnc_dump;
+                };
+            };
 
             if (count _landClusters > 0) then {
 				{

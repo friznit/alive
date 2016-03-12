@@ -180,7 +180,13 @@
     <English>Create HQ:</English>
 </Key>
 <Key ID="STR_ALIVE_MP_CREATE_HQ_COMMENT">
-    <English>Select HQ objective close to the module</English>
+    <English>Selects HQ objective close to the module</English>
+</Key>
+<Key ID="STR_ALIVE_MP_CREATE_FIELDHQ">
+    <English>Create Field HQ:</English>
+</Key>
+<Key ID="STR_ALIVE_MP_CREATE_FIELDHQ_COMMENT">
+    <English>Places a Field HQ close to the module</English>
 </Key>
 <Key ID="STR_ALIVE_MP_PLACE_HELI">
 	<English>Place air units:</English>
