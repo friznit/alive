@@ -43,7 +43,7 @@ _minDistance = 999999;
 _minObject = nil;
 {
 	_distance = _point distance _x;
-	if (_point != _x && _distance < _minDistance && _distance < _maxDistance) then {
+	if (_point != _x && {_distance < _minDistance} && {_distance < _maxDistance}) then {
 		_minDistance = _distance;
 		_minObject = _x;
 	};
