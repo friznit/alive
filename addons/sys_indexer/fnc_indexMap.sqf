@@ -9,6 +9,7 @@ Manages the indexing of a map for ALiVE. Requires ALiVEClient.dll
 
 Parameters:
 String - Addon path
+boolean -  Enables custom object categorization
 
 Returns:
 String - Result
@@ -33,8 +34,6 @@ private ["_path","_custom"];
 _path = _this select 0;
 _custom = _this select 1;
 
-
-
 [_path,_custom] spawn {
 	private ["_path","_file","_objects","_result","_handle","_custom"];
 	_path = _this select 0;
@@ -43,10 +42,6 @@ _custom = _this select 1;
 	waitUntil{!isNull player};
 
 	ALiVE_keypress_id = (findDisplay 46) displayAddEventHandler ["KeyDown", "ALiVE_keypress = true;"];
-
-	forceMap true;
-
-	ALiVE_keypress_id_map = (findDisplay 12) displayAddEventHandler ["KeyDown", "ALiVE_keypress = true;"];
 
 	["ALiVE Map Indexer","Starting Map Index"] call ALiVE_fnc_sendHint;
 
@@ -66,7 +61,7 @@ _custom = _this select 1;
 	[">>>>>>>>>>>>>>>>>> Compiling list of objects from deWRP in wrp_objects array"] call ALiVE_fnc_dump;
 	_file = format["@ALiVE\indexing\%1\fnc_strategic\indexes\objects.%1.sqf", tolower(worldName)];
 
-	diag_log format["FILE CHECK: %1", _file];
+	// diag_log format["FILE CHECK: %1", _file];
 
 	call compile (preprocessFile _file);
 
@@ -82,6 +77,10 @@ _custom = _this select 1;
 		[_custom] call ALiVE_fnc_auto_staticObjects;
 
 	};
+
+	forceMap true;
+
+	ALiVE_keypress_id_map = (findDisplay 12) displayAddEventHandler ["KeyDown", "ALiVE_keypress = true;"];
 
 	ALiVE_keypress = false;
 	cutText [format["HEY! %1, STATIC DATA GENERATED. PRESS ANY KEY TO CONTINUE", toUpper(name player)],"PLAIN", 1, true];
