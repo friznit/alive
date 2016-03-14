@@ -1,0 +1,134 @@
+[center][url=http://alivemod.com/][img=http://alivemod.com/img/alive_logo_bif.jpg][/url][/center]
+[center][b][url=http://alivemod.com/]ALiVEmod.com[/url]
+[size=4]The next generation dynamic persistent mission addon for ArmA3
+Release 1.1[/size][/b][/center]
+
+[b][u]1.1.0 Update - Fixes and Map Indexing[/u][/b]
+
+[center][img=http://i.imgur.com/8PwKqxO.png][/center]
+
+As is so often the case after achieving a major milestone, we immediately discovered a bunch of new bugs in ALiVE 1.0, so we have been busy hunting them down and squashing them.  Chief amongst them was a critical issue which was causing the game to freeze randomly up to two hours into a game.  This was a right b'staad to pin down but thanks to the perseverance of Highhead we think we have it nailed finally.
+
+We have hinted before that we would love to allow others to help index maps but it was not possible as it was a laborious manual task and automated tools didn't exist.  Well they do now!  Tupolov created a clever little indexing tool that automates a large part of the process and makes categorising map objects far quicker and easier - all done via a simple ALiVE module placed in the editor.  Full details will be posted on our wiki.
+
+Meanwhile Spyderblack, ArJay and the rest of the team have been working on some important performance enhancements and fixes to various modules.  Details are in the change log below.
+ 
+[center]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
+
+[size=4][b][u][url=http://alivemod.com/#Download]Download[/url][/u][/b][/size]
+Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+Also available from PlayWithSix, ArmAholic and Steam.
+
+Note for server admins that this build requires the new @ALiVEServer package. The old one should not be used and in most cases won't work or will crash.[/center]
+
+[center][size=4][b][url=http://alivemod.com/#ALiVEWarRoom]Join the War Room Now![/url][/b][/size][/center]
+[b][u]Manual[/u][/b]
+Please refer to the [url=http://www.alivemod.com/wiki]ALiVE Wiki[/url]. All the info you need is there. If anything is missing or unclear, please let us know.
+
+[b][u]Support Forum[/u][/b]
+For direct support and feedback from the ALiVE dev team, join us on our forum at [url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url]
+
+[b][u]Release Highlights[/u][/b]
+[LIST]
+[*]Compatibility Update for latest CBA[/*]
+[*]Map Indexing Tool[/*]
+[*]Mil Placement HQ locations are now garrisoned to make them readily identifiable and optionally you can add a Field HQ composition[/*]
+[*]Various fixes and enhancements to Tasks and C2ISTAR Command Tablet[/*]
+[*]Added Index for Winter Chernarus, Kunar, Kunduz[/*]
+[*]Re-index Stratis, Altis and some others maps to prevent exploding ambient vehicle placements[/*]
+[/LIST]
+[b][u]Changelog[/u][/b]
+[spoiler]
+[MAIN] Raised compatible clusterbuild for A3 Version: 1.56.134787
+[sys_indexer] Fix issue where stuck in map view for object categorization #204
+[MIL PLACEMENTs] Added Field HQ! Explanation below!
+[X LIB] Added Function: ALIVE_fnc_findNearObjectsByType, pretty useful: returns all objects of given type within radius. Works with P3D name AND config class (f.e. to be used with typeOf). Very useful for building[__pos, 500, ALIVE_militaryBuildingTypes + ALIVE_militaryHQBuildingTypes] call ALIVE_fnc_findNearObjectsByType
+[X LIB] Improved ALiVE_fnc_getNearestObjectInArray with lazy evaluation
+[MIL INSURGENCY] Removed obsolete placeholder module (already done in staging, doesnt need to be cherry picked)
+[sup_command] Fixed RPT UI errors ("cannot load control")
+[MIL C2ISTAR] Fixed task "clear the town" was instantly cleared on dedicated server (fix #198)
+[MIL CQB] Fixed issue with null-groups sometimes being kept in CQB for some time until GC collected them
+[SUP COMMAND] Fixed object-leak when spectating an OPCOM group and player was killed
+[SUP COMMAND] Corrected syntax for BIS_fnc_MP "call" parameter
+[sup_command] Optimized tablet performance
+[sup_command] Fixed stringtable references
+[sup_command] Changed map-click profile selection radius to be dynamic based on map-zoom
+[sup_command] Fixed missing semicolon
+[sup_command] Fixed corrupted marker bug, optimized loading of ops interface, switched createMarker to drawLine
+[X LIB] Improved debug to show the calling function if ALiVE_fnc_HashGet retrieved wrong input values
+[X LIB] Fixed error due to wrong input param check in landAtRemote and landRemote (CS threw a script error on heli transport -> land)
+[Main] Full index of Kunar Province
+[Main] Kalu Khan Index - 75%
+[Main] Kalu Khan index - WIP
+[Tasks] Some fixes
+[X LIB] improved performance of ALiVE_fnc_SortBy by using deleteAt again
+[X LIB] Added Inpput validation in various remote-functions to fix da Freeze!
+[VARIOUS | XLIB] Fixed broken BIS_fnc_SortBy and changed to ALiVE_fnc_SortBy!
+[sys_indexer] Added debug for Friznit
+[sys_indexer] Added key press to continue after static data generation and before map completion.
+[Map Index] Kunduz re-indexed, please test
+[sys_indexer] Added support for using a custom map bound within the module settings. Once indexed, the value must be added to the main staticData.sqf file.
+[sys_Indexer] Converted Tuplindexinator to Indexing module. Use ALiVE key to access Map indexing
+[Map Index] Added Chernarus Winter
+[Tuplindexinator] Improved logging, added support for A2 Chernarus static data
+[indexer] remove diags
+[Tuplindexinator] Improved camera angles, dump object list to log
+[Main] Updated Indexing Object Blacklist (Chernarus)
+[Main] Indexing Object Blacklist
+[SUP CS | C2ISTAR] Fixed support options (Combat Support and Player Resupply) were accessibly via ALiVE tablet even though the defined items on the modules wouldn't allow it! (fix #195)
+[MISSIONS] Fixed ALiVE Sabotage to work with new CLIT ALTIS index
+[MIL C2ISTAR] Updated taskSabotage to work with new CLIT indexes (incl. fallback for older indexes)
+[Tuplindexinator] Fixed case sensitivity issues
+[MIL C2ISTAR] Changed: Task Sabotage building was selecting lampposts and other weird tall objects. Changed to primarily selecting buildings with the most indoor building positions (to prefer f.e. big military offices and HQs) at the objective, and if no useful buildings are found fallback to random houses within 500m of objective (f.e. for A2 non enterable buildings).
+[Tuplindexinator] Added a boolean value to ALiVE_fnc_indexMap that indicates if a default staticdata should be us["path\myaddon_map.pbo", true] call ALiVE_fnc_indexMap
+[ALiVEClient] Updated
+[ALiVE Map Indexer] First version ready for testing
+[VARIOUS] Fixed occassion of an error where ALiVE_fnc_AllCurator was undefined. Refactored and removed ALiVE_fnc_AllCurators completely
+[UI] Updated UI to work with CBA 2.3 hotfix that includes ability to hook into initDisplay
+[Tuplindexinator] Prototype complete.
+[Tuplindexinator] Remove debug test
+[Tuplindexinator] Updates
+[MIL CQB] Fix for CQB debug  "CQB ERROR: No House was defined for CQB group <NULL-group>"
+[Tuplindexinator] Updated static data dialog
+[Tuplindexinator] Updated cam script
+[tuplindexinator] Added WIP UI for static data
+[MapIndex] Reindexed Altis for 1.56
+[MapIndex] Reindex of Stratis for 1.56
+[Tuplindexinator] Fixed incorrect variable. Added static object function.
+[Tuplindexinator] Added compiled DLL
+[xlib] Removed spheres from debug function as they spam the RPT
+[Tuplindexinator] End to end index (with prepopulated static data) still WIP
+[Tuplindexinator] DEPLOYED! WIP
+[ALiVEClient] DeWRP and object parsing automated in extension
+[sys_profile] Fixed profile speed modifier module setting
+[sup_combatsupport] Fixed issue where incorrect classname was used for invisible helipad
+[extensions] Committed ALiVEPlugIn and ALiVEClient
+[extensions] removing extensions to get rid of submodule
+[sup_combatsupport] Fixed precedence in code replacement
+[sys_stats] Fixed issue where nil was being passed to shots fired. Fixes #166
+[Map Index] Re-indexed Stratis to avoid exploding helicopters Fixes #180
+[mil_CQB] Fixed issue where spawning of units did not look up unit blacklist. #179
+[Main] Stratis reindex
+[sys_profiles] Removed debug code
+[sys_profiles] Fixed issue where identically named groups would conflict #170
+[C2ISTAR] Fixed UI errors due to changed RscButton class #185
+[C2ISTAR] Fixed issue where incorrect side was returned for tasks #156
+[sup_combatsupport] Fixed UI issue with buttons #116
+[xlib] Improved random group function to handle issues if ALiVE group mappings are incorrect
+[Main] Fixed RHS insurgent group mappings #184
+[/spoiler]
+[b][u]Acknowledgements and Thanks[/u][/b]
+Particular thanks to all those on our support forum who have worked closely with us to identify the freeze bug.  Your assistance is valuable and your dedication to ALiVE makes it all worth the effort!
+
+[b]What's Next?[/b]
+The Indexing Tool is a key step towards enabling us to open ALiVE source, which will be branded ALiVE.OS to differentiate it from our own dev branch.  We are finalising the T's & C's for the new development approach and expect to publish some further details soon.
+
+[b][u]Disclaimer[/u][/b]
+ALiVE is now GA. However, we may need to prune the persistent database data from the War Room, eliminating data that is older than 6-12 months. The ALiVE War Room database is run on a voluntary basis at a cost to the ALiVE development team. No guarantees can be given on the mission data stored or the availability of the service. We apologise for any downtime that may impact your MP persistent missions.
+
+[b][u]ALiVE has transformed my Arma 3 experience, how can I thank you?[/u][/b]
+Please consider making a contribution to our server costs if you enjoy ALiVE! It costs us $65 per month to run our War Room website and the ALiVE Database servers and every little helps. Donate here [url=http://www.alivemod.com/#Donate]http://www.alivemod.com/#Donate[/url]
+
+Special thanks to everyone here for supporting us with donations to the ALiVE mod development effort.
+
+Have fun!
