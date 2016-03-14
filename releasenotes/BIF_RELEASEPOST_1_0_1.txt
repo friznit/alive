@@ -32,7 +32,7 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [LIST]
 [*]Compatibility Update for latest CBA[/*]
 [*]Map Indexing Tool[/*]
-[*]Mil Placement HQ locations now have compositions to make them more readily identifiable[/*]
+[*]Mil Placement HQ locations are now garrisoned to make them readily identifiable and optionally you can add a Field HQ composition[/*]
 [*]Various fixes and enhancements to Tasks and C2ISTAR Command Tablet[/*]
 [*]Added Index for Winter Chernarus, Kunar, Kunduz[/*]
 [*]Re-index Stratis, Altis and some others maps to prevent exploding ambient vehicle placements[/*]
