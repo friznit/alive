@@ -1335,7 +1335,7 @@ switch(_operation) do {
                 {
                     _tacom_state = '';
                     if("tacom_state" in (_x select 1)) then {
-                        _tacom_state = [_x,"tacom_state"] call ALIVE_fnc_hashGet;
+                        _tacom_state = [_x,"tacom_state","none"] call ALIVE_fnc_hashGet;
                     };
 
                     switch(_tacom_state) do {
@@ -1450,7 +1450,7 @@ switch(_operation) do {
                             // objective is available for use
                             _tacom_state = '';
                             if("tacom_state" in (_primaryReinforcementObjective select 1)) then {
-                                _tacom_state = [_primaryReinforcementObjective,"tacom_state"] call ALIVE_fnc_hashGet;
+                                _tacom_state = [_primaryReinforcementObjective,"tacom_state","none"] call ALIVE_fnc_hashGet;
                             };
 
                             if(_tacom_state == "reserve") then {
@@ -1484,7 +1484,7 @@ switch(_operation) do {
                         // objective is available for use
                         _tacom_state = '';
                         if("tacom_state" in (_primaryReinforcementObjective select 1)) then {
-                            _tacom_state = [_primaryReinforcementObjective,"tacom_state"] call ALIVE_fnc_hashGet;
+                            _tacom_state = [_primaryReinforcementObjective,"tacom_state","none"] call ALIVE_fnc_hashGet;
                         };
 
                         if(_tacom_state == "reserve") then {
