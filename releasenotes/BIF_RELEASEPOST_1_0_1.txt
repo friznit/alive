@@ -1,9 +1,9 @@
 [center][url=http://alivemod.com/][img=http://alivemod.com/img/alive_logo_bif.jpg][/url][/center]
 [center][b][url=http://alivemod.com/]ALiVEmod.com[/url]
 [size=4]The next generation dynamic persistent mission addon for ArmA3
-Release 1.1[/size][/b][/center]
+Release 1.0.1[/size][/b][/center]
 
-[b][u]1.1.0 Update - Fixes and Map Indexing[/u][/b]
+[b][u]1.0.1 Update - Fixes and Map Indexing[/u][/b]
 
 [center][img=http://i.imgur.com/8PwKqxO.png][/center]
 
@@ -36,6 +36,7 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [*]Various fixes and enhancements to Tasks and C2ISTAR Command Tablet[/*]
 [*]Added Index for Winter Chernarus, Kunar, Kunduz[/*]
 [*]Re-index Stratis, Altis and some others maps to prevent exploding ambient vehicle placements[/*]
+[*]Compatibility update for RHS[/*]
 [/LIST]
 [b][u]Changelog[/u][/b]
 [spoiler]
