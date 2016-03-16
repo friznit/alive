@@ -96,11 +96,19 @@ for "_j" from 1 to _numIEDs do {
 				private ["_clutter","_c","_clut","_clutm","_t"];
 				_clutter = [ADDON, "clutterClasses"] call MAINCLASS;
 				for "_c" from 1 to (2 + (ceil(random 6))) do {
-					_clut = createVehicle [_clutter call BIS_fnc_selectRandom,_IEDpos, [], 40, ""];
-					_clut setvariable [QUOTE(ADDON), true];
-					while {isOnRoad _clut} do {
-						_clut setPos [((position _clut) select 0) - 10 + random 20, ((position _clut) select 1) - 10 + random 20, ((position _clut) select 2)];
-					};
+                    
+                    //Seems to cause a crash lateley if _clutter is empty (trigger-related?)
+                    //Fixme: @Tup: why is clutter clutterClasses empty?
+                    if (count _clutter > 0) then {
+						_clut = createVehicle [_clutter call BIS_fnc_selectRandom,_IEDpos, [], 40, ""];
+						_clut setvariable [QUOTE(ADDON), true];
+                        
+                        //Fixme: what happens if clut is nil or null
+						while {isOnRoad _clut} do {
+							_clut setPos [((position _clut) select 0) - 10 + random 20, ((position _clut) select 1) - 10 + random 20, ((position _clut) select 2)];
+						};
+                    };
+                    
 					/* if (_debug) then {
 						diag_log format ["ALIVE-%1 IED: Planting clutter (%2) at %3.", time, typeOf _clut, position _clut];
 						//Mark clutter position
