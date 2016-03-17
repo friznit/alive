@@ -14,7 +14,7 @@ Returns:
 
 Examples:
 (begin example)
-// dump variable 
+// dump variable
 [] call ALIVE_fnc_dumpLogo;
 (end)
 
@@ -24,11 +24,20 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-["__________________________________________"] call ALIVE_fnc_dump;
-["__________________________________________"] call ALIVE_fnc_dump;
-["    _______ _____   __ ___ ___ _______    "] call ALIVE_fnc_dump;
-["__ |   _   |     |_|__|   |   |    ___| __"] call ALIVE_fnc_dump;
-["__ |       |       |  |   |   |    ___| __"] call ALIVE_fnc_dump;
-["__ |___|___|_______|__|\_____/|_______| __"] call ALIVE_fnc_dump;
-["__________________________________________"] call ALIVE_fnc_dump;
-["__________________________________________"] call ALIVE_fnc_dump;
+[""] call ALIVE_fnc_dump;
+["           +MMMMMMMMMMMMMMM"] call ALIVE_fnc_dump;
+["         ..MMMMMMMMMMMMMMMM."] call ALIVE_fnc_dump;
+["          ~MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"] call ALIVE_fnc_dump;
+["          MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM"] call ALIVE_fnc_dump;
+["         +MMMMMMMM~MMMMMMMM~~~~~~$MMMMMMMMM=~~~~~~~~~~=7MMMMMMM$~~~~==~~~~~~~~~~~~~~~~$MMM. "] call ALIVE_fnc_dump;
+["         MMMMMMMMM MMMMMMMM.     IMMMMMMMMM.    .Z      MMMMMMM.    .M                IMMMM   "] call ALIVE_fnc_dump;
+["        7MMMMMMMMN MMMMMMMM.     IMMMMMMMMM......M.      MMMMM..   .+M     .          7MMMM.  "] call ALIVE_fnc_dump;
+["        MMMMMMMMM  MMMMMMMM.     IMMMMMMMMMMMMMMMMM.     MMMMM     .MM     .MMMMMMMMMMMMMMMM  "] call ALIVE_fnc_dump;
+["       +MMMMMMMMM  MMMMMMMM.     IMMMMMMMMM.    .MM?      MMM     .MMM     .~~~~~~~~~MMMMMMM   "] call ALIVE_fnc_dump;
+["      .MMMMMMMMMMMMMMMMMMMM.     IMMMMMMMMM.    .MMM     .MMM.   ..MMM               MMMMMMMM  "] call ALIVE_fnc_dump;
+["      IMMMMMMMMMMMMMMMMMMMM.     IMMMMMMMMM.    .MMMM    . M     .MMMM     .        .MMMMMMMM  "] call ALIVE_fnc_dump;
+["     .MMMMMMMMMMMMMMMMMMMMM.     IMMMMMMMMM.    .MMMMI..   =     MMMMM     .MMMMMMMMMMMMMMMMMM.. "] call ALIVE_fnc_dump;
+["     $MMMMMMMMM+   MMMMMMMM.                    .MMMMM..        :MMMMM     ............MMMMMMM.  "] call ALIVE_fnc_dump;
+["     MMMMMMMMMM    MMMMMMMM.                    .MMMMMM.      . MMMMMM                 MMMMMMMM   "] call ALIVE_fnc_dump;
+["    IMMMMMMMMMM    MMMMMMMM.                    .MMMMMM:      .MMMMMMM                .MMMMMMMM.   "] call ALIVE_fnc_dump;
+[""] call ALIVE_fnc_dump;
