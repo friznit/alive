@@ -26,10 +26,10 @@ Highhead
 
 private ["_group","_pos"];
 
-_group = [_this, 0, grpNull, [objNull]] call BIS_fnc_param;
+_group = [_this, 0, grpNull, [grpNull]] call BIS_fnc_param;
 _pos = [_this, 1, [], [[]]] call bis_fnc_param;
 
-if (!{alive _x} count (units _group) > 0 || {count _pos < 2}) exitwith {diag_log "moveRemote failed - invalid inputs"};
+if (!({alive _x} count (units _group) > 0) || {count _pos < 2}) exitwith {diag_log "moveRemote failed - invalid inputs"};
 
 //Flag group with destination
 _group setvariable [QGVAR(MOVEDESTINATION),_pos];
