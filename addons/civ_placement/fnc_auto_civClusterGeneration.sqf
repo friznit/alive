@@ -27,7 +27,7 @@ nil
 
 private ["_file","_obj_array","_types","_clusters","_clusters_tmp","_size"];
 
-_file = format["@ALiVE\indexing\%1\main\static\%1_staticData.sqf", worldName];
+_file = format["@ALiVE\indexing\%1\x\alive\addons\main\static\%1_staticData.sqf", worldName];
 call compile preprocessFileLineNumbers _file;
 
 // Find HQ locations

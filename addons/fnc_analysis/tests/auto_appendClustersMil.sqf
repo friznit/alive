@@ -46,7 +46,7 @@ diag_log format["Timer End %1",_timeEnd];
 //========================================
 
 if(isNil "ALIVE_civilianHQBuildingTypes") then {
-	_file = "\x\alive\addons\main\static\staticData.sqf";
+	_file = format["@ALiVE\indexing\%1\x\alive\addons\main\static\%1_staticData.sqf", worldName];
 	call compile preprocessFileLineNumbers _file;
 };
 
@@ -79,7 +79,7 @@ private ["_worldName","_file","_exportString","_gridData","_cluster","_clusterCe
 
 if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
 	_worldName = toLower(worldName);
-	_file = format["@ALiVE\indexing\%1\mil_placement\clusters\clusters.%1_mil.sqf", _worldName];
+	_file = format["@ALiVE\indexing\%1\x\alive\addons\mil_placement\clusters\clusters.%1_mil.sqf", _worldName];
 	call compile preprocessFileLineNumbers _file;
 	ALIVE_loadedMilClusters = true;
 };

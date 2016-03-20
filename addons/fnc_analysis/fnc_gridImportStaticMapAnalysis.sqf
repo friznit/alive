@@ -35,9 +35,9 @@ _sectors = [_grid, "sectors"] call ALIVE_fnc_sectorGrid;
 
 _worldName = [worldName] call CBA_fnc_capitalize;
 
-if(isNil "ALIVE_gridData") then {				
-	_worldName = toLower(worldName);			
-	_file = format["\x\alive\addons\fnc_analysis\data\data.%1.sqf", _worldName];				
+if(isNil "ALIVE_gridData") then {
+	_worldName = toLower(worldName);
+	_file = format["x\alive\addons\fnc_analysis\data\data.%1.sqf", _worldName];
 	call compile preprocessFileLineNumbers _file;
 };
 
@@ -45,5 +45,5 @@ if(isNil "ALIVE_gridData") then {
 	_sector = _x;
 	_sectorID = [_sector, "id"] call ALIVE_fnc_sector;
 	[_sector, "data", [ALIVE_gridData, _sectorID] call ALIVE_fnc_hashGet] call ALIVE_fnc_hashSet;
-	
+
 } forEach _sectors;

@@ -310,6 +310,13 @@ if (_custom) then {
 
 // Dump arrays to extension that can write the staticData file
 [">>>>>>>>>>>>>>>>>> Writing static data to file..."] call ALiVE_fnc_dump;
+
+// Set the mapbounds
+_mapBounds = [ALIVE_mapBounds, worldname, 0] call ALIVE_fnc_hashGet;
+if (_mapBounds != 0) then {
+    _result = "ALiVEClient" callExtension format['staticData~%1|[ALIVE_mapBounds, worldName, %2] call ALIVE_fnc_hashSet;',worldName,_mapBounds];
+};
+
 {
 	private ["_array","_arrayActual","_result"];
 	_array = _x select 0;

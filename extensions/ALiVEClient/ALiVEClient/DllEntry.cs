@@ -197,7 +197,7 @@ namespace ALiVEClient
                     string logfile = Path.Combine(folder, mapName + "\\log.txt");
 
                     // Path to dev folder
-                    string pathToObjects = Path.Combine(folder, mapName + "\\fnc_strategic\\indexes");
+                    string pathToObjects = Path.Combine(folder, mapName + "\\x\\alive\\addons\\fnc_strategic\\indexes");
 
                     // Index Files
                     string indexFile = String.Format("{0}\\objects.{1}.sqf", pathToObjects, mapName);
@@ -344,7 +344,7 @@ namespace ALiVEClient
                     result = "FALSE";
                     // Map Name
                     string mapName = callParams[0].ToString().ToLower(); // "altis"
-                    string path = Path.Combine(System.IO.Directory.GetCurrentDirectory(),"@ALiVE\\indexing\\" + mapName + "\\main\\static\\");
+                    string path = Path.Combine(System.IO.Directory.GetCurrentDirectory(),"@ALiVE\\indexing\\" + mapName + "\\x\\alive\\addons\\main\\static\\");
 
                     // Path to indexing
                     string file = path + mapName + "_staticData.sqf";
@@ -369,7 +369,7 @@ namespace ALiVEClient
                     string mapName = callParams[0].ToString().ToLower(); // "altis"
                     string idata = callParams[1].ToString();
 
-                    string static_path = "@ALiVE\\indexing\\" + mapName + "\\main\\static\\";
+                    string static_path = "@ALiVE\\indexing\\" + mapName + "\\x\\alive\\addons\\main\\static\\";
                     string static_file = static_path + mapName + "_staticData.sqf";
 
                     if (!File.Exists(static_file))
@@ -408,13 +408,13 @@ namespace ALiVEClient
                     string mapName = callParams[0].ToString().ToLower(); // "altis"
 
                     // Directories
-                    string mil_cluster_path = "@ALiVE\\indexing\\" + mapName + "\\mil_placement\\clusters\\";
+                    string mil_cluster_path = "@ALiVE\\indexing\\" + mapName + "\\x\\alive\\addons\\mil_placement\\clusters\\";
                     Directory.CreateDirectory(mil_cluster_path);
 
-                    string civ_cluster_path = "@ALiVE\\indexing\\" + mapName + "\\civ_placement\\clusters\\";
+                    string civ_cluster_path = "@ALiVE\\indexing\\" + mapName + "\\x\\alive\\addons\\civ_placement\\clusters\\";
                     Directory.CreateDirectory(civ_cluster_path);
 
-                    string analysis_path = "@ALiVE\\indexing\\" + mapName + "\\fnc_analysis\\data\\";
+                    string analysis_path = "@ALiVE\\indexing\\" + mapName + "\\x\\alive\\addons\\fnc_analysis\\data\\";
                     Directory.CreateDirectory(analysis_path);                  
                     
                     // Logging
@@ -427,7 +427,7 @@ namespace ALiVEClient
                     // Map Name
                     string mapName = callParams[0].ToString().ToLower(); // "altis"
                     string idata = callParams[1].ToString();
-                    string analysis_path = "@ALiVE\\indexing\\" + mapName + "\\fnc_analysis\\data\\";
+                    string analysis_path = "@ALiVE\\indexing\\" + mapName + "\\x\\alive\\addons\\fnc_analysis\\data\\";
                     string analysis_file = analysis_path + "data." + mapName + ".sqf";
 
                     File.AppendAllText(analysis_file, idata + Environment.NewLine);
@@ -447,12 +447,12 @@ namespace ALiVEClient
                     string cfile = "";
                     if (type == "mil")
                     {
-                        string cpath = "@ALiVE\\indexing\\" + mapName + "\\mil_placement\\clusters\\";
+                        string cpath = "@ALiVE\\indexing\\" + mapName + "\\x\\alive\\addons\\mil_placement\\clusters\\";
                         cfile = cpath + "clusters." + mapName + "_mil.sqf";
                     }
                     else
                     {
-                        string cpath = "@ALiVE\\indexing\\" + mapName + "\\civ_placement\\clusters\\";
+                        string cpath = "@ALiVE\\indexing\\" + mapName + "\\x\\alive\\addons\\civ_placement\\clusters\\";
                         cfile = cpath + "clusters." + mapName + "_civ.sqf";
                     }
 
@@ -481,7 +481,7 @@ namespace ALiVEClient
                     string type = callParams[1].ToString();
                     string idata = callParams[2].ToString();
 
-                    string analysis_path = "@ALiVE\\indexing\\" + mapName + "\\fnc_analysis\\data\\";
+                    string analysis_path = "@ALiVE\\indexing\\" + mapName + "\\x\\alive\\addons\\fnc_analysis\\data\\";
                     string analysis_file = analysis_path + "data." + mapName + ".sqf";
 
                     if (idata.Contains("e-00"))

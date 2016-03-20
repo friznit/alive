@@ -45,7 +45,7 @@ diag_log format["Timer End %1",_timeEnd];
 //========================================
 
 
-_file = format["@ALiVE\indexing\%1\main\static\%1_staticData.sqf", worldName];
+_file = format["@ALiVE\indexing\%1\x\alive\addons\main\static\%1_staticData.sqf", worldName];
 call compile preprocessFileLineNumbers _file;
 
 _FSMtest = [] execFSM "\x\alive\addons\fnc_analysis\auto_gridMapAnalysis.fsm";

@@ -741,6 +741,13 @@ class isFilePath
 	recompile = RECOMPILE;
 };
 
+class fileExists
+{
+	file = "\x\alive\addons\x_lib\functions\filesystem\fnc_fileExists.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class getGroupDetailDataSource
 {
 	file = "\x\alive\addons\x_lib\functions\groups\fnc_getGroupDetailDataSource.sqf";

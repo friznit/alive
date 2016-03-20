@@ -43,11 +43,11 @@ ASSERT_TRUE(typeName _types == "ARRAY", _err);
 
 if(isNil "wrp_objects") then {
 	// read raw object data
-	_worldName = toLower(worldName);	
-	_file = format["\x\alive\addons\fnc_strategic\indexes\objects.%1.sqf", _worldName];
+	_worldName = toLower(worldName);
+	_file = format["x\alive\addons\fnc_strategic\indexes\objects.%1.sqf", _worldName];
 	call compile preprocessFileLineNumbers _file;
 	format["Reading raw object data from file - %1 objects", count wrp_objects] call ALIVE_fnc_logger;
-	
+
 	/*
 	Removed due to index parser
 	{
@@ -63,7 +63,7 @@ if(isNil "wrp_objects") then {
 			};
 		};
 	} forEach wrp_objects;
-		
+
 	wrp_objects = wrp_objects - [-1];
 	format["Removed plants, rocks and pond objects - %1 objects", count wrp_objects] call ALIVE_fnc_logger;
 	*/

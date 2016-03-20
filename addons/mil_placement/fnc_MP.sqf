@@ -182,7 +182,7 @@ switch(_operation) do {
     		ASSERT_TRUE(typeName _args == "BOOL",str _args);
 
     		_result = _args;
-    	};        
+    	};
 	case "placeHelis": {
 		if (typeName _args == "BOOL") then {
 			_logic setVariable ["placeHelis", _args];
@@ -354,7 +354,7 @@ switch(_operation) do {
 
             if(isNil "ALIVE_clustersMil" && isNil "ALIVE_loadedMilClusters") then {
                 _worldName = toLower(worldName);
-                _file = format["\x\alive\addons\mil_placement\clusters\clusters.%1_mil.sqf", _worldName];
+                _file = format["x\alive\addons\mil_placement\clusters\clusters.%1_mil.sqf", _worldName];
                 call compile preprocessFileLineNumbers _file;
                 ALIVE_loadedMilClusters = true;
 
@@ -675,7 +675,7 @@ switch(_operation) do {
 			_ambientVehicleAmount = parseNumber([_logic, "ambientVehicleAmount"] call MAINCLASS);
 			_createHQ = [_logic, "createHQ"] call MAINCLASS;
             _createFieldHQ = [_logic, "createFieldHQ"] call MAINCLASS;
-            
+
 			_placeHelis = [_logic, "placeHelis"] call MAINCLASS;
 			_placeSupplies = [_logic, "placeSupplies"] call MAINCLASS;
 
@@ -720,9 +720,9 @@ switch(_operation) do {
                     _nodes = [_closestHQCluster, "nodes"] call ALIVE_fnc_hashGet;
 
                     _buildings = [_nodes, ALIVE_militaryHQBuildingTypes] call ALIVE_fnc_findBuildingsInClusterNodes;
-                    
+
                 	_buildings = [_buildings,[_modulePosition],{_Input0 distance _x},"ASCENDING",{[_x] call ALIVE_fnc_isHouseEnterable}] call ALiVE_fnc_SortBy;
-                    
+
                     if(count _buildings > 0) then {
                         _hqBuilding = _buildings select 0;
 
@@ -745,7 +745,7 @@ switch(_operation) do {
 
 		                _group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
 		                _profiles = [_group, position _hqBuilding, random 360, true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
-		
+
 		                {
 		                    if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
 		                        [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",50]] call ALIVE_fnc_profileEntity;
@@ -753,7 +753,7 @@ switch(_operation) do {
 		                } foreach _profiles;
 
                         [_logic, "HQBuilding", _hqBuilding] call MAINCLASS;
-                        
+
                         ["ALIVE MP - HQ building selected: %1",[_logic, "HQBuilding"] call MAINCLASS] call ALIVE_fnc_dump;
                     } else {
                         ["ALIVE MP - Warning no HQ locations found"] call ALIVE_fnc_dump;
@@ -775,21 +775,21 @@ switch(_operation) do {
                     }else{
                         _closestHQCluster = _HQClusters select 0;
                     };
-                    
+
                     _pos = [_closestHQCluster,"center"] call ALiVE_fnc_HashGet;
                     _size = [_closestHQCluster,"size",150] call ALiVE_fnc_HashGet;
-                    
+
                     _flatPos = [_pos,_size] call ALiVE_fnc_findFlatArea;
-                    
+
                     _compositions = [ALiVE_compositions, "FieldHQ",[ALiVE_compositions, "HQ",[]] call ALiVE_fnc_hashGet] call ALiVE_fnc_hashGet;
 
 					_HQ = [_compositions call BIS_fnc_selectRandom] call ALiVE_fnc_findComposition;
                     _nearRoads = _flatpos nearRoads 1000;
                     _direction = if (count _nearRoads > 0) then {direction (_nearRoads select 0)} else {random 360};
-                        
+
                     [_HQ, _flatPos, _direction] call ALiVE_fnc_spawnComposition;
                     [_logic, "FieldHQBuilding", nearestObject [_flatPos, "building"]] call MAINCLASS;
-                    
+
                     _group = ["Infantry",_faction] call ALIVE_fnc_configGetRandomGroup;
                     _profiles = [_group, _flatPos, random 360, true, _faction] call ALIVE_fnc_createProfilesFromGroupConfig;
 
@@ -802,10 +802,10 @@ switch(_operation) do {
                     // DEBUG -------------------------------------------------------------------------------------
                     if(_debug) then {
                         [_flatPos, 4] call ALIVE_fnc_placeDebugMarker;
-                        
+
                         ["ALIVE MP - Field HQ building created: %1",[_logic, "FieldHQBuilding"] call MAINCLASS] call ALIVE_fnc_dump;
                     };
-                    // DEBUG -------------------------------------------------------------------------------------                    
+                    // DEBUG -------------------------------------------------------------------------------------
                 } else {
                     ["ALIVE MP - Warning no Field HQ locations found"] call ALIVE_fnc_dump;
                 };
@@ -1345,7 +1345,7 @@ switch(_operation) do {
                             _command = "ALIVE_fnc_garrison";
                             _garrisonPos = [_center, 50] call CBA_fnc_RandPos;
                             _radius = [200,"true",[0,0,0]];
-                            
+
                         };
 
 						//If there are several profiles per cluster place several profiles
