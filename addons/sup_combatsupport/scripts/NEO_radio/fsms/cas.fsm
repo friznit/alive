@@ -118,7 +118,7 @@ class FSM
        "_posCas = [];" \n
        "_radiusCas = 500;" \n
        "_flyInHeight = 200;" \n
-       "_h = createVehicle [""Land_HeliHEmpty_F"", _pos, [], 0, ""CAN_COLLIDE""];" \n
+       "_h = createVehicle [""Land_HelipadEmpty_F"", _pos, [], 0, ""CAN_COLLIDE""];" \n
        "_posIn = [];" \n
        "_target = objNull;" \n
        "" \n
