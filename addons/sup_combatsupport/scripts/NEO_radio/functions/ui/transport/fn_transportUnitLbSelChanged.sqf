@@ -32,7 +32,7 @@ uinamespace setVariable ["NEO_radioCbVehicle", _chopper];
 _text ctrlSetStructuredText parseText (switch (_status) do
 {
 	case "NONE" : { "<t color='#627057' size='0.7' font='PuristaMedium'>Unit is available and waiting for task</t>" };
-	case "KILLED" : { "<t color='#603234' size='0.7' font='PuristaMedium'>Unit is combat innefective</t>" };
+	case "KILLED" : { "<t color='#603234' size='0.7' font='PuristaMedium'>Unit is combat ineffective</t>" };
 	case "MISSION" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is on a mission, you may abort or change the current task</t>" };
 	case "RTB" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is RTB</t>" };
 	case "SMOKE" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is waiting for smoke</t>" };

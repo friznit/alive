@@ -38,7 +38,7 @@ _ord = _battery getVariable "NEO_radioArtyBatteryRounds";
 _artyHelpUnitText ctrlSetStructuredText parseText (switch (toUpper _status) do
 {
 	case "NONE" : { "<t color='#627057' size='0.7' font='PuristaMedium'>Unit is available and waiting for fire mission</t>" };
-	case "KILLED" : { "<t color='#603234' size='0.7' font='PuristaMedium'>Unit is combat innefective</t>" };
+	case "KILLED" : { "<t color='#603234' size='0.7' font='PuristaMedium'>Unit is combat ineffective</t>" };
 	case "MISSION" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is on a fire mission</t>" };
 	case "MOVE" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is on the move to get in range of target</t>" };
 	case "RTB" : { "<t color='#FFFF73' size='0.7' font='PuristaMedium'>Unit is RTB</t>" };
