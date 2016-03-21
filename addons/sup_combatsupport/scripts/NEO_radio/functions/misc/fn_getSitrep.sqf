@@ -50,44 +50,54 @@ switch (toUpper _task) do
 
 if (isnil "_asset") exitwith {};
 
-private ["_callSignPlayer","_pos","_assetpos","_ammoArray"];
+private ["_callSignPlayer","_pos","_assetpos","_ammoArray","_speed"];
 
 _callSignPlayer = (format ["%1", group player]) call NEO_fnc_callsignFix;
-_pos = getpos _asset;
+_pos = getposATL _asset;
 _assetpos = mapGridPosition _pos;
+_currentTask = _asset getVariable ["NEO_radioCurrentTask",[]];
+_destination = if (count _currentTask > 0) then {_currentTask select 1} else {_pos};
+_speed = speed _asset;
 
 private ["_damage","_fuel","_text","_ammo","_avail"];
 
-_damage= getDammage _asset;
-_fuel  = fuel _asset;
+_damage = getDammage _asset;
+_fuel = fuel _asset;
 _ammoArray = _asset call ALiVE_fnc_vehicleGetAmmo;
-_avail = 0;
+_distance = _destination distance _pos;
+
 // Calculate % of ammo
+_avail = 0;
 {
 	_avail = _avail + ((_x select 1)/(_x select 2));
 } foreach _ammoArray;
-_ammo = _avail/(count _ammoArray);
+_ammo = _avail / count _ammoArray;
+
 // Calculate amcas as a combo of ammo and damage state
-_damage = ((1-_ammo) + _damage) / 2;
+_damage = ((1 - _ammo) + _damage) / 2;
 
 _text = format ["%1 this is %2, send SITREP. Over.",_callsign, _callSignPlayer];
 
-[[player, _text, "side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
+[[player, _text, "side"],"NEO_fnc_messageBroadcast",true,false] spawn BIS_fnc_MP;
 
-private ["_damageamcas","_fuelamcas","_amcas"];
+private ["_damageamcas","_fuelamcas","_amcas","_approxTime"];
 
-_damageamcas ="";
+_damageamcas = "";
     if (_damage <= 0.3) then {_damageamcas = "Green"};
     if (_damage > 0.3 &&  _damage < 0.6) then {_damageamcas = "Amber"};
     if (_damage >= 0.6) then {_damageamcas = "Red"};
 
-_fuelamcas ="";
+_fuelamcas = "";
     if (_fuel <= 0.3) then {_fuelamcas = "Red"};
     if (_fuel > 0.3 &&  _damage < 0.6) then {_fuelamcas = "Amber"};
     if (_fuel >= 0.6) then {_fuelamcas = "Green"};
 
-_amcas = format ["%1 this is %2, Current location %3, AMCAS %4, Fuel State %5", _callSignPlayer,_callsign,_assetpos,_damageamcas,_fuelamcas] ;
+_approxTime = "unknown";
+	if (_speed > 0 && {(_pos select 2) > 5}) then {_approxTime = round((_distance/((_speed)/3.6))/60)};
+	if (_speed > 0 && {(_pos select 2) < 5}) then {_approxTime = "taking off"};
+
+_amcas = format ["%1 this is %2! Current location: %3, ETA: %4, AMCAS: %5, Fuel: %6",_callSignPlayer,_callsign,_assetpos,_approxTime,_damageamcas,_fuelamcas];
 
 sleep 6;
 
-[[player,_amcas,"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
+[[player,_amcas,"side"],"NEO_fnc_messageBroadcast",true,false] spawn BIS_fnc_MP;
