@@ -748,7 +748,7 @@ switch(_operation) do {
 
 		                {
 		                    if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-		                        [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",50]] call ALIVE_fnc_profileEntity;
+		                        [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",[50,"false",[0,0,0]]]] call ALIVE_fnc_profileEntity;
 		                    };
 		                } foreach _profiles;
 
@@ -795,7 +795,7 @@ switch(_operation) do {
 
                     {
                         if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-                            [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",50]] call ALIVE_fnc_profileEntity;
+                            [_x, "setActiveCommand", ["ALIVE_fnc_garrison","spawn",[50,"false",[0,0,0]]]] call ALIVE_fnc_profileEntity;
                         };
                     } foreach _profiles;
 
