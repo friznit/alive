@@ -119,9 +119,11 @@ for "_j" from 1 to (count _roadpoints) do {
 
 	// Place a vehicle
 	_vehtype = ([1, _fac, "Car"] call ALiVE_fnc_findVehicleType) call BIS_fnc_selectRandom;
-	_vehicle = createVehicle [_vehtype, [position _roadpos, 10,30,2,0,5,0] call BIS_fnc_findsafepos, [], 0, "NONE"];
-	_vehicle setDir _direction;
-	_vehicle setposATL (getposATL _vehicle);
+	if (!isNil "_vehtype") then {
+		_vehicle = createVehicle [_vehtype, [position _roadpos, 10,30,2,0,5,0] call BIS_fnc_findsafepos, [], 0, "NONE"];
+		_vehicle setDir _direction;
+		_vehicle setposATL (getposATL _vehicle);
+	};
 
 	// Spawn static virtual group if Profile System is loaded and get them to defend
     if !(isnil "ALiVE_ProfileHandler") then {
