@@ -226,7 +226,7 @@ _saveServer = {
             [["updateList","ALiVE CQB - Saving Data"],"ALIVE_fnc_mainTablet",_admin,false,false] spawn BIS_fnc_MP;
         };
 
-	    ["ALiVE Exit - Server Save OPCOM State"] call ALIVE_fnc_dump;
+	    ["ALiVE Exit - Server Save CQB State"] call ALIVE_fnc_dump;
 
 		_result = [] call ALiVE_fnc_CQBSaveData;
 
