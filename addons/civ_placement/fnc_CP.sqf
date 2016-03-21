@@ -904,7 +904,7 @@ switch(_operation) do {
 								// Set Waypoints for patrol
 								{
 									if (([_x,"type"] call ALiVE_fnc_HashGet) == "entity") then {
-										[_x, [1000,"AWARE",_center,_debug]] call ALiVE_fnc_SeaPatrol;
+                                        [_x, "setActiveCommand", ["ALiVE_fnc_SeaPatrol","spawn",[1000,"AWARE",_center]]] call ALIVE_fnc_profileEntity;
 										_countSeaPatrols = _countSeaPatrols + 1;
 									};
 								} foreach _seaPatrol;

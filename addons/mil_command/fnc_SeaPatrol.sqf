@@ -9,13 +9,13 @@ Ambient sea patrol movement command
 
 Parameters:
 Profile - profile
-Args - array (SCALAR - radius, STRING - behaviour, ARRAY - objective pos, BOOL - debug)
+Args - array (SCALAR - radius, STRING - behaviour, ARRAY - objective pos)
 
 Returns:
 
 Examples:
 (begin example)
-[_profile, [1000, "SAFE", _objective, false]] call ALiVE_fnc_seaPatrol;
+[_profile, [1000, "SAFE", _objective]] call ALiVE_fnc_seaPatrol;
 (end)
 
 See Also:
@@ -31,13 +31,13 @@ if (typename _params == "ARRAY") then {
     _radius = _params select 0;
     _behaviour = _params select 1;
     _objective = _params select 2;
-    _debug = _params select 3;
 } else {
     _radius = 1000;
     _behaviour = "AWARE";
     _objective = [_profile,"position"] call ALiVE_fnc_HashGet;
-    _debug = false;
 };
+
+_debug = false;
 
 //defaults
 _startPos = [_profile,"position"] call ALiVE_fnc_HashGet;
@@ -124,7 +124,7 @@ while {count ([_profile,"waypoints",[]] call ALiVE_fnc_HashGet) < 5} do {
     //Loop last Waypoint
     if (count ([_profile,"waypoints",[]] call ALiVE_fnc_HashGet) == 4) then {_gpos = _startPos; _type = "CYCLE"};
 
-    if (surfaceIsWater _pos) then {
+    if (surfaceIsWater _gpos) then {
 
         // Check you don't have to cross land to get there in a boat
         if (!terrainIntersectASL [_lastpos,_gpos] || _isDiverTeam) then {
