@@ -194,6 +194,7 @@ switch(_operation) do {
 					[_handler, "module",_logic] call ALiVE_fnc_HashSet;
                     [_handler, "reinforcements",_reinforcements] call ALiVE_fnc_HashSet;
                     [_handler, "asym_occupation",_occupation] call ALiVE_fnc_HashSet;
+                    [_handler, "controltype",_type] call ALiVE_fnc_HashSet;
                     
                     //Get CQB modules and save them
 					{if (typeof _x == "ALiVE_mil_cqb") then {
