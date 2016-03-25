@@ -2,36 +2,31 @@
 [center][b][url=http://alivemod.com/]ALiVEmod.com[/url]
 [size=4]The next generation dynamic persistent mission addon for ArmA3
 Release 1.0.2[/size][/b][/center]
-
-[b][u]1.0.2 Update - Fixes and Map Indexing[/u][/b]
-
+[center][b]1.0.2 Update - Fixes and Map Indexing[/b][/center]
 [center][img=http://i.imgur.com/8PwKqxO.png][/center]
-
 [b]Bug Fixes[/b]
-
-You wait around for ages for a bus to arrive and then three come at once! Indeed, since our GA we've had some great feedback on our forum (http://alivemod.com/forum/) and also some bug reports. This is our 2nd updates in as many weeks and features some important fixes. We've squashed quite a few annoying bugs including one that was affecting loading/saving of asymmetric warfare missions. We've also fixed some issues with Combat Support and addressed some community reported bugs relating to military placement for roadblocks and much more.
+You wait around for ages for a bus to arrive and then three come at once! Indeed, since our GA we've had some great feedback on our forum ([url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url]) and also some bug reports. This is our 2nd update in as many weeks and features some important fixes. We've squashed quite a few annoying bugs including one that was affecting loading/saving of asymmetric warfare missions. We've also fixed some issues with Combat Support and addressed some community reported bugs relating to military placement for roadblocks and much more.
 
 [b]Map Indexing[/b]
 We've also got to a point where we can now allow community folks to help us index maps for ALiVE. Many of you may wonder why we need to index maps and what we mean by indexing. Well, AI commanders (OPCOM) and their sub commanders rely on a great understanding of the terrain and strategic positions across the map. By indexing maps, we give AI that intelligence to make decisions on how and where they attack/defend/resupply etc. The terrain piece we do with some clever algorithms, but when it comes to buildings, objects and locations it is more effective to have a human "index" these things. Of course we do have some defaults (runways are indexed as military objectives etc) but many maps make use of objects and buildings in different ways. Indexing is fairly straighforward and it can all be done in game. Also, our in-game indexes are 90% faster to lookup than in-engine searches. This gives AI an unparalleled understanding of the Area of Operation and makes for a competitive foe vs humans.
 
 Our instructions for using the Map Indexer (aka Clever Little Indexing Tool) can be found here - [url=http://alivemod.com/wiki/index.php/Map_Indexing]http://alivemod.com/wiki/index.php/Map_Indexing[/url]
-
 [center]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
 
-[size=4][b][u][url=http://alivemod.com/#Download]Download[/url][/u][/b][/size]
+[size=4][b][url=http://alivemod.com/#Download]Download[/url][/b][/size]
 Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
-Also available from PlayWithSix, ArmAholic and Steam.
+Also available from PlayWithSix, ArmAholic and Steam. (Within 24 hours of this post)
 
 Note for server admins that this build requires the 1.0.0 or newer @ALiVEServer package. Any old versions (i.e. before 1.0.0) should not be used and in most cases won't work or will crash.[/center]
-
 [center][size=4][b][url=http://alivemod.com/#ALiVEWarRoom]Join the War Room Now![/url][/b][/size][/center]
-[b][u]Manual[/u][/b]
+[b]Manual[/b]
 Please refer to the [url=http://www.alivemod.com/wiki]ALiVE Wiki[/url]. All the info you need is there. If anything is missing or unclear, please let us know.
 
-[b][u]Support Forum[/u][/b]
-For direct support and feedback from the ALiVE dev team, join us on our forum at [url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url]
+[b]Support Forum[/b]
+For direct support and feedback from the ALiVE dev team, join us on our forum at [url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url].
+[b]Please avoid posting issues/questions related to bugs etc on this thread. Devs and support will answer questions on our forum.[/b]
 
-[b][u]Release Highlights[/u][/b]
+[b]Release Highlights[/b]
 [LIST]
 [*]Map Indexing Tool[/*]
 [*]Fixed issue where missions would not load if saved and featured asymmetric warfare[/*]
@@ -40,7 +35,7 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [*]Fixed Sea Patrols so that patrols would move not attempt to cross land[/*]
 [*]CAS no longer reports combat ineffective once parked[/*]
 [/LIST]
-[b][u]Changelog[/u][/b]
+[b]Changelog[/b]
 [spoiler]
 [sys_indexer] Fix mapBounds error
 [SYS PROFILE] Fix for wrong-input debug-log messages in rpt on HC
@@ -62,16 +57,16 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [X LIB] Fixed fnc_moveRemote having wrong default allowed input params and wrong input check
 [x_lib] Updated dump function :D
 [/spoiler]
-[b][u]Acknowledgements and Thanks[/u][/b]
-Particular thanks to all those on our support forum who have worked closely with us to identify the freeze bug.  Your assistance is valuable and your dedication to ALiVE makes it all worth the effort!
+[b]Acknowledgements and Thanks[/b]
+Particular thanks to all those on our support forum who have worked closely with us to identify bugs, provide logs and generally help us improve ALiVE.  Your assistance is valuable and your dedication to ALiVE makes it all worth the effort!
 
 [b]What's Next?[/b]
 The Indexing Tool is a key step towards enabling us to open ALiVE source, which will be branded ALiVE.OS to differentiate it from our own dev branch.  We are finalising the T's & C's for the new development approach and expect to publish some further details soon.
 
-[b][u]Disclaimer[/u][/b]
+[b]Disclaimer[/b]
 ALiVE is now GA. However, we may need to prune the persistent database data from the War Room, eliminating data that is older than 6-12 months. The ALiVE War Room database is run on a voluntary basis at a cost to the ALiVE development team. No guarantees can be given on the mission data stored or the availability of the service. We apologise for any downtime that may impact your MP persistent missions.
 
-[b][u]ALiVE has transformed my Arma 3 experience, how can I thank you?[/u][/b]
+[b]ALiVE has transformed my Arma 3 experience, how can I thank you?[/b]
 Please consider making a contribution to our server costs if you enjoy ALiVE! It costs us $65 per month to run our War Room website and the ALiVE Database servers and every little helps. Donate here [url=http://www.alivemod.com/#Donate]http://www.alivemod.com/#Donate[/url]
 
 Special thanks to everyone here for supporting us with donations to the ALiVE mod development effort.
