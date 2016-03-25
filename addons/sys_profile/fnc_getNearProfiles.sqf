@@ -34,6 +34,9 @@ _categorySelector = if(count _this > 2) then {_this select 2} else {[]};
 
 _result = [];
 
+//Exit if ALIVE_profileHandler is not existing for any reason (f.e. due to being called on a remote locality with fnc_isEnemyNear)
+if (isNil "ALIVE_profileHandler") exitwith {_result};
+
 _profiles = [ALIVE_profileHandler, "profiles"] call ALIVE_fnc_hashGet;
 
 if(count _categorySelector > 0) then {
