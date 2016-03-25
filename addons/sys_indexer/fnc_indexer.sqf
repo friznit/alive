@@ -177,9 +177,10 @@ switch(_operation) do {
                 _mapPath = [_logic, "mapPath"] call MAINCLASS;
                 _customStatic = [_logic, "customStatic"] call MAINCLASS;
                 _customMapBound = [_logic, "customMapBound"] call MAINCLASS;
+                ALIVE_mapBounds = [] call ALIVE_fnc_hashCreate;
 
                 if (_customMapBound != 0) then {
-                    ALIVE_mapBounds = [] call ALIVE_fnc_hashCreate;
+
                     [ALIVE_mapBounds, worldname, _customMapBound] call ALIVE_fnc_hashSet;
                 };
 
