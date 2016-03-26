@@ -44,7 +44,7 @@ if(count _markers > 0) then {
 			{
 				_center = [_x,"center"] call ALIVE_fnc_hashGet;
 				_id = [_x,"clusterID"] call ALIVE_fnc_hashGet;
-				if([_marker, _center] call BIS_fnc_inTrigger) then {
+				if([_center,_marker] call ALiVE_fnc_inArea) then {
 				    _blacklistClusters set [count _blacklistClusters, _id];
 				}
 			} forEach _clusters;

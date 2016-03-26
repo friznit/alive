@@ -285,7 +285,7 @@ NUKE_fnc_RadiationClient = {
         _intrigger = false;
         for "_i" from 0 to 9 do {
             _trigger = format["rad_zone_id_%1",_i];
-            if ([_trigger, player,false] call BIS_fnc_inTrigger) exitwith {_intrigger = true}; 
+            if ([getposASL player,_trigger] call ALiVE_fnc_inArea) exitwith {_intrigger = true}; 
         };
         _intrigger;
     };

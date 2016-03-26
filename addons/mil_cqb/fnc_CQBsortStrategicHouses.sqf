@@ -62,10 +62,10 @@ _nonstrathouses = [];
         // Are there TAOR or Blacklist markers?
         if (count (_whitezone + _blackzone) > 0) then {
             // Filter Whitezone
-            {_collect = false; if ([_x, _pos] call BIS_fnc_inTrigger) exitWith {_collect = true}} forEach _whitezone;
+            {_collect = false; if ([_pos,_x] call ALiVE_fnc_inArea) exitWith {_collect = true}} forEach _whitezone;
             
             // Filter Blackzone
-            {if ([_x, _pos] call BIS_fnc_inTrigger) exitWith {_collect = false}} forEach _blackzone;
+            {if ([_pos, _x] call ALiVE_fnc_inArea) exitWith {_collect = false}} forEach _blackzone;
         };
 		
 		if (_collect) then {

@@ -44,7 +44,7 @@ _result = _obj_array;
 //			diag_log str(_marker);
 			{
 				private["_in"];
-				_in =[_marker, _x] call BIS_fnc_inTrigger;
+				_in = [_x, _marker] call ALiVE_fnc_inArea;
 				if((!_insideOnly || _in) && !(!_insideOnly && _in)) then {
 					_result pushback _x;
 //					diag_log str(_result);
