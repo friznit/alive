@@ -1,13 +1,15 @@
-#include "\x\alive\addons\x_lib\script_component.hpp"
+#include <\x\alive\addons\mil_cqb\script_component.hpp>
+SCRIPT(inArea);
 
 /* ----------------------------------------------------------------------------
 Function: ALiVE_fnc_inArea
 
 Description:
 	Checks to see if a vehicle is within a marker area.
+	From A3 1.58 the functionality will be replaced with inArea command.
 	
 Parameters:
-	0 - Unit/Vehicle [object]
+	0 - Unit/Vehicle [object] or position [array]
 	1 - Marker [string]
 
 Returns:
@@ -17,17 +19,20 @@ Attributes:
 	N/A
 
 Examples:
-	N/A
+	[player,_marker] call ALiVE_fnc_inArea
 
 See Also:
 
 Author:
-	Olsen
+	Olsen, Highhead
 ---------------------------------------------------------------------------- */
 
-private["_object", "_marker", "_pos", "_xSize", "_ySize", "_radius", "_result", "_x", "_y", "_temp"];
+private["_object", "_objectPosition", "_marker", "_pos", "_xSize", "_ySize", "_radius", "_result", "_x", "_y", "_temp"];
+
 _object = _this select 0;
 _marker = _this select 1;
+
+_objectPosition = if (typeName _object == "ARRAY") then {_object} else {getposASL _object};
 
 _pos = markerPos _marker;
 _xSize = (markerSize _marker) select 0;
@@ -41,10 +46,10 @@ if (_ySize > _xSize) then
 
 _result = false;
 
-if ((_object distance _pos) <= (_radius * 1.5)) then
+if ((_objectPosition distance _pos) <= (_radius * 1.5)) then
 {
-	_x = (getPosASL _object) select 0;
-	_y = (getPosASL _object) select 1;
+	_x = _objectPosition select 0;
+	_y = _objectPosition select 1;
 	_angle = markerDir _marker;
 	_x = _x - (_pos select 0);
 	_y = _y - (_pos select 1);
@@ -60,7 +65,7 @@ if ((_object distance _pos) <= (_radius * 1.5)) then
 	{
 		if (_xSize == _ySize) then
 		{
-			if ((_object distance _pos) <= _radius) then
+			if ((_objectPosition distance _pos) <= _radius) then
 			{
 				_result = true;	
 			};
@@ -81,5 +86,12 @@ if ((_object distance _pos) <= (_radius * 1.5)) then
 		};
 	};
 };
+
+/*
+Preperation for 1.58
+//Comment code above and only use the below (inArea understands pos-array & object and marker & trigger
+
+_object inArea _marker
+*/
 
 _result
