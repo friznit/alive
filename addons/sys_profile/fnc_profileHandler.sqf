@@ -1366,7 +1366,7 @@ switch(_operation) do {
         };
         case "importProfileData": {
             private["_profiles","_profile","_profileType","_vehicleAssignmentKeys","_vehicleAssignmentValues","_key","_value","_assignments","_assignment","_rebuiltHash",
-            "_position","_damages","_damage","_ranks","_importRanks","_side","_ranksMap","_unitClasses","_side","_profileEntity","_profileVehicle"];
+            "_position","_entities","_vehicles","_total","_index","_damages","_damage","_ranks","_importRanks","_side","_ranksMap","_unitClasses","_side","_profileEntity","_profileVehicle"];
 
             if(typeName _args == "ARRAY") then {
 
@@ -1384,6 +1384,10 @@ switch(_operation) do {
                 [_ranksMap, 6, "COLONEL"] call ALIVE_fnc_hashSet;
 
                 _profiles = _args;
+                
+                _entities = [];
+                _vehicles = [];
+                _total = [_logic,"profileCount",0] call ALIVE_fnc_hashGet;
 
                 {
                     _profile = _x;
@@ -1411,6 +1415,8 @@ switch(_operation) do {
                     };
 
                     //_profile call ALIVE_fnc_inspectHash;
+                    
+                    _total = _total + 1;
 
                     if(_profileType == 1) then {
 
@@ -1486,6 +1492,14 @@ switch(_operation) do {
 
                         [ALIVE_profileHandler, "registerProfile", _profileEntity] call ALIVE_fnc_profileHandler;
 
+                        //Collect the index-number of the entity id
+                        _index = [[_profileEntity,"profileID","entity_0"] call ALIVE_fnc_hashGet, "_"] call CBA_fnc_split;
+                        if (count _index > 0) then {
+	                        _index sort true;
+	                        _index = parseNumber (_index select 0); // will fallback to 0 if a wrong input is given
+                            
+	                        _entities pushback _index;
+                        };                        
                     }else{
 
                         _profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
@@ -1539,9 +1553,26 @@ switch(_operation) do {
 
                         [ALIVE_profileHandler, "registerProfile", _profileVehicle] call ALIVE_fnc_profileHandler;
 
+						//Collect the index-number of the vehicle id
+                        _index = [[_profileVehicle,"profileID","vehicle_0"] call ALIVE_fnc_hashGet, "_"] call CBA_fnc_split;
+                        if (count _index > 0) then {
+	                        _index sort true;
+	                        _index = parseNumber (_index select 0); // will fallback to 0 if a wrong input is given
+                            
+	                        _vehicles pushback _index;
+                        };
                     };
 
                 } forEach (_profiles select 2);
+                
+                //Sort collected index-numbers to get the highest one
+                _vehicles sort false;
+                _entities sort false;
+                               
+                //Set highest index-number on the profiles-counters in order to let objects created lateron have correct unique IDs
+                [_logic, "profileVehicleCount", _vehicles select 0] call ALIVE_fnc_hashSet;
+                [_logic, "profileEntityCount", _entities select 0] call ALIVE_fnc_hashSet;
+                [_logic, "profileCount", _total] call ALIVE_fnc_hashSet;
             };
         };
         default {
