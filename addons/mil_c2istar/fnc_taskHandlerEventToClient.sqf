@@ -21,4 +21,9 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
+private ["_time"];
+
+//Wait for client to be ready in case event is sent to early including timeout
+_time = time; waituntil {!isnil "ALIVE_taskHandlerClient" || {time - _time > 30}};
+
 [ALIVE_taskHandlerClient,"handleEvent",_this] call ALIVE_fnc_taskHandlerClient;

@@ -33,17 +33,18 @@ nil
 
 #define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_taskHandlerClient
+#define MTEMPLATE "ALiVE_TASKHANDLER_%1"
 
 private ["_logic","_operation","_args","_result"];
 
 TRACE_1("taskHandlerClient - input",_this);
 
-_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
+_logic = [_this, 0, nil, [[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 //_result = true;
 
-#define MTEMPLATE "ALiVE_TASKHANDLER_%1"
+if (isnil "_logic") exitwith {};
 
 switch(_operation) do {
     case "destroy": {

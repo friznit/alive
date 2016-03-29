@@ -447,7 +447,7 @@ switch(_operation) do {
             _persistent = [_logic,"persistent"] call MAINCLASS;
 
             // create the task handler
-            ALIVE_taskHandler = [nil, "create"] call ALIVE_fnc_taskHandler;
+            ALIVE_taskHandler = [] call ALiVE_fnc_HashCreate;
             [ALIVE_taskHandler, "init"] call ALIVE_fnc_taskHandler;
             [ALIVE_taskHandler, "debug", _debug] call ALIVE_fnc_taskHandler;
 
@@ -555,7 +555,7 @@ switch(_operation) do {
             private ["_file"];
 
             // create the client task handler
-            ALIVE_taskHandlerClient = [nil, "create"] call ALIVE_fnc_taskHandlerClient;
+            ALIVE_taskHandlerClient = [] call ALiVE_fnc_HashCreate;
             [ALIVE_taskHandlerClient, "init"] call ALIVE_fnc_taskHandlerClient;
 
             // load static data
