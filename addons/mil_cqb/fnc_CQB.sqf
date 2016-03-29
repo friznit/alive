@@ -946,7 +946,7 @@ switch(_operation) do {
 			ASSERT_TRUE(typeName _args == "OBJECT",str typeName _args);
 			private ["_house","_grp","_sectorID"];
 			_house = _args;
-            _sectorID = _house getvariable ["sectorID","error"];
+            _sectorID = _house getvariable ["sectorID","none"];
 
 			// delete the group
 			_grp = _house getVariable "group";
