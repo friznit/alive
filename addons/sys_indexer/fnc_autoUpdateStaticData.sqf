@@ -1,6 +1,6 @@
 // ALiVE_fnc_autoUpdateStaticData
 private ["_categories","_choice","_enabled","_ctrl","_arr"];
-diag_log (_this);
+// diag_log (_this);
 _ctrl = _this select 0;
 _choice = _this select 1;
 _enabled = _this select 2;
