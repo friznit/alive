@@ -142,6 +142,7 @@ switch (_operation) do {
                         waituntil {!isnil QMOD(SYS_DATA) && {MOD(SYS_DATA) getvariable ["startupComplete",false]}};
                     };
 
+                    ["DATA: Loading situation report data."] call ALIVE_fnc_dump;
                     _state = [_logic, "loadsitreps"] call ALIVE_fnc_sitrep;
 
                     if !(typeName _state == "BOOL") then {

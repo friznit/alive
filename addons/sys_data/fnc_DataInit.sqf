@@ -96,6 +96,8 @@ if (isDedicated) then {
 	// Setup Data Dictionary
 	ALIVE_DataDictionary = [] call ALIVE_fnc_hashCreate;
 
+	["DATA: Loading ALiVE config from database."] call ALIVE_fnc_dump;
+
 	// Get global config information
 	_config = [GVAR(datahandler), "read", ["sys_data", [], "config"]] call ALIVE_fnc_Data;
 
@@ -169,6 +171,8 @@ if (isDedicated) then {
 	GVAR(DictionaryRevs) = [];
 
 	// Try loading dictionary from db
+	["DATA: Loading data dictionary %1.", _dictionaryName] call ALIVE_fnc_dump;
+
 	_response = [GVAR(datahandler), "read", ["sys_data", [], _dictionaryName]] call ALIVE_fnc_Data;
 	if ( typeName _response != "STRING") then {
 		ALIVE_DataDictionary = _response;
@@ -197,7 +201,7 @@ if (isDedicated) then {
         };
 
 	} else {
-
+		["DATA: No data dictionary found, might be new mission"] call ALIVE_fnc_dump;
 	    if(ALiVE_SYS_DATA_DEBUG_ON) then {
             ["ALiVE SYS_DATA - NO DICTIONARY AVAILABLE: %1",_response] call ALIVE_fnc_dump;
         };
@@ -215,6 +219,7 @@ if (isDedicated) then {
 	if (GVAR(dictionaryLoaded) && (MOD(sys_data) getVariable ["saveDateTime","false"] == "true")) then {
 		private ["_missionName","_response"];
 		// Read in date/time for mission
+		["DATA: Loading basic mission data."] call ALIVE_fnc_dump;
 		_missionName = format["%1_%2", GVAR(GROUP_ID), missionName];
 		_response = [GVAR(datahandler), "read", ["sys_data", [], _missionName]] call ALIVE_fnc_Data;
 		if ( typeName _response != "STRING") then {
@@ -294,6 +299,8 @@ if (isDedicated) then {
 	TRACE_2("SYS_DATA AAR VAR", MOD(sys_data) getVariable "disableAAR", ALIVE_sys_AAR_ENABLED);
 	// Start the AAR monitoring module
 	if (MOD(sys_data) getvariable ["disableAAR", "true"] == "false" && ALIVE_sys_AAR_ENABLED) then {
+
+		["DATA: Starting AAR system."] call ALIVE_fnc_dump;
 
 		[] spawn {
 			// Thread running on server to report state/pos of every playable unit and group every 60 seconds
@@ -409,6 +416,7 @@ if (isDedicated) then {
 TRACE_2("SYS_DATA STAT VAR", MOD(sys_data) getVariable "disableStats", ALIVE_sys_statistics_ENABLED);
 // Kickoff the stats module
 if (_logic getvariable ["disableStats","false"] == "false") then {
+	["DATA: Starting stats system."] call ALIVE_fnc_dump;
 	[_logic] call ALIVE_fnc_statisticsInit;
 };
 

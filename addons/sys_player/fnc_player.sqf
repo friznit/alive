@@ -176,6 +176,7 @@ switch(_operation) do {
 
                         if (ALIVE_sys_data_dictionaryLoaded) then {
                             // Load Player Data for Mission
+                            ["DATA: Loading player data for %1", _missionName] call ALIVE_fnc_dump;
                             _res = [MOD(sys_player), "loadPlayers", [false]] call ALIVE_fnc_player;
                         } else {
                             _res = "DICTIONARY NOT AVAILABLE";

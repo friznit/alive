@@ -92,6 +92,7 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 			// Ask player if they want to be restored first?
 
+			["DATA: Restoring player data for %1", _unit] call ALIVE_fnc_dump;
 			// Apply data to player object
 			_result = [MOD(sys_player), "getPlayer", [_unit,_owner]] call ALIVE_fnc_player;
 

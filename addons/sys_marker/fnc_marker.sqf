@@ -179,6 +179,7 @@ switch (_operation) do {
                         waituntil {!isnil QMOD(SYS_DATA) && {MOD(SYS_DATA) getvariable ["startupComplete",false]}};
                     };
 
+                    ["DATA: Loading marker data."] call ALIVE_fnc_dump;
                     _state = [_logic, "loadMarkers"] call ALIVE_fnc_marker;
 
                     if !(typeName _state == "BOOL") then {
