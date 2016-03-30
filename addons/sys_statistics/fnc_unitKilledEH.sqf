@@ -55,12 +55,13 @@ if (GVAR(ENABLED)) then {
 
 	_aceKilled = false;
 
-	if (isNull _killer) then {
+	if (isNil "_killer") then {
 		// Check for ACE last damage else return killed.
-		_killer = _killed getVariable ["ACE_Medical_lastDamageSource", _killed];
+		_killer = _killed getVariable ["ace_medical_lastDamageSource", _killed];
 
 		if (_killer != _killed) then {
 			_aceKilled = true;
+			// diag_log format["ACE KILLED: %1 - %2", _killer, _this];
 		};
 	};
 

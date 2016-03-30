@@ -222,7 +222,7 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 	player addEventHandler ["Fired", {_this call GVAR(fnc_playerfiredEH);}];
 
 	// Set up handleDamage
-//	player addEventHandler ["handleDamage", {_this call GVAR(fnc_handleDamageEH);}];
+	//	player addEventHandler ["handleDamage", {_this call GVAR(fnc_handleDamageEH);}];
 
 	// Set up hit handler
 	player addEventHandler ["hit", {_this call GVAR(fnc_hitEH);}];
@@ -249,6 +249,16 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 
 };
 
+// Check for ACE and add eventhandler for ACE Medical deaths
+// Add to all clients/servers in case AI is running locally on those machines
+If (isClass (configFile >> "cfgMods" >> "ace") && GVAR(ENABLED)) then {
+	["medical_onSetDead",
+		{
+			// diag_log format["ACE MEDICAL ON SETDEAD CALLED: %1", _this];
+			[_this select 0, nil] call alive_sys_statistics_fnc_unitKilledEH;
+		}
+	] call ace_common_fnc_addEventHandler;
+};
 
 /*
 VIEW - purely visual
@@ -281,6 +291,7 @@ if(!isDedicated && !isHC && GVAR(ENABLED)) then {
 				]
 		] call ALiVE_fnc_flexiMenu_Add;
 };
+
 
 ADDON = true;
 
