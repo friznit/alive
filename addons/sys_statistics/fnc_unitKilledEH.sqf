@@ -43,16 +43,25 @@ Tupolov
 // MAIN
 #define DEBUG_MODE_FULL
 
+// Given ACE issue, may want to change this mechanism so that we just record last damage to the unit killed.
+
 #include "script_component.hpp"
 if (GVAR(ENABLED)) then {
-	private ["_sideKilled","_sideKiller","_killedtype","_killerweapon","_killertype","_distance","_datetime","_factionKiller","_factionKilled","_data","_killedPos","_killerPos","_server","_realtime","_killer","_killed","_killedVehicleClass","_killerVehicleClass"];
+	private ["_sideKilled","_sideKiller","_killedtype","_killerweapon","_killertype","_distance","_datetime","_factionKiller","_factionKilled","_data","_killedPos","_killerPos","_server","_realtime","_killer","_killed","_killedVehicleClass","_killerVehicleClass","_aceKilled"];
 
 	// Set Data
 	_killed = _this select 0;
 	_killer = _this select 1;
 
+	_aceKilled = false;
+
 	if (isNull _killer) then {
-		_killer = _killed;
+		// Check for ACE last damage else return killed.
+		_killer = _killed getVariable ["ACE_Medical_lastDamageSource", _killed];
+
+		if (_killer != _killed) then {
+			_aceKilled = true;
+		};
 	};
 
 	// if killed is a player or a vehicle then record, if killer is player or player in a vehicle
@@ -99,12 +108,14 @@ if (GVAR(ENABLED)) then {
 			_killerweaponType = "UNKNOWN";
 		};
 
+		// Might get a false reading if unit is ace killed and dies some time after last damage
 		_distance = ceil(_killed distance _killer);
+
+		_killerPos = mapgridposition _killer;
+		_killerGeoPos = position _killer;
 
 		_killedPos = mapgridposition _killed;
 		_killedGeoPos = position _killed;
-		_killerPos = mapgridposition _killer;
-		_killerGeoPos = position _killer;
 
 		// Log data
 		_data = [ ["Event","Kill"] , ["KilledSide",_sideKilled] , ["Killedfaction",_factionKilled] , ["KilledType", _killedType] , ["KilledClass",_killedVehicleClass] , ["KilledPos",_killedPos] , ["KilledGeoPos",_killedGeoPos] ,  ["KillerSide",_sideKiller] , ["Killerfaction",_factionKiller] , ["KillerType",_killerType] , ["KillerClass",_killerVehicleClass] , ["KillerPos",_killerPos] , ["KillerGeoPos",_killerGeoPos] , ["Weapon",_killerweapon] , ["WeaponType",_killerweaponType] , ["Distance",_distance] , ["Killed",_killed] , ["Killer",_killer], ["KillerConfig",_killerCfg], ["KilledConfig",_killedCfg]  ];
