@@ -74,7 +74,6 @@ switch(_operation) do {
                 _result = ADDON;
         };
         case "init": {
-
                 /*
                 MODEL - no visual just reference data
                 - server side object only
@@ -82,7 +81,10 @@ switch(_operation) do {
                 */
 
 				//Create or assign existing Logic
-                _logic = [_logic,"create"] call ALiVE_fnc_vDist;
+                if (isNil QUOTE(ADDON)) then {
+                    // not needed when created via playeroptions
+                    _logic = [_logic,"create"] call ALiVE_fnc_vDist;
+                };
 
                 //Only one init per instance is allowed
             	if !(isnil {_logic getVariable "initGlobal"}) exitwith {["ALiVE SYS VIEWDISTANCE - Only one init process per instance allowed! Exiting..."] call ALiVE_fnc_Dump};
