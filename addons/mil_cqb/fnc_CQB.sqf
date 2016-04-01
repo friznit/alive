@@ -165,9 +165,6 @@ switch(_operation) do {
 			_locality = _logic getvariable ["CQB_locality_setting","server"];
 			_logic setVariable ["locality", _locality];
 
-			_traceGrid = _logic getvariable ["CQB_TraceGrid","None"];
-			_logic setVariable ["CQB_TraceGrid", _traceGrid];
-
 			_factions = _logic getvariable ["CQB_FACTIONS","OPF_F"];
 			_factions = [_logic,"factions",_factions] call ALiVE_fnc_CQB;
 
@@ -349,13 +346,6 @@ switch(_operation) do {
 			    [_logic, "GarbageCollecting", true] call ALiVE_fnc_CQB;
 				[_logic, "active", true] call ALiVE_fnc_CQB;
 
-				// enable/disable T.R.A.C.E Grid on main CQB instance
-				if (_traceGrid == "None") then {
-					[MOD(CQB), "traceMonitor", false] call ALiVE_fnc_CQB;
-				} else {
-					[MOD(CQB), "traceMonitor", true] call ALiVE_fnc_CQB;
-				};
-
 				//Indicate startup is done on server for that instance
 				_logic setVariable ["init",true,true];
                 _logic setVariable ["startupComplete",true,true];
@@ -405,40 +395,6 @@ switch(_operation) do {
 			};
 
 			TRACE_TIME(QUOTE(COMPONENT),[]); // 8
-        };
-
-		// T.R.A.C.E System. (Also known as Building Grids)
-        case "traceMonitor": {
-            ASSERT_TRUE(typeName _args == "BOOL",str typeName _args);
-
-            private ["_grid","_markerType"];
-
-            if (_args) then {
-                
-                _grid = _logic getvariable "grid";
-                _markerType = MOD(CQB) getvariable ["CQB_TraceGrid","Solid"];
-
-	            if (isnil "_grid" && {!(_markerType == "None")}) then {
-	                _grid = [getposATL _logic, 30000, _markerType] call ALiVE_fnc_createTraceGrid;
-	                _logic setvariable ["grid",_grid];
-
-	                [_grid,_markerType] spawn {
-
-	                    waituntil {
-	                        sleep 30;
-	                        [_this select 0,_this select 1] call ALiVE_fnc_updateTraceGrid;
-
-	                    	isnil {MOD(CQB) getvariable "grid"};
-	                 	};
-	                 };
-	            };
-            } else {
-                _grid = _logic getvariable ["grid",[]];
-
-                {deleteMarker _x} foreach _grid;
-
-                _logic setvariable ["grid",nil];
-            };
         };
 
         case "pause": {

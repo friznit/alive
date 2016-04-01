@@ -50,12 +50,6 @@
 <Key ID="STR_ALIVE_CQB_TYPE_COMMENT">
 	<English>Chooses the type of buildings in which CQB will be present</English>
 </Key>
-<Key ID="STR_ALIVE_CQB_TRACE">
-	<English>T.R.A.C.E System:</English>
-</Key>
-<Key ID="STR_ALIVE_CQB_TRACE_COMMENT">
-	<English>Displays an 50x50 marker grid layer over built up areas that indicate areas of potential (not actual) enemy presence. Grids change to green when cleared.</English>
-</Key>
 <Key ID="STR_ALIVE_CQB_SPAWN">
 	<English>Probability:</English>
 </Key>

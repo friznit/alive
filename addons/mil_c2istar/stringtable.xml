@@ -182,6 +182,12 @@
 <Key ID="STR_ALIVE_C2ISTAR_DISPLAY_MIL_SECTORS_COMMENT">
     <English>Display map sectors containing military units on the map</English>
 </Key>
+<Key ID="STR_ALIVE_C2ISTAR_DISPLAY_TRACEGRID">
+	<English>T.R.A.C.E System:</English>
+</Key>
+<Key ID="STR_ALIVE_C2ISTAR_DISPLAY_TRACEGRID_COMMENT">
+	<English>Displays an 50x50 marker grid layer over built up areas that indicate areas of potential (not actual) enemy presence. Grids change to green when cleared.</English>
+</Key>
 <Key ID="STR_ALIVE_C2ISTAR_DISPLAY_PLAYER_SECTORS">
     <English>Player Map Sectors:</English>
 </Key>

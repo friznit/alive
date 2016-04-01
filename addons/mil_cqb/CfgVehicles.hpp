@@ -252,50 +252,6 @@ class CfgVehicles {
                                         };
                                 };
                         };
-                        class CQB_TraceGrid
-                        {
-                                displayName = "$STR_ALIVE_CQB_TRACE";
-                                description = "$STR_ALIVE_CQB_TRACE_COMMENT";
-                                class Values
-                                {
-                                        class None
-                                        {
-                                                name = "None";
-                                                value = "None";
-                                                default = 1;
-                                        };
-                                        class Solid
-                                        {
-                                                name = "Solid";
-                                                value = "Solid";
-                                        };
-										class Horizontal
-										{
-												name = "Horizontal";
-												value = "Horizontal";
-										};
-										class Vertical
-										{
-												name = "Vertical";
-												value = "Vertical";
-										};
-										class FDiagonal
-										{
-												name = "F-Diagonal";
-												value = "FDiagonal";
-										};
-										class BDiagonal
-										{
-												name = "B-Diagonal";
-												value = "BDiagonal";
-										};
-										class Cross
-										{
-												name = "Cross";
-												value = "Cross";
-										};
-                                };
-                        };
                         class CQB_spawndistance
                         {
                                 displayName = "$STR_ALIVE_CQB_SPAWNDISTANCE";

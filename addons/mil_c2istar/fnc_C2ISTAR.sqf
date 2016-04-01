@@ -61,6 +61,7 @@ Peer Reviewed:
 #define DEFAULT_FRIENDLY_INTEL_RADIUS 2000
 #define DEFAULT_DISPLAY_PLAYER_SECTORS false
 #define DEFAULT_DISPLAY_MIL_SECTORS false
+#define DEFAULT_TRACEFILL "None"
 #define DEFAULT_RUN_EVERY 120
 
 // Display components
@@ -344,6 +345,11 @@ switch(_operation) do {
 
         _result = _args;
     };
+
+    case "displayTraceGrid": {
+        _result = [_logic,_operation,_args,DEFAULT_TRACEFILL] call ALIVE_fnc_OOsimpleOperation;
+    };    
+
     case "runEvery": {
         if(typeName _args == "STRING") then {
             _args = parseNumber(_args);
@@ -544,7 +550,37 @@ switch(_operation) do {
                 [_intel, "init"] call ALIVE_fnc_militaryIntel;
 
             };
+            
+            // T.R.A.C.E. System
+            private ["_grid","_markerType","_displayTraceGrid"];
+            
+            _displayTraceGrid = [_logic, "displayTraceGrid"] call MAINCLASS;
+            
+            if !(_displayTraceGrid == "None") then {
 
+                _grid = _logic getvariable "grid";
+
+	            if (isnil "_grid") then {
+	                _grid = [getposATL _logic, 30000, _displayTraceGrid] call ALiVE_fnc_createTraceGrid;
+	                _logic setvariable ["grid",_grid];
+
+	                [_grid,_displayTraceGrid] spawn {
+
+	                    waituntil {
+	                        sleep 30;
+	                        [_this select 0,_this select 1] call ALiVE_fnc_updateTraceGrid;
+
+	                    	isnil {MOD(MIL_C2ISTAR) getvariable "grid"};
+	                 	};
+	                 };
+	            };
+            } else {
+                _grid = _logic getvariable ["grid",[]];
+
+                {deleteMarker _x} foreach _grid;
+
+                _logic setvariable ["grid",nil];
+            };            
         };
 
 
