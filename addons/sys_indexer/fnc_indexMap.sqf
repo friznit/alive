@@ -96,19 +96,19 @@ _custom = _this select 1;
 
 	_result = "ALiVEClient" callExtension format["startClusters~%1", worldName];
 
-	_handle = [] execVM "\x\alive\addons\fnc_analysis\tests\auto_runMapAnalysis.sqf";
+	_handle = [] execVM "x\alive\addons\fnc_analysis\tests\auto_runMapAnalysis.sqf";
 	waitUntil {sleep 0.3; scriptDone _handle};
 
 	["ALiVE Map Indexer","Generating Clusters: Military Objectives."] call ALiVE_fnc_sendHint;
 	[">>>>>>>>>>>>>>>>>> Generating Clusters:  Military Objectives."] call ALiVE_fnc_dump;
 
-	_handle = [] execVM "\x\alive\addons\mil_placement\tests\auto_clusterGeneration.sqf";
+	_handle = [] execVM "x\alive\addons\mil_placement\tests\auto_clusterGeneration.sqf";
 	waitUntil {sleep 0.3; scriptDone _handle};
 
 	["ALiVE Map Indexer","Generating Clusters: Civilian Objectives."] call ALiVE_fnc_sendHint;
 	[">>>>>>>>>>>>>>>>>> Generating Clusters: Civilian Objectives."] call ALiVE_fnc_dump;
 
-	_handle =  [] execVM "\x\alive\addons\civ_placement\tests\auto_clusterGeneration.sqf";
+	_handle =  [] execVM "x\alive\addons\civ_placement\tests\auto_clusterGeneration.sqf";
 	waitUntil {sleep 0.3; scriptDone _handle};
 
 	// Merge sector/cluster data
@@ -116,13 +116,13 @@ _custom = _this select 1;
 	["ALiVE Map Indexer","Generating Clusters: Merging Military Sector/Cluster Data."] call ALiVE_fnc_sendHint;
 	[">>>>>>>>>>>>>>>>>> Generating Clusters: Merging Military Sector/Cluster Data."] call ALiVE_fnc_dump;
 
-	_handle = [] execVM "\x\alive\addons\fnc_analysis\tests\auto_appendClustersMil.sqf";
+	_handle = [] execVM "x\alive\addons\fnc_analysis\tests\auto_appendClustersMil.sqf";
 	waitUntil {sleep 0.3; scriptDone _handle};
 
 	["ALiVE Map Indexer","Generating Clusters: Merging Civilian Sector/Cluster Data."] call ALiVE_fnc_sendHint;
 	[">>>>>>>>>>>>>>>>>> Generating Clusters: Merging Civilian Sector/Cluster Data."] call ALiVE_fnc_dump;
 
-	_handle = [] execVM "\x\alive\addons\fnc_analysis\tests\auto_appendClustersCiv.sqf";
+	_handle = [] execVM "x\alive\addons\fnc_analysis\tests\auto_appendClustersCiv.sqf";
 	waitUntil {sleep 0.3; scriptDone _handle};
 
 
