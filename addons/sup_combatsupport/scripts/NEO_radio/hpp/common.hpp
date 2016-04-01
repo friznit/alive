@@ -215,7 +215,7 @@ class NEO_RscButton
 	y = "safeZoneY + (safeZoneH / 1.525)";
 	w = "(safeZoneW / 12.5)";
 	h = "(safeZoneH / 20)";
-  colorBackgroundActive[] = {0, 0, 0, 1};
+  colorBackgroundActive[] = {1, 1, 1, 0.4};
   colorBackgroundDisabled[] = {0, 0, 0, 0.5};
 	color[] = {0.8784, 0.8471, 0.651, 1.0};
 	color2[] = {0.95, 0.95, 0.95, 1};
