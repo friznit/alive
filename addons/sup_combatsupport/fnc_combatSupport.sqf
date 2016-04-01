@@ -25,7 +25,7 @@ The popup menu will change to show status as functions are enabled and disabled.
 
 Examples:
 (begin example)
-// Create instance by placing editor module and specifiying name myModule
+// Create instance by placing editor module and specifying name myModule
 (end)
 
 See Also:
@@ -210,6 +210,8 @@ switch(_operation) do {
                                     _setrocketrounds = ((synchronizedObjects _logic) select _i) getvariable ["artillery_rockets","16"];
 
                                     _direction =  getDir ((synchronizedObjects _logic) select _i);
+                                    _code = ((synchronizedObjects _logic) select _i) getvariable ["artillery_code",""];
+                                    _code = [_code,"this","(_this select 0)"] call CBA_fnc_replace;
 
                                     _herounds = parsenumber(_setherounds);
                                     _illumrounds = parsenumber(_setillumrounds);
@@ -233,7 +235,7 @@ switch(_operation) do {
 
                                    _ordnance = [_he,_illum,_smoke,_guided,_cluster,_lg,_mine,_atmine, _rockets];
 
-                                    _artyArray = [_position,_class, _callsign,3,_ordnance,{}];
+                                    _artyArray = [_position,_class, _callsign,3,_ordnance,_code];
                                     _artyArrays set [count _artyArrays,_artyArray];
                                 };
 				            };
@@ -451,7 +453,7 @@ switch(_operation) do {
                         // ARTY
 
                         {
-                            private ["_pos", "_class", "_callsign", "_unitCount", "_rounds", "_code", "_roundsUnit", "_roundsAvailable", "_canMove", "_units", "_grp", "_vehDir","_tempclass","_side"];
+                            private ["_pos", "_class", "_callsign", "_unitCount", "_rounds", "_code", "_roundsUnit", "_roundsAvailable", "_canMove", "_units", "_grp", "_vehDir","_tempclass","_side","_artyBatteries"];
                             _pos = _x select 0; _pos set [2, 0];
                             _class = _x select 1;
                             _callsign = toUpper (_x select 2);
@@ -485,6 +487,7 @@ switch(_operation) do {
                             _roundsAvailable = [];
                             _canMove = if (_class in ["B_MBT_01_arty_F", "O_MBT_02_arty_F", "B_MBT_01_mlrs_F","O_Mortar_01_F", "B_Mortar_01_F","I_Mortar_01_F","BUS_Support_Mort","BUS_MotInf_MortTeam","OIA_MotInf_MortTeam","OI_support_Mort","HAF_MotInf_MortTeam","HAF_Support_Mort"]) then { true } else { false };
                             _units = [];
+                            _artyBatteries = [];
                             _vehDir = 0;
 
                             private ["_veh","_grp"];
@@ -498,12 +501,14 @@ switch(_operation) do {
                                 for "_i" from 1 to _unitCount do
                                 {
                                     private ["_veh","_sptarr"];
-                                    _vehPos = [_pos, 15, _vehDir] call BIS_fnc_relPos; _vehPos set [2, 0];
+                                    _vehPos = _pos getPos [15, _vehDir]; _vehPos set [2, 0];
 
                                     if (isNil "_tempclass") then {
                                         _veh = createVehicle [_class, _vehPos, [], 0, "CAN_COLLIDE"];
+                                        _artyBatteries pushback _veh;
                                     } else {
                                         _veh = createVehicle [_tempclass, _vehPos, [], 0, "CAN_COLLIDE"];
+                                        _artyBatteries pushback _veh;
                                     };
                                     _veh setDir _vehDir;
                                     _veh setPosATL _vehPos;
@@ -539,6 +544,7 @@ switch(_operation) do {
                                             private "_car";
                                             _car = createVehicle [_cars select 0, [position (leader _grp),1,100,1,0,4,0] call bis_fnc_findSafePos, [], 0, "NONE"];
                                             _grp addVehicle _car;
+                                            _artyBatteries pushback _veh;
                                         };
                                     };
                                 };
@@ -555,7 +561,22 @@ switch(_operation) do {
                             [_grp,0] setWaypointPosition [_pos,0];
                             [[(units _grp select 0),_callsign], "fnc_setGroupID", false, false] spawn BIS_fnc_MP;
 
+
                             //[_veh, _grp, _units, units _grp] spawn _code;
+                            _codeArray = [_code, ";"] Call CBA_fnc_split;
+                            {
+                                _vehicle = _x;
+                                {
+                                    If(_x != "") then {
+                                        [_vehicle, _x] spawn {
+                                            private ["_vehicle", "_spawn"];
+                                            _vehicle = _this select 0;
+                                            _spawn = compile(_this select 1);
+                                            [_vehicle] spawn _spawn;
+                                        };
+                                    };
+                                } forEach _codeArray;
+                            } forEach _artyBatteries;
 
                             //Validate rounds
                             {
@@ -569,7 +590,7 @@ switch(_operation) do {
                             leader _grp setVariable ["NEO_radioArtyBatteryRounds", _roundsAvailable, true];
 
                             //FSM
-                            [_units, _grp, _callsign, _pos, _roundsAvailable, _canMove, _class, leader _grp] execFSM "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\alivearty.fsm";
+                            [_units, _grp, _callsign, _pos, _roundsAvailable, _canMove, _class, leader _grp, _code] execFSM "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\alivearty.fsm";
 
                             _a = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", _side];
                             _a set [count _a, [leader _grp, _grp, _callsign, _units, _roundsAvailable]];

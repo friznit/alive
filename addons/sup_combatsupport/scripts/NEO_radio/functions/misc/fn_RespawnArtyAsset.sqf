@@ -1,6 +1,6 @@
 private ["_veh", "_grp", "_callsign", "_pos", "_dir","_height","_type", "_respawn","_code","_tasks","_faction","_side","_sides"];
 
-private ["_pos", "_class", "_callsign", "_unitCount", "_rounds", "_code", "_roundsUnit", "_roundsAvailable", "_canMove", "_units", "_grp", "_vehDir"];
+private ["_pos", "_class", "_callsign", "_unitCount", "_rounds", "_code", "_roundsUnit", "_roundsAvailable", "_canMove", "_units", "_grp", "_vehDir","_artyBatteries"];
 _units = _this select 0;
 _grp = _this select 1;
 _callsign = _this select 2;
@@ -19,7 +19,7 @@ _roundsAvailable = [];
 
 
 //define defaults
-_code = {};
+_code = _this select 9;
 _faction = gettext(configfile >> "CfgVehicles" >> _type >> "faction");
 _sides = [WEST,EAST,RESISTANCE,CIVILIAN];
 
@@ -70,6 +70,7 @@ _units = [];
 _vehDir = 0;
 
 _grp = createGroup _side;
+_artyBatteries = [];
 
 if (_side == WEST && _type == "BUS_MotInf_MortTeam") then {
     // Spawn a mortar team :)
@@ -92,8 +93,9 @@ if (_side == WEST && _type == "BUS_MotInf_MortTeam") then {
 		[_veh, _grp] call BIS_fnc_spawnCrew;
 		_veh lock true;
 		_vehDir = _vehDir + 90;
-
+        
 		_units set [count _units, _veh];
+        _artyBatteries pushback _veh;
 
         // set ownership flag for other modules
         _veh setVariable ["ALIVE_CombatSupport", true];
@@ -114,8 +116,23 @@ if (_side == WEST && _type == "BUS_MotInf_MortTeam") then {
 
 leader _grp setVariable ["NEO_radioArtyBatteryRounds", _roundsAvailable, true];
 
+_codeArray = [_code, ";"] Call CBA_fnc_split;
+{
+    _vehicle = _x;
+    {
+        If(_x != "") then {
+            [_vehicle, _x] spawn {
+                private ["_vehicle", "_spawn"];
+                _vehicle = _this select 0;
+                _spawn = compile(_this select 1);
+                [_vehicle] spawn _spawn;
+            };
+        };
+    } forEach _codeArray;
+} forEach _artyBatteries;
+
 //FSM
-[_units, _grp, _callsign, _pos, _roundsAvailable, _canMove, _type, leader _grp] execFSM "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\alivearty.fsm";
+[_units, _grp, _callsign, _pos, _roundsAvailable, _canMove, _type, leader _grp, _code] execFSM "\x\alive\addons\sup_combatSupport\scripts\NEO_radio\fsms\alivearty.fsm";
 
 _a = NEO_radioLogic getVariable format ["NEO_radioArtyArray_%1", _side];
 _a set [count _a, [leader _grp, _grp, _callsign, _units, _roundsAvailable]];

@@ -79,6 +79,13 @@ class CfgVehicles {
                                 description = "$STR_ALIVE_ARTILLERY_ROCKETS_DESC";
                                 defaultValue= 16;
                         };
+
+                        class artillery_code
+                        {
+                                displayName = "$STR_ALIVE_ARTILLERY_CODE";
+                                description = "$STR_ALIVE_ARTILLERY_CODE_DESC";
+                                defaultValue = "";
+                        };
                 };
 				class ModuleDescription
 				{

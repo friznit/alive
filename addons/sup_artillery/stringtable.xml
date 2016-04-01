@@ -77,4 +77,10 @@
 <Key ID="STR_ALIVE_ARTILLERY_ROCKETS_DESC">
 	<English>Set the number of rounds of 230mm Titan Missile available for the asset - Only used by MLRS</English>
 </Key>
+<Key ID="STR_ALIVE_ARTILLERY_CODE">
+	<English>Code</English>
+</Key>
+<Key ID="STR_ALIVE_ARTILLERY_CODE_DESC">
+	<English>Code that will be ran on each artillery piece</English>
+</Key>
 </Container></Package></Project>
