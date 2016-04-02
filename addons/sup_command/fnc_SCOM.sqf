@@ -78,13 +78,15 @@ Peer Reviewed:
 #define SCOM_getSelData(ctrl) (lbData[##ctrl,(lbCurSel ##ctrl)])
 
 
-private ["_logic","_operation","_args","_result"];
+private ["_result"];
 
 TRACE_1("SCOM - input",_this);
 
-_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
-_operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+params [
+    ["_logic", objNull, [objNull]],
+    ["_operation", "", [""]],
+    ["_args", objNull, [objNull,[],"",0,true,false]]
+];
 _result = true;
 
 switch(_operation) do {
@@ -227,7 +229,7 @@ switch(_operation) do {
 
             // set the command state
 
-            private ["_commandState","_opsGroupsBySide"];
+            private ["_commandState"];
 
             _commandState = [_logic,"commandState"] call MAINCLASS;
 
@@ -258,11 +260,7 @@ switch(_operation) do {
             [_commandState,"opsOPCOMSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_commandState,"opsOPCOMSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
 
-            _opsGroupsBySide = [] call ALIVE_fnc_hashCreate;
-            [_opsGroupsBySide, "EAST", []] call ALIVE_fnc_hashSet;
-            [_opsGroupsBySide, "WEST", []] call ALIVE_fnc_hashSet;
-            [_opsGroupsBySide, "GUER", []] call ALIVE_fnc_hashSet;
-            [_commandState,"opsGroupsBySide",_opsGroupsBySide] call ALIVE_fnc_hashSet;
+            [_commandState,"opsGroups",[]] call ALIVE_fnc_hashSet;
 
             [_commandState,"opsGroupsOptions",[]] call ALIVE_fnc_hashSet;
             [_commandState,"opsGroupsValues",[]] call ALIVE_fnc_hashSet;
@@ -368,7 +366,7 @@ switch(_operation) do {
                 _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
 
                 if !(isNull _player) then {
-                    [_event,"ALIVE_fnc_SCOMTabletEventToClient",_player,false,false,true] call BIS_fnc_MP;
+                    _event remoteExecCall ["ALIVE_fnc_SCOMTabletEventToClient",_player];
                 };
 
             }else{
@@ -641,7 +639,7 @@ switch(_operation) do {
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
+                            [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
                         };
 
                         // show waiting until response comes back
@@ -689,7 +687,7 @@ switch(_operation) do {
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
+                            [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
                         };
 
                         // show waiting until response comes back
@@ -748,7 +746,7 @@ switch(_operation) do {
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
+                            [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
                         };
 						*/
 
@@ -830,10 +828,10 @@ switch(_operation) do {
                         _listValues = [_commandState,"opsGroupsValues"] call ALIVE_fnc_hashGet;
 
                         _selectedIndex = -1;
-						_dist = (ctrlMapScale _map) * 77;
+						_dist = 40; // (ctrlMapScale _map) * 77
                         {
                             _position = _x select 1;
-                            if(_cursorPosition distance2d _position < _dist) exitWith {
+                            if(_cursorPosition distance2D _position < _dist) exitWith {
                                 _selectedIndex = _forEachIndex;
                             };
                         } foreach _listValues;
@@ -850,7 +848,7 @@ switch(_operation) do {
                             [_commandState,"opsGroupsSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
                             [_commandState,"opsGroupsSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
 
-                            [_logic,"commandState",_commandState] call MAINCLASS;
+                            //[_logic,"commandState",_commandState] call MAINCLASS;
 
                         };
 
@@ -892,7 +890,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
+                        [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
                     };
 
                     // close the tablet
@@ -951,7 +949,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
+                        [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
                     };
 
                     // close the tablet
@@ -996,6 +994,11 @@ switch(_operation) do {
                     _buttonL1 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BL1);
                     _buttonL1 ctrlShow false;
 
+                    _back = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                    _back ctrlShow true;
+                    _back ctrlSetText "Back";
+                    _back ctrlSetEventHandler ["MouseButtonClick", "['OPS_CANCEL_EDIT_WAYPOINTS',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
                     // send the event to get further data from the command handler
 
                     _event = ['OPS_GET_PROFILE_WAYPOINTS', [_requestID,_playerID,_profileID], "SCOM"] call ALIVE_fnc_event;
@@ -1003,12 +1006,53 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
+                        [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
                     };
 
                     // show waiting until response comes back
 
                     [_logic, "enableOpsWaiting"] call MAINCLASS;
+
+                };
+
+                case "OPS_CANCEL_EDIT_WAYPOINTS": {
+
+                    _commandState = [_logic,"commandState"] call MAINCLASS;
+                    _groups = [_commandState,"opsGroups", []] call ALiVE_fnc_hashGet;
+                    _side = [_commandState,"opsOPCOMSelectedValue"] call ALiVE_fnc_hashGet;
+
+                    // enable/disable interface controls
+
+                    _waypointList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointList);
+                    _waypointList ctrlShow false;
+
+                    _buttonR1 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR1);
+                    _buttonR1 ctrlShow false;
+
+                    _back = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                    _back ctrlShow true;
+                    _back ctrlSetEventHandler ["MouseButtonClick", "['OPS_RESET',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+                    
+                    // reset selected profile data
+                    
+                    [_commandState,"opsGroupSelectedProfile",[]] call ALIVE_fnc_hashSet;
+                    [_commandState,"opsGroupWaypoints",[]] call ALIVE_fnc_hashSet;
+                    [_commandState,"opsGroupPlannedWaypoints",[]] call ALIVE_fnc_hashSet;
+                    [_commandState,"opsGroupWaypointsPlanned",false] call ALIVE_fnc_hashSet;
+
+                    [_commandState,"opsGroupsSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
+                    [_commandState,"opsGroupsSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+                    
+                    // delete profile markers, they are created again once list is reshown
+                    
+                    _markers = [_logic,"marker"] call MAINCLASS;
+                    {
+                        deleteMarkerLocal _x;
+                    } foreach _markers;
+
+                    _playerID = getPlayerUID player;
+                    _event = ['SCOM_UPDATED', [_playerID,_side,_groups], "COMMAND_HANDLER", "OPS_GROUPS"] call ALIVE_fnc_event;
+                    _event call ALIVE_fnc_SCOMTabletEventToClient;
 
                 };
 
@@ -1357,7 +1401,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
+                        [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
                     };
 					
 					// clear planned waypoints
@@ -1396,7 +1440,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
+                        [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
                     };
 
                     // show waiting until response comes back
@@ -1431,7 +1475,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
+                        [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
                     };
 					
                     // reset planned waypoints
@@ -1755,7 +1799,7 @@ switch(_operation) do {
                     };
                 };
 
-                _markers = _markers + [_m];
+                _markers pushback _m;
 
             } foreach _profileData;
 
@@ -1802,7 +1846,7 @@ switch(_operation) do {
             			};
             		};
 
-            		_markers = _markers + [_m];
+            		_markers pushback _m;
             	};
 
             } forEach allGroups;
@@ -1913,7 +1957,7 @@ switch(_operation) do {
                     _m setMarkerColorLocal _opcomColor;
                     _m setMarkerAlphaLocal _alpha;
 
-                    _markers = _markers + [_m];
+                    _markers pushback _m;
 
                     _icon = "EMPTY";
                     _text = "";
@@ -1933,14 +1977,14 @@ switch(_operation) do {
                         _m setMarkerColorLocal _color;
                         _m setMarkerAlphaLocal _alpha;
 
-                        _markers = _markers + [_m];
+                        _markers pushback _m;
 
                         if!(isNil "_tacom_state") then {
                             switch(_tacom_state) do {
                                 case "recon":{
 
                                     // create direction marker
-                                    _m = createMarkerLocal [format[MTEMPLATE, format["%1%2_dir", _objectiveID, _forEachIndex]], [_position, 100, _dir] call BIS_fnc_relPos];
+                                    _m = createMarkerLocal [format[MTEMPLATE, format["%1%2_dir", _objectiveID, _forEachIndex]], _position getpos [100, _dir]];
                                     _m setMarkerShapeLocal "ICON";
                                     _m setMarkerSizeLocal [0.5,0.5];
                                     _m setMarkerTypeLocal "mil_arrow";
@@ -1948,13 +1992,13 @@ switch(_operation) do {
                                     _m setMarkerAlphaLocal _alpha;
                                     _m setMarkerDirLocal _dir;
 
-                                    _markers = _markers + [_m];
+                                    _markers pushback _m;
 
                                 };
                                 case "capture":{
 
                                     // create direction marker
-                                    _m = createMarkerLocal [format[MTEMPLATE, format["%1%2_dir", _objectiveID, _forEachIndex]], [_position, 100, _dir] call BIS_fnc_relPos];
+                                    _m = createMarkerLocal [format[MTEMPLATE, format["%1%2_dir", _objectiveID, _forEachIndex]], _position getpos [100, _dir]];
                                     _m setMarkerShapeLocal "ICON";
                                     _m setMarkerSizeLocal [0.5,0.5];
                                     _m setMarkerTypeLocal "mil_arrow2";
@@ -1962,7 +2006,7 @@ switch(_operation) do {
                                     _m setMarkerAlphaLocal _alpha;
                                     _m setMarkerDirLocal _dir;
 
-                                    _markers = _markers + [_m];
+                                    _markers pushback _m;
 
                                 };
                             };
@@ -2000,7 +2044,7 @@ switch(_operation) do {
                     _m setMarkerAlphaLocal _alpha;
                     _m setMarkerTextLocal _text;
 
-                    _markers = _markers + [_m];
+                    _markers pushback _m;
 
                 } forEach _opcomData;
 
@@ -2162,7 +2206,7 @@ switch(_operation) do {
             [_logic,"resetOps"] call MAINCLASS;
 
         };
-		
+
         // add map draw eh
 
         _editMap ctrlAddEventHandler ["Draw",{
@@ -2192,7 +2236,8 @@ switch(_operation) do {
         [_commandState,"opsGroupPlannedWaypoints",[]] call ALIVE_fnc_hashSet;
         [_commandState,"opsGroupWaypointsPlanned",false] call ALIVE_fnc_hashSet;
 
-        [_logic,"commandState",_commandState] call MAINCLASS;
+
+        //[_logic,"commandState",_commandState] call MAINCLASS;
 
         // clear the group list
 
@@ -2209,7 +2254,7 @@ switch(_operation) do {
         if(isServer) then {
             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
         }else{
-            [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
+            [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
         };
 
         // show waiting until response comes back
@@ -2298,18 +2343,20 @@ switch(_operation) do {
 
     case "enableOpsHighCommand": {
 
-        private ["_commandState","_status","_selectedSide","_groupData","_combinedData","_opsGroupsBySide","_editList","_options","_values",
+        private ["_commandState","_status","_selectedSide","_groupData","_editList","_options","_values",
         "_opsTypeTitle","_opsTypeList","_rightMap","_mainMap","_profileID","_position","_label","_typePrefix"];
 
         // populate group list and map markers
 
         if(typeName _args == "ARRAY") then {
+        
+            [_logic,"enableOpsWaiting"] call MAINCLASS;
 
             _commandState = [_logic,"commandState"] call MAINCLASS;
 
             _status = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelStatus);
             _status ctrlShow false;
-
+            
             _status ctrlSetText "";
 
             _selectedSide = _args select 1;
@@ -2331,22 +2378,16 @@ switch(_operation) do {
 
                 lbClear _opsTypeList;
 
-                // store a combined array of all profiles to state
+                // store profiles to state
 
-                _combinedData = [];
-				
-                {
-                    _combinedData append _x;
-                } foreach _groupData;
-
-                _opsGroupsBySide = [_commandState,"opsGroupsBySide"] call ALIVE_fnc_hashGet;
-                [_opsGroupsBySide, _selectedSide, _combinedData] call ALIVE_fnc_hashSet;
+                [_commandState,"opsGroups", _groupData] call ALIVE_fnc_hashSet;
 
                 // set list items by category type
 
                 _groupData params ["_infantry","_motorised","_mechanized","_armor","_air","_sea","_artillery","_AAA"];
 
                 _editList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_EditList);
+                _editList ctrlShow true;
 
                 lbClear _editList;
 
@@ -2387,7 +2428,7 @@ switch(_operation) do {
                 {
                     _profileID = _x select 0;
                     _position = _x select 1;
-                    _label = [_profileID, "_"] call CBA_fnc_split;
+                    _label = _profileID splitString "_";
                     _label = _label select ((count _label) - 1);
 
                     _option = format ["Infantry Group %1", _label];
@@ -2398,7 +2439,7 @@ switch(_operation) do {
 
                     _profileMarker = format["%1_inf",_typePrefix];
 
-                    _m = createMarkerLocal [format[MTEMPLATE, format["%1", _label]], _position];
+                    _m = createMarkerLocal [format[MTEMPLATE,_label], _position];
                     _m setMarkerShapeLocal "ICON";
                     _m setMarkerSizeLocal [0.5,0.5];
                     _m setMarkerTypeLocal _profileMarker;
@@ -2413,7 +2454,7 @@ switch(_operation) do {
                 {
                     _profileID = _x select 0;
                     _position = _x select 1;
-                    _label = [_profileID, "_"] call CBA_fnc_split;
+                    _label = _profileID splitString "_";
                     _label = _label select ((count _label) - 1);
 
                     _option = format ["Motorised Group %1", _label];
@@ -2439,7 +2480,7 @@ switch(_operation) do {
                 {
                     _profileID = _x select 0;
                     _position = _x select 1;
-                    _label = [_profileID, "_"] call CBA_fnc_split;
+                    _label = _profileID splitString "_";
                     _label = _label select ((count _label) - 1);
 
                     _option = format ["Mechanized Group %1", _label];
@@ -2465,7 +2506,7 @@ switch(_operation) do {
                 {
                     _profileID = _x select 0;
                     _position = _x select 1;
-                    _label = [_profileID, "_"] call CBA_fnc_split;
+                    _label = _profileID splitString "_";
                     _label = _label select ((count _label) - 1);
 
                     _option = format ["Armor Group %1", _label];
@@ -2491,7 +2532,7 @@ switch(_operation) do {
                 {
                     _profileID = _x select 0;
                     _position = _x select 1;
-                    _label = [_profileID, "_"] call CBA_fnc_split;
+                    _label = _profileID splitString "_";
                     _label = _label select ((count _label) - 1);
 
                     _option = format ["Air Group %1", _label];
@@ -2517,7 +2558,7 @@ switch(_operation) do {
                 {
                     _profileID = _x select 0;
                     _position = _x select 1;
-                    _label = [_profileID, "_"] call CBA_fnc_split;
+                    _label = _profileID splitString "_";
                     _label = _label select ((count _label) - 1);
 
                     _option = format ["Naval Group %1", _label];
@@ -2543,7 +2584,7 @@ switch(_operation) do {
                 {
                     _profileID = _x select 0;
                     _position = _x select 1;
-                    _label = [_profileID, "_"] call CBA_fnc_split;
+                    _label = _profileID splitString "_";
                     _label = _label select ((count _label) - 1);
 
                     _option = format ["Artillery Group %1", _label];
@@ -2569,7 +2610,7 @@ switch(_operation) do {
                 {
                     _profileID = _x select 0;
                     _position = _x select 1;
-                    _label = [_profileID, "_"] call CBA_fnc_split;
+                    _label = _profileID splitString "_";
                     _label = _label select ((count _label) - 1);
 
                     _option = format ["Anti-Air Group %1", _forEachIndex + 1];
@@ -2597,15 +2638,14 @@ switch(_operation) do {
 
                 [_logic,"marker",_markers] call MAINCLASS;
 
-
-                // set the event handler for the list selection event
-
-                _editList ctrlSetEventHandler ["LBSelChanged", "['OPS_GROUP_LIST_SELECT',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
-
                 // store the current values and options to state
 
                 [_commandState,"opsGroupsOptions",_options] call ALIVE_fnc_hashSet;
                 [_commandState,"opsGroupsValues",_values] call ALIVE_fnc_hashSet;
+
+                // set the event handler for the list selection event
+
+                _editList ctrlSetEventHandler ["LBSelChanged", "['OPS_GROUP_LIST_SELECT',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
 
                 // set the event handler for the map selection event
 
@@ -2650,7 +2690,7 @@ switch(_operation) do {
         if(isServer) then {
             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
         }else{
-            [[_event],"ALIVE_fnc_addEventToServer",false,false,true] call BIS_fnc_MP;
+		    [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
         };
 
         // show waiting until response comes back
@@ -2755,7 +2795,7 @@ switch(_operation) do {
 
         private["_buttonR3","_commandState","_status","_profile","_waypoints","_groupWaypoints","_position",
         "_markerPos","_rightMap","_editMap","_profilePosition","_waypointsOptions","_waypointsValues","_option","_waypointList",
-        "_profileActive","_opsWPTypeOptions","_opsWPTypeValues"];
+        "_profileActive","_opsWPTypeOptions","_opsWPTypeValues","_selectedProfile","_profileID","_label","_marker"];
 
         // once the profile data has returned from the command handler
         // display the profiles waypoints
@@ -2857,8 +2897,22 @@ switch(_operation) do {
 
                 [_commandState,"opsGroupSelectedProfile",_profile] call ALIVE_fnc_hashSet;
                 [_commandState,"opsGroupWaypoints",_groupWaypoints] call ALIVE_fnc_hashSet;
+                
+/*
+                // move profile marker to refreshed position
+                _selectedIndex = [_commandState,"opsGroupsSelectedIndex"] call ALIVE_fnc_hashGet;
+                _selectedProfile = [_commandState,"opsGroupsSelectedValue"] call ALIVE_fnc_hashGet;
+                _profileID = _selectedProfile select 0;
+                _opsGroupsValues = [_commandState,"opsGroupsValues"] call ALIVE_fnc_hashGet;
+                _opsGroupsValues set [_selectedIndex,[_profileID,_profilePosition]];
+                _label = _profileID splitString "_";
+                _label = _label select ((count _label) - 1);
 
-                [_logic,"commandState",_commandState] call MAINCLASS;
+                _marker = format [MTEMPLATE,_label];
+                _marker setMarkerPos _profilePosition;
+*/
+
+                //[_logic,"commandState",_commandState] call MAINCLASS;
 
 
                 // enable interface elements for interacting with profile
@@ -3191,7 +3245,7 @@ switch(_operation) do {
 
                 [_commandState,"opsGroupInstantJoin",false] call ALIVE_fnc_hashSet;
 
-                [_logic,"commandState",_commandState] call MAINCLASS;
+                //[_logic,"commandState",_commandState] call MAINCLASS;
 
             };
 
@@ -3221,7 +3275,7 @@ switch(_operation) do {
 
             if!(isNil "_unit") then {
 
-                _position = [position _unit, 50, random 360] call BIS_fnc_relPos;
+                _position = (position _unit) getpos [50, random 360];
 
                 [_logic,"commandState",_commandState] call MAINCLASS;
 
@@ -3247,10 +3301,10 @@ switch(_operation) do {
                     sleep 1;
                     _timer = _timer + 1;
                     if((player distance _unit) > 100) then {
-                        _newPosition = [getPos _unit, 10, random 360] call BIS_fnc_relPos;
+                        _newPosition = (getpos _unit) getpos [10, random 360];
                         player setPos _newPosition;
                     };
-                    (_timer == _duration) || !(alive player) || !(alive _unit) || !([_commandState,"opsGroupSpectate"] call ALIVE_fnc_hashGet)
+                    (_timer == _duration) || {!(alive player)} || {!(alive _unit)} || {!([_commandState,"opsGroupSpectate"] call ALIVE_fnc_hashGet)}
                 };
 
                 if!(alive player) then {
@@ -3276,6 +3330,8 @@ switch(_operation) do {
                     [player,false] call ALIVE_fnc_adminGhost;
 
                     player setPos _initialPosition;
+
+                    ["closeSplash"] call ALIVE_fnc_displayMenu;
 
                     ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
 
@@ -3322,7 +3378,7 @@ switch(_operation) do {
 
         //_cameraAngles = ["DEFAULT","LOW","EYE","HIGH","BIRDS_EYE","UAV","SATELITE"];
         _cameraAngles = ["EYE","HIGH","BIRDS_EYE","UAV"];
-        _initialAngle = _cameraAngles call BIS_fnc_selectRandom;
+        _initialAngle = selectRandom _cameraAngles;
 
         /*
         ["CINEMATIC DURATION: %1",_duration] call ALIVE_fnc_dump;
@@ -3347,10 +3403,10 @@ switch(_operation) do {
         _cameraShots = ["FLY_IN"];
 
         if(_targetIsMan || _targetInVehicle) then {
-            _cameraShots = _cameraShots + ["CHASE","CHASE_SIDE","CHASE_ANGLE"];
+            _cameraShots append ["CHASE","CHASE_SIDE","CHASE_ANGLE"];
         };
 
-        _shot = _cameraShots call BIS_fnc_selectRandom;
+        _shot = selectRandom _cameraShots;
 
         /*
         ["CAMERA SHOT IS: %1",_shot] call ALIVE_fnc_dump;
@@ -3374,7 +3430,7 @@ switch(_operation) do {
                 case "PAN":{
 
                     if(isNil "_target2") then {
-                        _randomPosition = [position _source, (random(50)), random(360)] call BIS_fnc_relPos;
+                        _randomPosition = (position _source) getpos [random 50, random 360];
                         _target2 = "Land_HelipadEmpty_F" createVehicle _randomPosition;
                     };
 
