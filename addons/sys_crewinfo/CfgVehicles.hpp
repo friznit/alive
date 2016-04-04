@@ -30,7 +30,7 @@ class CfgVehicles {
 			                                        {
 			                                                name = "Yes";
 			                                                value = true;
-			                                                default = false;
+			                                                default = 1;
 
 			                                        };
 			                                };

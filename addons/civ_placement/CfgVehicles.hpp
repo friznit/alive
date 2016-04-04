@@ -131,6 +131,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_CP_PRIORITY_FILTER_NONE";
                                                 value = "0";
+                                                default = 1;
                                         };
                                         class LOW
                                         {

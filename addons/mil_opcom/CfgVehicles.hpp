@@ -181,8 +181,7 @@ class CfgVehicles {
                                         {
                                                 name = "NATO";
                                                 value = "BLU_F";
-                                                default = "BLU_F";
-                                                defaultValue = "BLU_F";
+                                                default = 1;
                                         };
                                         class IRAN
                                         {
@@ -221,8 +220,7 @@ class CfgVehicles {
                                         {
                                                 name = "NONE";
                                                 value = "NONE";
-                                                default = "NONE";
-                                                defaultValue = "NONE";
+                                                default = 1;
                                         };
                                         class NATO
                                         {
@@ -261,8 +259,7 @@ class CfgVehicles {
                                         {
                                                 name = "NONE";
                                                 value = "NONE";
-                                                default = "NONE";
-                                                defaultValue = "NONE";
+                                                default = 1;
                                         };
                                         class NATO
                                         {
@@ -301,8 +298,7 @@ class CfgVehicles {
                                         {
                                                 name = "NONE";
                                                 value = "NONE";
-                                                default = "NONE";
-                                                defaultValue = "NONE";
+                                                default = 1;
                                         };
                                         class NATO
                                         {

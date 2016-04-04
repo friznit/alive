@@ -60,6 +60,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_PROFILE_SYSTEM_SYNC_ADD";
                                                 value = "ADD";
+                                                default = 1;
                                         };
                                         class Ignore
                                         {

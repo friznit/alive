@@ -82,6 +82,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_AMBCP_PRIORITY_FILTER_NONE";
                                                 value = "0";
+                                                default = 1;
                                         };
                                         class LOW
                                         {
@@ -116,6 +117,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_AMBCP_PLACEMENT_MULTIPLIER_LOW";
                                                 value = "0.5";
+                                                default = 1;
                                         };
                                         class MEDIUM
                                         {
@@ -149,6 +151,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_AMBCP_AMBIENT_VEHICLE_AMOUNT_LOW";
                                                 value = "0.2";
+                                                default = 1;
                                         };
                                         class MEDIUM
                                         {

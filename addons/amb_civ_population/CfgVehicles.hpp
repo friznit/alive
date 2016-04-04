@@ -65,6 +65,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_CIV_POP_HOSTILITY_WEST_LOW";
                                                 value = "0";
+                                                default = 1;
                                         };
                                         class MEDIUM
                                         {
@@ -93,6 +94,7 @@ class CfgVehicles {
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_EAST_LOW";
                                               value = "0";
+                                              default = 1;
                                       };
                                       class MEDIUM
                                       {
@@ -121,6 +123,7 @@ class CfgVehicles {
                                       {
                                               name = "$STR_ALIVE_CIV_POP_HOSTILITY_INDEP_LOW";
                                               value = "0";
+                                              default = 1;
                                       };
                                       class MEDIUM
                                       {
@@ -149,6 +152,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_CIV_POP_CIVILIAN_ROLES_NONE";
                                                 value = [];
+                                                default = 1;
                                         };
                                         class WESTERN
                                         {

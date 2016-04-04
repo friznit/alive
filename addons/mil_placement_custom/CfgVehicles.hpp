@@ -386,6 +386,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_NONE";
                                                 value = "0";
+                                                default = 1;
                                         };
                                         class LOW
                                         {

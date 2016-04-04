@@ -88,7 +88,7 @@ class CfgVehicles {
                                         {
                                                 name = "No";
                                                 value = false;
-												default = false;
+                                                default = 1;
                                         };
                                         class No
                                         {

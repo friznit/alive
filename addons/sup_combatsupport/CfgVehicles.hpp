@@ -53,6 +53,7 @@ class CfgVehicles {
                                 		name="10 Mins";
                                 		value = 600;
                                 		CS_RESPAWN = 600;
+                                		default = 1;
                                 	};
                                 	class RESPAWN_20
                                 	{

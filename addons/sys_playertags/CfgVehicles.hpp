@@ -24,7 +24,7 @@ class CfgVehicles {
 			                                        {
 			                                                name = "No";
 			                                                value = false;
-			                                                default = false;
+			                                                default = 1;
 			                                        };
 			                                        class Yes
 			                                        {
@@ -125,14 +125,14 @@ class CfgVehicles {
 			                        {
 			                                displayName = "$STR_ALIVE_PLAYERTAGS_INVEHICLE";
 			                                description = "$STR_ALIVE_PLAYERTAGS_INVEHICLE_COMMENT";
- 																			class Values
+ 											class Values
 			                                {
 
 			                                        class No
 			                                        {
 			                                                name = "No";
 			                                                value = false;
-			                                                default = false;
+			                                                default = 1;
 			                                        };
 			                                        class Yes
 			                                        {

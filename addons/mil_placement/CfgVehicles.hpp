@@ -53,6 +53,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_MP_SIZE_FILTER_NONE";
                                                 value = "0";
+                                                default = 1;
                                         };
                                         class SMALL
                                         {
@@ -81,6 +82,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_MP_PRIORITY_FILTER_NONE";
                                                 value = "0";
+                                                default = 1;
                                         };
                                         class LOW
                                         {
@@ -388,6 +390,7 @@ class CfgVehicles {
                                         {
                                                 name = "$STR_ALIVE_MP_AMBIENT_VEHICLE_AMOUNT_NONE";
                                                 value = "0";
+                                                default = 1;
                                         };
                                         class LOW
                                         {
