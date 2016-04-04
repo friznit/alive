@@ -1493,7 +1493,6 @@ If (_fileExists) then {
 	};
 
 	// Kunduz
-	/*
 	if(tolower(_worldName) == "kunduz") then {
 		ALIVE_militaryBuildingTypes = ALIVE_militaryBuildingTypes + ["pra3\pra3_tunnels\floor_sandy.p3d","pra3\pra3_tunnels\tunnel_small_ramp.p3d","pra3\pra3_tunnels\wood_beams_h_join.p3d","pra3\pra3_tunnels\wood_beams_h_sloped.p3d","pra3\pra3_tunnels\tunnel_large_winding.p3d","pra3\pra3_tunnels\tunnel_small_bend.p3d","pra3\pra3_tunnels\tunnel_large_s_bend.p3d","pra3\pra3_tunnels\tunnel_large_room_1door.p3d","pra3\pra3_tunnels\wood_beams_t.p3d","pra3\pra3_tunnels\wood_beams.p3d","pra3\pra3_tunnels\tunnel_large_room_4doors.p3d","pra3\pra3_tunnels\wood_beams_h.p3d","pra3\pra3_tunnels\cable_hanging.p3d","pra3\pra3_tunnels\cable_ground.p3d"];
 		ALIVE_militaryParkingBuildingTypes = ALIVE_militaryParkingBuildingTypes + [];
@@ -1515,7 +1514,6 @@ If (_fileExists) then {
 		ALIVE_civilianFuelBuildingTypes = ALIVE_civilianFuelBuildingTypes + [];
 		ALIVE_civilianConstructionBuildingTypes = ALIVE_civilianConstructionBuildingTypes + ["pra3\pra3_misc\misc_construction\jbad_misc_ironpipes.p3d","pra3\pra3_misc\misc_ruins\jbad_rubble_concrete_01.p3d","pra3\pra3_misc\misc_construction\jbad_misc_concpipeline.p3d","pra3\pra3_misc\misc_construction\jbad_misc_concbox.p3d","a3\structures_f\ind\tank\tank_rust_f.p3d","pra3\pra3_tunnels\wood_beam.p3d","pra3\pra3_misc\bridge\ic_002_bridge.p3d","a3\structures_f\naval\piers\pier_small_f.p3d","pra3\pra3_structures\walls\walls\jbad_wall_indcnc_4_d.p3d","pra3\pra3_structures\walls\walls\jbad_wall_indcnc_4.p3d","pra3\pra3_structures\walls\walls\jbad_wall_indcnc_end_3.p3d","pra3\pra3_structures\walls\walls\jbad_wall_indcnc_end_2.p3d"];
 	};
-	*/
 
 	/*if(_worldName == "Kunduz") then {
 
