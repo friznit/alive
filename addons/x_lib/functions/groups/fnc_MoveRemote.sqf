@@ -42,6 +42,6 @@ if (local _group) exitwith {
 if !(isServer) then {
     [_this,"ALiVE_fnc_MoveRemote",false,false] spawn BIS_fnc_MP;
 } else {
-    [_this,"ALiVE_fnc_MoveRemote",owner _group,false] spawn BIS_fnc_MP;
+    [_this,"ALiVE_fnc_MoveRemote",groupOwner _group,false] spawn BIS_fnc_MP;
 };
 
