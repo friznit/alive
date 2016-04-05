@@ -901,7 +901,7 @@ switch(_operation) do {
                                     _position = _profile select 2 select 2;
 
                                     if!(surfaceIsWater _position) then {
-                                        _dir = _position getPos _center;
+                                        _dir = _position getDir _center;
                                         _sections pushBack [_position,_dir];
                                     };
 
