@@ -1026,6 +1026,18 @@ switch(_operation) do {
                     _waypointList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointList);
                     _waypointList ctrlShow false;
 
+                    _waypointTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointTypeList);
+                    _waypointTypeList ctrlShow false;
+
+                    _waypointSpeedList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointSpeedList);
+                    _waypointSpeedList ctrlShow false;
+
+                    _waypointFormationList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointFormationList);
+                    _waypointFormationList ctrlShow false;
+
+                    _waypointBehaviourList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointBehavourList);
+                    _waypointBehaviourList ctrlShow false;
+
                     _buttonR1 = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_BR1);
                     _buttonR1 ctrlShow false;
 

@@ -39,13 +39,15 @@ nil
 #define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_commandHandler
 
-private ["_logic","_operation","_args","_result"];
+private ["_result"];
 
 TRACE_1("groupHandler - input",_this);
 
-_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
-_operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+params [
+    ["_logic", objNull, [objNull,[]]],
+    ["_operation", "", [""]],
+    ["_args", objNull, [objNull,[],"",0,true,false]]
+];
 //_result = true;
 
 #define MTEMPLATE "ALiVE_COMMANDHANDLER_%1"
@@ -654,7 +656,7 @@ switch(_operation) do {
 
                 if(count _vehiclesInCommandOf == 0) then {
 
-                    _position = [_position, 50, random 360] call BIS_fnc_relPos;
+                    _position = _position getPos [50, random 360];
 
                     if(surfaceIsWater _position) then {
                         _position = [_position] call ALIVE_fnc_getClosestLand;
@@ -671,7 +673,7 @@ switch(_operation) do {
                     sleep 2;
 
                     _group = _profile select 2 select 13;
-                    _unit = (units _group) call BIS_fnc_selectRandom;
+                    _unit = selectRandom (units _group);
 
                     _event = ['SCOM_UPDATED', [_playerID,[_unit]], "COMMAND_HANDLER", "OPS_GROUP_JOIN_READY"] call ALIVE_fnc_event;
                     [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -714,7 +716,7 @@ switch(_operation) do {
                 _position = _profile select 2 select 2;
                 _vehiclesInCommandOf = _profile select 2 select 8;
 
-                _position = [_position, 50, random 360] call BIS_fnc_relPos;
+                _position = _position getPos [50, random 360];
 
                 if(surfaceIsWater _position) then {
                     _position = [_position] call ALIVE_fnc_getClosestLand;
@@ -731,7 +733,7 @@ switch(_operation) do {
                 sleep 2;
 
                 _group = _profile select 2 select 13;
-                _unit = (units _group) call BIS_fnc_selectRandom;
+                _unit = selectRandom (units _group);
 
                 _event = ['SCOM_UPDATED', [_playerID,[_unit]], "COMMAND_HANDLER", "OPS_GROUP_SPECTATE_READY"] call ALIVE_fnc_event;
                 [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
@@ -899,7 +901,7 @@ switch(_operation) do {
                                     _position = _profile select 2 select 2;
 
                                     if!(surfaceIsWater _position) then {
-                                        _dir = [_position, _center] call BIS_fnc_dirTo;
+                                        _dir = _position getPos _center;
                                         _sections pushBack [_position,_dir];
                                     };
 
