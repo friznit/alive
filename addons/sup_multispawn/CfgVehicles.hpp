@@ -97,6 +97,25 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class respawnWithGear
+                        {
+                                displayName = "$STR_ALIVE_multispawn_RESPAWNWITHGEAR";
+                                description = "$STR_ALIVE_multispawn_RESPAWNWITHGEAR_COMMENT";
+                                class Values
+                                {
+                                        class Yes
+                                        {
+                                                name = "Yes";
+                                                value = true;
+                                                default = 1;
+                                        };
+                                        class No
+                                        {
+                                                name = "No";
+                                                value = false;
+                                        };
+                                };
+                        };
                 };
                 class ModuleDescription
 				{

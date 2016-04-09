@@ -114,6 +114,7 @@ switch(_operation) do {
 
                         GVAR(DEBUG) = call compile (_logic getvariable ["debug","false"]);
                         GVAR(MULTISPAWN_TYPE) = _logic getvariable ["spawntype","forwardspawn"];
+                        GVAR(RESPAWN_WITH_GEAR) = call compile (_logic getvariable ["respawnWithGear","true"]);
 
                         // Create Store
                         GVAR(STORE) = [] call ALIVE_fnc_hashCreate;
@@ -132,6 +133,7 @@ switch(_operation) do {
                                 //Set Defaults
 	                            [_factionData,QGVAR(RESPAWNPOSITION), getmarkerPos ("Respawn_" + str(_id call ALiVE_fnc_factionSide))] call ALiVE_fnc_HashSet;
 	                            [_factionData,QGVAR(MULTISPAWN_TYPE),_logic getvariable ["spawntype","forwardspawn"]] call ALiVE_fnc_HashSet;
+                                [_factionData,QGVAR(RESPAWN_WITH_GEAR),call compile (_logic getvariable ["respawnWithGear","false"])] call ALiVE_fnc_HashSet;
 	                            [_factionData,QGVAR(TIMEOUT),call compile (_logic getvariable ["timeout","60"])] call ALiVE_fnc_HashSet;
                                 [_factionData,QGVAR(VEHICLETYPE), [MOD(SUP_MULTISPAWN),"selectDefaultVehicle",_id call ALiVE_fnc_factionSide] call ALiVE_fnc_Multispawn] call ALiVE_fnc_HashSet;
 
@@ -144,7 +146,8 @@ switch(_operation) do {
                                         switch (GVAR(MULTISPAWN_TYPE)) do {
                                             case ("insertion") : {
                                                 // Create / position insertion marker
-                                                if !((format["ALiVE_SUP_MULTISPAWN_INSERTION_%1",_id]) call ALiVE_fnc_markerExists) then {_m = (format["ALiVE_SUP_MULTISPAWN_INSERTION_%1",_id]); createMarker [_m, getposATL _x]} else {_m setmarkerpos (getposASL (vehicle _x))};
+                                                _m = (format["ALiVE_SUP_MULTISPAWN_INSERTION_%1",_id]);
+                                                if !(_m call ALiVE_fnc_markerExists) then {_m = (format["ALiVE_SUP_MULTISPAWN_INSERTION_%1",_id]); createMarker [_m, getposATL _x]} else {_m setmarkerpos (getposASL (vehicle _x))};
 
 					                            [_factionData,QGVAR(PLAYERQUEUE), []] call ALiVE_fnc_HashSet;
 					                            [_factionData,QGVAR(INSERTING), false] call ALiVE_fnc_HashSet;
@@ -152,7 +155,7 @@ switch(_operation) do {
 
                                                 [_factionData,QGVAR(VEHICLETYPE), typeOf _vehicle] call ALiVE_fnc_HashSet;
 
-                                                deletevehicle (vehicle _x);
+                                                {deletevehicle _x} foreach (units group (driver _vehicle)); deletevehicle _vehicle;
                                             };
                                             case ("vehicle") : {
                                                 if ((vehicle _x) isKindOf "Car") exitwith {
@@ -174,6 +177,7 @@ switch(_operation) do {
 
                         PublicVariable QGVAR(DEBUG);
                         PublicVariable QGVAR(MULTISPAWN_TYPE);
+                        PublicVariable QGVAR(RESPAWN_WITH_GEAR);
 
                         PublicVariable QMOD(SUP_MULTISPAWN);
                         _logic setVariable ["init",true,true];
@@ -242,14 +246,14 @@ switch(_operation) do {
                         	["ALiVE SUP MULTISPAWN - Forward Spawn EH placed at %1...", time] call ALiVE_fnc_Dump;
 
 							player addEventHandler ["KILLED",{
-                                if !(isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA") then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
+                                if (!isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {GVAR(RESPAWN_WITH_GEAR)}) then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
                             }];
 
                             player addEventHandler ["RESPAWN", {
                                 [] spawn {
                                     waituntil {!isnull player};
 
-                                    if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
+                                    if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {GVAR(RESPAWN_WITH_GEAR)} && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
 
                                     sleep 3;
                                 	titleText ["", "PLAIN"];
@@ -267,7 +271,7 @@ switch(_operation) do {
                             ["ALiVE SUP MULTISPAWN - Insertion EH placed at %1...", time] call ALiVE_fnc_Dump;
 
                             player addEventHandler ["KILLED", {
-                                if !(isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA") then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
+                                if (!isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {GVAR(RESPAWN_WITH_GEAR)}) then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
 
                                 [] spawn {
                                     waituntil {playerRespawnTime <= 3};
@@ -280,7 +284,7 @@ switch(_operation) do {
                                 [] spawn {
                                     waituntil {!isnull player};
 
-                                    if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
+                                    if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {GVAR(RESPAWN_WITH_GEAR)} && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
 
                                     [[ALiVE_SUP_MULTISPAWN,"collect",player], "ALiVE_fnc_MultiSpawn", false, false] call BIS_fnc_MP;
 
@@ -308,7 +312,7 @@ switch(_operation) do {
 							["ALiVE SUP MULTISPAWN - Vehicle EH placed at %1...", time] call ALiVE_fnc_Dump;
 
 							player addEventHandler ["KILLED", {
-								if !(isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA") then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
+								if (!isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {GVAR(RESPAWN_WITH_GEAR)}) then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
 
                                 [] spawn {
                                     waituntil {playerRespawnTime <= 3};
@@ -321,7 +325,7 @@ switch(_operation) do {
                                 [] spawn {
                                     waituntil {!isnull player};
 
-                                    if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
+                                    if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {GVAR(RESPAWN_WITH_GEAR)} && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
 
 	                                if !(isnil {call compile (format["ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1",faction player])}) then {
 		                                _v = call compile format["ALiVE_SUP_MULTISPAWN_RESPAWNVEHICLE_%1",faction player];
@@ -351,7 +355,7 @@ switch(_operation) do {
 							["ALiVE SUP MULTISPAWN - Building EH placed at %1...", getposATL _respawnBuilding] call ALiVE_fnc_Dump;
 
 							player addEventHandler ["KILLED", {
-                                if !(isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA") then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
+                                if (!isnil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {GVAR(RESPAWN_WITH_GEAR)}) then {GVAR(PLAYERGEAR) = [objNull, [_this select 0]] call ALiVE_fnc_setGear};
 
                                 [] spawn {
                                     waituntil {playerRespawnTime <= 4};
@@ -364,7 +368,7 @@ switch(_operation) do {
                                 [] spawn {
                                     waituntil {!isnull player};
 
-                                    if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
+                                    if (!isNil "ALiVE_SYS_PLAYER_LOADOUT_DATA" && {GVAR(RESPAWN_WITH_GEAR)} && {!isNil QGVAR(PLAYERGEAR)}) then {_hdl = [objNull, [player,GVAR(PLAYERGEAR)]] spawn ALiVE_fnc_getGear};
 
 	                                _b = nearestObject [getmarkerpos format["ALiVE_SUP_MULTISPAWN_RESPAWNBUILDING_%1",faction player], "Building"];
 
@@ -450,7 +454,6 @@ switch(_operation) do {
 	                };
                     !isnil "_transport" && {_player in _transport};
                 } else {
-                    diag_log "exiting";
                     true;
                 };
             };
@@ -620,10 +623,10 @@ switch(_operation) do {
 				_wp setWaypointType "MOVE";
 				_wp setWaypointSpeed "FULL";
 				_wp setWaypointBehaviour "CARELESS";
-				_wp setWaypointStatements ["true", "
+				_wp setWaypointStatements ["true", format["
 				    _vehicle = vehicle this;
 				    _data = +(_vehicle getvariable ['ALiVE_SUP_MULTISPAWN_INSERTION_TRANSPORT',[objNull,[],grpNull]]);
-				    _factionData = [ALiVE_SUP_MULTISPAWN_STORE,faction this] call ALiVE_fnc_HashGet;
+				    _factionData = [ALiVE_SUP_MULTISPAWN_STORE,%1] call ALiVE_fnc_HashGet;
 
 				    _vehicle setvariable ['ALiVE_SUP_MULTISPAWN_INSERTION_TRANSPORT',nil];
 				    [_factionData,'ALiVE_sup_multispawn_INSERTION_TRANSPORT'] call ALiVE_fnc_HashRem;
@@ -631,7 +634,7 @@ switch(_operation) do {
 					{deleteVehicle _x} foreach (_data select 1);
 				    (_data select 2) call ALiVE_fnc_DeleteGroupRemote;
 				    deleteVehicle (_data select 0);
-				"];
+				",str(_faction)]];
 
                 _group setCurrentWaypoint _wp;
         	};

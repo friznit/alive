@@ -70,4 +70,10 @@ You can sync your custom vehicles of choice to the module! Keep in mind only veh
 <Key ID="STR_ALIVE_multispawn_SPAWNINGNEARENEMIESALLOWED_COMMENT">
 	<English>Allowed to spawn on squadmates even if enemies are near!</English>
 </Key>
+<Key ID="STR_ALIVE_multispawn_RESPAWNWITHGEAR">
+	<English>Respawn with Gear:</English>
+</Key>
+<Key ID="STR_ALIVE_multispawn_RESPAWNWITHGEAR_COMMENT">
+	<English>Respawn with the same gear that the player carried when he was killed</English>
+</Key>
 </Container></Package></Project>
