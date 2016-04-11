@@ -382,7 +382,7 @@ switch(_operation) do {
 			    waituntil {_logic getVariable ["init",false]};
 
                 //Report FPS
-                [_logic, "reportFPS", true] call ALiVE_fnc_CQB;
+                //[_logic, "reportFPS", true] call ALiVE_fnc_CQB;
 
                 //Activate Debug only serverside
 			    //[_logic, "debug", _debug] call ALiVE_fnc_CQB;
