@@ -39,7 +39,7 @@ private ["_logic","_operation","_args","_result"];
 
 TRACE_1("taskHandlerClient - input",_this);
 
-_logic = [_this, 0, nil, [[]]] call BIS_fnc_param;
+_logic = [_this, 0, objNull, [[]]] call BIS_fnc_param;
 _operation = [_this, 1, "", [""]] call BIS_fnc_param;
 _args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
 //_result = true;
@@ -147,7 +147,7 @@ switch(_operation) do {
 
             if(_parent != "None") then {
                 _parentTask = [_logic,"getTask",_parent] call MAINCLASS;
-                
+
                 if !(isnil "_parentTask") then {
 	                _parentTaskObject = _parentTask select 10;
 	                _taskObject = player createSimpleTask [_title,_parentTaskObject];
