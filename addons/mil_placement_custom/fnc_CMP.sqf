@@ -493,21 +493,21 @@ switch(_operation) do {
                 };
 
                 //Main troops
-                private ["_profiles","_command","_position","_garrisonPos"];
-
-                _command = "ALIVE_fnc_ambientMovement";
-                _radius = [200,"SAFE",[0,0,0]];
                 
 	            _readiness = parseNumber([_logic, "readinessLevel"] call MAINCLASS);
 	            _readiness = (1 - _readiness) * _groupCount;
 
-                if (_totalCount < _readiness ) then {
-                    _command = "ALIVE_fnc_garrison";
-                    _garrisonPos = [position _logic, 50] call CBA_fnc_RandPos;
-                    _radius = [200,"true",[0,0,0]];
-                };
-
                 for "_i" from 0 to _groupCount -1 do {
+                    private ["_profiles","_command","_radius","_position","_garrisonPos"];
+
+                    if (_totalCount < _readiness ) then {
+                        _command = "ALIVE_fnc_garrison";
+                        _garrisonPos = [position _logic, 50] call CBA_fnc_RandPos;
+                        _radius = [200,"true",[0,0,0]];
+                    } else {
+                        _command = "ALIVE_fnc_ambientMovement";
+                        _radius = [200,"SAFE",[0,0,0]];
+                    };
 
                     _group = _groups select _i;
 
@@ -528,6 +528,7 @@ switch(_operation) do {
 						} foreach _profiles;
 
 						_countProfiles = _countProfiles + count _profiles;
+                        _totalCount = _totalCount + 1;
 
                     };
                 };

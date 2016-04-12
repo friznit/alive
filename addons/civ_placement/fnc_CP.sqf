@@ -949,21 +949,22 @@ switch(_operation) do {
                 };
 
 				if(_totalCount < _groupCount) then {
-                    private ["_profiles","_command","_position","_garrisonPos"];
-
-                    _command = "ALIVE_fnc_ambientMovement";
-                    _radius = [200,"SAFE",[0,0,0]];
-
-                    if (_totalCount < _readiness ) then {
-                        _command = "ALIVE_fnc_garrison";
-                        _garrisonPos = [_center, 50] call CBA_fnc_RandPos;
-                        _radius = [200,"true",[0,0,0]];
-                    };
 
 					if(_groupPerCluster > 0) then {
 
 						for "_i" from 0 to _groupPerCluster -1 do {
+                            private ["_profiles","_command","_radius","_position","_garrisonPos"];
+
 							_group = _groups select _totalCount;
+
+                            if (_totalCount < _readiness ) then {
+                                _command = "ALIVE_fnc_garrison";
+                                _garrisonPos = [_center, 50] call CBA_fnc_RandPos;
+                                _radius = [200,"true",[0,0,0]];
+                            } else {
+                                _command = "ALIVE_fnc_ambientMovement";
+                                _radius = [200,"SAFE",[0,0,0]];
+                            };
 
                             if (isnil "_garrisonPos") then {
                                 _position = [_center, ((_size/2) + random(500)), random(360)] call BIS_fnc_relPos;
@@ -985,7 +986,18 @@ switch(_operation) do {
 						};
 
 					}else{
+                        private ["_profiles","_command","_radius","_position","_garrisonPos"];
+
 						_group = _groups select _totalCount;
+
+                        if (_totalCount < _readiness ) then {
+                            _command = "ALIVE_fnc_garrison";
+                            _garrisonPos = [_center, 50] call CBA_fnc_RandPos;
+                            _radius = [200,"true",[0,0,0]];
+                        } else {
+                            _command = "ALIVE_fnc_ambientMovement";
+                            _radius = [200,"SAFE",[0,0,0]];
+                        };
 
                         if (isnil "_garrisonPos") then {
                             _position = [_center, (_size + random(500)), random(360)] call BIS_fnc_relPos;
