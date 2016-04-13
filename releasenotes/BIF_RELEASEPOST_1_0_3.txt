@@ -1,0 +1,68 @@
+[center][url=http://alivemod.com/][img=http://alivemod.com/img/alive_logo_bif.jpg][/url][/center]
+[center][b][url=http://alivemod.com/]ALiVEmod.com[/url]
+[size=4]The next generation dynamic persistent mission addon for ArmA3
+Release 1.0.3[/size][/b][/center]
+[center][b]1.0.3 Update - Fixes and Map Indexing[/b][/center]
+[center][img=http://i.imgur.com/8PwKqxO.png][/center]
+[b]Bug Fixes[/b]
+The third release since GA! Indeed, since our GA we've had some great feedback on our forum ([url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url]) and also some bug reports. This is our 3rd update in almost as many weeks and features some important fixes. We added the first community created map index in Australia - by Fadi! SpyderBlack has been busy improving our C2ISTAR tablet performance for intel and taskings. We've squashed a major issue with our Indexing Tool that slipped through QA. We've also fixed some more issues with Combat Support and addressed some community reported bugs relating to multispawn, IED for roadblocks and much more.
+
+[b]Map Indexing[/b]
+Our instructions for using the Map Indexer (aka Clever Little Indexing Tool) have been UPDATED and can be found here - [url=http://alivemod.com/wiki/index.php/Map_Indexing]http://alivemod.com/wiki/index.php/Map_Indexing[/url]
+[center]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
+
+[size=4][b][url=http://alivemod.com/#Download]Download[/url][/b][/size]
+Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+Also available from PlayWithSix, ArmAholic and Steam. (Within 24 hours of this post)
+
+Note for server admins that this build requires the 1.0.0 or newer @ALiVEServer package. Any old versions (i.e. before 1.0.0) should not be used and in most cases won't work or will crash.[/center]
+[center][size=4][b][url=http://alivemod.com/#ALiVEWarRoom]Join the War Room Now![/url][/b][/size][/center]
+[b]Manual[/b]
+Please refer to the [url=http://www.alivemod.com/wiki]ALiVE Wiki[/url]. All the info you need is there. If anything is missing or unclear, please let us know.
+
+[b]Support Forum[/b]
+For direct support and feedback from the ALiVE dev team, join us on our forum at [url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url].
+[b]Please avoid posting issues/questions related to bugs etc on this thread. Devs and support will answer questions on our forum.[/b]
+
+[b]Release Highlights[/b]
+[LIST]
+[*]Map Indexing Tool Updated - now fully working[/*]
+[*]Added Australia map thanks to Fadi - first community index![/*]
+[*]Fixed Kunduz index[/*]
+[*]Various fixes and enhancements to Combat Support[/*]
+[*]Various fixes and enhancements to Command Tablet[/*]
+[*]Fixed IED errors since 1.0.2[/*]
+[*]Fixed patrol readiness issues[/*]
+[*]Fixed Multispawn issues with helicopter insertion[/*]
+[/LIST]
+[b]Changelog[/b]
+[spoiler]
+[VARIOUS] Fixed placement modules Readiness parameter not working properly when option other than 100% was selected.
+[MIL C2ISTAR] Set input default to Array as _logic needs to be a hash
+[MIL CQB] Disabled client FPS reporting as obsolete since JIP-AI-spawn option was disabled
+[MIL_C2ISTAR] Fix error due to incorrect usage of BIS_fnc_param
+[X_LIB] Fixed fnc_inArea to handle location objects
+[SUP MULTISPAWN] Fixed crew was not deleted from a synced helicopter. Fixed: If a synced helicopter was not of the same faction as the player (f.e. if default vehicle was chosen) then insertion worked only once, making players hang in waiting screen. Fixed: If an ALiVE_SUP_MULTISPAWN_INSERTION_%FACTION% marker was used and a vehicle was synced a script error was thrown. Added: "Respawn With Gear" option on the module (backward compatible)
+[INDEXES] Added full index of Australia (thanks Fadi)
+[SUP_COMMAND] Fixes getPos --> getDir
+[SUP_COMMAND] Reverting to group list now works when a waypoint is selected. Performance improvements
+[X LIB] Fixed: Group didn't move to ambush position properly on HC
+[MAIN] Enabled Kunduz data
+[VARIOUS] Fixed wrong or missing default values on modules placed with 3DEN
+[SUP_COMBATSUPPORT] Fixed issue where rounds for incorrect Ordnance
+[/spoiler]
+[b]Acknowledgements and Thanks[/b]
+Particular thanks to all those on our support forum who have worked closely with us to identify bugs, provide logs and generally help us improve ALiVE.  Your assistance is valuable and your dedication to ALiVE makes it all worth the effort!
+
+[b]What's Next?[/b]
+The Indexing Tool is a key step towards enabling us to open ALiVE source, which will be branded ALiVE.OS to differentiate it from our own dev branch.  We are finalising the T's & C's for the new development approach and expect to publish some further details soon.
+
+[b]Disclaimer[/b]
+ALiVE is now GA. However, we may need to prune the persistent database data from the War Room, eliminating data that is older than 6-12 months. The ALiVE War Room database is run on a voluntary basis at a cost to the ALiVE development team. No guarantees can be given on the mission data stored or the availability of the service. We apologise for any downtime that may impact your MP persistent missions.
+
+[b]ALiVE has transformed my Arma 3 experience, how can I thank you?[/b]
+Please consider making a contribution to our server costs if you enjoy ALiVE! It costs us $65 per month to run our War Room website and the ALiVE Database servers and every little helps. Donate here [url=http://www.alivemod.com/#Donate]http://www.alivemod.com/#Donate[/url]
+
+Special thanks to everyone here for supporting us with donations to the ALiVE mod development effort.
+
+Have fun!
