@@ -2,13 +2,20 @@
 [center][b][url=http://alivemod.com/]ALiVEmod.com[/url]
 [size=4]The next generation dynamic persistent mission addon for ArmA3
 Release 1.0.3[/size][/b][/center]
-[center][b]1.0.3 Update - Fixes and Map Indexing[/b][/center]
-[center][img=http://i.imgur.com/8PwKqxO.png][/center]
-[b]Bug Fixes[/b]
-The third release since GA! Indeed, since our GA we've had some great feedback on our forum ([url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url]) and also some bug reports. This is our 3rd update in almost as many weeks and features some important fixes. We added the first community created map index in Australia - by Fadi! SpyderBlack has been busy improving our C2ISTAR tablet performance for intel and taskings. We've squashed a major issue with our Indexing Tool that slipped through QA. We've also fixed some more issues with Combat Support and addressed some community reported bugs relating to multispawn, IED for roadblocks and much more.
+[center][b]1.0.3 Update - ACE integration with War Room, Bug Fixes and Map Indexing[/b][/center]
+[center][url=http://alivemod.com/][img=http://alivemod.com/img/vcbwarroom1.png][/url][/center]
+[b]Bug Fixes [/b]
+The third release since GA! Indeed, since our GA we've had some great feedback on our forum ([url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url]) and also some bug reports. This is our 3rd update in almost as many weeks and features some important fixes. We added the first community created map index in Australia - by Fadi! SpyderBlack has been busy improving our C2ISTAR tablet performance for intel and taskings. We've squashed a major issue with our Indexing Tool that slipped through QA. We've also fixed some more issues with Combat Support and addressed some community reported bugs relating to multispawn, IEDs and much more.
+
+[b]Are you using ACE? Would you like to use our mission persistence and stats with War Room?[/b]
+Good news! We've now fixed the issues related to registering kills and weapon usage with ACE! Many thanks to support of the ACE team and specifically Glowbal! [url=http://alivemod.com/#ALiVEWarRoom]Join the War Room Now![/url]
 
 [b]Map Indexing[/b]
-Our instructions for using the Map Indexer (aka Clever Little Indexing Tool) have been UPDATED and can be found here - [url=http://alivemod.com/wiki/index.php/Map_Indexing]http://alivemod.com/wiki/index.php/Map_Indexing[/url]
+Yes, we've added Australia - but there are so many more maps to do! We are relying on you guys to get to grips with out indexing tool... Its really simple to setup and use and everything is done IN GAME! Our instructions for using the Map Indexer have been UPDATED and can be found here - [url=http://alivemod.com/wiki/index.php/Map_Indexing]http://alivemod.com/wiki/index.php/Map_Indexing[/url]
+
+[b]Remember playing MSO on Takistan?[/b]
+With the latest release of the amazing Community Upgrade Project including both BAF and US Army forces, we have recreated one of MSO's most popular missions! A 32 COOP dynamic persistent mission in Takistan taking on Militias and insurgents! The mission requires the full set of CUP [url=http://cup-arma3.org/download]downloads[/url] (Terrains, Weapons, Units, Vehicles). You can download the sample mission (unbinarized) here - [url=http://alivemod.com/downloads/CO32_A3CUPALIVE_BAF_USA_vs_TAK_INS.Takistan.zip]CO32_A3CUPALIVE_BAF_USA_vs_TAK_INS.Takistan.zip[/url]
+
 [center]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
 
 [size=4][b][url=http://alivemod.com/#Download]Download[/url][/b][/size]
@@ -26,16 +33,18 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 
 [b]Release Highlights[/b]
 [LIST]
-[*]Map Indexing Tool Updated - now fully working[/*]
+[*]Fixed ACE missions working with ALiVE War Room  - Go! Go! Go![/*]
+[*]Map Indexing Tool Fixed - now fully working[/*]
 [*]Added Australia map thanks to Fadi - first community index![/*]
-[*]Re-Added Kunduz index[/*]
+[*]Fixed Kunduz index[/*]
 [*]Various fixes and enhancements to Combat Support[/*]
 [*]Various fixes and enhancements to Command Tablet[/*]
-[*]Various fixes and enhancements to virtual AI persistence[/*]
 [*]Fixed IED errors since 1.0.2[/*]
 [*]Fixed patrol readiness issues[/*]
 [*]Fixed Multispawn issues with helicopter insertion[/*]
 [*]Added "respawn with gear" option to Multispawn[/*]
+[*]Moved T.R.A.C.E. Intel system from CQB to C2ISTAR[/*]
+[*]Eden Compatibility with ALiVE Modules and default values[/*]
 [/LIST]
 [b]Changelog[/b]
 [spoiler]
@@ -71,10 +80,10 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [X LIB] Updated ALiVE_fnc_inArea to accept also position-array as input
 [/spoiler]
 [b]Acknowledgements and Thanks[/b]
-Particular thanks to all those on our support forum who have worked closely with us to identify bugs, provide logs and generally help us improve ALiVE.  Your assistance is valuable and your dedication to ALiVE makes it all worth the effort!
+Particular thanks to all those on our support forum who have worked closely with us to identify bugs, provide logs and generally help us improve ALiVE. Your assistance is valuable and your dedication to ALiVE makes it all worth the effort!
 
 [b]What's Next?[/b]
-The Indexing Tool is a key step towards enabling us to open ALiVE source, which will be branded ALiVE.OS to differentiate it from our own dev branch.  We are finalising the T's & C's for the new development approach and expect to publish some further details soon.
+The Indexing Tool is a key step towards enabling us to open ALiVE source, which will be branded ALiVE.OS to differentiate it from our own dev branch. We are finalising the T's & C's for the new development approach and expect to publish some further details soon.
 
 [b]Disclaimer[/b]
 ALiVE is now GA. However, we may need to prune the persistent database data from the War Room, eliminating data that is older than 6-12 months. The ALiVE War Room database is run on a voluntary basis at a cost to the ALiVE development team. No guarantees can be given on the mission data stored or the availability of the service. We apologise for any downtime that may impact your MP persistent missions.
