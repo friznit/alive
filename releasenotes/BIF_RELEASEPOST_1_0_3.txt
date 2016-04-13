@@ -28,12 +28,14 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [LIST]
 [*]Map Indexing Tool Updated - now fully working[/*]
 [*]Added Australia map thanks to Fadi - first community index![/*]
-[*]Fixed Kunduz index[/*]
+[*]Re-Added Kunduz index[/*]
 [*]Various fixes and enhancements to Combat Support[/*]
 [*]Various fixes and enhancements to Command Tablet[/*]
+[*]Various fixes and enhancements to virtual AI persistence[/*]
 [*]Fixed IED errors since 1.0.2[/*]
 [*]Fixed patrol readiness issues[/*]
 [*]Fixed Multispawn issues with helicopter insertion[/*]
+[*]Added "respawn with gear" option to Multispawn[/*]
 [/LIST]
 [b]Changelog[/b]
 [spoiler]
@@ -50,6 +52,23 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [MAIN] Enabled Kunduz data
 [VARIOUS] Fixed wrong or missing default values on modules placed with 3DEN
 [SUP_COMBATSUPPORT] Fixed issue where rounds for incorrect Ordnance
+[SUP_COMMAND] Pressing back when editing a group's waypoints will reset to group list instead of commander selection. Reverted dynamic profile selection radius.
+[SYS_INDEXER] Fix indexing for non dev environments.
+[MIL CQB | MIL C2ISTAR] Moved T.R.A.C.E. Intel system from CQB to C2ISTAR. Fixed: TRACE was marking grids green for players of other sides. Fixed: Sometimes grids were not showing as cleared for JIP players. Fixed: Re-occupied grids were not always uncleared, but stayed green. Improved: every side now gets their own cleared sectors displayed. Improved: Storing cleared sectors-data (preparation for DB persistency).
+[SUP_COMBATSUPPORT] Fixed buttons turning back when focused
+[SUP_COMBATSUPPORT] Added code field to artillery module
+[SYS_STATISTICS] Fixed issue where number of shots fired per weapon were not reported
+[SYS_STATISTICS] Added compatibility for ACE and War Room stats when using ACE Medical and preventing instant deaths. ACE kills now recorded!
+[SYS_STATISTICS] Initial fix for ACE damage / kills compatibility
+[SYS_INDEXER] Removed debug output
+[SYS_DATA] Improved logging for clarity
+[SYS_VIEWDISTANCE] Fixed rpt error caused by duplicated logic creation
+[VARIOUS] Fixed remaining UI errors ("cannot load control")
+[MIL CQB] Changed "error" to "none" to avoid sys data false-positives
+[MIL C2ISTAR] Fixed ALiVE_taskhandler and ALiVE_taskhandlerClient haven't been created correctly and script error was thrown if task events were received from the server before task system was fully initialized locally on the JIP client
+[SYS PROFILE] Fixed: If a persistent mission was loaded from DB then newly created virtual groups where not given unique IDs (overwriting existing groups in some cases)
+[VARIOUS] Removed usage of BIS_fnc_inTrigger and switched to ALiVE_fnc_inArea
+[X LIB] Updated ALiVE_fnc_inArea to accept also position-array as input
 [/spoiler]
 [b]Acknowledgements and Thanks[/b]
 Particular thanks to all those on our support forum who have worked closely with us to identify bugs, provide logs and generally help us improve ALiVE.  Your assistance is valuable and your dedication to ALiVE makes it all worth the effort!
