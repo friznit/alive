@@ -3,7 +3,7 @@
 [size=4]The next generation dynamic persistent mission addon for ArmA3
 Release 1.0.3[/size][/b][/center]
 [center][b]1.0.3 Update - ACE integration with War Room, Bug Fixes and Map Indexing[/b][/center]
-[center][url=http://alivemod.com/][img=http://alivemod.com/img/vcbwarroom1.png][/url][/center]
+[center][url=http://alivemod.com/#ALiVEWarRoom][img=http://alivemod.com/img/vcbwarroom1.png][/url][/center]
 [b]Bug Fixes [/b]
 The third release since GA! Indeed, since our GA we've had some great feedback on our forum ([url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url]) and also some bug reports. This is our 3rd update in almost as many weeks and features some important fixes. We added the first community created map index in Australia - by Fadi! SpyderBlack has been busy improving our C2ISTAR tablet performance for intel and taskings. We've squashed a major issue with our Indexing Tool that slipped through QA. We've also fixed some more issues with Combat Support and addressed some community reported bugs relating to multispawn, IEDs and much more.
 
