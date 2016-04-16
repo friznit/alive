@@ -883,6 +883,56 @@ switch(_operation) do {
                     [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 
                 };
+
+                case "IMINT": {
+
+                    private ["_side","_sources","_transportArray","_casArray"];
+
+                    // return all possible IMINT sources
+
+                    _sources = [];
+
+                    _side = [_side] call ALIVE_fnc_sideTextToObject;
+                    if (_side == RESISTANCE) then {_side = GUER};
+
+                    // add aerial combat support vehicles
+
+                    _transportArray = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", _side];
+                    {
+                        private _veh = _x select 0;
+                        private _name = _x select 2;
+                        _sources pushback [_veh,_name]
+                    } foreach _transportArray;
+
+                    _casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", _side];
+                    {
+                        private _veh = _x select 0;
+                        private _name = _x select 2;
+                        _sources pushback [_veh,_name]
+                    } foreach _casArray;
+
+                    // add all uavs connected to a unit
+
+                    {
+                        if (side _x == _side) then {
+                            private _connectedUAV = getConnectedUAV _x;
+
+                            if !(isnull _connectedUAV) then {
+                                private _droneType = getText (configFile >> "CfgVehicles" >> (typeOf _connectedUAV) >> "displayName");
+                                private _name = format ["%1 - %2", _droneType, name _x];
+                                _sources pushback [_connectedUAV,_name];
+                            };
+                        };
+
+                        false
+                    } count allUnits;
+
+                    // send the data back to the players SCOM tablet
+
+                    _event = ['SCOM_UPDATED', [_playerID,_sources], "COMMAND_HANDLER", "IMINT_SOURCES_AVAILABLE"] call ALIVE_fnc_event;
+                    [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+
+                };
             };
 
         };

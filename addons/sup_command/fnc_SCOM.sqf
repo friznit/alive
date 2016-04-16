@@ -72,6 +72,7 @@ Peer Reviewed:
 #define SCOMTablet_CTRL_WaypointSpeedList 12030
 #define SCOMTablet_CTRL_WaypointFormationList 12031
 #define SCOMTablet_CTRL_WaypointBehavourList 12032
+#define SCOMTablet_CTRL_IntelRenderTarget 12033
 
 // Control Macros
 #define SCOM_getControl(disp,ctrl) ((findDisplay ##disp) displayCtrl ##ctrl)
@@ -237,10 +238,16 @@ switch(_operation) do {
 
             // intel state
 
-            [_commandState,"intelTypeOptions",["Commander Objectives","Unit Marking"]] call ALIVE_fnc_hashSet;
-            [_commandState,"intelTypeValues",["Objectives","Marking"]] call ALIVE_fnc_hashSet;
+            [_commandState,"intelTypeOptions",["Commander Objectives","Unit Marking","Imagery"]] call ALIVE_fnc_hashSet;
+            [_commandState,"intelTypeValues",["Objectives","Marking","IMINT"]] call ALIVE_fnc_hashSet;
             [_commandState,"intelTypeSelectedIndex",DEFAULT_SELECTED_INDEX] call ALIVE_fnc_hashSet;
             [_commandState,"intelTypeSelectedValue",DEFAULT_SELECTED_VALUE] call ALIVE_fnc_hashSet;
+
+            //[_commandState,"intelListOptions",[]] call ALIVE_fnc_hashSet;
+            [_commandState,"intelListValues",[]] call ALIVE_fnc_hashSet;
+
+            [_commandState,"intelSelectedIMINTSource",objNull] call ALIVE_fnc_hashSet;
+            [_commandState,"intelIMINTCamera",objNull] call ALIVE_fnc_hashSet;
 
             [_commandState,"intelOPCOMOptions",[]] call ALIVE_fnc_hashSet;
             [_commandState,"intelOPCOMValues",[]] call ALIVE_fnc_hashSet;
@@ -420,6 +427,11 @@ switch(_operation) do {
                     [_logic,"enableIntelUnitMarking",_eventData] call MAINCLASS;
 
                 };
+                case "IMINT_SOURCES_AVAILABLE": {
+
+                    [_logic,"enableIntelIMINT",_eventData] call MAINCLASS;
+
+                };
                 case "OPS_SIDES_AVAILABLE": {
 
                     [_logic,"enableOpsOPCOMSelect",_eventData] call MAINCLASS;
@@ -532,9 +544,17 @@ switch(_operation) do {
         // The machine has an interface? Must be a MP client, SP client or a client that acts as host!
         if (hasInterface) then {
 
-            private ["_commandState","_markers","_groupWaypoints","_plannedWaypoints"];
+            private ["_commandState","_IMINTcam","_markers","_groupWaypoints","_plannedWaypoints"];
 
             _commandState = [_logic,"commandState"] call MAINCLASS;
+            
+            // reset IMINT
+            
+            [_commandState,"intelListValues",[]] call ALiVE_fnc_hashSet;
+
+            _IMINTcam = [_commandState,"intelIMINTCamera"] call ALIVE_fnc_hashGet;
+            _IMINTcam cameraEffect ["Terminate", "BACK"];
+            camDestroy _IMINTcam;
 
             // Show GPS
             showGPS true;
@@ -645,6 +665,154 @@ switch(_operation) do {
                         [_logic, "enableIntelWaiting"] call MAINCLASS;
 
                     };
+                };
+
+                case "INTEL_IMINT_SOURCE_SELECT": {
+
+                    private ["_commandState","_selectedList","_selectedIndex","_intelTypeTitle","_listValues","_source","_map","_back"];
+
+                    // IMINT source selected from list
+
+                    _commandState = [_logic,"commandState"] call MAINCLASS;
+
+                    _selectedList = _args select 0 select 0;
+                    _selectedIndex = _args select 0 select 1;
+
+                    if(_selectedIndex >= 0) then {
+
+                        // enable map click for pip focus location
+
+                        _intelTypeTitle = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeTitle);
+                        _intelTypeTitle ctrlShow true;
+
+                        _intelTypeTitle ctrlSetText "Click on map to select center of image focus";
+
+                        _listValues = [_commandState,"intelListValues"] call ALIVE_fnc_hashGet;
+                        _source = _listValues select _selectedIndex;
+                        [_commandState,"intelSelectedIMINTSource", _source] call ALIVE_fnc_hashSet;
+
+                        _map = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_MainMap);
+                        _map ctrlShow true;
+
+                        ctrlMapAnimClear _map;
+                        _map ctrlMapAnimAdd [0.5, ctrlMapScale _map, (getPos _source)];
+                        ctrlMapAnimCommit _map;
+
+                        _map ctrlSetEventHandler ["MouseButtonDown", "['INTEL_IMINT_FOCUS_SELECT',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                        _back = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                        _back ctrlShow true;
+
+                        _back ctrlSetText "Back";
+
+                        _back ctrlSetEventHandler ["MouseButtonClick", "['INTEL_IMINT_CANCEL_IMAGE_VIEWING',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                    };
+
+                };
+
+                case "INTEL_IMINT_CANCEL_IMAGE_VIEWING": {
+
+                    // reset to IMINT source selection
+
+                    private ["_commandState","_map","_renderTarget","_back","_playerID","_requestID","_intelLimit","_side","_faction","_event","_IMINTcam"];
+
+                    _commandState = [_logic,"commandState"] call MAINCLASS;
+
+                    // destroy camera
+
+                    _IMINTcam = [_commandState,"intelIMINTCamera"] call ALIVE_fnc_hashGet;
+                    _IMINTcam cameraEffect ["Terminate", "BACK"];
+                    camDestroy _IMINTcam;
+
+                    // enable / disable controls
+
+                    _map = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_MainMap);
+                    _map ctrlShow true;
+
+                    _map ctrlSetEventHandler ["MouseButtonDown", ""];
+
+                    _renderTarget = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelRenderTarget);
+                    _renderTarget ctrlShow false;
+
+                    _back = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                    _back ctrlShow true;
+
+                    _back ctrlSetEventHandler ["MouseButtonClick", "['INTEL_RESET',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                    // open IMINT source selection screen
+
+                    _playerID = getPlayerUID player;
+                    _requestID = format["%1_%2",_faction,floor(time)];
+
+                    _intelLimit = [_logic,"intelLimit"] call MAINCLASS;
+                    _side = [_logic,"side"] call MAINCLASS;
+                    _faction = [_logic,"faction"] call MAINCLASS;
+
+                    _event = ['INTEL_TYPE_SELECT', [_requestID,_playerID,"IMINT",_intelLimit,_side,_faction], "SCOM"] call ALIVE_fnc_event;
+
+                    if(isServer) then {
+                        [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
+                    }else{
+                        [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
+                    };
+
+                    // show waiting until response comes back
+
+                    [_logic, "enableIntelWaiting"] call MAINCLASS;
+
+                };
+
+                case "INTEL_IMINT_FOCUS_SELECT": {
+
+                    private ["_commandState","_position","_listValues","_source"];
+
+                    // IMINT image focus location selected
+
+                    (_args select 0) params ["_map","_button","_posX","_posY"];
+
+                    if (_button == 0) then {
+                        _commandState = [_logic,"commandState"] call MAINCLASS;
+
+                        _position = _map ctrlMapScreenToWorld [_posX, _posY];
+                        _map ctrlShow false;
+
+                        _listValues = [_commandState,"intelListValues"] call ALIVE_fnc_hashGet;
+                        _source = [_commandState,"intelSelectedIMINTSource"] call ALIVE_fnc_hashGet;
+
+                        [_logic,"intelRenderSourceToTarget", [_source,_position]] call MAINCLASS;
+                    };
+
+                };
+
+                case "INTEL_IMINT_EFFECT_SELECT": {
+
+                    private ["_commandState","_effect"];
+
+                    (_args select 0) params ["_control","_index"];
+
+                    _effect = _control lbData _index;
+
+                    switch (_effect) do {
+
+                        case "normal": {
+
+                            "ALiVE_C2ISTAR_IMINT_CAM" setPiPEffect [0];
+
+                        };
+                        case "nvg": {
+
+                            "ALiVE_C2ISTAR_IMINT_CAM" setPiPEffect [1];
+
+                        };
+                        case "thermal": {
+
+                            "ALiVE_C2ISTAR_IMINT_CAM" setPiPEffect [2];
+
+                        };
+
+                    };
+
                 };
 
                 case "INTEL_OPCOM_LIST_SELECT": {
@@ -880,6 +1048,8 @@ switch(_operation) do {
 
                     ["openSplash",0.25] call ALIVE_fnc_displayMenu;
                     ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
+					
+                    player allowDamage false; // must be locally executed, protect player from explosives, invisibility is done serverside
 
                     // send the event to get further data from the command handler
 
@@ -2032,6 +2202,65 @@ switch(_operation) do {
 
         };
 
+    };
+
+    case "enableIntelIMINT": {
+
+        private["_commandState","_status","_back","_sources","_intelTypeTitle","_intelTypeList","_listValues"];
+
+        // displays list of IMINT sources
+
+        _commandState = [_logic,"commandState"] call MAINCLASS;
+
+        _status = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelStatus);
+        _status ctrlShow false;
+
+        // display the reset button so the user can restart
+
+        _back = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+        _back ctrlShow true;
+
+        _back ctrlSetText "Back";
+
+        _back ctrlSetEventHandler ["MouseButtonClick", "['INTEL_RESET',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+        if(typeName _args == "ARRAY") then {
+
+            _listValues = [];
+            _sources = _args select 1;
+            
+
+            _intelTypeTitle = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeTitle);
+            _intelTypeTitle ctrlShow true;
+
+            _intelTypeTitle ctrlSetText "Select IMINT source to display";
+
+            _intelTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeList);
+            _intelTypeList ctrlShow true;
+
+            _intelTypeList lbSetCurSel -1;
+            lbClear _intelTypeList;
+
+            if (count _sources > 0) then {
+                {
+                    _x params ["_obj","_name"];
+
+                    if (isnil "_name") then {
+                        _intelTypeList lbAdd (name _obj);
+                    } else {
+                        _intelTypeList lbAdd _name;
+                    };
+
+                    _listValues pushback _obj;
+                } foreach _sources;
+
+            } else {
+                _intelTypeTitle ctrlSetText "No IMINT sources found";
+            };
+
+            [_commandState,"intelListValues", _listValues] call ALIVE_fnc_hashSet;
+            _intelTypeList ctrlSetEventHandler ["LBSelChanged", "['INTEL_IMINT_SOURCE_SELECT',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+        };
     };
 
     case "enableIntelOPCOMObjectives": {
@@ -3350,11 +3579,11 @@ switch(_operation) do {
 
             _group = group _unit;
 
-            _duration = 1000;
+            //_duration = 1000;
 
             if!(isNil "_unit") then {
 
-                [_logic,"commandState",_commandState] call MAINCLASS;
+                //[_logic,"commandState",_commandState] call MAINCLASS;
 
                 _faction = faction _unit;
                 _nearestTown = [position _unit] call ALIVE_fnc_taskGetNearestLocationName;
@@ -3371,28 +3600,22 @@ switch(_operation) do {
 
                 [_unit,"FIRST_PERSON"] call ALIVE_fnc_switchCamera;
 
-                //player hideObjectGlobal true;
+                //player hideObjectGlobal true; // done serverside
 
                 ["closeSplash"] call ALIVE_fnc_displayMenu;
 
                 waitUntil{
                     sleep 1;
                     if((player distance _unit) > 100) then {
-                        //_newPosition = [getPos _unit, 10, random 360] call BIS_fnc_relPos;
+                        //_newPosition = (getpos _unit) getpos [10, random 360];
                         player setPos (position _unit);
                     };
-                    !(alive player) || !(alive _unit) || !([_commandState,"opsGroupInstantJoin"] call ALIVE_fnc_hashGet)
+                    !(alive player) || {!(alive _unit)} || {!([_commandState,"opsGroupInstantJoin"] call ALIVE_fnc_hashGet)}
                 };
 
-                if!(alive player) then {
+                if(alive player) then {
 
-                    objNull remoteControl _unit;
-
-                    [player,false] call ALIVE_fnc_adminGhost;
-
-                    [true] call ALIVE_fnc_revertCamera;
-
-                }else{
+                    // player is alive, move them back to initial position and notify them of what's happening
 
                     _initialPosition = [_commandState,"opsGroupInstantJoinPlayerPosition"] call ALIVE_fnc_hashGet;
                     _instantJoinState = [_commandState,"opsGroupInstantJoin"] call ALIVE_fnc_hashGet;
@@ -3408,19 +3631,24 @@ switch(_operation) do {
 
                     player setPos _initialPosition;
 
-                    //player hideObjectGlobal false;
-
-                    [player,false] call ALIVE_fnc_adminGhost;
-
-                    objNull remoteControl _unit;
-
-                    [true] call ALIVE_fnc_revertCamera;
-
                 };
+				
+				sleep 2;
+
+                // revert camera and control back to player unit
+
+                ["closeSplash"] call ALIVE_fnc_displayMenu;
+
+                [player,false] call ALIVE_fnc_adminGhost;
+                player allowDamage true;
+
+                objNull remoteControl _unit;
+
+                [true] call ALIVE_fnc_revertCamera;
+
+                // store state
 
                 [_commandState,"opsGroupInstantJoin",false] call ALIVE_fnc_hashSet;
-
-                //[_logic,"commandState",_commandState] call MAINCLASS;
 
             };
 
@@ -3430,8 +3658,8 @@ switch(_operation) do {
 
     case "enableOpsSpectateGroup": {
 
-        private["_commandState","_unit","_faction","_nearestTown","_factionName","_title","_text","_line1","_group","_initialPosition",
-        "_spectateState","_target","_timer","_position"];
+        private["_commandState","_unit","_faction","_nearestTown","_factionName","_title","_text","_line1","_group",
+        "_initialPosition","_spectateState","_target","_timer","_position"];
 
         _commandState = [_logic,"commandState"] call MAINCLASS;
 
@@ -3450,9 +3678,9 @@ switch(_operation) do {
 
             if!(isNil "_unit") then {
 
-                _position = (position _unit) getpos [50, random 360];
+                player allowDamage false;
 
-                [_logic,"commandState",_commandState] call MAINCLASS;
+                _position = (position _unit) getpos [50, random 360];
 
                 _target = "Land_HelipadEmpty_F" createVehicle _position;
 
@@ -3482,13 +3710,7 @@ switch(_operation) do {
                     (_timer == _duration) || {!(alive player)} || {!(alive _unit)} || {!([_commandState,"opsGroupSpectate"] call ALIVE_fnc_hashGet)}
                 };
 
-                if!(alive player) then {
-
-                    [player,false] call ALIVE_fnc_adminGhost;
-
-                    [_logic, "deleteDynamicCamera"] call MAINCLASS;
-
-                }else{
+                if (alive player) then {
 
                     _initialPosition = [_commandState,"opsGroupSpectatePlayerPosition"] call ALIVE_fnc_hashGet;
                     _spectateState = [_commandState,"opsGroupSpectate"] call ALIVE_fnc_hashGet;
@@ -3502,23 +3724,22 @@ switch(_operation) do {
                     ["openSplash",0.25] call ALIVE_fnc_displayMenu;
                     ["setSplashText",_line1] call ALIVE_fnc_displayMenu;
 
-                    [player,false] call ALIVE_fnc_adminGhost;
-
                     player setPos _initialPosition;
 
                     ["closeSplash"] call ALIVE_fnc_displayMenu;
 
                     ["closeSideTopSmall"] call ALIVE_fnc_displayMenu;
 
-                    [_logic, "deleteDynamicCamera"] call MAINCLASS;
-
                 };
-                
+
+                [player,false] call ALIVE_fnc_adminGhost;
+                player allowDamage true;
+
+                [_logic, "deleteDynamicCamera"] call MAINCLASS;
+
                 deleteVehicle _target;
 
                 [_commandState,"opsGroupSpectate",false] call ALIVE_fnc_hashSet;
-
-                [_logic,"commandState",_commandState] call MAINCLASS;
 
             };
 
@@ -3652,6 +3873,69 @@ switch(_operation) do {
         };
 
         //player hideObjectGlobal false;
+
+    };
+
+    case "intelRenderSourceToTarget": {
+
+        private ["_commandState","_renderTarget","_cam"];
+
+        _commandState = [_logic,"commandState"] call MAINCLASS;
+
+        // render pip picture starting from source object to ground position
+
+        _args params ["_source","_target"];
+
+        if (typename _target == "ARRAY") then {
+            _target = [_target select 0,_target select 1,0];
+        } else {
+            _target = getPosATL _target;
+        };
+
+        _renderTarget = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelRenderTarget);
+        _renderTarget ctrlShow true;
+
+        // create and orient cam
+
+        _cam = "camera" camCreate [0,0,0];
+        _cam camSetFov 0.1;
+        _cam camSetTarget _target;
+        _cam cameraEffect ["Internal", "Back", "ALiVE_C2ISTAR_IMINT_CAM"];
+
+        _cam attachTo [_source, [0,0,-2.75]];
+        _cam camCommit 0;
+
+        [_commandState,"intelIMINTCamera", _cam] call ALIVE_fnc_hashSet;
+
+        // render cam image to tablet
+
+        _renderTarget ctrlSetText "#(argb,512,512,1)r2t(ALiVE_C2ISTAR_IMINT_CAM,1.0)";
+
+        // clear ui controls
+        _intelTypeTitle = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeTitle);
+        _intelTypeTitle ctrlShow true;
+
+        _intelTypeTitle ctrlSetText "Select camera effect";
+
+        _map = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_MainMap);
+        _map ctrlShow false;
+
+        _intelTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeList);
+        _intelTypeList ctrlShow true;
+        lbClear _intelTypeList;
+
+        // add camera effect options to list
+
+        _index = _intelTypeList lbAdd "Normal";
+        _intelTypeList lbSetData [_index,"normal"];
+
+        _index = _intelTypeList lbAdd "Night Vision";
+        _intelTypeList lbSetData [_index,"nvg"];
+
+        _index = _intelTypeList lbAdd "Thermal";
+        _intelTypeList lbSetData [_index,"thermal"];
+
+        _intelTypeList ctrlSetEventHandler ["LBSelChanged", "['INTEL_IMINT_EFFECT_SELECT',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
 
     };
 

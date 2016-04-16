@@ -10,7 +10,7 @@ class SCOMTablet
     onUnload = "[] call ALIVE_fnc_SCOMTabletOnUnLoad;";
 
     class controlsBackground {
-        class SCOMTablet_background : RscPicture
+        class SCOMTablet_background : SCOMTablet_RscPicture
         {
             idc = -1;
             x = 0.142424 * safezoneW + safezoneX;
@@ -176,6 +176,16 @@ class SCOMTablet
         class SCOMTablet_main_map : SCOMTablet_RscMap
         {
             idc = 12022;
+            x = 0.271102 * safezoneW + safezoneX;
+            y = 0.1600 * safezoneH + safezoneY;
+            w = 0.465 * safezoneW;
+            h = 0.5 * safezoneH;
+        };
+
+        class SCOMTablet_renderTarget : SCOMTablet_RscPicture
+        {
+            idc = 12033;
+            text = "";
             x = 0.271102 * safezoneW + safezoneX;
             y = 0.1600 * safezoneH + safezoneY;
             w = 0.465 * safezoneW;

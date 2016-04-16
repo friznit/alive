@@ -681,7 +681,7 @@ class SCOMTablet_RscMap
     };
 };
 
-class RscPicture
+class SCOMTablet_RscPicture
 {
     colorBackground[] = {0,0,0,0};
     colorText[] = {1,1,1,1};
