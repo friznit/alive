@@ -28,7 +28,7 @@ private ["_object","_operation","_id","_condition","_text"];
 
 _object = _this select 0;
 
-if !(side _object == CIVILIAN && {isnil QGVAR(ROLES_DISABLED)}) exitwith {};
+if (side _object != CIVILIAN || {isnil QGVAR(ROLES_DISABLED)} || {GVAR(ROLES_DISABLED)}) exitWith {}; // only add actions if civilian roles module field != none
 
 _role = "townelder";
 _text = format["Talk to %1",_role];

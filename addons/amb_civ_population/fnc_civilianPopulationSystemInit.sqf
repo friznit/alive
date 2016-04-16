@@ -57,7 +57,8 @@ if(isServer) then {
 	[ALIVE_civilianPopulationSystem, "activeLimiter", _activeLimiter] call ALIVE_fnc_civilianPopulationSystem;
     [ALIVE_civilianPopulationSystem, "ambientCivilianRoles", _ambientCivilianRoles] call ALIVE_fnc_civilianPopulationSystem;
 
-	if (count _ambientCivilianRoles == 0) then {GVAR(ROLES_DISABLED) = true; PublicVariable QGVAR(ROLES_DISABLED)};
+	if (count _ambientCivilianRoles == 0) then {GVAR(ROLES_DISABLED) = true} else {GVAR(ROLES_DISABLED) = false};
+    PublicVariable QGVAR(ROLES_DISABLED);
 
 	_logic setVariable ["handler",ALIVE_civilianPopulationSystem];
     
