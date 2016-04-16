@@ -802,57 +802,84 @@ switch(_operation) do {
 
                 case "Marking": {
 
-                    private["_profilesInactive","_entities","_entitiesWest","_entitiesEast","_entitiesGuer","_profiles","_type","_profilePosition","_profileSide","_profileFaction"];
+                    private["_opcoms","_profilesBySide","_knownEnemiesBySide"];
 
                     // get inactive profiles available by limit set on intel
 
-                    _profilesInactive = [ALIVE_profileHandler, "profilesInActiveBySide"] call ALIVE_fnc_hashGet;
+                    if (isnil "OPCOM_instances") exitWith {["[%1] Marking Units - No available opcom instances", QUOTE(ADDON)] call ALiVE_fnc_dump};
+
+                    _opcoms = [];
+                    _profilesBySide = [[],[],[]];
+                    _knownEnemiesBySide = [[],[],[]];
 
                     switch(_limit) do {
                         case "SIDE": {
-                            _entities = [_profilesInactive, _side] call ALIVE_fnc_hashGet;
-                            _entities = _entities select 2;
+                            {
+                                if (_side == [_x,"side","WEST"] call ALiVE_fnc_hashGet) then {
+                                    _opcoms pushback _x;
+                                };
+                            } foreach OPCOM_instances;
                         };
                         case "FACTION": {
-                            _entities = [_profilesInactive, _side] call ALIVE_fnc_hashGet;
-                            _entities = _entities select 2;
+                            {
+                                if (_side in [_x,"factions",[]] call ALiVE_fnc_hashGet) then {
+                                    _opcoms pushback _x;
+                                };
+                            } foreach OPCOM_instances;
                         };
                         case "ALL": {
-                            _entitiesWest = [_profilesInactive, "WEST"] call ALIVE_fnc_hashGet;
-                            _entitiesWest = _entitiesWest select 2;
-                            _entitiesEast = [_profilesInactive, "EAST"] call ALIVE_fnc_hashGet;
-                            _entitiesEast = _entitiesEast select 2;
-                            _entitiesGuer = [_profilesInactive, "GUER"] call ALIVE_fnc_hashGet;
-                            _entitiesGuer = _entitiesGuer select 2;
-
-                            _entities = _entitiesWest;
-                            _entities = _entities + _entitiesEast;
-                            _entities = _entities + _entitiesGuer;
+                            _opcoms = OPCOM_instances;
                         };
                     };
 
-                    _profiles = [];
                     {
-                        _type = _x select 2 select 5;
+                        private _opcom = _x;
+                        private _profileByType = [];
+                        private _side = [_opcom,"side","WEST"] call ALiVE_fnc_hashGet;
 
-                        if(_type == "entity") then {
+                        {
+                            private _profIDs = [_opcom,_x,[]] call ALiVE_fnc_hashGet;
+                            private _typeData = [];
 
-                            _profilePosition = _x select 2 select 2;
-                            _profileSide = _x select 2 select 3;
-                            _profileFaction = _x select 2 select 29;
+                            {
+                                private _profile = [ALIVE_profileHandler, "getProfile", _x] call ALIVE_fnc_profileHandler;
 
-                            if(_limit == "FACTION" && {_faction == _profileFaction}) then {
-                                _profiles pushback [_profilePosition,_profileSide];
-                            }else{
-                                _profiles pushback [_profilePosition,_profileSide];
-                            };
+                                if !(isnil "_profile") then {
+                                    private _profilePosition = _profile select 2 select 2;
+                                    _typeData pushback _profilePosition;
+                                };
+                            } foreach _profIDs;
+
+                            _profileByType pushback _typeData;
+                        } foreach ["infantry","motorized","mechanized","armored","artillery","AAA","air","sea"];
+
+                        switch (_side) do {
+                            case "EAST": {(_profilesBySide select 0) pushback _profileByType};
+                            case "WEST": {(_profilesBySide select 1) pushback _profileByType};
+                            case "GUER": {(_profilesBySide select 2) pushback _profileByType};
                         };
 
-                    } forEach _entities;
+                        private _knownEnemies = [_opcom,"knownentities",[]] call ALiVE_fnc_hashGet; // visible enemy - [id,pos]
+                        {
+                            private _profile = [ALIVE_profileHandler, "getProfile", _x select 0] call ALIVE_fnc_profileHandler;
+
+                            if !(isnil "_profile") then {
+                                _side = _profile select 2 select 3;
+
+                                switch (_side) do {
+                                    case "EAST": {(_knownEnemiesBySide select 0) pushbackunique (_x select 1)};
+                                    case "WEST": {(_knownEnemiesBySide select 1) pushbackunique (_x select 1)};
+                                    case "GUER": {(_knownEnemiesBySide select 2) pushbackunique (_x select 1)};
+                                };
+                            };
+                            false
+                        } count _knownEnemies;
+                        false
+                    } count _opcoms;
 
                     // send the data back to the players SCOM tablet
 
-                    _event = ['SCOM_UPDATED', [_playerID,_profiles], "COMMAND_HANDLER", "UNIT_MARKING"] call ALIVE_fnc_event;
+                    _event = ['SCOM_UPDATED', [_playerID,_profilesBySide,_knownEnemiesBySide], "COMMAND_HANDLER", "UNIT_MARKING"] call ALIVE_fnc_event;
                     [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
 
                 };

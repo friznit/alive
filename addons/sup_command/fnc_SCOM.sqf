@@ -355,7 +355,7 @@ switch(_operation) do {
             // a response event from command handler has been received.
             // if we are a dedicated server,
             // dispatch the event to the player who requested it
-            if((isServer && isMultiplayer) || isDedicated) then {
+            if((isServer && {isMultiplayer}) || {isDedicated}) then {
 
                 private ["_eventData","_playerID","_player"];
 
@@ -622,8 +622,6 @@ switch(_operation) do {
 
                         [_commandState,"intelTypeSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
                         [_commandState,"intelTypeSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
-
-                        [_logic,"commandState",_commandState] call MAINCLASS;
 
                         // send the event to get further data from the command handler
 
@@ -1752,7 +1750,7 @@ switch(_operation) do {
 
     case "enableIntelUnitMarking": {
 
-        private["_back","_commandState","_profileData","_markers","_m","_intelTypeTitle","_status","_intelLimit","_side","_faction","_leaderSide","_leaderFaction","_display"];
+        private["_back","_commandState","_profileBySide","_profileCount","_markers","_m","_intelTypeTitle","_status","_intelLimit","_side","_faction","_leaderSide","_leaderFaction","_display"];
 
         // perform unit marking display
 
@@ -1783,38 +1781,203 @@ switch(_operation) do {
             _side = [_logic,"side"] call MAINCLASS;
             _faction = [_logic,"faction"] call MAINCLASS;
 
-            _profileData = _args select 1;
+            _profileBySide = _args select 1;
+            _knownEnemiesBySide = _args select 2;
+            _profileCount = 0;
             _markers = [];
 
             // display the markers for inactive profiles
 
             {
+                private ["_typePrefix","_color"];
+                private _sideGroupsByType = _x;
 
-                _m = createMarkerLocal [format[MTEMPLATE, format["%1_inactive", _forEachIndex]], _x select 0];
-                _m setMarkerTypeLocal "o_unknown";
-                _m setMarkerShapeLocal "ICON";
-                _m setMarkerSizeLocal [.8, .8];
-                _m setMarkerBrushLocal "Solid";
-
-                switch (_x select 1) do {
-                    case "WEST": {
-                        _m setMarkerTypeLocal "b_unknown";
-                        _m setMarkerColorLocal "ColorBLUFOR";
+                switch (_forEachIndex) do {
+                    case 0: {
+                        _typePrefix = "o";
+                        _color = "ColorOPFOR";
                     };
-                    case "EAST": {
-                        _m setMarkerTypeLocal "o_unknown";
-                        _m setMarkerColorLocal "ColorOPFOR";
+                    case 1: {
+                        _typePrefix = "b";
+                        _color = "ColorBLUFOR";
                     };
-                    case "GUER": {
-                        _m setMarkerTypeLocal "n_unknown";
-                        _m setMarkerColorLocal "ColorIndependent";
+                    case 2: {
+                         _color = "ColorIndependent";
+                         _typePrefix = "n";
                     };
                 };
 
-                _markers pushback _m;
+                {
+                    _x params ["_infantry","_motorised","_mechanized","_armor","_air","_sea","_artillery","_AAA"];
 
-            } foreach _profileData;
+                    // create markers for each profile type
 
+                    {
+                        _position = _x;
+                        _profileMarker = format["%1_inf",_typePrefix];
+
+                        _m = createMarkerLocal [format[MTEMPLATE,_profileCount], _position];
+                        _m setMarkerShapeLocal "ICON";
+                        _m setMarkerSizeLocal [0.5,0.5];
+                        _m setMarkerTypeLocal _profileMarker;
+                        _m setMarkerColorLocal _color;
+
+                        _markers pushback _m;
+                        _profileCount = _profileCount + 1;
+
+                        false
+                    } count _infantry;
+
+                    {
+                        _position = _x;
+                        _profileMarker = format["%1_motor_inf",_typePrefix];
+
+                        _m = createMarkerLocal [format[MTEMPLATE, _profileCount], _position];
+                        _m setMarkerShapeLocal "ICON";
+                        _m setMarkerSizeLocal [0.5,0.5];
+                        _m setMarkerTypeLocal _profileMarker;
+                        _m setMarkerColorLocal _color;
+
+                        _markers pushback _m;
+                        _profileCount = _profileCount + 1;
+
+                        false
+                    } count _motorised;
+
+                    {
+                        _position = _x;
+                        _profileMarker = format["%1_mech_inf",_typePrefix];
+
+                        _m = createMarkerLocal [format[MTEMPLATE, _profileCount], _position];
+                        _m setMarkerShapeLocal "ICON";
+                        _m setMarkerSizeLocal [0.5,0.5];
+                        _m setMarkerTypeLocal _profileMarker;
+                        _m setMarkerColorLocal _color;
+
+                        _markers pushback _m;
+                        _profileCount = _profileCount + 1;
+
+                        false
+                    } count _mechanized;
+
+                    {
+                        _position = _x;
+                        _profileMarker = format["%1_armor",_typePrefix];
+
+                        _m = createMarkerLocal [format[MTEMPLATE, _profileCount], _position];
+                        _m setMarkerShapeLocal "ICON";
+                        _m setMarkerSizeLocal [0.5,0.5];
+                        _m setMarkerTypeLocal _profileMarker;
+                        _m setMarkerColorLocal _color;
+
+                        _markers pushback _m;
+                        _profileCount = _profileCount + 1;
+
+                        false
+                    } count _armor;
+
+                    {
+                        _position = _x;
+                        _profileMarker = format["%1_air",_typePrefix];
+
+                        _m = createMarkerLocal [format[MTEMPLATE, _profileCount], _position];
+                        _m setMarkerShapeLocal "ICON";
+                        _m setMarkerSizeLocal [0.5,0.5];
+                        _m setMarkerTypeLocal _profileMarker;
+                        _m setMarkerColorLocal _color;
+
+                        _markers pushback _m;
+                        _profileCount = _profileCount + 1;
+
+                        false
+                    } count _air;
+
+                    {
+                        _position = _x;
+                        _profileMarker = format["%1_unknown",_typePrefix];
+
+                        _m = createMarkerLocal [format[MTEMPLATE, _profileCount], _position];
+                        _m setMarkerShapeLocal "ICON";
+                        _m setMarkerSizeLocal [0.5,0.5];
+                        _m setMarkerTypeLocal _profileMarker;
+                        _m setMarkerColorLocal _color;
+
+                        _markers pushback _m;
+                        _profileCount = _profileCount + 1;
+
+                        false
+                    } count _sea;
+
+                    {
+                        _position = _x;
+                        _profileMarker = format["%1_art",_typePrefix];
+
+                        _m = createMarkerLocal [format[MTEMPLATE, _profileCount], _position];
+                        _m setMarkerShapeLocal "ICON";
+                        _m setMarkerSizeLocal [0.5,0.5];
+                        _m setMarkerTypeLocal _profileMarker;
+                        _m setMarkerColorLocal _color;
+
+                        _markers pushback _m;
+                        _profileCount = _profileCount + 1;
+
+                        false
+                    } count _artillery;
+
+                    {
+                        _position = _x;
+                        _profileMarker = format["%1_mech_inf",_typePrefix];
+
+                        _m = createMarkerLocal [format[MTEMPLATE, _profileCount], _position];
+                        _m setMarkerShapeLocal "ICON";
+                        _m setMarkerSizeLocal [0.5,0.5];
+                        _m setMarkerTypeLocal _profileMarker;
+                        _m setMarkerColorLocal _color;
+
+                        _markers pushback _m;
+                        _profileCount = _profileCount + 1;
+
+                        false
+                    } count _AAA;
+                    false
+                } count _sideGroupsByType;
+            } foreach _profileBySide;
+
+            {
+                private ["_color","_type"];
+                private _sideProfiles = _x;
+
+                switch (_forEachIndex) do {
+                    case 0: {
+                        _color = "ColorOPFOR";
+                        _type = "o_unknown";
+                    };
+                    case 1: {
+                        _color = "ColorBLUFOR";
+                        _type = "b_unknown";
+                    };
+                    case 2: {
+                         _color = "ColorIndependent";
+                         _type = "n_unknown";
+                    };
+                };
+
+                {
+                    private _position = _x;
+
+                    _m = createMarkerLocal [format[MTEMPLATE, _profileCount], _position];
+                    _m setMarkerTypeLocal _type;
+                    _m setMarkerShapeLocal "ICON";
+                    _m setMarkerSizeLocal [.5, .5];
+                    _m setMarkerColorLocal _color;
+                    
+                    _markers pushback _m;
+                    _profileCount = _profileCount + 1;
+
+                    false
+                } count _sideProfiles;
+            } foreach _knownEnemiesBySide;
+/*
             // display the markers for spawned groups
 
             {
@@ -1844,13 +2007,13 @@ switch(_operation) do {
             		_m setMarkerSizeLocal [.7,.7];
 
             		switch (_leaderSide) do {
-            			case "WEST": {
-            				_m setMarkerTypeLocal "b_unknown";
-            				_m setMarkerColorLocal "ColorBLUFOR";
-            			};
             			case "EAST": {
             				_m setMarkerTypeLocal "o_unknown";
             				_m setMarkerColorLocal "ColorOPFOR";
+            			};
+            			case "WEST": {
+            				_m setMarkerTypeLocal "b_unknown";
+            				_m setMarkerColorLocal "ColorBLUFOR";
             			};
             			case "GUER": {
             				_m setMarkerTypeLocal "x_unknown";
@@ -1862,7 +2025,7 @@ switch(_operation) do {
             	};
 
             } forEach allGroups;
-
+*/
             // store the marker state for clearing later
 
             [_logic,"marker",_markers] call MAINCLASS;
