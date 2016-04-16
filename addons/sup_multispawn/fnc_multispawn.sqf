@@ -39,7 +39,8 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-#define SUPERCLASS nil
+#define SUPERCLASS ALIVE_fnc_baseClassHash
+#define MAINCLASS ALiVE_fnc_Multispawn
 
 private ["_logic","_operation","_args","_result"];
 
@@ -82,8 +83,8 @@ switch(_operation) do {
                 TRACE_1("Creating class on all localities",true);
 
                 // initialise module game logic on all localities
-                ADDON setVariable ["super", QUOTE(SUPERCLASS)];
-                ADDON setVariable ["class", QUOTE(MAINCLASS)];
+                ADDON setVariable ["super", SUPERCLASS];
+                ADDON setVariable ["class", MAINCLASS];
 
                 _result = ADDON;
         };
@@ -538,8 +539,7 @@ switch(_operation) do {
                 sleep 1;
 
                 call compile format["ALiVE_SUP_MULTISPAWN_COUNTDOWN_%1 = (time - _time - _timeOut)",_faction];
-                _queue = [_factionData, QGVAR(PLAYERQUEUE),[]] call ALiVE_fnc_HashGet;
-                _queue = _queue - [objNull];
+                _queue = ([_factionData, QGVAR(PLAYERQUEUE),[]] call ALiVE_fnc_HashGet) - [objNull];
 
                 (
 	                (time - _time > _timeOut) // timeout has passed
@@ -554,22 +554,27 @@ switch(_operation) do {
                 {isNil {[_factionData, QGVAR(INSERTION_TRANSPORT)] call ALiVE_fnc_HashGet}} // former insertion is finished
 			};
 
-            [_factionData, QGVAR(PLAYERQUEUE),_queue] call ALiVE_fnc_HashSet;
-
             //////////////////////////////////////////////
 
             //////////////////////////////////////////////
             // Start Insertion
-
+			
             _dataSet = [_startpos, 0, _TransportType, _TransportType call ALiVE_fnc_classSide] call bis_fnc_spawnvehicle;
+            
             _transport = _dataSet select 0;
             _units = _dataSet select 1;
             _group = _dataSet select 2;
 
+            {
+                [[[_x,_transport], {
+                    (_this select 0) moveInCargo (_this select 1);
+                }], "BIS_fnc_spawn", owner _x, false, false] call BIS_fnc_MP;
+                sleep 1;
+            } foreach _queue;
+                       
+            [_factionData, QGVAR(PLAYERQUEUE), []] call ALiVE_fnc_HashSet;
             [_factionData,QGVAR(INSERTION_TRANSPORT), _transport] call ALiVE_fnc_HashSet;
             _transport setvariable [QGVAR(INSERTION_TRANSPORT),_dataSet];
-
-            {[[[_x,_transport], {(_this select 0) moveInCargo (_this select 1)}], "BIS_fnc_spawn", owner _x, false] call BIS_fnc_MP; sleep 0.1; _queue set [_foreachIndex,objNull]} foreach _queue; [_factionData, QGVAR(PLAYERQUEUE),_queue - [objNull]] call ALiVE_fnc_HashSet;
 
 			_heliPad = "Land_HelipadEmpty_F" createVehicleLocal _EndPos;
 
@@ -605,38 +610,52 @@ switch(_operation) do {
             // Finalising
 
             [_factionData,QGVAR(INSERTING),false] call ALiVE_fnc_HashSet;
+            
+            private ["_data"];
 
             if (isNil "_transport" || {!alive _transport} || {!canMove _transport}) then {
-                _data = +(_transport getvariable [QGVAR(INSERTION_TRANSPORT),[objNull,[],grpNull]]);
-                _factionData = [GVAR(STORE),_faction] call ALiVE_fnc_HashGet;
+                
+                _data = +_dataSet;
 
-                _transport setvariable [QGVAR(INSERTION_TRANSPORT),nil];
+                (_data select 0) setvariable [QGVAR(INSERTION_TRANSPORT),nil];
                 [_factionData,QGVAR(INSERTION_TRANSPORT)] call ALiVE_fnc_HashRem;
 
                 sleep 60;
 
             	{deleteVehicle _x} foreach (_data select 1);
                 (_data select 2) call ALiVE_fnc_DeleteGroupRemote;
+                
                 deleteVehicle (_data select 0);
             } else {
 				_wp = _group addWaypoint [_StartPos, 0];
 				_wp setWaypointType "MOVE";
 				_wp setWaypointSpeed "FULL";
 				_wp setWaypointBehaviour "CARELESS";
-				_wp setWaypointStatements ["true", format["
-				    _vehicle = vehicle this;
-				    _data = +(_vehicle getvariable ['ALiVE_SUP_MULTISPAWN_INSERTION_TRANSPORT',[objNull,[],grpNull]]);
-				    _factionData = [ALiVE_SUP_MULTISPAWN_STORE,%1] call ALiVE_fnc_HashGet;
-
-				    _vehicle setvariable ['ALiVE_SUP_MULTISPAWN_INSERTION_TRANSPORT',nil];
-				    [_factionData,'ALiVE_sup_multispawn_INSERTION_TRANSPORT'] call ALiVE_fnc_HashRem;
-
-					{deleteVehicle _x} foreach (_data select 1);
-				    (_data select 2) call ALiVE_fnc_DeleteGroupRemote;
-				    deleteVehicle (_data select 0);
-				",str(_faction)]];
-
+                
                 _group setCurrentWaypoint _wp;
+
+		        //////////////////////////////////////////////
+		        // Conditions for finished insertion
+		        waituntil {
+		            sleep 1;
+		
+		            (isNil "_transport" || {!alive _transport} || {!canMove _transport})
+		
+		            ||
+		
+		            {_transport distance2D _StartPos < 100}
+				};
+		        //////////////////////////////////////////////                
+                
+                _data = +_dataSet;
+
+                (_data select 0) setvariable [QGVAR(INSERTION_TRANSPORT),nil];
+                [_factionData,QGVAR(INSERTION_TRANSPORT)] call ALiVE_fnc_HashRem;
+
+            	{deleteVehicle _x} foreach (_data select 1);
+                (_data select 2) call ALiVE_fnc_DeleteGroupRemote;
+                
+                deleteVehicle (_data select 0);
         	};
 
             deleteVehicle _heliPad;

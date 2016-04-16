@@ -89,8 +89,6 @@ switch (typeName _tgt) do {
     };
 };
 
-diag_log _mul;
-
 _coords = [_pos, _rad, _ang] call BIS_fnc_relPos;
 _coords set [2, _alt];
 
