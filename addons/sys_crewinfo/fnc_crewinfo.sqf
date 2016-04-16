@@ -36,7 +36,8 @@ Author:
 Jman
 ---------------------------------------------------------------------------- */
 
-#define SUPERCLASS nil
+#define SUPERCLASS ALIVE_fnc_baseClassHash
+#define MAINCLASS ALiVE_fnc_CrewInfo
 
 private ["_logic","_operation","_args","_result"];
 
@@ -71,8 +72,8 @@ switch(_operation) do {
                 TRACE_1("Creating class on all localities",true);
 
                 // initialise module game logic on all localities
-                ADDON setVariable ["super", QUOTE(SUPERCLASS)];
-                ADDON setVariable ["class", QUOTE(MAINCLASS)];
+                ADDON setVariable ["super", SUPERCLASS];
+                ADDON setVariable ["class", MAINCLASS];
 
                 _result = ADDON;
         };
@@ -90,8 +91,6 @@ switch(_operation) do {
                 //Start init
                 _logic setVariable ["initGlobal", false];
 
-                _logic setVariable ["init", false];
-
                 // Server init
                 if (isServer) then {
 
@@ -100,7 +99,7 @@ switch(_operation) do {
 
                     // if server, initialise module game logic
                     _logic setVariable ["super", SUPERCLASS];
-                    _logic setVariable ["class", ALIVE_fnc_crewinfo];
+                    _logic setVariable ["class", MAINCLASS];
                     _logic setVariable ["init", true, true];
 
                     // and publicVariable to clients
@@ -108,13 +107,11 @@ switch(_operation) do {
 
                 // Client init
                 } else {
-                        // any client side logic
+                	// any client side logic
                 };
 
                 // and wait for game logic to initialise
-                // TODO merge into lazy evaluation
-                waitUntil {!isNil QUOTE(ADDON)};
-                waitUntil {ADDON getVariable ["init", false]};
+                waitUntil {!isNil QUOTE(ADDON) && {ADDON getVariable ["init", false]}};
 
                 /*
                 VIEW - purely visual
@@ -123,29 +120,29 @@ switch(_operation) do {
 
                 _logic setVariable ["bis_fnc_initModules_activate",true];
 
-                if(!isDedicated && !isHC) then {
-                	    CREWINFO_DEBUG = call compile (_logic getvariable ["debug","false"]);
-                      CREWINFO_UILOC = call compile (_logic getvariable ["crewinfo_ui_setting","1"]);
-                	 		Waituntil {!(isnil "CREWINFO_DEBUG")};
-                	 		Waituntil {!(isnil "CREWINFO_UILOC")};
-                	 		private ["_ui","_HudNames","_vehicleID","_picture","_vehicle","_vehname","_weapname","_weap","_wepdir","_Azimuth"];
+				// Only on player clients
+                if (hasInterface) then {
+                    
+            	    CREWINFO_DEBUG = call compile (_logic getvariable ["debug","false"]);
+                  	CREWINFO_UILOC = call compile (_logic getvariable ["crewinfo_ui_setting","1"]);
+        	 		
+                    Waituntil {!isnil "CREWINFO_DEBUG" && {!isnil "CREWINFO_UILOC"}};
 
-                				// DEBUG -------------------------------------------------------------------------------------
-													if(CREWINFO_DEBUG) then {
-														["ALIVE Crew Info - Starting..."] call ALIVE_fnc_dump;
-															if (CREWINFO_UILOC == 1) then {
-																["ALIVE Crew Info - Drawing UI right (%1)", CREWINFO_UILOC] call ALIVE_fnc_dump;
-															} else {
-																["ALIVE Crew Info - Drawing UI left (%1)", CREWINFO_UILOC] call ALIVE_fnc_dump;
-															};
-													};
-												// DEBUG -------------------------------------------------------------------------------------
+    				// DEBUG -------------------------------------------------------------------------------------
+						if(CREWINFO_DEBUG) then {
+							["ALIVE Crew Info - Starting..."] call ALIVE_fnc_dump;
+							if (CREWINFO_UILOC == 1) then {
+								["ALIVE Crew Info - Drawing UI right (%1)", CREWINFO_UILOC] call ALIVE_fnc_dump;
+							} else {
+								["ALIVE Crew Info - Drawing UI left (%1)", CREWINFO_UILOC] call ALIVE_fnc_dump;
+							};
+						};
+					// DEBUG -------------------------------------------------------------------------------------
 
-   										[] call ALIVE_fnc_crewinfoClient;
+   					[] spawn ALIVE_fnc_crewinfoClient;
                 };
 
                 _result = ADDON;
-
         };
         case "destroy": {
                 if (isServer) then {
