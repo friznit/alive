@@ -392,15 +392,11 @@ switch(_operation) do {
             } count OPCOM_INSTANCES;
 
             // send the data back to the players SCOM tablet
-			
-			// easier to send data back via event because we can't directly pass ALiVE_SUP_COMMAND via remoteExecCall from the server, minimal speed loss
-			//_player = [_playerID] call ALIVE_fnc_getPlayerByUID;
-			//[ALiVE_SUP_COMMAND,"enableOpsHighCommand",[_playerID,_side,_groups]] remoteExecCall [QUOTE(ALiVE_fnc_SCOM),_player]; // need the raw speed  from remoteExecCall
-			
-			///* gotta comment the comments
+
+			_player = [_playerID] call ALIVE_fnc_getPlayerByUID;
+
             _event = ['SCOM_UPDATED', [_playerID,_side,_groups], "COMMAND_HANDLER", "OPS_GROUPS"] call ALIVE_fnc_event;
-            [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
-			//*/
+            _event remoteExecCall ["ALIVE_fnc_SCOMTabletEventToClient",_player];
 
         };
     };
@@ -749,16 +745,12 @@ switch(_operation) do {
     };
 
     case "intelTypeSelected": {
-        private["_data","_playerID","_type","_limit","_side","_faction","_debug"];
+        private["_data""_debug"];
 
         if(typeName _args == "ARRAY") then {
 
             _data = _args;
-            _playerID = _data select 1;
-            _type = _data select 2;
-            _limit = _data select 3;
-            _side = _data select 4;
-            _faction = _data select 5;
+            _data params ["_requestID","_playerID","_type","_limit","_side","_faction"];
 
             _debug = [_logic,"debug"] call ALIVE_fnc_hashGet;
 
@@ -886,41 +878,62 @@ switch(_operation) do {
 
                 case "IMINT": {
 
-                    private ["_side","_sources","_transportArray","_casArray"];
+                    private ["_sources","_transportArray","_casArray"];
 
                     // return all possible IMINT sources
 
                     _sources = [];
 
                     _side = [_side] call ALIVE_fnc_sideTextToObject;
-                    if (_side == RESISTANCE) then {_side = GUER};
 
-                    // add aerial combat support vehicles
+                    if !(isnil "NEO_radioLogic") then {
 
-                    _transportArray = NEO_radioLogic getVariable format ["NEO_radioTrasportArray_%1", _side];
-                    {
-                        private _veh = _x select 0;
-                        private _name = _x select 2;
-                        _sources pushback [_veh,_name]
-                    } foreach _transportArray;
+                        // add aerial combat support vehicles
 
-                    _casArray = NEO_radioLogic getVariable format ["NEO_radioCasArray_%1", _side];
-                    {
-                        private _veh = _x select 0;
-                        private _name = _x select 2;
-                        _sources pushback [_veh,_name]
-                    } foreach _casArray;
+                        _transportArray = NEO_radioLogic getVariable [format ["NEO_radioTrasportArray_%1", _side], []];
+                        {
+                            private _veh = _x select 0;
+                            private _name = _x select 2;
+                            _sources pushback [_veh,_name]
+                        } foreach _transportArray;
+
+                        _casArray = NEO_radioLogic getVariable [format ["NEO_radioCasArray_%1", _side], []];
+                        {
+                            private _veh = _x select 0;
+                            private _name = _x select 2;
+                            _sources pushback [_veh,_name]
+                        } foreach _casArray;
+
+                    };
 
                     // add all uavs connected to a unit
 
                     {
                         if (side _x == _side) then {
+
+                            // get unit connected uav if one exists
+
                             private _connectedUAV = getConnectedUAV _x;
 
                             if !(isnull _connectedUAV) then {
                                 private _droneType = getText (configFile >> "CfgVehicles" >> (typeOf _connectedUAV) >> "displayName");
                                 private _name = format ["%1 - %2", _droneType, name _x];
+
                                 _sources pushback [_connectedUAV,_name];
+                            };
+
+                            // if unit is in non-CS air vehicle and is driver, add vehicle
+
+                            private _vehicle = vehicle _x;
+                            if (_vehicle != _x && {driver _vehicle == _x} && {_vehicle isKindOf "Air"} && {!(_vehicle getVariable ["ALiVE_CombatSupport",false])}) then {
+
+                                // ensure unit is not uav ai logic...
+                                if !(["UAV_AI",typeOf _x] call BIS_fnc_inString) then {
+                                    private _vehicleName = getText (configFile >> "CfgVehicles" >> (typeOf _vehicle) >> "displayName");
+                                    private _name = format ["%1 - %2", _vehicleName, name _x];
+
+                                    _sources pushback [_vehicle,_name];
+                                };
                             };
                         };
 

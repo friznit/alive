@@ -1829,6 +1829,7 @@ switch(_operation) do {
         _intelTypeListOptions = [_commandState,"intelTypeOptions"] call ALIVE_fnc_hashGet;
 
         lbClear _intelTypeList;
+        _intelTypeList lbSetCurSel -1;
 
         {
             _intelTypeList lbAdd format["%1", _x];
@@ -1893,9 +1894,8 @@ switch(_operation) do {
                 _intelTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeList);
                 _intelTypeList ctrlShow true;
 
-                _intelTypeList lbSetCurSel -1;
-
                 lbClear _intelTypeList;
+                _intelTypeList lbSetCurSel -1;
 
                 {
                     _intelTypeList lbAdd format["%1", _x];
@@ -2238,8 +2238,8 @@ switch(_operation) do {
             _intelTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeList);
             _intelTypeList ctrlShow true;
 
-            _intelTypeList lbSetCurSel -1;
             lbClear _intelTypeList;
+            _intelTypeList lbSetCurSel -1;
 
             if (count _sources > 0) then {
                 {
@@ -2720,9 +2720,8 @@ switch(_operation) do {
                 _opsTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeList);
                 _opsTypeList ctrlShow true;
 
-                _opsTypeList lbSetCurSel -1;
-
                 lbClear _opsTypeList;
+                _opsTypeList lbSetCurSel -1;
 
                 {
                     _opsTypeList lbAdd format["%1", _x];
@@ -2778,9 +2777,8 @@ switch(_operation) do {
                 _opsTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeList);
                 _opsTypeList ctrlShow false;
 
-                _opsTypeList lbSetCurSel -1;
-
                 lbClear _opsTypeList;
+                _opsTypeList lbSetCurSel -1;
 
                 // store profiles to state
 
@@ -2794,7 +2792,6 @@ switch(_operation) do {
                 _editList ctrlShow true;
 
                 lbClear _editList;
-
                 _editList lbSetCurSel 0;
 
                 _options = [];
@@ -3234,6 +3231,7 @@ switch(_operation) do {
                 _waypointList ctrlShow true;
 
                 lbClear _waypointList;
+                _waypointList lbSetCurSel -1;
 
                 _rightMap = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_MapRight);
                 _rightMap ctrlShow false;
@@ -3346,24 +3344,28 @@ switch(_operation) do {
                 _waypointTypeList ctrlShow false;
 
                 lbClear _waypointTypeList;
+                _waypointTypeList lbSetCurSel -1;
                 _waypointTypeList ctrlSetEventHandler ["LBSelChanged", ""];
 
                 _waypointSpeedList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointSpeedList);
                 _waypointSpeedList ctrlShow false;
 
                 lbClear _waypointSpeedList;
+                _waypointSpeedList lbSetCurSel -1;
                 _waypointSpeedList ctrlSetEventHandler ["LBSelChanged", ""];
 
                 _waypointFormationList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointFormationList);
                 _waypointFormationList ctrlShow false;
 
                 lbClear _waypointFormationList;
+                _waypointFormationList lbSetCurSel -1;
                 _waypointFormationList ctrlSetEventHandler ["LBSelChanged", ""];
 
                 _waypointBehaviourList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_WaypointBehavourList);
                 _waypointBehaviourList ctrlShow false;
 
                 lbClear _waypointBehaviourList;
+                _waypointBehaviourList lbSetCurSel -1;
                 _waypointBehaviourList ctrlSetEventHandler ["LBSelChanged", ""];
 
 
@@ -3922,7 +3924,9 @@ switch(_operation) do {
 
         _intelTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeList);
         _intelTypeList ctrlShow true;
+
         lbClear _intelTypeList;
+        _intelTypeList lbSetCurSel -1;
 
         // add camera effect options to list
 
