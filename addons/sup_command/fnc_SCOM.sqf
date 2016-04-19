@@ -1130,7 +1130,7 @@ switch(_operation) do {
 
                         _selectedIndex = -1;
 						_dist = 40; // (ctrlMapScale _map) * 77 // ((ctrlMapScale _map) * 65) + (worldSize / 650) // 40
-                        hint "";hint format ["Testing distance: %1", _dist];
+                        //hint "";hint format ["Testing distance: %1", _dist];
                         {
                             _position = _x select 1;
                             if(_cursorPosition distance2D _position < _dist) exitWith {
