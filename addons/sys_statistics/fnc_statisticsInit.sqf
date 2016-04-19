@@ -35,8 +35,6 @@ ADDON = false;
 
 TRACE_2("SYS_STATS",isDedicated,GVAR(ENABLED));
 
-
-
 if (isDedicated && GVAR(ENABLED)) then {
 
 	// Setup data handler
@@ -183,15 +181,18 @@ if (isDedicated && GVAR(ENABLED)) then {
 			sleep 1;
 		};
 	}; */
-
-
 };
 
 if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 
 	private ["_puid","_class","_PlayerSide","_PlayerFaction"];
 
+	_waitTime = diag_tickTime + 100000;
+
+	waitUntil {!isNull player || diag_tickTime > _waitTime};
+
 	_puid = getplayeruid player;
+
 
 	if (isNil "_puid" || _puid == "") exitWith {};
 
@@ -218,6 +219,7 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 		STATS_PLAYER_PROFILE_DONE = true;
 	};
 
+	["Adding Stats EHs to player %1", player] call ALiVE_fnc_dump;
 	// Set up player fired
 	player addEventHandler ["Fired", {_this call GVAR(fnc_playerfiredEH);}];
 
@@ -246,12 +248,13 @@ if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
 		_data = [ ["Event","PlayerStart"] , ["PlayerSide",_PlayerSide] , ["PlayerFaction",_PlayerFaction], ["PlayerName",_name] ,["PlayerType",typeof player] , ["PlayerClass",_class] , ["PlayerRank", rank player], ["Player",_puid], ["GeoPos",position player] ];
 		GVAR(UPDATE_EVENTS) = _data;
 		publicVariableServer QGVAR(UPDATE_EVENTS);
-
 };
+
 
 // Check for ACE and add eventhandler for ACE Medical deaths
 // Add to all clients/servers in case AI is running locally on those machines
 If (isClass (configFile >> "cfgMods" >> "ace") && GVAR(ENABLED)) then {
+	["Adding ACE Stats EHs to player %1", player] call ALiVE_fnc_dump;
 	["medical_onSetDead",
 		{
 			// diag_log format["ACE MEDICAL ON SETDEAD CALLED: %1", _this];
@@ -291,7 +294,6 @@ if(!isDedicated && !isHC && GVAR(ENABLED)) then {
 				]
 		] call ALiVE_fnc_flexiMenu_Add;
 };
-
 
 ADDON = true;
 

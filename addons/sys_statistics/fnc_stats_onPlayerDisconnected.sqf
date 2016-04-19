@@ -92,7 +92,7 @@ if (GVAR(ENABLED)) then {
 		_shotsfired = [GVAR(shotsFired), _uid, []] call ALiVE_fnc_hashGet;
 
 		if (!isNil "_shotsfired") then {
-
+			diag_log format["Saving shots fired: %1", _shotsfired];
 			_shotsFiredData = [];
 			{
 				private ["_weaponCount","_weapon","_count","_muzzle","_shotsFiredHash"];
