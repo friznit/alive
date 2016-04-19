@@ -66,7 +66,7 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 			};
 			
 			_connectedRoad = _roadsConnectedTo select 0;
-			_direction = [_road, _connectedRoad] call BIS_fnc_DirTo;
+			_direction = _road getRelDir _connectedRoad;
 		};
 		
 		//["Road: %1 Pos: %2 Dir: %3 [%4] Roads Connected %5",_road,_position,_direction,(count _roadsConnectedTo),_roadsConnectedTo] call ALIVE_fnc_dump;

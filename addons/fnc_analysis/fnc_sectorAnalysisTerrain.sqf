@@ -55,8 +55,8 @@ ASSERT_TRUE(typeName _sectors == "ARRAY",_err);
 	};
 	
 	{
-		_direction = [_x, _centerPosition] call BIS_fnc_dirTo;
-		_position = [_x, _quadrantWidth, _direction] call BIS_fnc_relPos;
+		_direction = _x getDir _centerPosition;
+		_position = _x getPos [_quadrantWidth, _direction];
 		if(surfaceIsWater _position) then {
 			_countIsWater = _countIsWater + 1;
 		};

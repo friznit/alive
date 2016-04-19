@@ -26,7 +26,7 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_grid","_err","_sectors","_updatedSectors","_sector","_sectorData","_players",
+private ["_grid","_err","_sectors","_updatedSectors","_sector","_sectorData",
 "_position","_active","_player"];
 
 _grid = _this select 0;
@@ -58,8 +58,6 @@ _updatedSectors = [];
 //["ANALYSE PLAYER POSITIONS"] call ALIVE_fnc_dump;
 //[true] call ALIVE_fnc_timer;
 
-_players = [] call BIS_fnc_listPlayers;
-
 {
 	_player = _x;
 	_position = getPosATL _player;
@@ -81,7 +79,7 @@ _players = [] call BIS_fnc_listPlayers;
 	        _updatedSectors set [count _updatedSectors, _sector];
 	    };
     };
-} forEach _players;
+} forEach allPlayers;
 
 //[] call ALIVE_fnc_timer;
 

@@ -37,13 +37,15 @@ nil
 #define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_liveAnalysis
 
-private ["_logic","_operation","_args","_result"];
+private ["_result"];
 
 TRACE_1("liveAnalysis - input",_this);
 
-_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
-_operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+params [
+    ["_logic", objNull, [objNull,[]]],
+    ["_operation", "", [""]],
+    ["_args", objNull, [objNull,[],"",0,true,false]]
+];
 _result = true;
 
 #define MTEMPLATE "ALiVE_LIVEANALYSIS_%1"
@@ -476,7 +478,7 @@ switch(_operation) do {
                                 _profiles set [count _profiles, _profileID];
 						    };
 
-							_dir = [_position, _center] call BIS_fnc_dirTo;
+							_dir = _position getDir _center;
 						};			
 					} forEach _section;
 
@@ -523,7 +525,7 @@ switch(_operation) do {
 						case "recon":{
 						
 							// create direction marker
-							_m = createMarker [format[MTEMPLATE, format["%1_dir", _objectiveID]], [_position, 100, _dir] call BIS_fnc_relPos];
+							_m = createMarker [format[MTEMPLATE, format["%1_dir", _objectiveID]], _position getPos [100, _dir]];
 							_m setMarkerShape "ICON";
 							_m setMarkerSize [0.5,0.5];
 							_m setMarkerType "mil_arrow";
@@ -539,7 +541,7 @@ switch(_operation) do {
 						case "capture":{
 						
 							// create direction marker
-							_m = createMarker [format[MTEMPLATE, format["%1_dir", _objectiveID]], [_position, 100, _dir] call BIS_fnc_relPos];
+							_m = createMarker [format[MTEMPLATE, format["%1_dir", _objectiveID]], _position getPos [100, _dir]];
 							_m setMarkerShape "ICON";
 							_m setMarkerSize [0.5,0.5];
 							_m setMarkerType "mil_arrow2";
