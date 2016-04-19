@@ -34,7 +34,7 @@ switch ((getNumber(configfile >> "CfgVehicles" >> _type >> "side"))) do {
 //Exit if limit is reached
 if (ARTY_RESPAWN_LIMIT == 0) exitwith {
     _replen = format ["All units! We are out of arty assets"];
-	[[player,_replen,"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
+	[[player,_replen,"side"],"NEO_fnc_messageBroadcast",true,false] spawn BIS_fnc_MP;
 };
 
 //Start respawning if not exited
@@ -140,4 +140,4 @@ _a set [count _a, [leader _grp, _grp, _callsign, _units, _roundsAvailable]];
 NEO_radioLogic setVariable [format ["NEO_radioArtyArray_%1", _side], _a, true];
 
 _replen = format["All units this is %1! We are back on station and are ready for tasking", _callsign] ;
-[[player,_replen,"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
+[[player,_replen,"side"],"NEO_fnc_messageBroadcast",true,false] spawn BIS_fnc_MP;

@@ -49,7 +49,7 @@ _text = switch (toUpper _task) do
 
 //New Task
 _unit setVariable ["NEO_radioTransportNewTask", _arguments, true];
-[[player,_text,"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
+[[player,_text,"side"],"NEO_fnc_messageBroadcast",true,false] spawn BIS_fnc_MP;
 
 //Interface
 [lbCurSel 655565] call NEO_fnc_radioRefreshUi;

@@ -84,7 +84,7 @@ link44[] = {32,28};
 link45[] = {33,34};
 link46[] = {34,15};
 globals[] = {0.000000,0,0,0,0,640,480,1,66,6316128,1,-602.963013,893.680054,1234.261963,-9.370752,1118,929,1};
-window[] = {2,-1,-1,-32000,-32000,825,88,1348,88,3,1135};
+window[] = {2,-1,-1,-1,-1,759,22,1282,22,3,1135};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -363,7 +363,7 @@ class FSM
            "_coord = _pos call BIS_fnc_posToGrid;" \n
            "" \n
            "  sleep 5;" \n
-           "  [[_veh, format[""Copy that, %1 is moving to %2%3 to provide CAS. Out."", _callsign,_coord select 0, _coord select 1],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "  [[_veh, format[""Copy that, %1 is moving to %2%3 to provide CAS. Out."", _callsign,_coord select 0, _coord select 1],""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -387,7 +387,7 @@ class FSM
        "" \n
        "	sleep 5;" \n
        "	" \n
-       "	[[_veh,format[""Copy that, %1 is moving to %2%3 to locate targets. Out."",_callsign,_coord select 0, _coord select 1],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "	[[_veh,format[""Copy that, %1 is moving to %2%3 to locate targets. Out."",_callsign,_coord select 0, _coord select 1],""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
        "};"/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -479,7 +479,7 @@ class FSM
        "		_callsign = _this select 1;" \n
        "" \n
        "  sleep 5;" \n
-       "  [[_veh, format[""%1 is RTB. Out."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "  [[_veh, format[""%1 is RTB. Out."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
        "};" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -589,7 +589,7 @@ class FSM
        "_parking = true;" \n
        "" \n
        "// Radio" \n
-       "[[_veh, format[""%1 is at parking position. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "[[_veh, format[""%1 is at parking position. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
        "" \n
        "// move the loiter point to here" \n
        "[_grp,0] setWaypointPosition [_base,0];"/*%FSM</STATEINIT""">*/;
@@ -719,7 +719,7 @@ class FSM
            "" \n
            "if (_veh isKindOf ""Helicopter"") then" \n
            "{" \n
-           "  [[_veh, format[""%1 is at base. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "  [[_veh, format[""%1 is at base. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -865,7 +865,7 @@ class FSM
        "" \n
        "	sleep 5;" \n
        "	" \n
-       "	[[_veh,format[""Copy that, %1 is moving to %2%3 to loiter. Out."",_callsign,_coord select 0, _coord select 1],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "	[[_veh,format[""Copy that, %1 is moving to %2%3 to loiter. Out."",_callsign,_coord select 0, _coord select 1],""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
        "};" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
@@ -943,7 +943,7 @@ class FSM
     class __8
     {
       name = "__8";
-      init = /*%FSM<STATEINIT""">*/"[[_veh,format[""%1 is holding position and waiting for further orders. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+      init = /*%FSM<STATEINIT""">*/"[[_veh,format[""%1 is holding position and waiting for further orders. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
        ""/*%FSM</STATEINIT""">*/;
       precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
       class Links
@@ -1014,7 +1014,7 @@ class FSM
        "" \n
        "	sleep 5;" \n
        "	" \n
-       "	[[_veh,format[""Copy that, %1 is moving into position to start attack run at %2%3. Out."",_callsign,_coord select 0, _coord select 1],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "	[[_veh,format[""Copy that, %1 is moving into position to start attack run at %2%3. Out."",_callsign,_coord select 0, _coord select 1],""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
        "};" \n
        "" \n
        "_maxSpeed = getNumber(configfile >> ""CfgVehicles"" >> (typeof _veh) >> ""maxSpeed"");" \n
@@ -1098,7 +1098,7 @@ class FSM
            "		_veh = _this select 0;" \n
            "		_callsign = _this select 1;" \n
            "" \n
-           "[[_veh,format[""%1 is engaging enemy. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "[[_veh,format[""%1 is engaging enemy. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            "};" \n
            "" \n
            ""/*%FSM</ACTION""">*/;
@@ -1173,12 +1173,12 @@ class FSM
        "	" \n
        "	if (alive _veh) then {" \n
        "		if( isNull _target) then {" \n
-       "				[[_veh,format[""%1 cannot engage any targets in the AO. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "				[[_veh,format[""%1 cannot engage any targets in the AO. Out."",_callsign],""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
        "		} else {" \n
        "			if( (_veh ammo _weapon) == 0) then {" \n
-       "				[[_veh,format[""%1 is Winchester for %2. Returning to loiter position. Out."",_callsign,[configFile >> ""CfgWeapons"" >> _weapon] call bis_fnc_displayName],""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "				[[_veh,format[""%1 is Winchester for %2. Returning to loiter position. Out."",_callsign,[configFile >> ""CfgWeapons"" >> _weapon] call bis_fnc_displayName],""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
        "			} else {" \n
-       "				  [[_veh, format[""%1 has completed attack run, will loiter until further orders. Out."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "				  [[_veh, format[""%1 has completed attack run, will loiter until further orders. Out."",_callsign], ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
        "			};" \n
        "		};" \n
        "		" \n

@@ -35,7 +35,7 @@ _ROE = _casROELb lbData (lbCurSel _casROELb);
 
 //New Task
 _veh setVariable ["NEO_radioCasNewTask", [_task, _pos, _radius, _flyInHeight, _weapon, _ROE], true];
-[[player,format["%1, this is %2. We need immediate CAS at %3%4. Over.", _callsign, _callSignPlayer, _coord select 0, _coord select 1],"side"],"NEO_fnc_messageBroadcast",true,true] spawn BIS_fnc_MP;
+[[player,format["%1, this is %2. We need immediate CAS at %3%4. Over.", _callsign, _callSignPlayer, _coord select 0, _coord select 1],"side"],"NEO_fnc_messageBroadcast",true,false] spawn BIS_fnc_MP;
 
 //Interface
 [lbCurSel 655565] call NEO_fnc_radioRefreshUi;

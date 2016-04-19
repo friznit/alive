@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "C:\Dev Tools\PoseidonTools\Data\Packages\Bin\fsmEditor\scriptedFSM.cfg, alivearty">*/
+/*%FSM<COMPILE "C:\Program Files (x86)\Bohemia Interactive\Tools\FSM Editor Personal Edition\scriptedFSM.cfg, alivearty">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"Start",0,250,-41.455616,-237.568573,48.544384,-187.568573,0.000000,"Start"};
@@ -161,8 +161,8 @@ link78[] = {61,64};
 link79[] = {62,63};
 link80[] = {63,48};
 link81[] = {64,49};
-globals[] = {0.000000,0,0,0,0,640,480,1,81,6316128,1,-684.352539,494.065521,542.621582,-231.827179,1126,740,1};
-window[] = {0,-1,-1,-1,-1,886,1711,3403,0,1,1144};
+globals[] = {0.000000,0,0,0,0,640,480,1,81,6316128,1,-684.352539,494.065521,542.621582,-231.827179,1127,755,1};
+window[] = {0,-1,-1,-1,-1,1084,198,1890,198,1,1144};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -433,7 +433,7 @@ class FSM
        "	private ""_msg"";" \n
        "	sleep 5;" \n
        "	_msg = format [""%1 this is %2, Stand by for fire mission. Out."",_this select 2, _this select 1];" \n
-       "	[[_this select 0, _msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+       "	[[_this select 0, _msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
        "};" \n
        "" \n
        "_delay = time + 10;" \n
@@ -467,7 +467,7 @@ class FSM
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"private ""_msg"";" \n
            "_msg = format [""%1 this is %2, We are firing on target. Out."",_callsignPlayer, _callsign];" \n
-           "[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;"/*%FSM</ACTION""">*/;
+           "[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -505,7 +505,7 @@ class FSM
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"private ""_msg"";" \n
            "_msg = format [""%1 this is %2, Splash. Out."",_callsignPlayer, _callsign];" \n
-           "[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;"/*%FSM</ACTION""">*/;
+           "[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -547,7 +547,7 @@ class FSM
            ""/*%FSM</CONDITION""">*/;
           action=/*%FSM<ACTION""">*/"private ""_msg"";" \n
            "_msg = format [""%1 this is %2, Battery is rounds complete. Out."",_callsignPlayer, _callsign];" \n
-           "[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;"/*%FSM</ACTION""">*/;
+           "[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;"/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
       };
@@ -657,7 +657,7 @@ class FSM
            "" \n
            "private ""_msg"";" \n
            "_msg = format [""%1 this is %2, Battery is moving back to Base. Out"",_callsignPlayer, _callsign];" \n
-           "[[(_units select 0),_msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "[[(_units select 0),_msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            ""/*%FSM</ACTION""">*/;
         };
         /*%FSM</LINK>*/
@@ -673,14 +673,14 @@ class FSM
            "	private ""_msg"";" \n
            "	_battery setVariable [""NEO_radioArtyUnitStatus"", ""NOAMMO"", true];" \n
            "	_msg = format[""%2 this is %1, the Battery is out of ammo. Out."",_callsign, _callsignPlayer];" \n
-           "	[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "	[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            "}" \n
            "else" \n
            "{" \n
            "	private ""_msg"";" \n
            "	_battery setVariable [""NEO_radioArtyUnitStatus"", ""NONE"", true];" \n
            "	_msg = format[""%2 this is %1, the Battery is ready for fire mission. Out"",_callsign, _callsignPlayer];" \n
-           "	[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "	[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -736,7 +736,7 @@ class FSM
            "	private [""_msg""];" \n
            "	sleep 5;" \n
            "	_msg = format[""%1 this is %2, Target is out of range of battery, would you like us to move into good position? Over."",_this select 4,_this select 1];" \n
-           "	[[_this select 0, _msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "	[[_this select 0, _msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            "	" \n
            "	[_this select 0, _this select 1, _this select 3,_this select 4] spawn" \n
            "	{" \n
@@ -755,7 +755,7 @@ class FSM
            "				_unit," \n
            "				_respmsg," \n
            "				""side""" \n
-           "			],"" NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "			],"" NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            "			" \n
            "			sleep 75;" \n
            "		};" \n
@@ -777,7 +777,7 @@ class FSM
            "	private ""_msg"";" \n
            "	_msg = format [ ""%1 this is %2, Target is out of range of battery, choose another target. Out."", _this select 1, _this select 2];" \n
            "	sleep 5;" \n
-           "	[[_this select 0,_msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "	[[_this select 0,_msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -893,7 +893,7 @@ class FSM
            "	private ""_msg"";" \n
            "	_msg = format[""Copy that %1, %2 moving in range of target, stand by. Out."", _this select 2, _this select 1];" \n
            "	sleep 5;" \n
-           "	[[_this select 0, _msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "	[[_this select 0, _msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -913,7 +913,7 @@ class FSM
            "	private ""_msg"";" \n
            "	_msg = format[""Copy that %1, %2  aborting fire mission. Out."", _this select 1, _this select 2];" \n
            "	sleep 5;" \n
-           "	[[_this,_msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "	[[_this,_msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -1124,14 +1124,14 @@ class FSM
            "	_battery setVariable [""NEO_radioArtyUnitStatus"", ""NOAMMO"", true];" \n
            "	private ""_msg"";" \n
            "	_msg = format [""%1 this is %2, Battery is at Base and out of ammo. Out."",_callsignPlayer, _callsign];" \n
-           "	[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "	[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            "}" \n
            "else" \n
            "{" \n
            "	_battery setVariable [""NEO_radioArtyUnitStatus"", ""NONE"", true];" \n
            "	private ""_msg"";" \n
            "	_msg = format [""%1 this is %2, Battery is at Base and ready for fire mission. Out."",_callsignPlayer, _callsign];" \n
-           "	[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,true] spawn BIS_fnc_MP;" \n
+           "	[[(_units select 0), _msg, ""side""],""NEO_fnc_messageBroadcast"",true,false] spawn BIS_fnc_MP;" \n
            "};" \n
            ""/*%FSM</ACTION""">*/;
         };
@@ -1312,7 +1312,9 @@ class FSM
   initState="Start";
   finalStates[] =
   {
-    "__6"    ,"__8"    ,"__13"
+    "__6",
+    "__8",
+    "__13",
   };
 };
 /*%FSM</COMPILE>*/
