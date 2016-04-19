@@ -1028,7 +1028,7 @@ switch(_operation) do {
 		                                
 		                                private ["_building","_road"];
 		                                
-		                                _buildings = nearestObjects [_center,["House_F"],_size];
+                                        _buildings = [_center,_size] call ALIVE_fnc_getEnterableHouses;
 		                                _roads = _center nearRoads _size;
 		                                _faction = _factions call BIS_fnc_SelectRandom;
 		                                _dominantFaction = [_center, _size] call ALiVE_fnc_getDominantFaction;
