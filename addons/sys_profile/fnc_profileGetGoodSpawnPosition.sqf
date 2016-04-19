@@ -158,7 +158,7 @@ switch(_type) do {
 					_positionSeries = [_spawnPosition,200,10] call ALIVE_fnc_getSeriesRoadPositions;
 
 					if(count _positionSeries > 0) then {
-						_spawnPosition = _positionSeries call BIS_fnc_selectRandom;
+						_spawnPosition = selectRandom _positionSeries;
 					};
 
 					if(surfaceIsWater _spawnPosition) then {
@@ -175,10 +175,10 @@ switch(_type) do {
 
                     if (!isnil "_roadsConnected" && {count _roadsConnected > 1}) then {
                         _roads = _roadsConnected;
-                        _direction = [_roads select 0, _roads select 1] call BIS_fnc_DirTo;
+                        _direction = (_roads select 0) getRelDir (_roads select 1);
                     } else {
                         if (count _roads > 1) then {
-                            _direction = [_roads select 0, _roads select 1] call BIS_fnc_DirTo;
+                            _direction = (_roads select 0) getRelDir (_roads select 1);
                         };
                     };
 
@@ -225,9 +225,9 @@ switch(_type) do {
                             _vehicleClass = _vehicleProfile select 2 select 11; //[_vehicleProfile,"vehicleClass"] call ALIVE_fnc_hashGet;
 
 						    if(_inAir) then {
-						        _position = [_spawnPosition, (100 * ((_forEachIndex)+1)), _direction] call BIS_fnc_relPos;
+						        _position = _spawnPosition getPos [(100 * ((_forEachIndex)+1)), _direction];
 						    }else{
-                                _position = [_spawnPosition, (20 * ((_forEachIndex)+1)), _direction] call BIS_fnc_relPos;
+                                _position = _spawnPosition getPos [(20 * ((_forEachIndex)+1)), _direction];
 						    };
 
                             //["GROUP POS: %1",_position] call ALIVE_fnc_dump;

@@ -54,7 +54,7 @@ _damages = [];
 
 {
     _positions pushback _position;
-    _ranks pushback (_unitRanks call BIS_fnc_selectRandom);
+    _ranks pushback (selectRandom _unitRanks);
     _damages pushback 0;
 } foreach _entityClasses;
 

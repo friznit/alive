@@ -34,7 +34,7 @@ _debug = if(count _this > 3) then {_this select 3} else {false};
 
 _players = [];
 if (isMultiplayer) then {
-	_players = [] call BIS_fnc_listPlayers;
+	_players = allPlayers;
 } else {
     _players = [player];
 };
@@ -497,7 +497,7 @@ if!(isNil "_registeredProfile") then {
         };
         case "DISCONNECT":{
             //Identify disconnected players and remove the disconnected ones
-            _players = +([] call BIS_fnc_listPlayers);
+            _players = +allPlayers;
             _playerIndexes = +(_profileIndex select 1);
 
             {_uid = _x; if (({(getPlayerUID _x) == _uid} count _players == 0)) then {["DISCONNECT",_uid] call ALIVE_fnc_createProfilesFromPlayers}} foreach _playerIndexes;

@@ -139,13 +139,15 @@ nil
 #define SUPERCLASS ALIVE_fnc_profile
 #define MAINCLASS ALIVE_fnc_profileEntity
 
-private ["_logic","_operation","_args","_result","_deleteMarkers","_createMarkers"];
+private ["_result","_deleteMarkers","_createMarkers"];
 
 TRACE_1("profileEntity - input",_this);
 
-_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
-_operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+params [
+    ["_logic", objNull, [objNull,[]]],
+    ["_operation", "", [""]],
+    ["_args", objNull, [objNull,[],"",0,true,false]]
+];
 _result = true;
 
 #define MTEMPLATE "ALiVE_PROFILEENTITY_%1"
@@ -649,10 +651,12 @@ switch(_operation) do {
 				private ["_class","_position","_damage","_rank","_unitIndex","_unitClasses","_positions","_damages","_ranks"];
 
 				if(typeName _args == "ARRAY") then {
-						_class = _args select 0;
-						_position = [_args, 1, [0,0,0], [[]]] call BIS_fnc_param;
-						_damage = [_args, 2, 0, [0]] call BIS_fnc_param;
-						_rank = [_args, 3, "PRIVATE", [""]] call BIS_fnc_param;
+                        _args params [
+                            "_class",
+                            ["_position", [0,0,0], [[]]],
+                            ["_damage", 0, [0]],
+                            ["_rank", "PRIVATE", [""]]
+                        ];
 						_unitClasses = _logic select 2 select 11; //[_logic,"unitClasses"] call ALIVE_fnc_hashGet;
 						_positions = _logic select 2 select 18; //[_logic,"positions"] call ALIVE_fnc_hashGet;
 						_damages = _logic select 2 select 19; //[_logic,"damages"] call ALIVE_fnc_hashGet;
@@ -870,7 +874,7 @@ switch(_operation) do {
                     
                     // select a random formation
 					_formations = ["COLUMN","STAG COLUMN","WEDGE","ECH LEFT","ECH RIGHT","VEE","LINE"];
-					_formation = _formations call BIS_fnc_selectRandom;
+					_formation = selectRandom _formations;
 					_group setFormation _formation; 
 
 					// determine a suitable spawn position
@@ -930,8 +934,8 @@ switch(_operation) do {
                                 _parachute setvelocity [0,0,-1];
 
                                 if (time - (missionnamespace getvariable ["bis_fnc_curatorobjectedited_paraSoundTime",0]) > 0) then {
-                                    _soundFlyover = ["BattlefieldJet1","BattlefieldJet2"] call bis_fnc_selectrandom;
-                                    [[_parachute,_soundFlyover,"say3d"],"bis_fnc_sayMessage"] call bis_fnc_mp;
+                                    _soundFlyover = selectRandom ["BattlefieldJet1","BattlefieldJet2"];
+                                    [_parachute,_soundFlyover,"say3d"] remoteExec ["bis_fnc_sayMessage"];
                                     missionnamespace setvariable ["bis_fnc_curatorobjectedited_paraSoundTime",time + 10]
                                 };
 
@@ -1166,7 +1170,7 @@ switch(_operation) do {
 				"_profileID","_profileSide","_profileType","_profileActive","_vehiclesInCommandOf","_typePrefix","_label",
 				"_vehicleProfile","_vehicleMarkers"];
 
-				_alpha = [_args, 0, 0.5, [1]] call BIS_fnc_param;
+				_alpha = _args param [0, 0.5, [1]];
 				
 				_markers = [];
 

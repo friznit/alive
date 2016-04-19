@@ -23,7 +23,7 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_debug","_groups","_vehicles","_entityCount","_vehicleCount",
+private ["_entityCount","_vehicleCount",
 "_group","_leader","_units","_ignore","_inVehicle","_unitClasses","_positions","_ranks","_damages",
 "_vehicle","_entityID","_profileEntity","_profileWaypoint","_vehicleID","_profileVehicle","_profileVehicleAssignments",
 "_assignments","_vehicleAssignments","_vehicleClass","_vehicleKind","_position","_waypoints","_playerVehicle","_unitBlackist",
@@ -31,9 +31,11 @@ private ["_debug","_groups","_vehicles","_entityCount","_vehicleCount",
 
 if (isnil "_this") then {_this = []};
 
-_debug = [_this, 0, false, [true]] call BIS_fnc_param;
-_groups = [_this, 1, allGroups, [[]]] call BIS_fnc_param;
-_vehicles = [_this, 2, vehicles, [[]]] call BIS_fnc_param;
+params [
+    ["_debug", false, [true]],
+    ["_groups", allGroups, [[]]],
+    ["_vehicles", vehicles, [[]]]
+];
 
 _entityCount = 0;
 _vehicleCount = 0;

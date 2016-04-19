@@ -162,7 +162,7 @@ if(count _config > 0) then {
 
 		_vehicleKind = _vehicleClass call ALIVE_fnc_vehicleGetKindOf;
 
-		_vehiclePosition = [_position, (20 * ((_forEachIndex)+1)), random(360)] call BIS_fnc_relPos;
+		_vehiclePosition = _position getPos [(20 * ((_forEachIndex)+1)), random(360)];
 
 		_profileVehicle = [nil, "create"] call ALIVE_fnc_profileVehicle;
 		[_profileVehicle, "init"] call ALIVE_fnc_profileVehicle;

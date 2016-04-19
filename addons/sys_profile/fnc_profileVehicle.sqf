@@ -87,13 +87,15 @@ nil
 #define SUPERCLASS ALIVE_fnc_profile
 #define MAINCLASS ALIVE_fnc_profileVehicle
 
-private ["_logic","_operation","_args","_result","_deleteMarkers","_createMarkers"];
+private ["_result","_deleteMarkers","_createMarkers"];
 
 TRACE_1("profileVehicle - input",_this);
 
-_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
-_operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+params [
+    ["_logic", objNull, [objNull,[]]],
+    ["_operation", "", [""]],
+    ["_args", objNull, [objNull,[],"",0,true,false]]
+];
 _result = true;
 
 #define MTEMPLATE "ALiVE_PROFILEVEHICLE_%1"
@@ -513,8 +515,8 @@ switch(_operation) do {
                         _parachute setvelocity [0,0,-1];
 
                         if (time - (missionnamespace getvariable ["bis_fnc_curatorobjectedited_paraSoundTime",0]) > 0) then {
-                            _soundFlyover = ["BattlefieldJet1","BattlefieldJet2"] call bis_fnc_selectrandom;
-                            [[_parachute,_soundFlyover,"say3d"],"bis_fnc_sayMessage"] call bis_fnc_mp;
+                            _soundFlyover = selectRandom ["BattlefieldJet1","BattlefieldJet2"];
+                            [_parachute,_soundFlyover,"say3d"] remoteExec ["bis_fnc_sayMessage"];
                             missionnamespace setvariable ["bis_fnc_curatorobjectedited_paraSoundTime",time + 10]
                         };
 
@@ -681,7 +683,7 @@ switch(_operation) do {
 		case "createMarker": {
 				private ["_markers","_m","_position","_profileID","_color","_icon","_alpha","_profileSide","_vehicleType","_profileActive","_typePrefix"];
 				
-				_alpha = [_args, 0, 0.5, [1]] call BIS_fnc_param;
+				_alpha = _args param [0, 0.5, [1]];
 				
 				_markers = [];
 

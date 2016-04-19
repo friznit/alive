@@ -206,14 +206,14 @@ _totalEntities = 0;
 	                    					
 						switch (_type) do {
 							case "MOVE" : {
-								_direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
-								_newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;
+								_direction = _currentPosition getDir _destination;
+								_newPosition = _currentPosition getPos [_moveDistance, _direction];
 								_handleWPcomplete = {};
 			
 							};
 							case "CYCLE" : {
-								_direction = [_currentPosition, _destination] call BIS_fnc_dirTo;
-								_newPosition = [_currentPosition, _moveDistance, _direction] call BIS_fnc_relPos;
+								_direction = _currentPosition getDir _destination;
+								_newPosition = _currentPosition getPos [_moveDistance, _direction];
 								_handleWPcomplete = {
 									_waypoints = _waypoints + _waypointsCompleted;
 									_waypointsCompleted = [];

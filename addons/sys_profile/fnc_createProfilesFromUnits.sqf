@@ -23,18 +23,20 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_createMode","_createModeObjects","_debug","_groups","_vehicles","_entityCount","_vehicleCount","_createModeGroups","_createModeVehicles",
+private ["_entityCount","_vehicleCount","_createModeGroups","_createModeVehicles",
 "_group","_leader","_units","_ignore","_inVehicle","_unitClasses","_positions","_ranks","_damages","_unitBlacklisted","_initCommand",
 "_vehicle","_entityID","_profileEntity","_profileWaypoint","_vehicleID","_profileVehicle","_profileVehicleAssignments",
 "_assignments","_vehicleAssignments","_vehicleClass","_vehicleKind","_position","_waypoints","_playerVehicle","_unitBlackist","_vehicleBlacklist","_object"];
 
 if (isnil "_this") then {_this = []};
 
-_createMode = [_this, 0, "NONE", [""]] call BIS_fnc_param;
-_createModeObjects = [_this, 1, [], [[]]] call BIS_fnc_param;
-_debug = [_this, 2, false, [true]] call BIS_fnc_param;
-_groups = [_this, 3, allGroups, [[]]] call BIS_fnc_param;
-_vehicles = [_this, 4, vehicles, [[]]] call BIS_fnc_param;
+params [
+    ["_createMode", "NONE", [""]],
+    ["_createModeObjects", [], [[]]],
+    ["_debug", false, [true]],
+    ["_groups", allGroups, [[]]],
+    ["_vehicles", vehicles, [[]]]
+];
 
 _entityCount = 0;
 _vehicleCount = 0;
