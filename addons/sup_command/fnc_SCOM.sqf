@@ -248,6 +248,7 @@ switch(_operation) do {
 
             [_commandState,"intelSelectedIMINTSource",objNull] call ALIVE_fnc_hashSet;
             [_commandState,"intelIMINTCamera",objNull] call ALIVE_fnc_hashSet;
+            [_commandState,"intelIMINTZoomLevel", 0.1] call ALIVE_fnc_hashSet;
 
             [_commandState,"intelOPCOMOptions",[]] call ALIVE_fnc_hashSet;
             [_commandState,"intelOPCOMValues",[]] call ALIVE_fnc_hashSet;
@@ -662,7 +663,7 @@ switch(_operation) do {
 
                         // show waiting until response comes back
 
-                        [_logic, "enableIntelWaiting"] call MAINCLASS;
+                        [_logic, "enableIntelWaiting", true] call MAINCLASS;
 
                     };
                 };
@@ -705,7 +706,7 @@ switch(_operation) do {
 
                         _back ctrlSetText "Back";
 
-                        _back ctrlSetEventHandler ["MouseButtonClick", "['INTEL_IMINT_CANCEL_IMAGE_VIEWING',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+                        _back ctrlSetEventHandler ["MouseButtonClick", "['INTEL_RESET',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
 
                     };
 
@@ -735,11 +736,6 @@ switch(_operation) do {
                     _renderTarget = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelRenderTarget);
                     _renderTarget ctrlShow false;
 
-                    _back = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
-                    _back ctrlShow true;
-
-                    _back ctrlSetEventHandler ["MouseButtonClick", "['INTEL_RESET',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
-
                     // open IMINT source selection screen
 
                     _playerID = getPlayerUID player;
@@ -757,9 +753,14 @@ switch(_operation) do {
                         [_event] remoteExecCall ["ALIVE_fnc_addEventToServer",2];
                     };
 
+                    _back = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                    _back ctrlShow true;
+
+                    _back ctrlSetEventHandler ["MouseButtonClick", "['INTEL_RESET',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
                     // show waiting until response comes back
 
-                    [_logic, "enableIntelWaiting"] call MAINCLASS;
+                    [_logic, "enableIntelWaiting", true] call MAINCLASS;
 
                 };
 
@@ -785,9 +786,143 @@ switch(_operation) do {
 
                 };
 
-                case "INTEL_IMINT_EFFECT_SELECT": {
+                case "INTEL_IMINT_DISPLAY_CAMERA_OPTION_CATEGORIES": {
 
-                    private ["_commandState","_effect"];
+                    private ["_intelTypeTitle","_intelTypeList","_index","_back"];
+
+                    _intelTypeTitle = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeTitle);
+                    _intelTypeTitle ctrlShow true;
+
+                    _intelTypeTitle ctrlSetText "Select camera option category";
+
+                    _intelTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeList);
+                    _intelTypeList ctrlShow true;
+
+                    lbClear _intelTypeList;
+                    _intelTypeList lbSetCurSel -1;
+
+                    // add camera effect options to list
+
+                    _index = _intelTypeList lbAdd "Zoom";
+                    _intelTypeList lbSetData [_index,"zoom"];
+
+                    _index = _intelTypeList lbAdd "Effects";
+                    _intelTypeList lbSetData [_index,"effects"];
+
+                    _intelTypeList ctrlSetEventHandler ["LBSelChanged", "['INTEL_IMINT_CAMERA_OPTION_CATEGORY_SELECT',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                    _back = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                    _back ctrlShow true;
+
+                    _back ctrlSetText "Back";
+
+                    _back ctrlSetEventHandler ["MouseButtonClick", "['INTEL_IMINT_CANCEL_IMAGE_VIEWING',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                };
+
+                case "INTEL_IMINT_CAMERA_OPTION_CATEGORY_SELECT": {
+
+                    private ["_category","_intelTypeTitle","_intelTypeList"];
+
+                    (_args select 0) params ["_control","_index","_intelTypeList","_back"];
+
+                    _category = _control lbData _index;
+
+                    _intelTypeTitle = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeTitle);
+                    _intelTypeTitle ctrlShow true;
+
+                    _intelTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeList);
+                    _intelTypeList ctrlShow true;
+
+                    switch (_category) do {
+
+                        case "zoom": {
+
+                            _intelTypeTitle ctrlSetText "Select zoom option";
+
+                            lbClear _intelTypeList;
+                            _intelTypeList lbSetCurSel -1;
+
+                            _index = _intelTypeList lbAdd "Zoom in";
+                            _intelTypeList lbSetData [_index,"zoom_in"];
+
+                            _index = _intelTypeList lbAdd "Zoom Out";
+                            _intelTypeList lbSetData [_index,"zoom_out"];
+
+                            _intelTypeList ctrlSetEventHandler ["LBSelChanged", "['INTEL_IMINT_CAMERA_ZOOM_SELECT',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                        };
+
+                        case "effects": {
+
+                            _intelTypeTitle ctrlSetText "Select camera effect";
+
+                            lbClear _intelTypeList;
+                            _intelTypeList lbSetCurSel -1;
+
+                            _index = _intelTypeList lbAdd "Normal";
+                            _intelTypeList lbSetData [_index,"normal"];
+
+                            _index = _intelTypeList lbAdd "Night Vision";
+                            _intelTypeList lbSetData [_index,"nvg"];
+
+                            _index = _intelTypeList lbAdd "Thermal";
+                            _intelTypeList lbSetData [_index,"thermal"];
+
+                            _intelTypeList ctrlSetEventHandler ["LBSelChanged", "['INTEL_IMINT_CAMERA_EFFECT_SELECT',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                        };
+
+                    };
+
+                    _back = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+                    _back ctrlShow true;
+                    _back ctrlSetText "Back";
+                    _back ctrlSetEventHandler ["MouseButtonClick", "['INTEL_IMINT_DISPLAY_CAMERA_OPTION_CATEGORIES',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
+                };
+
+                case "INTEL_IMINT_CAMERA_ZOOM_SELECT": {
+
+                    private ["_commandState","_zoomType","_cam","_currentZoom"];
+
+                    (_args select 0) params ["_control","_index"];
+
+                    _commandState = [_logic,"commandState"] call MAINCLASS;
+
+                    _zoomType = _control lbData _index;
+                    _cam = [_commandState,"intelIMINTCamera"] call ALIVE_fnc_hashGet;
+                    _currentZoom = [_commandState,"intelIMINTZoomLevel"] call ALIVE_fnc_hashGet;
+
+                    switch (_zoomType) do {
+
+                        case "zoom_in": {
+
+                            _cam camSetFov (_currentZoom - 0.1);
+                            _currentZoom = _currentZoom - 0.1;
+
+                        };
+
+                        case "zoom_out": {
+
+                            if (_currentZoom < 1) then {
+                                _cam camSetFov (_currentZoom + 0.1);
+                                _currentZoom = _currentZoom + 0.1;
+                            };
+
+                        };
+
+                    };
+
+                    _cam camCommit 0;
+
+                    [_commandState,"intelIMINTZoomLevel", _currentZoom] call ALIVE_fnc_hashSet;
+
+                };
+
+                case "INTEL_IMINT_CAMERA_EFFECT_SELECT": {
+
+                    private ["_effect"];
 
                     (_args select 0) params ["_control","_index"];
 
@@ -858,7 +993,7 @@ switch(_operation) do {
 
                         // show waiting until response comes back
 
-                        [_logic, "enableIntelWaiting"] call MAINCLASS;
+                        [_logic, "enableIntelWaiting", true] call MAINCLASS;
 
                     };
                 };
@@ -918,7 +1053,7 @@ switch(_operation) do {
 
                         // show waiting until response comes back
 
-                        [_logic, "enableOpsWaiting"] call MAINCLASS;
+                        [_logic, "enableOpsWaiting", true] call MAINCLASS;
 
                     };
                 };
@@ -994,7 +1129,8 @@ switch(_operation) do {
                         _listValues = [_commandState,"opsGroupsValues"] call ALIVE_fnc_hashGet;
 
                         _selectedIndex = -1;
-						_dist = 40; // (ctrlMapScale _map) * 77
+						_dist = 40; // (ctrlMapScale _map) * 77 // ((ctrlMapScale _map) * 65) + (worldSize / 650) // 40
+                        hint "";hint format ["Testing distance: %1", _dist];
                         {
                             _position = _x select 1;
                             if(_cursorPosition distance2D _position < _dist) exitWith {
@@ -1013,8 +1149,6 @@ switch(_operation) do {
 
                             [_commandState,"opsGroupsSelectedIndex",_selectedIndex] call ALIVE_fnc_hashSet;
                             [_commandState,"opsGroupsSelectedValue",_selectedValue] call ALIVE_fnc_hashSet;
-
-                            //[_logic,"commandState",_commandState] call MAINCLASS;
 
                         };
 
@@ -1179,7 +1313,7 @@ switch(_operation) do {
 
                     // show waiting until response comes back
 
-                    [_logic, "enableOpsWaiting"] call MAINCLASS;
+                    [_logic, "enableOpsWaiting", true] call MAINCLASS;
 
                 };
 
@@ -1590,7 +1724,7 @@ switch(_operation) do {
 
                     // show waiting until response comes back
 
-                    [_logic, "enableOpsWaiting"] call MAINCLASS;
+                    [_logic, "enableOpsWaiting", true] call MAINCLASS;
 
                 };
 
@@ -1625,7 +1759,7 @@ switch(_operation) do {
 
                     // show waiting until response comes back
 
-                    [_logic, "enableOpsWaiting"] call MAINCLASS;
+                    [_logic, "enableOpsWaiting", true] call MAINCLASS;
 
                 };
 
@@ -1676,7 +1810,7 @@ switch(_operation) do {
 
                     // show waiting until response comes back
 
-                    [_logic, "enableOpsWaiting"] call MAINCLASS;
+                    [_logic, "enableOpsWaiting", true] call MAINCLASS;
 
                 };
 
@@ -1707,15 +1841,28 @@ switch(_operation) do {
 
         private ["_status","_intelTypeList"];
 
-        // show waiting text and disable selection lists for intel
-
         _status = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelStatus);
-        _status ctrlShow true;
 
-        _status ctrlSetText "Waiting...";
+        // show waiting text and disable selection lists for ops
 
-        _intelTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeList);
-        _intelTypeList ctrlShow false;
+        if (typename _args == "BOOL") then {
+
+            if (_args) then {
+
+                _status ctrlShow true;
+                _status ctrlSetText "Waiting...";
+
+                _intelTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeList);
+                _intelTypeList ctrlShow false;
+
+            } else {
+
+                _status ctrlShow false;
+                _status ctrlSetText "";
+
+            };
+
+        };
 
     };
 
@@ -2215,15 +2362,6 @@ switch(_operation) do {
         _status = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelStatus);
         _status ctrlShow false;
 
-        // display the reset button so the user can restart
-
-        _back = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
-        _back ctrlShow true;
-
-        _back ctrlSetText "Back";
-
-        _back ctrlSetEventHandler ["MouseButtonClick", "['INTEL_RESET',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
-
         if(typeName _args == "ARRAY") then {
 
             _listValues = [];
@@ -2261,6 +2399,16 @@ switch(_operation) do {
             [_commandState,"intelListValues", _listValues] call ALIVE_fnc_hashSet;
             _intelTypeList ctrlSetEventHandler ["LBSelChanged", "['INTEL_IMINT_SOURCE_SELECT',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
         };
+
+        // display the reset button so the user can restart
+
+        _back = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_SubMenuBack);
+        _back ctrlShow true;
+
+        _back ctrlSetText "Back";
+
+        _back ctrlSetEventHandler ["MouseButtonClick", "['INTEL_RESET',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+
     };
 
     case "enableIntelOPCOMObjectives": {
@@ -2476,12 +2624,25 @@ switch(_operation) do {
 
         private ["_status"];
 
+        _status = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelStatus);
+
         // show waiting text and disable selection lists for ops
 
-        _status = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelStatus);
-        _status ctrlShow true;
+        if (typename _args == "BOOL") then {
 
-        _status ctrlSetText "Waiting...";
+            if (_args) then {
+
+                _status ctrlShow true;
+                _status ctrlSetText "Waiting...";
+
+            } else {
+
+                _status ctrlShow false;
+                _status ctrlSetText "";
+
+            };
+
+        };
 
     };
 
@@ -2663,7 +2824,7 @@ switch(_operation) do {
 
         // show waiting until response comes back
 
-        [_logic, "enableOpsWaiting"] call MAINCLASS;
+        [_logic, "enableOpsWaiting", true] call MAINCLASS;
 
     };
 
@@ -2752,15 +2913,8 @@ switch(_operation) do {
         // populate group list and map markers
 
         if(typeName _args == "ARRAY") then {
-        
-            [_logic,"enableOpsWaiting"] call MAINCLASS;
 
             _commandState = [_logic,"commandState"] call MAINCLASS;
-
-            _status = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelStatus);
-            _status ctrlShow false;
-            
-            _status ctrlSetText "";
 
             _selectedSide = _args select 1;
             _groupData = _args select 2;
@@ -3054,6 +3208,11 @@ switch(_operation) do {
 
                 _editMap ctrlSetEventHandler ["MouseButtonDown", "['OP_EDIT_MAP_CLICK',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
 
+                _status = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelStatus);
+                _status ctrlShow true;
+
+                _status ctrlSetText "";
+
             }else{
 
                 _status = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelStatus);
@@ -3096,7 +3255,7 @@ switch(_operation) do {
 
         // show waiting until response comes back
 
-        [_logic, "enableOpsWaiting"] call MAINCLASS;
+        [_logic, "enableOpsWaiting", true] call MAINCLASS;
 
     };
 
@@ -3880,7 +4039,7 @@ switch(_operation) do {
 
     case "intelRenderSourceToTarget": {
 
-        private ["_commandState","_renderTarget","_cam"];
+        private ["_commandState","_renderTarget","_cam","_boundingBoxReal","_height"];
 
         _commandState = [_logic,"commandState"] call MAINCLASS;
 
@@ -3904,42 +4063,25 @@ switch(_operation) do {
         _cam camSetTarget _target;
         _cam cameraEffect ["Internal", "Back", "ALiVE_C2ISTAR_IMINT_CAM"];
 
-        _cam attachTo [_source, [0,0,-2.75]];
+        _boundingBoxReal = boundingBoxReal _source;
+        _height = abs (((_boundingBoxReal select 1) select 2) - ((_boundingBoxReal select 0) select 2));
+        
+        _cam attachTo [_source, [0,0,- (_height * 0.75)]];
         _cam camCommit 0;
 
         [_commandState,"intelIMINTCamera", _cam] call ALIVE_fnc_hashSet;
+        [_commandState,"intelIMINTZoomLevel", 0.1] call ALIVE_fnc_hashSet;
 
         // render cam image to tablet
 
         _renderTarget ctrlSetText "#(argb,512,512,1)r2t(ALiVE_C2ISTAR_IMINT_CAM,1.0)";
 
         // clear ui controls
-        _intelTypeTitle = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeTitle);
-        _intelTypeTitle ctrlShow true;
-
-        _intelTypeTitle ctrlSetText "Select camera effect";
 
         _map = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_MainMap);
         _map ctrlShow false;
 
-        _intelTypeList = SCOM_getControl(SCOMTablet_CTRL_MainDisplay,SCOMTablet_CTRL_IntelTypeList);
-        _intelTypeList ctrlShow true;
-
-        lbClear _intelTypeList;
-        _intelTypeList lbSetCurSel -1;
-
-        // add camera effect options to list
-
-        _index = _intelTypeList lbAdd "Normal";
-        _intelTypeList lbSetData [_index,"normal"];
-
-        _index = _intelTypeList lbAdd "Night Vision";
-        _intelTypeList lbSetData [_index,"nvg"];
-
-        _index = _intelTypeList lbAdd "Thermal";
-        _intelTypeList lbSetData [_index,"thermal"];
-
-        _intelTypeList ctrlSetEventHandler ["LBSelChanged", "['INTEL_IMINT_EFFECT_SELECT',[_this]] call ALIVE_fnc_SCOMTabletOnAction"];
+        ["INTEL_IMINT_DISPLAY_CAMERA_OPTION_CATEGORIES",[]] call ALIVE_fnc_SCOMTabletOnAction;
 
     };
 
