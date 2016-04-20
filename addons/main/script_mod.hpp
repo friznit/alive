@@ -2,7 +2,7 @@
 #define PREFIX ALiVE
 
 // TODO: Consider Mod-wide or Component-narrow versions (or both, depending on wishes!)
-#define MAJOR 1
+#define MAJOR 0
 #define MINOR 0
 #define PATCHLVL 0
 // BUILD should be YYMMDDR eg 1311211
@@ -14,7 +14,7 @@
 #define VERSION_AR MAJOR,MINOR,PATCHLVL,BUILD
 
 // MINIMAL required version for the Mod. Components can specify others..
-#define REQUIRED_VERSION 1.54
+#define REQUIRED_VERSION 1.56
 
 /*
  // Defined DEBUG_MODE_NORMAL in a few CBA_fncs to prevent looped logging :)
