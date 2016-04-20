@@ -123,13 +123,15 @@ Peer Reviewed:
 #define C2_getSelData(ctrl) (lbData[##ctrl,(lbCurSel ##ctrl)])
 
 
-private ["_logic","_operation","_args","_result"];
+private ["_result"];
 
 TRACE_1("C2ISTAR - input",_this);
 
-_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
-_operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+params [
+    ["_logic", objNull, [objNull]],
+    ["_operation", "", [""]],
+    ["_args", objNull, [objNull,[],"",0,true,false]]
+];
 _result = true;
 
 switch(_operation) do {
@@ -772,7 +774,7 @@ switch(_operation) do {
                 _player = [_playerID] call ALIVE_fnc_getPlayerByUID;
 
                 if !(isNull _player) then {
-                    [_event,"ALIVE_fnc_C2TabletEventToClient",_player,false,false] spawn BIS_fnc_MP;
+                    _event remoteExec ["ALIVE_fnc_C2TabletEventToClient", _player];
                 };
 
             }else{
@@ -1084,7 +1086,7 @@ switch(_operation) do {
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                            [_event] remoteExec ["ALIVE_fnc_addEventToServer", 2];
                             //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                         };
 
@@ -1394,7 +1396,7 @@ switch(_operation) do {
                     if(isServer) then {
                         [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                     }else{
-                        [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                        [_event] remoteExec ["ALIVE_fnc_addEventToServer", 2];
                         //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                     };
 
@@ -1512,7 +1514,7 @@ switch(_operation) do {
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                            [_event] remoteExec ["ALIVE_fnc_addEventToServer", 2];
                             //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                         };
 
@@ -1909,7 +1911,7 @@ switch(_operation) do {
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                            [_event] remoteExec ["ALIVE_fnc_addEventToServer", 2];
                             //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                         };
 
@@ -2002,7 +2004,7 @@ switch(_operation) do {
                         if(isServer) then {
                             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
                         }else{
-                            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+                            [_event] remoteExec ["ALIVE_fnc_addEventToServer", 2];
                             //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
                         };
 
@@ -2033,7 +2035,7 @@ switch(_operation) do {
             [ALIVE_eventLog, "addEvent",_event] call ALIVE_fnc_eventLog;
         }else{
             //["server","ALIVE_ADD_EVENT",[[_event],"ALIVE_fnc_addEventToServer"]] call ALiVE_fnc_BUS;
-            [[_event],"ALIVE_fnc_addEventToServer",false,false] spawn BIS_fnc_MP;
+            [_event] remoteExec ["ALIVE_fnc_addEventToServer", 2];
         };
     };
     case "updateCurrentTaskList": {

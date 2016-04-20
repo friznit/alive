@@ -35,13 +35,15 @@ nil
 #define MAINCLASS ALIVE_fnc_taskHandlerClient
 #define MTEMPLATE "ALiVE_TASKHANDLER_%1"
 
-private ["_logic","_operation","_args","_result"];
+private ["_result"];
 
 TRACE_1("taskHandlerClient - input",_this);
 
-_logic = [_this, 0, [], [[]]] call BIS_fnc_param;
-_operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+params [
+    ["_logic", [], [[]]],
+    ["_operation", "", [""]],
+    ["_args", objNull, [objNull,[],"",0,true,false]]
+];
 //_result = true;
 
 if (count _logic == 0) exitwith {};
