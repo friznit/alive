@@ -32,12 +32,14 @@ Peer Review:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_master","_redundant","_err","_result","_nodes_out","_nodes_x"];
+private ["_err","_result","_nodes_out","_nodes_x"];
 
 TRACE_1("consolidateClusters - input",_this);
 
-_master = [_this, 0, [], [[]]] call BIS_fnc_param;
-_redundant = [_this, 1, [], [[]]] call BIS_fnc_param;
+params [
+    ["_master", [], [[]]],
+    ["_redundant", [], [[]]]
+];
 
 _err = "objects provided not valid";
 ASSERT_DEFINED("_master", _err);

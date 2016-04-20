@@ -28,7 +28,7 @@ Wolffy.au
 ---------------------------------------------------------------------------- */
 
 private ["_nodes","_err","_xmin","_ymin","_xmax","_ymax","_result"];
-_nodes = [_this, 0, [], [[]]] call BIS_fnc_param;
+_nodes = _this param [0, [], [[]]];
 _err = format["cluster nodes array not valid - %1",_nodes];
 ASSERT_DEFINED("_nodes",_err);
 ASSERT_TRUE(typeName _nodes == "ARRAY",_err);

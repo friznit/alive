@@ -43,11 +43,13 @@ nil
 #define MAINCLASS ALIVE_fnc_cluster
 #define MTEMPLATE "ALiVE_CLUSTER_%1_%2"
 
-private ["_logic","_operation","_args","_createMarkers","_deleteMarkers","_nodes","_center","_result"];
+private ["_createMarkers","_deleteMarkers","_nodes","_center","_result"];
 
-_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
-_operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+params [
+    ["_logic", objNull, [objNull,[]]],
+    ["_operation", "", [""]],
+    ["_args", objNull, [objNull,[],"",0,true,false]]
+];
 
 TRACE_2("cluster - input",_operation,_args);
 

@@ -30,13 +30,12 @@ Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-
-private ["_clusters","_type","_priority","_debugColour"];
-
-_clusters = [_this, 0, [], [[]]] call BIS_fnc_param;
-_type = [_this, 1, "", [""]] call BIS_fnc_param;
-_priority = [_this, 2, 0, [0]] call BIS_fnc_param;
-_debugColour = [_this, 3, "ColorRed", ["String"]] call BIS_fnc_param;
+params [
+    ["_clusters", [], [[]]],
+    ["_type", "", [""]],
+    ["_priority", 0, [0]],
+    ["_debugColour", "ColorRed", ["String"]]
+];
 
 ["Setting targets"] call ALIVE_fnc_dump;
 

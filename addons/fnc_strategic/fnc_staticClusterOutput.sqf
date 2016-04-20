@@ -29,11 +29,13 @@ nil
 ---------------------------------------------------------------------------- */
 
 
-private ["_clusters","_arrayName","_count","_result","_state","_nodes"];
+private ["_result","_state","_nodes"];
 
-_clusters = [_this, 0, [], [[]]] call BIS_fnc_param;
-_arrayName = [_this, 1, "", [""]] call BIS_fnc_param;
-_count = [_this, 2, 0, [0]] call BIS_fnc_param;
+params [
+    ["_clusters", [], [[]]],
+    ["_arrayName", "", [""]],
+    ["_count", 0, [0]]
+];
 
 _result = format['%1 = [] call ALIVE_fnc_hashCreate;',_arrayName];
 {

@@ -28,12 +28,13 @@ nil
 ---------------------------------------------------------------------------- */
 
 
-private ["_clusters","_sizeFilter","_priorityFilter","_clustersCopy","_priority",
-"_size","_nodes","_newNodes","_cluster"];
+private ["_clustersCopy","_priority","_size","_nodes","_newNodes","_cluster"];
 
-_clusters = [_this, 0, [], [[]]] call BIS_fnc_param;
-_sizeFilter = [_this, 1, 0, [0]] call BIS_fnc_param;
-_priorityFilter = [_this, 2, 0, [0]] call BIS_fnc_param;
+params [
+    ["_clusters", [], [[]]],
+    ["_sizeFilter", 0, [0]],
+    ["_priorityFilter", 0, [0]]
+];
 
 _clustersCopy = [];
 

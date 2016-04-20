@@ -25,10 +25,12 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_nodes","_types","_err","_err1","_err2","_buildings","_node","_model","_isBuilding","_result"];
+private ["_err","_err1","_err2","_buildings","_node","_model","_isBuilding","_result"];
 
-_nodes = [_this, 0, [], [[]]] call BIS_fnc_param;
-_types = [_this, 1, [], [[]]] call BIS_fnc_param;
+params [
+    ["_nodes", [], [[]]],
+    ["_types", [], [[]]]
+];
 _err1 = format["cluster nodes array not valid - %1",_nodes];
 _err2 = format["building types array not valid - %1",_nodes];
 ASSERT_DEFINED("_nodes",_err);

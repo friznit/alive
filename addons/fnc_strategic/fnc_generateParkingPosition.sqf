@@ -104,7 +104,7 @@ while{!(_positionFound)} do
 		_roadConnectedTo = roadsConnectedTo _road;
 		_connectedRoad = _roadConnectedTo select 0;
 		if!(isNil '_connectedRoad') then {
-			_direction = [_road, _connectedRoad] call BIS_fnc_DirTo;
+			_direction = _road getRelDir _connectedRoad;
 		};
 	};
 	

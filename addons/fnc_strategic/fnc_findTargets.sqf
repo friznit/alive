@@ -34,7 +34,7 @@ nil
 
 private ["_logic","_types","_obj_array","_clusters"];
 
-_types = [_this, 0, [], [[]]] call BIS_fnc_param;
+_types = _this param [0, [], [[]]];
 
 ["Finding targets"] call ALIVE_fnc_dump;
 

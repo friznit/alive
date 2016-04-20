@@ -48,7 +48,7 @@ _maxLength = abs ((_p2 select 1) - (_p1 select 1));
 
 _longest = _maxWidth max _maxLength;
 
-_position = [_position, (_longest+1), _direction] call BIS_fnc_relPos;
+_position = _position getPos [(_longest+1), _direction];
 
 
 // DEBUG -------------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ if(count _nearRoads > 0) then
 	_roadConnectedTo = roadsConnectedTo _road;
 	_connectedRoad = _roadConnectedTo select 0;
 	if!(isNil '_connectedRoad') then {
-		_direction = [_road, _connectedRoad] call BIS_fnc_DirTo;
+		_direction = _road getRelDir _connectedRoad;
 	};
 };
 
@@ -104,12 +104,12 @@ if(count _nearRoads > 0) then
     _roadConnectedTo = roadsConnectedTo _road;
     _connectedRoad = _roadConnectedTo select 0;
     if!(isNil '_connectedRoad') then {
-        _direction = [_road, _connectedRoad] call BIS_fnc_DirTo;
+        _direction = _road getRelDir _connectedRoad;
     };
 
     _position = position _road;
 
-    _position = [_position, 2, _direction-90] call BIS_fnc_relPos;
+    _position = _position getPos [2, _direction-90];
 };
 
 
