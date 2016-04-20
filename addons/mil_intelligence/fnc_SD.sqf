@@ -37,13 +37,15 @@ ARJay
 #define MTEMPLATE "ALiVE_SD_%1"
 #define DEFAULT_RUN_EVERY 120
 
-private ["_logic","_operation","_args","_result"];
+private ["_result"];
 
 TRACE_1("SD - input",_this);
 
-_logic = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
-_operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+params [
+    ["_logic", objNull, [objNull]],
+    ["_operation", "", [""]],
+    ["_args", objNull, [objNull,[],"",0,true,false]]
+];
 _result = true;
 
 switch(_operation) do {
