@@ -32,13 +32,15 @@ nil
 
 private ["_logic","_objectives","_color"];
 
-_unit = [_this, 0, player, [objNull]] call BIS_fnc_param;
-_state = [_this, 1, "attacking", [""]] call BIS_fnc_param;
+params [
+    ["_unit", player, [objNull]],
+    ["_state", "attacking", [""]]
+];
 
 //Execute on Server only
 if !(isServer) exitwith {
     hint "Requesting mission from OPCOM! Please have some patience, soldier!";
-    [[_unit,_state],"ALiVE_fnc_OPCOMjoinObjective",false,false] call BIS_fnc_MP;
+    [_unit,_state] remoteExec ["ALiVE_fnc_OPCOMjoinObjective",2];
 };
 
 _position = getposATL _unit;

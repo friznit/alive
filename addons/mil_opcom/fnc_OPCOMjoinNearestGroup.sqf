@@ -28,17 +28,19 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_unit","_state","_profile","_profileUnit","_logic"];
+private ["_profile","_profileUnit","_logic"];
 
-_unit = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
-_state = [_this, 1, "attacking", [""]] call BIS_fnc_param;
+params [
+    ["_unit", objNull, [objNull]],
+    ["_state", "attacking", [""]]
+];
 
 if (isNull _unit) exitwith {};
 
-if !(isServer) exitwith {[[_unit,_state],"ALiVE_fnc_OPCOMjoinNearestGroup",false,false] call BIS_fnc_MP};
+if !(isServer) exitwith {[_unit,_state] remoteExec ["ALiVE_fnc_OPCOMjoinNearestGroup",2]};
 
-titleText ["Teleporting...", "BLACK OUT",3];
-[{titleText ['Teleporting...', 'BLACK OUT',3]},"BIS_fnc_Spawn",owner _unit,false] call BIS_fnc_MP;
+titleText ["Teleporting...", "BLACK OUT",3]; // this is executing visual stuff on server, should be removed
+{titleText ['Teleporting...', 'BLACK OUT',3]} remoteExec ["BIS_fnc_Spawn",owner _unit];
 
 _faction = faction _unit;
 _pos = getposATL _unit;
@@ -72,6 +74,6 @@ _groupUnits join _group; {_x setposATL formationPosition _x} foreach _groupUnits
 [_profileUnit, "clearWaypoints"] call ALIVE_fnc_profileEntity; {[_profileUnit, "addWaypoint", _x] call ALIVE_fnc_profileEntity} foreach ([_profile,"waypoints",[]] call ALiVE_fnc_HashGet);
 
 titleText ["Teleporting...", "BLACK IN",3];
-[{titleText ['Teleporting...', 'BLACK IN',3]},"BIS_fnc_Spawn",owner _unit,false] call BIS_fnc_MP;
+{titleText ['Teleporting...', 'BLACK IN',3]} remoteExec ["BIS_fnc_Spawn",owner _unit];
 
 _entityID;

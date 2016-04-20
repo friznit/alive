@@ -48,13 +48,15 @@ nil
 #define SUPERCLASS ALIVE_fnc_baseClassHash
 #define MAINCLASS ALIVE_fnc_OPCOM
 
-private ["_logic","_operation","_args","_result"];
+private ["_result"];
 
 TRACE_1("OPCOM - input",_this);
 
-_logic = [_this, 0, objNull, [objNull,[]]] call BIS_fnc_param;
-_operation = [_this, 1, "", [""]] call BIS_fnc_param;
-_args = [_this, 2, objNull, [objNull,[],"",0,true,false]] call BIS_fnc_param;
+params [
+    ["_logic", objNull, [objNull,[]]],
+    ["_operation", "", [""]],
+    ["_args", objNull, [objNull,[],"",0,true,false]]
+];
 _result = nil;
 
 /*
@@ -1030,19 +1032,19 @@ switch(_operation) do {
 		                                
                                         _buildings = [_center,_size] call ALIVE_fnc_getEnterableHouses;
 		                                _roads = _center nearRoads _size;
-		                                _faction = _factions call BIS_fnc_SelectRandom;
+		                                _faction = selectRandom _factions;
 		                                _dominantFaction = [_center, _size] call ALiVE_fnc_getDominantFaction;
 		                                
 		                                if (isnil "_dominantFaction" || {!(([[_dominantFaction call ALiVE_fnc_factionSide] call ALiVE_fnc_SideObjectToNumber] call ALiVE_fnc_SideNumberToText) in _sidesEnemy)}) then {
 		                                    if (count (_buildings + _roads) > 0) then {
 		                                        
 		                                        if (count _buildings > 0) then {
-		                                            _type = ["HQ","depot","factory"] call BIS_fnc_SelectRandom;
-		                                            _target = _buildings call BIS_fnc_SelectRandom;
+		                                            _type = selectRandom ["HQ","depot","factory"];
+		                                            _target = selectRandom _buildings;
 		                                        } else {
 			                                        if (count _roads > 0) then {
-			                                            _type = ["ied","roadblocks"] call BIS_fnc_SelectRandom;
-			                                            _target = _roads call BIS_fnc_SelectRandom;
+			                                            _type = selectRandom ["ied","roadblocks"];
+			                                            _target = selectRandom _roads;
 			                                        }; 
 		                                        };
 		
@@ -1175,12 +1177,12 @@ switch(_operation) do {
                 _suicide = [_logic,"convertObject",[_objective,"suicide",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
 				_roadblocks = [_logic,"convertObject",[_objective,"roadblocks",[]] call ALiVE_fnc_HashGet] call ALiVE_fnc_OPCOM;
                 
-                if (alive _factory) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"factory",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_factory};
-                if (alive _HQ) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"HQ",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_recruit};
-                if (alive _depot) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"depot",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_depot};
-                if (alive _roadblocks) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"roadblocks",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_roadblocks};
-                if (alive _ied) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"ied",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_ied};
-                if (alive _ambush) then {[time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"ambush",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_ambush};
+                if (alive _factory) then {[time,_center,_id,_size,selectRandom _factions,[_objective,"factory",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_factory};
+                if (alive _HQ) then {[time,_center,_id,_size,selectRandom _factions,[_objective,"HQ",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_recruit};
+                if (alive _depot) then {[time,_center,_id,_size,selectRandom _factions,[_objective,"depot",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_depot};
+                if (alive _roadblocks) then {[time,_center,_id,_size,selectRandom _factions,[_objective,"roadblocks",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,+_CQB] spawn ALiVE_fnc_INS_roadblocks};
+                if (alive _ied) then {[time,_center,_id,_size,selectRandom _factions,[_objective,"ied",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_ied};
+                if (alive _ambush) then {[time,_center,_id,_size,selectRandom _factions,[_objective,"ambush",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_ambush};
                 
                 if (alive _sabotage) then {
                     private ["_buildings","_target"];
@@ -1207,7 +1209,7 @@ switch(_operation) do {
 						if (count _buildings > 0) then {_target = _buildings select 0; _target = [[],"convertObject",_target] call ALiVE_fnc_OPCOM} else {_target = [[],"convertObject",objNull] call ALiVE_fnc_OPCOM};
 					};                    
                     
-                    [time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"sabotage",[]] call ALiVE_fnc_HashGet,_target,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_sabotage;
+                    [time,_center,_id,_size,selectRandom _factions,[_objective,"sabotage",[]] call ALiVE_fnc_HashGet,_target,_sidesEnemy,_agents] spawn ALiVE_fnc_INS_sabotage;
                 };
                 
                 if (alive _suicide) then {
@@ -1224,7 +1226,7 @@ switch(_operation) do {
 						if (count (_AllAgents select 2) > 0) exitwith {_civFactions = _civFactions + [[(_AllAgents select 2 select 0),"faction","CIV_F"] call ALiVE_fnc_HashGet]};
 					};
                     
-                    [time,_center,_id,_size,_factions call BIS_fnc_SelectRandom,[_objective,"suicide",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,_civFactions] spawn ALiVE_fnc_INS_suicide;
+                    [time,_center,_id,_size,selectRandom _factions,[_objective,"suicide",[]] call ALiVE_fnc_HashGet,_sidesEnemy,_agents,_civFactions] spawn ALiVE_fnc_INS_suicide;
                 };
                 
                 //Set default data
@@ -1957,30 +1959,34 @@ switch(_operation) do {
         case "joinObjectiveClient": {
             ASSERT_TRUE(typeName _args == "ARRAY",str _args);
         
-			private ["_positions","_color","_pos"];
+			private ["_positions","_pos"];
             
             // Execute Function on Clients only
-			if !(hasInterface) exitwith {[[_logic,_operation,_args],"ALiVE_fnc_OPCOM",owner _unit,false] call BIS_fnc_MP};
+			if !(hasInterface) exitwith {[_logic,_operation,_args] remoteExec ["ALiVE_fnc_OPCOM",owner _unit]};
 
-			_unit = [_args, 0, player, [objNull]] call BIS_fnc_param;
-			_objectives = [_args, 1, [], [[]]] call BIS_fnc_param;	
-			_color = [_args, 2, "COLORYELLOW", [""]] call BIS_fnc_param;
+            _args params [
+                ["_unit", player, [objNull]],
+                ["_objectives", [], [[]]],
+                ["_color", "COLORYELLOW", [""]]
+            ];
 
 			// Only run function if objectives are provided  
             if (count _objectives == 0) exitwith {hint "OPCOM currently has no assault objectives in his list!"};
 
             // Mark objectives, this handy function should be moved to x lib
             _fnc_createMarkerArray = {
-				private ["_positions","_color","_shape","_size","_type","_text","_alpha","_markers"];
-			
-				_positions = [_this, 0, [], [[]]] call BIS_fnc_param;
-				_color = [_this, 1, "COLORYELLOW", [""]] call BIS_fnc_param;	
-				_shape = [_this, 2, "RECTANGLE", [""]] call BIS_fnc_param;
-				_size = [_this, 3, [500, 500], [[]]] call BIS_fnc_param;
-				_type = [_this, 4, "EMPTY", [""]] call BIS_fnc_param;
-				_text = [_this, 5, "", [""]] call BIS_fnc_param;
-                _brush = [_this, 6, "SOLID", [""]] call BIS_fnc_param;
-				_alpha = [_this, 7, 0.5, [-1]] call BIS_fnc_param;
+				private ["_markers"];
+                
+                params [
+                    ["_positions", [], [[]]],
+                    ["_color", "COLORYELLOW", [""]],
+                    ["_shape", "RECTANGLE", [""]],
+                    ["_size", [500, 500], [[]]],
+                    ["_type", "EMPTY", [""]],
+                    ["_text", "", [""]],
+                    ["_brush", "SOLID", [""]],
+                    ["_alpha", 0.5, [-1]]
+                ];
 			
 				_markers = [];
 				{
@@ -2021,13 +2027,15 @@ switch(_operation) do {
 		case "joinObjectiveServer": {
         	ASSERT_TRUE(typeName _args == "ARRAY",str _args);
 			
-            private ["_unit","_objective","_section","_entityID","_profile","_error","_players"];
+            private ["_section","_entityID","_profile","_error","_players"];
             
             // Execute on Server only
-			if !(isServer) exitwith {[[_logic,_operation,_args],"ALiVE_fnc_OPCOM",false,false] call BIS_fnc_MP};
-		
-			_unit = [_args, 0, objNull, [objNull]] call BIS_fnc_param;
-			_objective = [_args, 1, [], [[]]] call BIS_fnc_param;
+			if !(isServer) exitwith {[_logic,_operation,_args] remoteExec ["ALiVE_fnc_OPCOM",2]};
+
+            _args params [
+                ["_unit", objNull, [objNull]],
+                ["_objective", [], [[]]]
+            ];
                                             
             _section = ([_objective,"section",[]] call ALiVE_fnc_HashGet) - [_unit getvariable ["profileID",""]]; if (count _section <= 0) then {_error = "OPCOM responds that the select section is destroyed!"};
             _profile = [ALiVE_ProfileHandler,"getProfile",_section select 0] call ALiVE_fnc_ProfileHandler; if (isnil "_profile") then {_error = "OPCOM reports that the assigned group is already dead!"};
@@ -2037,7 +2045,7 @@ switch(_operation) do {
             
             _players = []; {if (isPlayer _x) then {_players pushback _x}} foreach (units group _unit);
 			
-            {[{titleText ['Preparing Insertion...', 'BLACK OUT',2]},"BIS_fnc_Spawn",owner _x,false] call BIS_fnc_MP; sleep 0.2} foreach _players;
+            {{titleText ['Preparing Insertion...', 'BLACK OUT',2]} remoteExec ["BIS_fnc_Spawn",owner _x]; sleep 0.2} foreach _players;
 
 			sleep 5;
 
@@ -2065,7 +2073,7 @@ switch(_operation) do {
             [_profileUnit, "clearWaypoints"] call ALIVE_fnc_profileEntity;
             {[_profileUnit, "addWaypoint", _x] call ALIVE_fnc_profileEntity} foreach ([_profile,"waypoints",[]] call ALiVE_fnc_HashGet);
             
-			{[{titleText ['Inserting...', 'BLACK IN',2]},"BIS_fnc_Spawn",owner _x,false] call BIS_fnc_MP; sleep 0.2} foreach _players;
+			{{titleText ['Inserting...', 'BLACK IN',2]} remoteExec ["BIS_fnc_Spawn",owner _x]; sleep 0.2} foreach _players;
     	};
 
         case "analyzeclusteroccupation": {
@@ -2285,7 +2293,7 @@ switch(_operation) do {
 						    if ((count (_assignments)) > 0) then {
 						        
 						        // Dont collect vehicles with player profiles assigned
-						        if ({(_x getvariable ["profileID",""]) in _assignments} count ([] call BIS_fnc_ListPlayers) > 0) exitwith {};
+						        if ({(_x getvariable ["profileID",""]) in _assignments} count allPlayers > 0) exitwith {};
 						        
 								switch (tolower _objectType) do {
 									case "car": {
