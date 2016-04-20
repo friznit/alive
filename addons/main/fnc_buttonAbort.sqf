@@ -83,11 +83,12 @@ _exitPlayer = {
 	    ["ALiVE Exit - Player Stats OPD"] call ALIVE_fnc_dump;
 
         if (!isNil "ALIVE_sys_statistics_playerShotsFired") then {
+
             // diag_log str(ALIVE_sys_statistics_playerShotsFired);
-            _shotsFired = ALIVE_sys_statistics_playerShotsFired;
 
             // Send the player's shots fired data to the server and add it to the hash
-            [[_uid, _shotsFired],"ALiVE_fnc_updateShotsFired", false, false] call BIS_fnc_MP;
+            // [[_uid, ALIVE_sys_statistics_playerShotsFired],"ALiVE_fnc_updateShotsFired", false, false] call BIS_fnc_MP;
+            [_uid, ALIVE_sys_statistics_playerShotsFired] remoteExec ["ALiVE_fnc_updateShotsFired", 2];
         };
 
 		// Stats module onPlayerDisconnected call

@@ -88,8 +88,9 @@ if (GVAR(ENABLED)) then {
 		_rating = rating _unit;
 		_rank = rank _unit;
 
-		// Grab shots fired data
-		_shotsfired = [GVAR(shotsFired), _uid, []] call ALiVE_fnc_hashGet;
+		_waitTime = diag_tickTime + 10000;
+		// Grab shots fired data (wait for it?)
+		waitUntil {	_shotsfired = [GVAR(shotsFired), _uid, nil] call ALiVE_fnc_hashGet; !isNil "_shotsfired" || diag_tickTime > _waitTime};
 
 		if (!isNil "_shotsfired") then {
 			diag_log format["Saving shots fired: %1", _shotsfired];
