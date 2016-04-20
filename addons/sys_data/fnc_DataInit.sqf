@@ -413,6 +413,11 @@ if (isDedicated) then {
 	};
 };
 
+
+if (isDedicated && {!isnil QMOD(SYS_DATA)}) then {
+	MOD(sys_data) setvariable ["startupComplete",true,true];
+};
+
 TRACE_2("SYS_DATA STAT VAR", MOD(sys_data) getVariable "disableStats", ALIVE_sys_statistics_ENABLED);
 // Kickoff the stats module
 if (_logic getvariable ["disableStats","false"] == "false") then {
@@ -420,8 +425,6 @@ if (_logic getvariable ["disableStats","false"] == "false") then {
 	[_logic] call ALIVE_fnc_statisticsInit;
 };
 
-if (isDedicated && {!isnil QMOD(SYS_DATA)}) then {
-	MOD(sys_data) setvariable ["startupComplete",true,true];
-};
+
 
 [_logic, false, _moduleID] call ALIVE_fnc_dumpModuleInit;
