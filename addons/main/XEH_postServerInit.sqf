@@ -51,42 +51,42 @@ ALiVE_fnc_onPlayerConnected = {
 
 	if !(isNil QMOD(sys_statistics)) then {
 		// Stats module onPlayerConnected call
-		[_id, _name, _uid] call ALIVE_fnc_stats_onPlayerConnected;
+		[_id, _name, _uid, _owner, _jip] call ALIVE_fnc_stats_onPlayerConnected;
 	};
 
 	if !(isNil QMOD(sys_player)) then {
 		// sys_player module onPlayerConnected call
-		[_id, _name, _uid] call ALIVE_fnc_player_onPlayerConnected;
+		[_id, _name, _uid, _owner, _jip] call ALIVE_fnc_player_onPlayerConnected;
 	};
 
 	if !(isNil 'ALIVE_profileHandler') then {
         // Profiles module onPlayerDisconnected call
-        [_id, _name, _uid] call ALIVE_fnc_profile_onPlayerConnected;
+        [_id, _name, _uid, _owner, _jip] call ALIVE_fnc_profile_onPlayerConnected;
     };
 
     if !(isNil QMOD(MIL_C2ISTAR)) then {
         // C2ISTAR module onPlayerConnected call
-        [_id, _name, _uid] call ALIVE_fnc_C2OnPlayerConnected;
+        [_id, _name, _uid, _owner, _jip] call ALIVE_fnc_C2OnPlayerConnected;
     };
 
     if !(isNil QMOD(SYS_marker)) then {
         // Marker module onPlayerConnected call
-        [_id, _name, _uid] call ALIVE_fnc_markerOnPlayerConnected;
+        [_id, _name, _uid, _owner, _jip] call ALIVE_fnc_markerOnPlayerConnected;
     };
 
     if !(isNil QMOD(SYS_spotrep)) then {
         // spotrep module onPlayerConnected call
-        [_id, _name, _uid] call ALIVE_fnc_spotrepOnPlayerConnected;
+        [_id, _name, _uid, _owner, _jip] call ALIVE_fnc_spotrepOnPlayerConnected;
     };
 
     if !(isNil QMOD(SYS_sitrep)) then {
         // sitrep module onPlayerConnected call
-        [_id, _name, _uid] call ALIVE_fnc_sitrepOnPlayerConnected;
+        [_id, _name, _uid, _owner, _jip] call ALIVE_fnc_sitrepOnPlayerConnected;
     };
 
     if !(isNil QMOD(SYS_patrolrep)) then {
         // patrolrep module onPlayerConnected call
-        [_id, _name, _uid] call ALIVE_fnc_patrolrepOnPlayerConnected;
+        [_id, _name, _uid, _owner, _jip] call ALIVE_fnc_patrolrepOnPlayerConnected;
     };
 
 	if (_name != "__SERVER__") then {
