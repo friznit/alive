@@ -26,14 +26,13 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_playerUID","_data","_options","_values","_players","_group"];
+private ["_playerUID","_data","_options","_values","_group"];
 
 _playerUID = _this select 0;
 
 _data = [];
 _options = [];
 _values = [];
-_players = call BIS_fnc_listPlayers;
 
 scopeName "main";
 
@@ -42,7 +41,7 @@ scopeName "main";
         _group = group _x;
         breakTo "main";
     };
-} foreach _players;
+} foreach allPlayers;
 
 if!(isNil "_group") then {
     {

@@ -24,10 +24,10 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_unit","_pos"];
-
-_unit = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
-_pos = [_this, 1, [], [[]]] call bis_fnc_param;
+params [
+    ["_unit", objNull, [objNull]],
+    ["_pos", [], [[]]]
+];
 
 if (!(alive _unit) || {count _pos < 2}) exitwith {diag_log "domoveRemote failed - dead/empty unit"};
 
@@ -40,7 +40,7 @@ if (local _unit) exitwith {
 
 //if !local send to server to distribute
 if !(isServer) then {
-    [_this,"ALiVE_fnc_doMoveRemote",false,false,true] call BIS_fnc_MP;
+    _this remoteExecCall ["ALiVE_fnc_doMoveRemote",2];
 } else {
-    [_this,"ALiVE_fnc_doMoveRemote",owner _unit,false,true] call BIS_fnc_MP;
+    _this remoteExecCall ["ALiVE_fnc_doMoveRemote",owner _unit];
 };

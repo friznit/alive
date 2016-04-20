@@ -40,12 +40,12 @@ if (!(typename _factions == "ARRAY") || !(typename _count == "SCALAR") || !(type
 	format["ALiVE Main ALiVE_fnc_chooseRandomUnits probably failes due to wrong params given! Factions (Array): %1 | Max. units (Number): %2 | Blacklist (Array): %3", _factions, _count, _blacklist] call ALiVE_fnc_logger;    
 };
 
-_types = [0, _factions call BIS_fnc_selectRandom,"Man",_armed] call ALiVE_fnc_findVehicleType;
+_types = [0, selectRandom _factions,"Man",_armed] call ALiVE_fnc_findVehicleType;
 _unittypes = [];
 
 if(count _types > 0) then {
     for "_i" from 1 to _count do {
-        while {_unittype = _types call BIS_fnc_selectRandom; (_unittype in _blacklist)} do {true};
+        while {_unittype = selectRandom _types; (_unittype in _blacklist)} do {true};
         _unittypes pushback _unittype;
     };
 };

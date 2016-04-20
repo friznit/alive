@@ -30,7 +30,7 @@ private ["_source", "_target", "_relDirHor", "_relDirVer"];
 _source = _this select 0;
 _target = _this select 1;
 
-_relDirHor = [_source, _target] call BIS_fnc_DirTo;
+_relDirHor = _source getRelDir _target;
 _source setDir _relDirHor;
 
 _relDirVer = asin ((((getPosASL _source) select 2) - ((getPosASL _target) select 2)) / (_target distance _source));

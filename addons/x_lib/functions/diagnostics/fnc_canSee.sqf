@@ -22,13 +22,14 @@ See Also:
 Author:
 Highhead
 ---------------------------------------------------------------------------- */
-private ["_unit","_target"];
 
-_unit = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
-_target = [_this, 1, objNull, [objNull]] call BIS_fnc_param;
+params [
+    ["_unit", objNull, [objNull]],
+    ["_target", objNull, [objNull]]
+];
 
 if !(alive _target) exitwith {false};
 
-_dir = ([_unit, _target] call BIS_fnc_dirTo) - (getDir _unit);
+_dir = (_unit getRelDir _target) - (getDir _unit);
 
 (_dir > -50 && {_dir < 50}) && {!(lineIntersects [eyePos _unit, eyePos _target , _unit, _target])};

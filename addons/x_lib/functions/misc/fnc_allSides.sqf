@@ -29,7 +29,7 @@ nil
 ---------------------------------------------------------------------------- */
 private ["_sides","_objects"];
 
-_objects = [[_this], 0, [], [[]]] call BIS_fnc_param;
+_objects = [_this] param [0, [], [[]]];
 _sides = [];
 
 {

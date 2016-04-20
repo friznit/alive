@@ -30,5 +30,5 @@ _group = _this;
 if (local _group) then {
     deleteGroup _group;
 } else {
-    [_group,"deleteGroup",true,false,false] call BIS_fnc_MP;
+    _group remoteExec ["deleteGroup",0];
 };

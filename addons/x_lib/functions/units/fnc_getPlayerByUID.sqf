@@ -25,17 +25,15 @@ Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
 
-private ["_playerUID","_player","_players"];
+private ["_playerUID","_player"];
 
 _playerUID = _this select 0;
-
-_players = call BIS_fnc_listPlayers;
 
 _player = objNull;
 {
     if (getPlayerUID _x == _playerUID) exitWith {
         _player = _x;
     };
-} forEach _players;
+} forEach allPlayers;
 
 _player

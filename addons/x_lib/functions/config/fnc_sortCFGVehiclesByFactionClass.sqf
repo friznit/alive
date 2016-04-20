@@ -26,11 +26,13 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_faction","_configPath","_sideNumber","_sortedVehicles","_item","_configName","_vehicleClass","_scope","_vehicleFaction","_side","_subSorted","_blacklist","_whitelist"];
+private ["_configPath","_sideNumber","_sortedVehicles","_item","_configName","_vehicleClass","_scope","_vehicleFaction","_side","_subSorted"];
 
-_faction = [_this, 0, "none", [""]] call BIS_fnc_param;
-_blacklist = [_this, 1, [], [[]]] call BIS_fnc_param;
-_whitelist = [_this, 2, [], [[]]] call BIS_fnc_param;
+params [
+    ["_faction", "none", [""]],
+    ["_blacklist", [], [[]]],
+    ["_whitelist", [], [[]]]
+];
 
 _configPath = configFile >> "CFGVehicles";
 _sortedVehicles = [] call ALIVE_fnc_hashCreate;

@@ -35,7 +35,7 @@ private ["_tmp","_result"];
 TRACE_1("findObjectID - input",_this);
 
 // 388c2080# 88544: helipadsquare_f.p3d
-_tmp = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
+_tmp = _this param [0, objNull, [objNull]];
 
 //["t: %1",str _tmp] call ALIVE_fnc_dump;
 

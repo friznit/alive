@@ -31,7 +31,7 @@ _position = _this select 0;
 _distance = _this select 1;
 
 _direction = random 360;
-_position = [_position, _distance, _direction] call BIS_fnc_relPos;
+_position = _position getPos [_distance, _direction];
 
 if(surfaceIsWater [_position select 0,_position select 1]) then
 {

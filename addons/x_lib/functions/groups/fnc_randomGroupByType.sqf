@@ -58,7 +58,7 @@ if (_type == "Man") then {
 		};*/
                                                 
         //create the units (first is leader)
-        _unittype = _unittype call BIS_fnc_selectRandom;
+        _unittype = selectRandom _unittype;
         if (_i < 1) then {
         	_leader = _group createUnit [_unittype,_newpos,[],0,"NONE"];
         	} else {
@@ -75,12 +75,12 @@ if (_type == "Man") then {
         _unittype = [0, _facs,_type] call ALIVE_fnc_findVehicleType;
         
         if (count _unittype < 1) then {
-        		_unittype = ([0, _facs,"Man"] call ALiVE_fnc_findVehicleType) call BIS_fnc_selectRandom;  
+        		_unittype = selectRandom ([0, _facs,"Man"] call ALiVE_fnc_findVehicleType);  
                 _unit = _group createUnit [_unittype,_newpos,[],0,"NONE"];
         	} else {
 				//else spawn the units
                 if (_type == "Air") then {_newpos = [(_newpos select 0)+ floor(random 150),(_newpos select 1)+ floor(random 150),1000]};
-                _unittype = _unittype call BIS_fnc_selectRandom;
+                _unittype = selectRandom _unittype;
                 
                 if (_i < 1) then {
                     	_leader = [_newpos, 0, _unittype, _group] call BIS_fnc_spawnVehicle;

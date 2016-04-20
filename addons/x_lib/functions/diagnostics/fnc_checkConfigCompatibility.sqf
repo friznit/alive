@@ -427,7 +427,7 @@ _text = " ----------- CfgVehicles Vehicles ----------- ";
 
 private ["_spawnPosition","_vehicleType"];
 
-_spawnPosition = [getPosATL player, 10, 0] call BIS_fnc_relPos;
+_spawnPosition = (getPosATL player) getPos [10, 0];
 
 
 [_factionVehicles,_side,_faction,_spawnPosition] spawn {

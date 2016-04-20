@@ -41,7 +41,7 @@ _result = [];
 } forEach (_position nearObjects ["CAManBase",_distance]);
 
 if(count _near > 0) then {
-    _man = _near call BIS_fnc_selectRandom;
+    _man = selectRandom _near;
     _result = [_man];
 };
 

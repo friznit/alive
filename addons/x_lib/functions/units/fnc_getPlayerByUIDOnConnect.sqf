@@ -39,9 +39,8 @@ _time = time;
 waitUntil {
     sleep 0.3;
 
-    private ["_players","_found","_player","_playerGUID","_currentUID"];
+    private ["_found","_player","_playerGUID","_currentUID"];
 
-    _players = call BIS_fnc_listPlayers;
     _found = false;
     _timeout = time - _time > 5;
 
@@ -53,7 +52,7 @@ waitUntil {
             _unit = _player;
             _found = true;
         };
-    } foreach _players;
+    } foreach allPlayers;
 
     _found || {_timeout};
 };

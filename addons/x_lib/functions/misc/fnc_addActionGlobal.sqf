@@ -29,11 +29,12 @@ Highhead
 Peer reviewed:
 nil
 ---------------------------------------------------------------------------- */
-private ["_object","_action","_name","_id"];
 
-_object = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
-_action = [_this, 1, "", [""]] call BIS_fnc_param;
-_name = [_this, 2, "", [""]] call BIS_fnc_param;
-_target = [_this, 3, _object, [objNull]] call BIS_fnc_param;
+params [
+    ["_object", objNull, [objNull]],
+    ["_action", "", [""]],
+    ["_name", "", [""]]
+];
+_target = _this param [3, _object, [objNull]];
 
 _object addAction [_name, {_target = _this select 3 select 0; _action = _this select 3 select 1; (_this select 1) action [_action, _target]}, [_target,_action]];

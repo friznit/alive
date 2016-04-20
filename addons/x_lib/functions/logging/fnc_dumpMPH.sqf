@@ -47,4 +47,4 @@ if(isNil {_variableType}) then {
 };
 
 diag_log _output;
-[[_output],"ALiVE_fnc_hintS",true,false] spawn BIS_fnc_MP;
+[_output] remoteExec ["ALiVE_fnc_hintS",0];

@@ -24,10 +24,10 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_group","_pos"];
-
-_group = [_this, 0, grpNull, [grpNull]] call BIS_fnc_param;
-_pos = [_this, 1, [], [[]]] call bis_fnc_param;
+params [
+    ["_group", grpNull, [grpNull]],
+    ["_pos", [], [[]]]
+];
 
 if (!({alive _x} count (units _group) > 0) || {count _pos < 2}) exitwith {diag_log "moveRemote failed - invalid inputs"};
 
@@ -40,8 +40,8 @@ if (local _group) exitwith {
 
 //if !local send to server to distribute
 if !(isServer) then {
-    [_this,"ALiVE_fnc_MoveRemote",false,false] spawn BIS_fnc_MP;
+    _this remoteExec ["ALiVE_fnc_MoveRemote",2];
 } else {
-    [_this,"ALiVE_fnc_MoveRemote",groupOwner _group,false] spawn BIS_fnc_MP;
+    _this remoteExec ["ALiVE_fnc_MoveRemote",groupOwner _group];
 };
 

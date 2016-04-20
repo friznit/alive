@@ -36,7 +36,7 @@ DEFAULT_PARAM(1,_spawnDistance,1500);
 DEFAULT_PARAM(2,_jetSpawnDistance,0);
 DEFAULT_PARAM(3,_helicopterSpawnDistance,1500);
 
-_players = ([] call BIS_fnc_listPlayers) + allCurators;
+_players = allPlayers + allCurators;
 
 _anyInRange = false;
 

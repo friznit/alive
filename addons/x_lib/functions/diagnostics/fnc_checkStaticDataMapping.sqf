@@ -87,7 +87,7 @@ _faction = _this select 0;
 
     private ["_factionCustomMappings","_factionCustomDefaultSupports","_factionCustomDefaultTransports","_factionCustomDefaultAirTransports","_spawnPosition","_spawner","_factionVehicles","_vehicleClasses","_side","_faction","_spawnPosition","_vehicleClass","_configName","_vehicleCrew","_profiles"];
 
-    _spawnPosition = [getPosATL player, 10, 0] call BIS_fnc_relPos;
+    _spawnPosition = (getPosATL player) getPos [10, 0];
     _factionSide = [_side] call ALIVE_fnc_sideNumberToText;
 
     _factionCustomMappings = [ALIVE_factionCustomMappings, _faction] call ALIVE_fnc_hashGet;

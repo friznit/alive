@@ -31,7 +31,7 @@ _move = _this select 1;
 
 if((isServer && isMultiplayer) || isDedicated) then
 {
-    [[_target, _move],"ALIVE_fnc_clientSwitchMove"] call BIS_fnc_MP;
+    [_target, _move] remoteExec ["ALIVE_fnc_clientSwitchMove"];
 }
 else
 {

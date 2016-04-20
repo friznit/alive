@@ -50,7 +50,7 @@ _result = [];
 if(count _result == 0) then {};
 
 // Randomly pick an object
-_result = _result call BIS_fnc_selectRandom;
+_result = selectRandom _result;
 
 // Return main building
 _result;

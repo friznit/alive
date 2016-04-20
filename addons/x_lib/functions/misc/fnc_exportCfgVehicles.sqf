@@ -30,12 +30,14 @@ Author:
 	Karel Moricky and edited by TUP for War Room
 ---------------------------------------------------------------------------- */
 
-_mode = [_this,0,"config",[""]] call bis_fnc_param;
-_sides = [_this,1,[0,1,2,3],[[]]] call bis_fnc_param;
-_patchprefix = [_this,2,"",[""]] call bis_fnc_param;
-_patches = [_this,3,[],[[]]] call bis_fnc_param;
-_types = [_this,4,[],[[]]] call bis_fnc_param;
-_allVehicles = [_this,5,true,[true]] call bis_fnc_param;
+params [
+    ["_mode", "config",[""]],
+    ["_sides", [0,1,2,3],[[]]],
+    ["_patchprefix", "",[""]],
+    ["_patches", [],[[]]],
+    ["_types", [],[[]]],
+    ["_allVehicles", true,[true]]
+];
 
 
 if (_patchprefix != "") then {
@@ -155,7 +157,7 @@ switch tolower _mode do {
 					if (_class iskindof "house") then {
 						_size = _size * 0.75;
 					};
-					_campos = [_pos,_size * 1.5,135] call bis_fnc_relpos;
+					_campos = _pos getPos [_size * 1.5,135];
 					_campos set [2,_alt + _size * 0.5];
 
 					_cam campreparepos _campos;

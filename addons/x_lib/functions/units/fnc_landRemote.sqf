@@ -24,10 +24,10 @@ Author:
 Highhead
 ---------------------------------------------------------------------------- */
 
-private ["_unit","_args"];
-
-_unit = [_this, 0, objNull, [objNull]] call BIS_fnc_param;
-_args = [_this, 1, "Land", [""]] call bis_fnc_param;
+params [
+    ["_unit", objNull, [objNull]],
+    ["_args", "Land", [""]]
+];
 
 if !(alive _unit) exitwith {diag_log "landRemote failed - dead/empty unit"};
 
@@ -40,7 +40,7 @@ if (local _unit) exitwith {
 
 //if !local send to server to distribute
 if !(isServer) then {
-    [_this,"ALiVE_fnc_landRemote",false,false,true] call BIS_fnc_MP;
+    _this remoteExecCall ["ALiVE_fnc_landRemote",2];
 } else {
-    [_this,"ALiVE_fnc_landRemote",owner _unit,false,true] call BIS_fnc_MP;
+    _this remoteExecCall ["ALiVE_fnc_landRemote", owner _unit];
 };

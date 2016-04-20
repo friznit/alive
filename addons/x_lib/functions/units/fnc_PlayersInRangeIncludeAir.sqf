@@ -37,8 +37,8 @@ DEFAULT_PARAM(2,_jetSpawnDistance,0);
 DEFAULT_PARAM(3,_helicopterSpawnDistance,1500);
 
 //Change that function below when ZEUS is stable
-_players = ([] call BIS_fnc_listPlayers) + allCurators;
-//_players = [] call BIS_fnc_listPlayers;
+_players = allPlayers + allCurators;
+//_players = allPlayers;
 _InRange = [];
 
 {

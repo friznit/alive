@@ -42,7 +42,7 @@ Author:
 private ["_data", "_func", "_args"];
 _data = _this select 0;
 _func = _this select 1;
-_args = [_this, 2, []] call BIS_fnc_param;
+_args = _this param [2, []];
 
 #define JSON_DATA_TYPES ["","BOOL","SCALAR","STRING","ARRAY"]
 

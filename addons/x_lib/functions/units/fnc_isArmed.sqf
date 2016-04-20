@@ -29,7 +29,7 @@ Highhead
 
 private ["_object","_isArmed"];
 
-_object = [_this, 0, objNull, [objNull,""]] call BIS_fnc_param;
+_object = _this param [0, objNull, [objNull,""]];
 
 switch (typeName _object) do {
     case ("OBJECT") : {_object = typeOf _object};

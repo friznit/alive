@@ -39,4 +39,4 @@ _j = 0;
 
 //hint str _result;
 
-_result call BIS_fnc_selectRandom;
+selectRandom _result;

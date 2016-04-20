@@ -32,4 +32,4 @@ PARAMS_1(_pos);
 DEFAULT_PARAM(1,_dist,2500);
 
 // That code that checks if any players are in range
-({_pos distance _x < _dist} count ([] call BIS_fnc_listPlayers));
+({_pos distance _x < _dist} count allPlayers);

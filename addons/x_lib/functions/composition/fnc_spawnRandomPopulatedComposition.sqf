@@ -42,7 +42,7 @@ _countSpecOps = if(count _this > 7) then {_this select 7} else { 0 };
 // Spawn a composition
 
 _compositions = [ALIVE_compositions,_category] call ALIVE_fnc_hashGet;
-_composition = _compositions call BIS_fnc_selectRandom;
+_composition = selectRandom _compositions;
 
 _composition = [_composition] call ALIVE_fnc_findComposition;
 
@@ -117,7 +117,7 @@ _totalCount = 0;
 if(_groupCount > 0) then {
 
     if(count _infantryGroups > 0) then {
-        _guardGroup = _infantryGroups call BIS_fnc_selectRandom;
+        _guardGroup = selectRandom _infantryGroups;
         _guards = [_guardGroup, _position, random(360), true, _faction, true] call ALIVE_fnc_createProfilesFromGroupConfig;
 
         {
@@ -131,7 +131,7 @@ if(_groupCount > 0) then {
 
         _group = _groups select _i;
 
-        _position = [_position, (random(200)), random(360)] call BIS_fnc_relPos;
+        _position = _position getPos [(random(200)), random(360)];
 
         if!(surfaceIsWater _position) then {
 

@@ -26,23 +26,22 @@ Author:
 ARJay
 ---------------------------------------------------------------------------- */
 
-private ["_position","_distance","_players","_near","_result","_player"];
+private ["_position","_distance","_near","_result","_player"];
 
 _position = _this select 0;
 _distance = _this select 1;
 
 _near = [];
 _result = [];
-_players = [] call BIS_fnc_listPlayers;
 
 {
     if(_position distance position _x < _distance) then {
         _near pushback _x;
     }
-} forEach _players;
+} forEach allPlayers;
 
 if(count _near > 0) then {
-    _player = _near call BIS_fnc_selectRandom;
+    _player = selectRandom _near;
     _result = [_player];
 };
 
