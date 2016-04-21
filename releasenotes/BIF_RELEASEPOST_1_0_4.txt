@@ -34,6 +34,7 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [b]Release Highlights[/b]
 [LIST]
 [*]Fixes to Shots Fired showing in the War Room[/*]
+[*]Several fixes related to JIP[/*]
 [*]IMINT stream from Combat Support units added to C2ISTAR[/*]
 [*]More fixes and enhancements to Combat Support[/*]
 [*]Fixed Civ Interactions being added when Civ roles were not set[/*]
