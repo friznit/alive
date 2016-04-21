@@ -8,7 +8,7 @@
 #ifndef VERSION_H_
 #define VERSION_H_
 
-#define VERSION "v2.0a"
+#define VERSION "v2.1a"
 #define GIT_COMMIT_HASH ""
 
 #endif // VERSION_H_
