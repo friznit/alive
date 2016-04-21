@@ -81,18 +81,17 @@ if (GVAR(ENABLED)) then {
 		_playertime = [GVAR(PlayerStartTime), _uid, GVAR(timeStarted)] call ALIVE_fnc_hashGet;
 		_minutesPlayed = round((diag_tickTime - _playertime)/60);
 
-		//_minutesPlayed = floor( ( (dateToNumber date) - ( dateToNumber ([GVAR(PlayerStartTime), getPlayerUID _unit, GVAR(timeStarted)] call ALIVE_fnc_hashGet) )) * 525600);
-		//diag_log _minutesPlayed;
-
+		// Get score, rating and rank
 		_score = score _unit;
 		_rating = rating _unit;
 		_rank = rank _unit;
 
-		_waitTime = diag_tickTime + 10000;
+		// Get Shots Fired
+		_waitTime = diag_tickTime + 3000;
 		// Grab shots fired data (wait for it?)
-		waitUntil {	_shotsfired = [GVAR(shotsFired), _uid, nil] call ALiVE_fnc_hashGet; !isNil "_shotsfired" || diag_tickTime > _waitTime};
+		waitUntil {sleep 1; _shotsfired = [GVAR(shotsFired), _uid, []] call ALiVE_fnc_hashGet; count _shotsfired > 0 || diag_tickTime > _waitTime};
 
-		if (!isNil "_shotsfired") then {
+		if (count _shotsfired > 0) then {
 			diag_log format["Saving shots fired: %1", _shotsfired];
 			_shotsFiredData = [];
 			{
