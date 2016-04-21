@@ -19,18 +19,21 @@ Tupolov
 Peer Reviewed:
 nil
 ---------------------------------------------------------------------------- */
-private ["_id","_name","_uid"];
+private ["_id","_name","_uid","_owner","_jip"];
 
 _id = _this select 0;
 _name = _this select 1;
 _uid = _this select 2;
+_owner = _this select 3;
+_jip = _this select 4;
 
 
-[_uid] spawn {
+[_uid, _owner] spawn {
 
     private ["_uid","_unit","_player","_playerGUID","_owner"];
 
     _uid = _this select 0;
+    _owner = _this select 1;
 
     _unit = objNull;
 
@@ -38,11 +41,10 @@ _uid = _this select 2;
 
     if !(isNull _unit) then {
 
-        _owner = owner _unit;
-
         waituntil {MOD(sys_marker) getvariable ["init",false]};
 
         waitUntil{sleep 1; !(isNil QGVAR(store))};
+
         TRACE_1("Send STORE", GVAR(STORE));
         _msg = format["Sending STORE to %1", _owner];
         LOG(_msg);
