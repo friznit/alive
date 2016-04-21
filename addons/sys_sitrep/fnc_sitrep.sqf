@@ -183,7 +183,8 @@ switch (_operation) do {
 
                  waituntil {!isnil QGVAR(STORE)};
 
-                if (SLX_XEH_MACHINE select 1) then { // If JIP then also restore when STORE is rebroadcast
+                if (didJIP) then {
+                    // If JIP then also restore when STORE is rebroadcast
                     QGVAR(store) addPublicVariableEventHandler {
                         // Restore Markers on map for JIP
                         [ADDON, "restoresitreps", [GVAR(store)]] call ALiVE_fnc_sitrep;
