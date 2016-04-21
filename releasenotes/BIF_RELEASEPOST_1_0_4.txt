@@ -2,27 +2,24 @@
 [center][b][url=http://alivemod.com/]ALiVEmod.com[/url]
 [size=4]The next generation dynamic persistent mission addon for ArmA3
 Release 1.0.4[/size][/b][/center]
-[center][b]1.0.4 Update - IMINT, Optimisations and more War Room bug hunting[/b][/center]
-[center][img=http://i.imgur.com/EiuwIjQ.jpg][/center]
-[b]IMINT[/b]
+[center][b]1.0.4 Update - Updates, Optimisations and more War Room bug hunting[/b][/center]
+[center][img=http://i.imgur.com/AdBIYNM.png][/center]
+[b]Updates[/b]
+The main focus of this release is to start [b]optimizing code[/b] utilising new commands from BIS (thankyou!) that should help performance. We have also been focusing on [b]addressing bugs reported[/b] by our loyal and hard working supporters posting on our forum ([url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url]). We've also [b]fixed some more bugs with statistics[/b] in the War Room and added some fixes for Multispawn, OPCOM, Ambient civilians, Advanced Markers, SPOTREPS and more.  Server admins please note there is also an[b] updated ALiVE extension plugin shipped[/b] with this version. [b][url=http://alivemod.com/#ALiVEWarRoom]Grab if from the War Room Now![/url][/b]
+ 
+[b]C2ISTAR (Command, Control, Intelligence etc.) Improvements[/b]
 Those of you who watched the recent BIS livestream with 21st Rangers would have heard Friznit talking about the importance of Intel to battlefield commanders.  We've wanted to review the way Operational Intelligence is gathered and presented to Players in ALiVE in order to provide a more realistic and comprehensive set of tools.  At the tactical level, Intelligence is typically collected from sources such as EM signals, images and humans.  ALiVE already simulates HUMINT with the ability to talk to civilians and collect data on possible hostile activity.  SpyderBlack has now added a new IMINT capability to Player Commanders.  Any Combat Support assets that have suitable optics on board can stream live imaging directly to the C2ISTAR tablet.
 
-https://www.youtube.com/watch?v=hwepiS9BJ7g
+[center]https://www.youtube.com/watch?v=hwepiS9BJ7g[/center]
 
-We've also fixed some more bugs with Shots Fired in the War Room and added a bunch of optimisations to the code which should help improve performance some more.  Server admins please note there is also an updated plugin shipped with this version.  Grab it from the War Room!
-
-[center][size=4][b][url=http://alivemod.com/#ALiVEWarRoom]Join the War Room Now![/url][/b][/size][/center]
-
-[b]Map Indexing[/b]
+[b]Want more maps? Map Indexing[/b]
 There are still plenty more maps to index.  For all those people who were asking for indexing tools, they're really simple to setup and use and everything is done IN GAME! Our instructions for using the Map Indexer can be found here - [url=http://alivemod.com/wiki/index.php/Map_Indexing]http://alivemod.com/wiki/index.php/Map_Indexing[/url]
 
-[center]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
-
-[size=4][b][url=http://alivemod.com/#Download]Download[/url][/b][/size]
+[center][b][url=http://alivemod.com/#Download]Download[/url][/b]
 Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
 Also available from PlayWithSix, ArmAholic and Steam (Usually within 24 hours of this post)
-
-Note for server admins that this build requires the 1.0.0 or newer @ALiVEServer package. Any old versions (i.e. before 1.0.0) should not be used and in most cases won't work or will crash.[/center]
+Note for server admins that this build[b] requires the 1.0.4 @ALiVEServer[/b] package. Any old versions (i.e. before 1.0.0) should not be used and in most cases won't work or will crash.
+Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission. Don't forget if using 3DEN to set appropriate default values in your modules.[/center]
 
 [b]Manual[/b]
 Please refer to the [url=http://www.alivemod.com/wiki]ALiVE Wiki[/url]. All the info you need is there. If anything is missing or unclear, please let us know.
@@ -33,8 +30,8 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 
 [b]Release Highlights[/b]
 [LIST]
-[*]Fixes to Shots Fired showing in the War Room[/*]
-[*]Several fixes related to JIP[/*]
+[*]Fixes to Shots Fired stats showing in the War Room[/*]
+[*]Several fixes related to JIP and Advanced Markers/SPOTREPS[/*]
 [*]IMINT stream from Combat Support units added to C2ISTAR[/*]
 [*]More fixes and enhancements to Combat Support[/*]
 [*]Fixed Civ Interactions being added when Civ roles were not set[/*]
@@ -42,17 +39,38 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [/LIST]
 [b]Changelog[/b]
 [spoiler]
-
-[Add changelog]
-
-
-
-
-
-
-
-
-
+[ALL] Updated version to 1.0.4.1604211 clusterbuild 1.58.135656 - public stable
+[X_LIB] Updated export functions to support JSON config output, adjusted aperture for new lighting.
+[SYS_STATS] Fixed issue where shots fired were not reported for JIP players or respawned players
+[SYS_PATROLREP] Added JIP support
+[SYS_SITREP] Added JIP support
+[SYS_SPOTREPS] Fixed issue where JIP players did not see spotreps
+[SYS_MARKER] Fixed issue where JIP players did not see markers
+[ALIVESERVER] New Linux and Windows ALiVEPlugIn v2.1 - ensures correct time reporting
+[ALIVESERVER] New Linux ALiVEPlugIn.so
+[MIL_C2ISTAR] Replaced BIS functions with scripting commands. Performance++
+[MIL_INTELLIGENCE] Replaced BIS functions with scripting commands. Performance++
+[MAIN] Added new OnPlayerConnected parameters to OPC calls
+[X_LIB] Replaced BIS functions with scripting commands. Performance++
+[MIL_OPCOM] Replaced BIS functions with scripting commands. Performance++
+[MAIN] Stop versioning alert if you are using a dev build.
+[SYS_DATA] Data should register complete before launching stats
+[SYS_STATS] Fix issue with shots fired when a non-jip player respawns
+[FNC_STRATEGIC] Replaced BIS functions with scripting commands. Performance++
+[SYS_PROFILE] Replaced BIS functions with scripting commands. Performance++
+[FNC_ANALYSIS] Replaced BIS functions with scripting commands. Performance++
+[SUP_COMMAND] Reintroduced dynamic profile selection radius based on marker size - now works on maps of all sizes.
+[SUP_COMMAND] Removed 'hint' testing line
+[SUP_COMMAND] Added zoom in/out to IMINT. Changed camera-vehicle offset to be based on vehicle height.
+[MIL_OPCOM] Fixed lamps and other weird objects getting selected as installations (IED factories etc.) with asymmetric pre-placement due to some of these ported objects being classed as "house_f"
+[SUP_COMBATSUPPORT] Optimized CS to only transmit radio messages to currently connected clients. Should also fix JIP errors for CS.
+[SYS_STATS] Fixed bug with shotsfired not recorded with JIPs
+[SUP_COMMAND] Fixed IMINT not working for independent side and when combat support wasn't used. Added All air vehicles of the player's side as IMINT sources. Fixed lists not resetting selection indexes properly. Sped up Operations group list loading again.
+[SUP_MULTISPAWN] Optimized respawn type "Insertion" for multiple players. Fixed: players with bad connection could not have been put in a valid cargo slot of the insertion helicopter. Fixed: If transport helicopter was killed after all players got out, Insertion was broken, putting players to to their default respawn point from thereon.
+[SYS_CREWINFO] Improved stability and performance of SYS Crewinfo! Fixed: Crewinfo failed for JIP players. Fixed scripterror with undefined variable _weap.
+[SUP_COMMAND] Added initial IMINT functionality (please provide feedback/direction)
+[SUP_COMMAND] Improved unit marking to display profile types using different markers. Known enemies are now marked on the map.
+[AMB_CIV_POPULATION] Fixed search/arrest actions being added to civilians when Civilian Population module wasn't placed or when civilian roles was set to "none"
 [/spoiler]
 [b]Acknowledgements and Thanks[/b]
 Particular thanks to all those on our support forum who have worked closely with us to identify bugs, provide logs and generally help us improve ALiVE. Your assistance is valuable and your dedication to ALiVE makes it all worth the effort!
