@@ -4,7 +4,7 @@ Function: ALiVE_fnc_exportCfgVehicleWeapons
 Description:
 	Export list of objects for Community Wiki
 	http://community.bistudio.com/wiki/Category:Arma_3:_Assets
-	
+
 Parameters:
 	0: STRING - mode
 		"screenshots" - create objects one by one and take their screenshot. Works only on "Render" terrain.
@@ -160,7 +160,7 @@ switch tolower _mode do {
 				&&
 				(_allPatches || {(tolower _x) in _patches} count _unitAddons > 0 || (_patchprefix != "" && [tolower(_class), tolower(_patchprefix)] call CBA_fnc_find != -1))
 				&&
-				_scope > 0
+				_scope > 1
 			) then {
 				_model = gettext (_x >> "model");
 				if (!(_model in _restrictedModels) && inheritsfrom _x != _cfgAll && {_class iskindof _x} count _blacklist == 0) then {

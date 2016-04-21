@@ -4,7 +4,7 @@ Function: ALiVE_fnc_exportCfgVehicles
 Description:
 	Export list of objects for Community Wiki
 	http://community.bistudio.com/wiki/Category:Arma_3:_Assets
-	
+
 Parameters:
 	0: STRING - mode
 		"screenshots" - create objects one by one and take their screenshot. Works only on "Render" terrain.
@@ -58,8 +58,6 @@ if (_patchprefix != "") then {
 
 _allPatches = count _patches == 0;
 
-
-
 _sides = +_sides;
 {
 	if (typename _x == typename sideunknown) then {_sides set [_foreachindex,_x call bis_fnc_sideid];};
@@ -76,10 +74,12 @@ player enablesimulation false;
 player hideobject true;
 
 switch tolower _mode do {
+	case "json";
+	case "config";
 	case "screenshots";
 	case "screenshotstest": {
 
-		if !(worldname in ["Render","RenderGreen","RenderBlue"]) exitwith {"Use 'Render White' for capturing screenshots." call bis_fnc_errorMsg;};
+		// if !(worldname in ["Render","RenderGreen","RenderBlue"]) exitwith {"Use 'Render White' for capturing screenshots." call bis_fnc_errorMsg;};
 
 		_alt = 100;
 		_pos = [3540,100,_alt];
@@ -88,9 +88,9 @@ switch tolower _mode do {
 		_restrictedModels = ["","\A3\Weapons_f\dummyweapon.p3d","\A3\Weapons_f\laserTgt.p3d"];
 		_blacklist = [
 			"WeaponHolder",
-			"LaserTarget",
-			"Bag_Base",
-			"Strategic"
+			"LaserTarget"
+//			"Bag_Base",
+//			"Strategic"
 		];
 		_capture = _mode == "screenshots";
 		_product = productversion select 1;
@@ -102,15 +102,19 @@ switch tolower _mode do {
 		_cam campreparefocus [-1,-1];
 		_cam camcommitprepared 0;
 		showcinemaborder false;
-		setaperture 25;
-		setdate [2035,5,28,10,0];
+		setaperture 47;
+		setdate [2035,5,28,9,0];
 		0 setfog 0.2;
-
-		_n = 0;
+		if (_mode == "json") then {
+			diag_log "{ 'vehicles' : [";
+		};
+		_ni = 0;
 		{
 			_class = configname _x;
 			_scope = getnumber (_x >> "scope");
 			_side = getnumber (_x >> "side");
+			_faction = getText (_x >> "faction");
+			_disName = getText (_x >> "displayName");
 			_unitAddons = unitaddons _class;
 			_isAllVehicles = _class iskindof "allvehicles";
 
@@ -121,14 +125,55 @@ switch tolower _mode do {
 				&&
 				(_allPatches || {(tolower _x) in _patches} count _unitAddons > 0 || (_patchprefix != "" && [_class, _patchprefix] call CBA_fnc_find != -1))
 				&&
-				_scope > 0
+				( _scope > 1 || (_scope == 1 && _class iskindof "Bag_Base") )
 				&&
 				(_allTypes || {_class iskindof _x} count _types > 0)
 			) then {
 				_model = gettext (_x >> "model");
 				if (!(_model in _restrictedModels) && inheritsfrom _x != _cfgAll && {_class iskindof _x} count _blacklist == 0) then {
+
+					if (_mode == "json") exitWith {
+						_newType = str(_unitAddons);
+						switch true do {
+						    case ([str(_unitAddons), "AirVehicles"] call CBA_fnc_find != -1): {
+						    	_newType = "Aircraft";
+						    };
+						    case ([str(_unitAddons), "Wheeled"] call CBA_fnc_find != -1): {
+						    	_newType = "Wheeled";
+						    };
+						    case ([str(_unitAddons), "Tracked"] call CBA_fnc_find != -1): {
+						    	_newType = "Tracked";
+						    };
+						    case ([str(_unitAddons), "WaterVehicles"] call CBA_fnc_find != -1): {
+						    	_newType = "Boats";
+						    };
+						    case ([str(_unitAddons), "Creatures"] call CBA_fnc_find != -1): {
+						    	_newType = "Units";
+						    };
+						    case ([str(_unitAddons), "Backpacks"] call CBA_fnc_find != -1): {
+						    	_newType = "Backpacks";
+						    };
+						    case ([str(_unitAddons), "AmmoBoxes"] call CBA_fnc_find != -1): {
+						    	_newType = "Supplies";
+						    };
+						    default {
+						     	_newType = str(_unitAddons);
+						    };
+						};
+						diag_log format["{'type':'%1',", _newType];
+						diag_log format["'side':'%1',", [_side] call ALiVE_fnc_sideNumberToText];
+						diag_log format["'faction':'%1',", [(configFile >> "CfgFactionClasses" >> _faction >> "displayName")] call ALiVE_fnc_getConfigValue];
+						diag_log format["'class':'%1',", _class];
+						diag_log format["'name':'%1'},", _disName];
+					};
+					[_unitAddons, _side, _class] call bis_fnc_log;
+					_ni = _ni + 1;
+					if (_mode == "config") exitWith {};
+
 					_object = createvehicle [_class,[0,0,0],[],0,"none"];
+
 					if (_class iskindof "allvehicles") then {_object setdir 90;} else {_object setdir 270;};
+
 					//_object setdir 90;
 					_object setpos _pos;
 					_object switchmove "amovpercmstpsnonwnondnon";
@@ -140,6 +185,7 @@ switch tolower _mode do {
 						_size = _size * 0.5;
 					};
 					if (_class iskindof "man" && !(_class iskindof "animal")) then {
+
 						private "_moves";
 						_size = _size * 0.5;
 						_targetZ = _size * 0.5;
@@ -152,20 +198,53 @@ switch tolower _mode do {
 
 					};
 					if (_class iskindof "staticweapon") then {
+
 						_targetZ = -_size * 0.25;
 					};
 					if (_class iskindof "house") then {
+
 						_size = _size * 0.75;
 					};
-					_campos = _pos getPos [_size * 1.5,135];
-					_campos set [2,_alt + _size * 0.5];
+					if (_class iskindof "Bag_Base") then {
+						_holder = createagent [typeof player,_pos,[],0,"none"];
+						removeallweapons _holder;
+						removeallitems _holder;
+						removeuniform _holder;
+						removevest _holder;
+						removeheadgear _holder;
+						removegoggles _holder;
+						_items = assigneditems _holder;
+						{_holder unassignitem _x} foreach _items;
+						_holder switchcamera "internal";
+						_holder setpos _pos;
+						_holder setdir 235;
+						_holder setface "kerry";
+						_holder switchmove "amovpercmstpsnonwnondnon";
+						_holder addBackpack _class;
+						_cam campreparefov 0.3;
 
-					_cam campreparepos _campos;
-					_cam campreparetarget (_object modeltoworld [0,0,_targetZ]);
-					_cam camcommitprepared 0;
+						_holder enablesimulation false;
+						bagholder = _holder;
+
+					};
+
+
+					if (_class iskindof "Bag_Base") then {
+						_campos = [_pos,2.5,90] call bis_fnc_relpos;
+						_campos set [2,_alt + 2];
+						_cam campreparepos _campos;
+						_cam campreparetarget [(_pos select 0),(_pos select 1),_alt + 1.3];
+						_cam camcommitprepared 0;
+					} else {
+						_campos = [_pos,_size * 1.5,135] call bis_fnc_relpos;
+						_campos set [2,_alt + _size * 0.5];
+						_cam campreparepos _campos;
+						_cam campreparetarget (_object modeltoworld [0,0,_targetZ]);
+						_cam camcommitprepared 0;
+					};
 
 					if (_capture) then {
-						sleep 1;
+						sleep 3;
 
 						"scr_cap" callExtension format["exportCfg\%1_CfgVehicles_%2.png",_product,_class];
 
@@ -173,16 +252,18 @@ switch tolower _mode do {
 					} else {
 						sleep 0.1;
 					};
-					_n = _n + 1;
 					_object setpos [10,10,10];
 					deletevehicle _object;
-
-					[_class,_size] call bis_fnc_log;
+					if (_class iskindof "Bag_Base") then {
+						deleteVehicle bagholder;
+					};
 				};
 			};
 		} foreach _cfgVehicles;
-		_n call bis_fnc_log;
-
+		if (_mode == "json") then {
+			diag_log "]}";
+		};
+		_ni call bis_fnc_log;
 		_cam cameraeffect ["terminate","back"];
 		camdestroy _cam;
 		setaperture -1;

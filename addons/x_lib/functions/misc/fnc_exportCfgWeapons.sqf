@@ -1,10 +1,10 @@
 /* ----------------------------------------------------------------------------
-Function: 
+Function:
 
 Description:
 	Export list of weapons for Community Wiki
 	http://community.bistudio.com/wiki/Category:Arma_3:_Assets
-	
+
 Parameters:
 	0: STRING - mode
 		"screenshots" - create items one by one and take their screenshot. Works only on "Render" terrain.
@@ -105,9 +105,12 @@ if (_screenshots) then {
 	_cam campreparefocus [-1,-1];
 	_cam camcommitprepared 0;
 	showcinemaborder false;
-	setaperture 25;
-	setdate [2035,5,28,10,0];
+	setaperture 47;
+	setdate [2035,5,28,9,0];
 	0 setfog 0.2;
+};
+if (_mode == "json") then {
+	diag_log "{ 'weapons' : [";
 };
 {
 
@@ -115,6 +118,7 @@ if (_screenshots) then {
 	_class = configname _cfg;
 	_scope = getnumber (_cfg >> "scope");
 	_model = gettext (_cfg >> "model");
+	_disName = getText (_cfg >> "displayName");
 	_weaponAddons = [];
 	_itemTypeArray = _class call bis_fnc_itemType;
 	_itemCategory = _itemTypeArray select 0;
@@ -122,8 +126,7 @@ if (_screenshots) then {
 	_isAllVehicles = _class iskindof "allvehicles";
 
 	if (
-		(_itemCategory == _mode || _screenshots)
-		&&
+
 		(_allPatches || {_class == _x} count _patchWeapons > 0)
 		&&
 		(_allTypes || (tolower _itemType) in _types)
@@ -132,6 +135,47 @@ if (_screenshots) then {
 		//&&
 		//(_model != "")
 	) then {
+		if (_mode == "json") exitWith {
+			_newType = _itemType;
+			switch (_itemType) do {
+			    case "AssaultRifle": {
+			    	_newType = "Assault Rifles";
+			    };
+			    case "SniperRifle": {
+			    	_newType = "Sniper Rifles";
+			    };
+			    case "MachineGun": {
+			    	_newType = "Machine Guns";
+			    };
+			    case "Handgun": {
+			    	_newType = "Handguns";
+			    };
+			    case "AccessoryPointer": {
+			    	_newType = "Items";
+			    };
+			    case "MissileLauncher";
+			    case "RocketLauncher": {
+			    	_newType = "Launchers";
+			    };
+			    case "AccessoryMuzzle";
+			    case "AccessorySights": {
+			    	_newType = "Optics / Suppressors";
+			    };
+			    case "Vest": {
+			    	_newType = "Vests";
+			    };
+			    case "Uniform": {
+			    	_newType = "Uniforms";
+			    };
+			    default {
+			     	_newType = _itemType;
+			    };
+			};
+			diag_log format["{'type':'%1',", _newType];
+			diag_log format["'class':'%1',", _class];
+			diag_log format["'name':'%1'},", _disName];
+		};
+		[_itemType,_class] call bis_fnc_log;
 		if (_screenshots) then {
 			_holder = switch _itemType do {
 				case "NVGoggles";
@@ -141,7 +185,7 @@ if (_screenshots) then {
 					_holder addweaponcargo [_class,1];
 					_holder setvectordirandup [[0,0,1],[0,-1,0]];
 
-					_campos = _pos getPos [1.75,60];
+					_campos = [_pos,1.75,60] call bis_fnc_relpos;
 					_campos set [2,_alt + 1.3];
 					_cam campreparepos _campos;
 					_cam campreparefov 0.4;
@@ -155,7 +199,7 @@ if (_screenshots) then {
 					_holder addweaponcargo [_class,1];
 					_holder setvectordirandup [[0.00173726,0.000167279,0.999998],[-0.995395,-0.0958456,0.00177588]];//[[0,0,1],[-1,0,0]];
 
-					_campos = _pos getPos [2,90];
+					_campos = [_pos,2,90] call bis_fnc_relpos;
 					_campos set [2,_alt + 1];
 					_cam campreparepos _campos;
 					_cam campreparefov 0.7;
@@ -200,7 +244,7 @@ if (_screenshots) then {
 					};
 					_holder enablesimulation false;
 
-					_campos = _pos getPos [2.5,90];
+					_campos = [_pos,2.5,90] call bis_fnc_relpos;
 					_campos set [2,_alt + 1];
 					_cam campreparepos _campos;
 					_cam campreparetarget [(_pos select 0),(_pos select 1),_alt + 0.85 + _offset];
@@ -216,7 +260,7 @@ if (_screenshots) then {
 						_holder setvectordirandup [[0,0,1],[1,0,0]];
 
 						_fov = if (_itemType == "AccessoryMuzzle") then {0.3} else {0.2};
-						_campos = _pos getPos [0.5,90];
+						_campos = [_pos,0.5,90] call bis_fnc_relpos;
 						_campos set [2,_alt + 0.5];
 						_cam campreparepos _campos;
 						_cam campreparefov _fov;
@@ -243,7 +287,7 @@ if (_screenshots) then {
 								_holder addmagazinecargo [_x,1];
 								_holder setvectordirandup [[0.707107,0,0.707107],[0.408248,0.816497,-0.408248]];
 
-								_campos = _pos getPos [0.5*2,90];
+								_campos = [_pos,0.5*2,90] call bis_fnc_relpos;
 								_campos set [2,_alt + 0.5];
 								_cam campreparepos _campos;
 								_cam campreparefov 0.2;
@@ -275,7 +319,7 @@ if (_screenshots) then {
 						_holder addweaponcargo [_class,1];
 						_holder setvectordirandup [[0.707107,0,0.707107],[0.408248,0.816497,-0.408248]];
 
-						_campos = _pos getPos [0.5*2,90];
+						_campos = [_pos,0.5*2,90] call bis_fnc_relpos;
 						_campos set [2,_alt + 0.5];
 						_cam campreparepos _campos;
 						_cam campreparefov 0.4;
@@ -290,7 +334,7 @@ if (_screenshots) then {
 						_holder setvectordirandup [[0,0,1],[1,0,0]];
 
 						_fov = if (_itemType == "Handgun") then {0.3} else {0.7};
-						_campos = _pos getPos [0.5,90];
+						_campos = [_pos,0.5,90] call bis_fnc_relpos;
 						_campos set [2,_alt + 0.5];
 						_cam campreparepos _campos;
 						_cam campreparefov _fov;
@@ -307,9 +351,9 @@ if (_screenshots) then {
 
 				sleep 0.01;
 			} else {
-				_class call bis_fnc_log;
 				sleep 0.1;
 			};
+
 			selectplayer _player;
 			if (_itemType != "UnknownWeapon") then {
 				_holder setpos [10,10,10];
@@ -318,12 +362,14 @@ if (_screenshots) then {
 			setShadowDistance -1;
 		};
 	} else {
-		//_class call bis_fnc_log;
+		// [_itemType,_class] call bis_fnc_log;
 	};
 
-	progressloadingscreen (_foreachindex / _cfgWeaponsCount);
+	// progressloadingscreen (_foreachindex / _cfgWeaponsCount);
 } foreach _cfgWeapons;
-
+if (_mode == "json") then {
+	diag_log "]}";
+};
 if (_screenshots) then {
 	_cam cameraeffect ["terminate","back"];
 	camdestroy _cam;
