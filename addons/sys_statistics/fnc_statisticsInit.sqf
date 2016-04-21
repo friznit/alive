@@ -183,7 +183,8 @@ if (isDedicated && GVAR(ENABLED)) then {
 	}; */
 };
 
-if (isMultiplayer && GVAR(ENABLED) && !isHC) then {
+// Run only in MP on clients where player object-variable exists (and not on HC)
+if (isMultiplayer && {hasInterface} && {GVAR(ENABLED)}) then {
 
 	private ["_puid","_class","_PlayerSide","_PlayerFaction"];
 
