@@ -69,10 +69,13 @@ void Alive::cmdStartALiVE(Alive::AliveData *data) {
             CurlData cData;
 
             // The URL to check against
+            CURL *curl = curl_easy_init();
             std::string urlAuth = "http://alivemod.com/api/authorise?&group=";
-            urlAuth += Config.group;
+            urlAuth += curl_easy_escape(curl, Config.group.c_str(), Config.group.size());
+            curl_easy_cleanup(curl);
 
             LOG_FINFO() << "    Checking WarRoom access...";
+            LOG_FINFO() << "    URL: " << urlAuth;
 
             // Check for CURL errors
             if(!curlGet(urlAuth, &cData)) {
@@ -94,7 +97,7 @@ void Alive::cmdStartALiVE(Alive::AliveData *data) {
                 vReturnParams.push_back("You are not authorized to access ALiVE War Room with this account. Check IP and Groupname.");
                 data->sReturn = CreateCSV(vReturnParams);
 
-                LogError("HandleMessage - StartALiVE", "You are note authorized to access ALiVE War Room with this account. Check IP and Groupname.", data->sRawMsg);
+                LogError("HandleMessage - StartALiVE", "You are not authorized to access ALiVE War Room with this account. Check IP and Groupname.", data->sRawMsg);
                 
                 return;
             }

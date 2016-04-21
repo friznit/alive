@@ -33,7 +33,8 @@ std::string Alive::GetTime(const std::string &format) {
     struct tm *timeinfo;
     char buffer[128];
     time(&rawtime);
-    timeinfo = localtime(&rawtime);
+
+    timeinfo = gmtime(&rawtime);
 
     strftime(buffer, 128, format.c_str(), timeinfo);
 

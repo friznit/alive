@@ -93,13 +93,17 @@ void Alive::cmdSendJSONAsync(Alive::AliveData *data) {
         LogError("HandleMessage - SendJSONAsync",
                  "Unable to create thread.", data->sRawMsg);
 
+        LOG_FERR() << "    thread error: " << res;
+
         return;
     }
 
     // Increment thread counter
     pthread_mutex_lock(&JSONAsync_Threads_Mutex);
     ++JSONAsync_Threads;
+    LOG_FDBG() << "    Threads (Inc): " << JSONAsync_Threads;
     pthread_mutex_unlock(&JSONAsync_Threads_Mutex);
+
 
     // All OK
     vReturnParams.push_back(data->sFunctionName);
@@ -128,9 +132,10 @@ void *Alive::cmdSendJSONThread(void *_data) {
     // Reduce thread counter
     pthread_mutex_lock(&JSONAsync_Threads_Mutex);
     --JSONAsync_Threads;
+    LOG_FDBG() << "    Threads (Dec): " << JSONAsync_Threads;
     pthread_mutex_unlock(&JSONAsync_Threads_Mutex);
 
     delete myStruct;
 
-    pthread_exit(0);
+    return NULL;
 }

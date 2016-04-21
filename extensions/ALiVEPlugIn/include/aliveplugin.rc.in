@@ -8,12 +8,12 @@ BEGIN
     BEGIN
       VALUE "CompanyName", "ALiVE"
       VALUE "FileDescription", "ALiVE PlugIn"
-      VALUE "FileVersion", "v2.0a-"
+      VALUE "FileVersion", "v2.0a-@GIT_COMMIT_HASH@"
       VALUE "InternalName", "aliveplugin"
       VALUE "LegalCopyright", "ALiVE"
       VALUE "OriginalFilename", "ALiVEPlugIn.dll"
       VALUE "ProductName", "ALiVE PlugIn"
-      VALUE "ProductVersion", "v2.0a-"
+      VALUE "ProductVersion", "v2.0a-@GIT_COMMIT_HASH@"
     END
   END
 

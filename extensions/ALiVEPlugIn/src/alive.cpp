@@ -34,12 +34,16 @@ Alive::Alive() {
     // Initialize mutexes
     pthread_mutex_init(&JSONMap_Mutex, NULL);
     pthread_mutex_init(&JSONAsync_Threads_Mutex, NULL);
+
+    perfMon = new PerfMon();
 }
 
 Alive::~Alive() {
     // Destroy mutexes
     pthread_mutex_destroy(&JSONMap_Mutex);
     pthread_mutex_destroy(&JSONAsync_Threads_Mutex);
+
+    delete perfMon;
 }
 
 void Alive::HandleMessage(Alive::AliveData *data) {
@@ -123,10 +127,13 @@ void Alive::ParseMessage(const std::string &msg, Alive::AliveData *data) {
 
     // Separate the FunctionName from the Parameters
     std::regex e("(\\[.*\\]|[^\\s]+)");
-    std::regex_iterator<std::string::iterator> match(data->sRawMsg.begin(), data->sRawMsg.end(), e);
-    std::regex_iterator<std::string::iterator> rend;
-    if(match != rend) data->sFunctionName = (*match++).str();
-    if(match != rend) sParameters = (*match++).str();
+    std::smatch sm;
+    std::regex_search(data->sRawMsg, sm, e);
+
+    if(sm.size() == 2) {
+        data->sFunctionName = sm[1];
+        sParameters = sm.suffix();
+    }
 
     // Lets see if the function exists
     auto it = CommandMap.find(data->sFunctionName);
@@ -276,19 +283,50 @@ void Alive::ParseCSV(const std::string &params, std::vector<std::string> *vParam
     }
     std::string p = params.substr(pFirst, pLast - pFirst);
 
-    // Do a regex match to find all parameters
-    std::smatch sm;
-    std::regex e("('.*?'|[^',]+)(?=\\s*,|\\s*$)");
+    // Find all parmeters
+    uint32_t quotes = 0;
+    uint32_t bracket = 0;
+    char prev = 0;
+    std::string result;
 
-    // For every match...
-    while(std::regex_search(p, sm, e)) {
-        // Make sure we remove `'` from the beginning and end of each match
-        std::regex er("(^'|'$)");
-        std::string result = std::regex_replace(sm[0].str(), er, "", std::regex_constants::format_sed);
+    // Do some CSV Parsing
+    for(char &c : p) {
+        switch(c) {
+            case '"':
+                ++quotes;
+                break;
 
-        // Push data into the vector
+            case '{':
+                ++bracket;
+                break;
+
+            case '}':
+                --bracket;
+                break;
+
+            case ',':
+                if((quotes == 0 && bracket == 0) || (((prev == '"' || prev == '\'') && (quotes & 1) == 0) && (bracket == 0))) {
+                    pFirst = result.find_first_of('\'') + 1;
+                    pLast = result.find_last_of('\'');
+                    result = result.substr(pFirst, pLast - pFirst);
+
+                    vParams->push_back(result);
+
+                    result.clear();
+                }
+                break;
+
+            default:;
+        }
+
+        result += prev = c;
+    }
+
+    if(bracket == 0 && result.size() != 0) {
+        pFirst = result.find_first_of('\'') + 1;
+        pLast = result.find_last_of('\'');
+        result = result.substr(pFirst, pLast - pFirst);
+
         vParams->push_back(result);
-
-        p = sm.suffix().str();
     }
 }

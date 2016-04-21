@@ -52,7 +52,7 @@ void Alive::cmdServerName(Alive::AliveData *data) {
         }
     }
 
-#ifdef __gnu_linux
+#ifdef __gnu_linux__
     cmdLine.close();
 #endif
 
@@ -82,14 +82,19 @@ void Alive::cmdServerName(Alive::AliveData *data) {
        return;
     }
 
-    // Put the working directory with the config filename
-    cFile = cCurrentPath;
+    // Lets check whether it's an absolute or relative path
+    if(cFileName[0] != '/' || cFileName[0] != '\\' || cFileName[1] != ':') {
+        // Path was relative, put the working directory with the config filename
+        cFile = cCurrentPath;
 #ifdef __gnu_linux__
-    cFile += "/";
+        cFile += "/";
 #else
-    cFile += "\\";
+        cFile += "\\";
 #endif
-    cFile += cFileName;
+        cFile += cFileName;
+    } else {
+        cFile = cFileName;
+    }
 
     LOG_FINFO() << "    Config file: " << cFile;
 

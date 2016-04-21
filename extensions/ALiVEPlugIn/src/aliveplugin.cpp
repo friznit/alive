@@ -10,8 +10,16 @@
 
 Alive alive;
 
+static bool startup = true;
+
 void ALiVE_Extension(char *output, int outputSize, const char *function) {
     Alive::AliveData data;
+
+    // Print plugin version
+    if(startup) {
+        startup = false;
+        LOG_FINFO() << "ALiVEPlugIn " << VERSION << "-" << GIT_COMMIT_HASH;
+    }
 
     // Start measuring time
     std::chrono::time_point<std::chrono::system_clock> start, end;

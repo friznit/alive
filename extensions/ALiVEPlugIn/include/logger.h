@@ -24,4 +24,6 @@
 extern std::shared_ptr<spdlog::logger> LogConsole;
 extern std::shared_ptr<spdlog::logger> LogFile;
 
+extern std::shared_ptr<spdlog::logger> LogFilePerf;
+
 #endif // LOGGER_H_

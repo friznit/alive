@@ -26,6 +26,12 @@ class AliveTest : public ::testing::Test {
 
 Alive *AliveTest::a = NULL;
 
+TEST_F(AliveTest, CSVParseTest) {
+    Alive::AliveData data;
+    a->ParseMessage("SendJSON ['GET','events/_design/playerPage/_view/playerTotals?group_level=1&key=\"76561197970881889\"&stale=ok','']", &data);
+    a->HandleMessage(&data);
+}
+
 TEST_F(AliveTest, cmdSendBulkJSON_and_cmdGetBulkJSON) {
     Alive::AliveData data;
 

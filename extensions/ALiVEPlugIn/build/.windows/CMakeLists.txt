@@ -37,7 +37,7 @@ set (unit_src
 
 add_executable (ALiVEPlugIn.dll ${unit_src})
 
-#target_link_libraries (ALiVEPlugIn.dll alive winpthread sigar.dll)
+#target_link_libraries (ALiVEPlugIn.dll alive winpthread)
 target_link_libraries (ALiVEPlugIn.dll alive winpthread)
 
 INSTALL (TARGETS ALiVEPlugIn.dll DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/../)

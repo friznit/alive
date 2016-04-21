@@ -2,6 +2,7 @@
 set (alive_src
     alive.cpp
     logger.cpp
+	perfmon.cpp
 )
 
 include_directories ("../spdlog/include")

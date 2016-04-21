@@ -26,7 +26,9 @@
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/writer.h>
 
-#include <sigar.h>
+#include <perfmon.h>
+
+#include <version.h>
 
 #ifdef __gnu_linux__
 #include <pwd.h>
@@ -108,6 +110,8 @@ class Alive {
     private:
         //! Command Map
         std::map<std::string, Commands> CommandMap; 
+
+        PerfMon *perfMon;
 
         //! JSON Map
         static std::map<std::string, std::vector<std::string>> JSONMap;

@@ -5,20 +5,39 @@ project (ALiVEPlugIn)
 set (CMAKE_C_COMPILER       clang)
 set (CMAKE_CXX_COMPILER     clang++)
 
+# Get the latest abbreviated commit hash of the working branch
+execute_process(
+    COMMAND git log -1 --format=%h
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE GIT_COMMIT_HASH
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Generate version header
+configure_file(
+    ${CMAKE_SOURCE_DIR}/include/version.h.in
+    ${CMAKE_SOURCE_DIR}/include/version.h
+)
+
+# Generate windows rc
+configure_file(
+    ${CMAKE_SOURCE_DIR}/include/aliveplugin.rc.in
+    ${CMAKE_SOURCE_DIR}/include/aliveplugin.rc
+)
+
 # Include directories
 include_directories ("include")
 include_directories ("rapidjson/include")
-include_directories ("sigar/include")
 include_directories ("spdlog/include")
 
 # Add src directory 
 add_subdirectory (src)
 
 # Executable
-add_executable (aliveplugin.so ./src/aliveplugin.cpp)
-target_link_libraries (aliveplugin.so alive sigar-x86-linux)
+add_executable (ALiVEPlugIn.so ./src/aliveplugin.cpp)
+target_link_libraries (ALiVEPlugIn.so alive)
 
-set_target_properties (aliveplugin.so PROPERTIES
+set_target_properties (ALiVEPlugIn.so PROPERTIES
     "COMPILE_FLAGS" "-O2 -m32 -fPIC -std=gnu++11"
     "LINK_FLAGS" "-s -O2 -m32 -shared -static-libgcc -static-libstdc++"
 )
@@ -81,6 +100,8 @@ set (unit_src
     ./src/alive_test.cpp
     ./src/aliveplugin.cpp
     ./src/aliveplugin_test.cpp
+	./src/perfmon.cpp
+    ./src/perfmon_test.cpp
     ./src/commands/cmdDateTime.cpp
     ./src/commands/cmdGetBulkJSON.cpp
     ./src/commands/cmdSendBulkJSON.cpp
@@ -93,7 +114,7 @@ set (unit_src
 )
 
 add_executable (aliveTest ${unit_src})
-target_link_libraries (aliveTest libgtest libgmock curl uuid sigar-amd64-linux)
+target_link_libraries (aliveTest libgtest libgmock curl uuid)
 
 set_target_properties (aliveTest PROPERTIES
     "COMPILE_FLAGS" "-ccc-gcc-name g++ -std=gnu++11 -g"
