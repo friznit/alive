@@ -1,0 +1,67 @@
+[center][url=http://alivemod.com/][img=http://alivemod.com/img/alive_logo_bif.jpg][/url][/center]
+[center][b][url=http://alivemod.com/]ALiVEmod.com[/url]
+[size=4]The next generation dynamic persistent mission addon for ArmA3
+Release 1.0.4[/size][/b][/center]
+[center][b]1.0.4 Update - IMINT, Optimisations and more War Room bug hunting[/b][/center]
+[center][img=http://i.imgur.com/EiuwIjQ.jpg][/center]
+[b]IMINT[/b]
+Those of you who watched the recent BIS livestream with 21st Rangers would have heard Friznit talking about the importance of Intel to battlefield commanders.  We've wanted to review the way Operational Intelligence is gathered and presented to Players in ALiVE in order to provide a more realistic and comprehensive set of tools.  At the tactical level, Intelligence is typically collected from sources such as EM signals, images and humans.  ALiVE already simulates HUMINT with the ability to talk to civilians and collect data on possible hostile activity.  SpyderBlack has now added a new IMINT capability to Player Commanders.  Any Combat Support assets that have suitable optics on board can stream live imaging directly to the C2ISTAR tablet.
+
+https://www.youtube.com/watch?v=hwepiS9BJ7g
+
+We've also fixed some more bugs with Shots Fired in the War Room and added a bunch of optimisations to the code which should help improve performance some more.  Server admins please note there is also an updated plugin shipped with this version.  Grab it from the War Room!
+
+[center][size=4][b][url=http://alivemod.com/#ALiVEWarRoom]Join the War Room Now![/url][/b][/size][/center]
+
+[b]Map Indexing[/b]
+There are still plenty more maps to index.  For all those people who were asking for indexing tools, they're really simple to setup and use and everything is done IN GAME! Our instructions for using the Map Indexer can be found here - [url=http://alivemod.com/wiki/index.php/Map_Indexing]http://alivemod.com/wiki/index.php/Map_Indexing[/url]
+
+[center]Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission.
+
+[size=4][b][url=http://alivemod.com/#Download]Download[/url][/b][/size]
+Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
+Also available from PlayWithSix, ArmAholic and Steam (Usually within 24 hours of this post)
+
+Note for server admins that this build requires the 1.0.0 or newer @ALiVEServer package. Any old versions (i.e. before 1.0.0) should not be used and in most cases won't work or will crash.[/center]
+
+[b]Manual[/b]
+Please refer to the [url=http://www.alivemod.com/wiki]ALiVE Wiki[/url]. All the info you need is there. If anything is missing or unclear, please let us know.
+
+[b]Support Forum[/b]
+For direct support and feedback from the ALiVE dev team, join us on our forum at [url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url].
+[b]Please avoid posting issues/questions related to bugs etc on this thread. Devs and support will answer questions on our forum.[/b]
+
+[b]Release Highlights[/b]
+[LIST]
+[*]Fixes to Shots Fired showing in the War Room[/*]
+[*]IMINT stream from Combat Support units added to C2ISTAR[/*]
+[*]More fixes and enhancements to Combat Support[/*]
+[*]Fixed Civ Interactions being added when Civ roles were not set[/*]
+[*]Various performance and optimisation fixes[/*]
+[/LIST]
+[b]Changelog[/b]
+[spoiler]
+
+[Add changelog]
+
+
+
+
+
+
+
+
+
+[/spoiler]
+[b]Acknowledgements and Thanks[/b]
+Particular thanks to all those on our support forum who have worked closely with us to identify bugs, provide logs and generally help us improve ALiVE. Your assistance is valuable and your dedication to ALiVE makes it all worth the effort!
+
+[b]Disclaimer[/b]
+ALiVE is now GA. However, we may need to prune the persistent database data from the War Room, eliminating data that is older than 6-12 months. The ALiVE War Room database is run on a voluntary basis at a cost to the ALiVE development team. No guarantees can be given on the mission data stored or the availability of the service. We apologise for any downtime that may impact your MP persistent missions.
+
+[b]ALiVE has transformed my Arma 3 experience, how can I thank you?[/b]
+Please consider making a contribution to our server costs if you enjoy ALiVE! It costs us $65 per month to run our War Room website and the ALiVE Database servers and every little helps. Donate here [url=http://www.alivemod.com/#Donate]http://www.alivemod.com/#Donate[/url]
+
+Special thanks to everyone here for supporting us with donations to the ALiVE mod development effort.
+
+Have fun!
