@@ -1570,10 +1570,14 @@ switch(_operation) do {
                 //Sort collected index-numbers to get the highest one
                 _vehicles sort false;
                 _entities sort false;
-                               
+                
+                //Validating
+                _entities = if (count _entities > 0 && {typeName (_entities select 0) == "SCALAR"}) then {_entities select 0} else {0};
+                _vehicles = if (count _vehicles > 0 && {typeName (_vehicles select 0) == "SCALAR"}) then {_vehicles select 0} else {0};
+                                                             
                 //Set highest index-number on the profiles-counters in order to let objects created lateron have correct unique IDs
-                [_logic, "profileVehicleCount", _vehicles select 0] call ALIVE_fnc_hashSet;
-                [_logic, "profileEntityCount", _entities select 0] call ALIVE_fnc_hashSet;
+                [_logic, "profileVehicleCount", _vehicles] call ALIVE_fnc_hashSet;
+                [_logic, "profileEntityCount", _entities] call ALIVE_fnc_hashSet;
                 [_logic, "profileCount", _total] call ALIVE_fnc_hashSet;
             };
         };
