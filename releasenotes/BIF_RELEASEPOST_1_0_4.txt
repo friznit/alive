@@ -1,25 +1,31 @@
 [center][url=http://alivemod.com/][img=http://alivemod.com/img/alive_logo_bif.jpg][/url][/center]
 [center][b][url=http://alivemod.com/]ALiVEmod.com[/url]
-[size=4]The next generation dynamic persistent mission addon for ArmA3
-Release 1.0.4[/size][/b][/center]
-[center][b]1.0.4 Update - Updates, Optimisations and more War Room bug hunting[/b][/center]
+[size=4]The next generation dynamic persistent mission addon for ArmA3[/size][/b][/center]
+
+[center][b]Release 1.0.4 - Bug Fixes, Optimisations, enhanced C2ISTAR and more War Room bug hunting[/b][/center]
+
 [center][img=http://i.imgur.com/AdBIYNM.png][/center]
 [b]Updates[/b]
-The main focus of this release is to start [b]optimizing code[/b] utilising new commands from BIS (thankyou!) that should help performance. We have also been focusing on [b]addressing bugs reported[/b] by our loyal and hard working supporters posting on our forum ([url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url]). We've also [b]fixed some more bugs with statistics[/b] in the War Room and added some fixes for Multispawn, OPCOM, Ambient civilians, Advanced Markers, SPOTREPS and more.  Server admins please note there is also an[b] updated ALiVE extension plugin shipped[/b] with this version. [b][url=http://alivemod.com/#ALiVEWarRoom]Grab if from the War Room Now![/url][/b]
+The main focus of this release is to start [b]optimizing code[/b] utilising new commands from BIS (thankyou!) that should help performance. We have also been focusing on [b]addressing bugs reported[/b] by our loyal and hard working supporters posting on our forum ([url=http://alivemod.com/forum/]http://alivemod.com/forum/[/url]). We've also [b]fixed some more bugs with statistics[/b] in the War Room and added some fixes for Multispawn, OPCOM, Ambient civilians, Advanced Markers, SPOTREPS and more.  Server admins please note there is also an[b] updated ALiVE extension plugin shipped[/b] with this version (in @aliveserver folder).
  
 [b]C2ISTAR (Command, Control, Intelligence etc.) Improvements[/b]
-Those of you who watched the recent BIS livestream with 21st Rangers would have heard Friznit talking about the importance of Intel to battlefield commanders.  We've wanted to review the way Operational Intelligence is gathered and presented to Players in ALiVE in order to provide a more realistic and comprehensive set of tools.  At the tactical level, Intelligence is typically collected from sources such as EM signals, images and humans.  ALiVE already simulates HUMINT with the ability to talk to civilians and collect data on possible hostile activity.  SpyderBlack has now added a new IMINT capability to Player Commanders.  Any Combat Support assets that have suitable optics on board can stream live imaging directly to the C2ISTAR tablet.
+Thanks to SpyderBlack, we have a very cool new feature for our C2ISTAR module. Those of you who watched the recent BIS livestream with 21st Rangers would have heard Friznit talking about the importance of Intel to battlefield commanders.  We've wanted to review the way Operational Intelligence is gathered and presented to Players in ALiVE in order to provide a more realistic and comprehensive set of tools.  At the tactical level, Intelligence is typically collected from sources such as EM signals, images and humans.  ALiVE already simulates HUMINT with the ability to talk to civilians and collect data on possible hostile activity.  SpyderBlack has now added a new IMINT capability to Player Commanders.  Any Combat Support assets that have suitable optics on board can stream live imaging directly to the C2ISTAR tablet.
 
 [center]https://www.youtube.com/watch?v=hwepiS9BJ7g[/center]
 
 [b]Want more maps? Map Indexing[/b]
 There are still plenty more maps to index.  For all those people who were asking for indexing tools, they're really simple to setup and use and everything is done IN GAME! Our instructions for using the Map Indexer can be found here - [url=http://alivemod.com/wiki/index.php/Map_Indexing]http://alivemod.com/wiki/index.php/Map_Indexing[/url]
 
+[b]Are you using Linux?[/b]
+ALiVE is fully supported on a Linux Dedicated Server (as well as Windows). In fact the ALiVE Official Server for testing is running Ubuntu. Here are some tips on getting ALiVE running smoothly on Linux and integrated with War Room - [url=http://www.alivemod.com/forum/1916-setting-up-linux-dedi-server]http://www.alivemod.com/forum/1916-setting-up-linux-dedi-server[/url]
+
 [center][b][url=http://alivemod.com/#Download]Download[/url][/b]
 Grab the latest version from [url=http://alivemod.com/#Download]ALiVEmod.com[/url]
 Also available from PlayWithSix, ArmAholic and Steam (Usually within 24 hours of this post)
 Note for server admins that this build[b] requires the 1.0.4 @ALiVEServer[/b] package. Any old versions (i.e. before 1.0.0) should not be used and in most cases won't work or will crash.
 Please note that as with all updates, if you have an issue loading a mission made with a previous version of ALiVE, delete and replace the modules in that mission. Don't forget if using 3DEN to set appropriate default values in your modules.[/center]
+
+[center][b][url=http://alivemod.com/#ALiVEWarRoom]Join the War Room Now![/url][/b][/center]
 
 [b]Manual[/b]
 Please refer to the [url=http://www.alivemod.com/wiki]ALiVE Wiki[/url]. All the info you need is there. If anything is missing or unclear, please let us know.
@@ -38,8 +44,9 @@ For direct support and feedback from the ALiVE dev team, join us on our forum at
 [*]Various performance and optimisation fixes[/*]
 [/LIST]
 [b]Changelog[/b]
-[spoiler]
-[ALL] Updated version to 1.0.4.1604211 clusterbuild 1.58.135656 - public stable
+[spoiler][ALL] Updated version to 1.0.4.1604212
+[SYS PROFILE] Fixed error with creating new vehicles in a persistent session on mission reload if no single vehicle was restored from DB
+[SYS STATISTICS] Fixed ALiVE_fnc_statisticsInit was not finishing on server, hanging at line 192 (regression due to !isNull player fix, originally caused due to clientside-code being run on server).
 [X_LIB] Updated export functions to support JSON config output, adjusted aperture for new lighting.
 [SYS_STATS] Fixed issue where shots fired were not reported for JIP players or respawned players
 [SYS_PATROLREP] Added JIP support
