@@ -98,12 +98,14 @@ void Alive::cmdSendJSONAsync(Alive::AliveData *data) {
         return;
     }
 
+    // Detach thread
+    pthread_detach(thread);
+
     // Increment thread counter
     pthread_mutex_lock(&JSONAsync_Threads_Mutex);
     ++JSONAsync_Threads;
     LOG_FDBG() << "    Threads (Inc): " << JSONAsync_Threads;
     pthread_mutex_unlock(&JSONAsync_Threads_Mutex);
-
 
     // All OK
     vReturnParams.push_back(data->sFunctionName);
