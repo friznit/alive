@@ -29,6 +29,7 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 	if (_name == "__SERVER__" || _uid == "") exitWith {
 
+		["ALiVE SYS_PLAYER - EXITING AS SERVER IS UNIT CONNECTING OR UID IS NIL", _name, _uid] call ALIVE_fnc_dump;
 		// MOVED TO MODULE INIT
 
 	};
@@ -49,23 +50,22 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 		_check = MOD(sys_player) getVariable ["init", false];
 		// Wait for player module to init
-		TRACE_1("Waiting for player module to init",_check);
+		TRACE_3("Waiting for player module to init",_name, _uid, _check);
 		waitUntil  {sleep 0.3; _check = MOD(sys_player) getVariable ["init", false]; TRACE_2("Waiting for init",_check,_name); _check};
 		sleep 0.2;
-		TRACE_1("Player module init complete",_check);
+		TRACE_3("Player module init complete",_name, _uid, _check);
 
 		_check = MOD(sys_player) getVariable [_uid, false];
+
 		// Wait for player data to be loaded by server
-		TRACE_1("Waiting for player to connect",_check);
-		waitUntil  {sleep 0.3; _check = MOD(sys_player) getVariable [_uid, false]; TRACE_1("Waiting for player",_check); _check};
+		TRACE_3("Waiting for player to connect", _name, _uid, _check);
+		waitUntil  {sleep 0.3; _check = MOD(sys_player) getVariable [_uid, false]; TRACE_3("Waiting for player", _name, _uid, _check); _check};
+
 		sleep 0.2;
-		TRACE_1("Player connected",_check);
+		TRACE_3("Player connected",_name, _uid, _check);
 
 		_unit = [_uid] call ALIVE_fnc_getPlayerByUIDOnConnect;
 		_owner = owner _unit;
-
-		["ALiVE SYS_PLAYER - PLAYER UNIT FOUND IN PLAYABLEUNITS (%1)",_unit] call ALIVE_fnc_dump;
-
 
 /*		// If player connecting then get player data from memory and update player object
 		{
@@ -90,11 +90,13 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 		} else {
 
+			["ALiVE SYS_PLAYER - PLAYER UNIT FOUND IN PLAYABLEUNITS (%1)",_unit] call ALIVE_fnc_dump;
 			// Ask player if they want to be restored first?
 
 			["DATA: Restoring player data for %1", _unit] call ALIVE_fnc_dump;
 			// Apply data to player object
-			_result = [MOD(sys_player), "getPlayer", [_unit,_owner]] call ALIVE_fnc_player;
+			TRACE_3("Sending player data to", _name, _uid, _owner);
+			_result = [MOD(sys_player), "getPlayer", [_unit, _owner]] call ALIVE_fnc_player;
 
 			TRACE_1("GETTING PLAYER DATA", _result);
 
