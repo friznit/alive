@@ -26,6 +26,7 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 	_id = _this select 0;
 	_name = _this select 1;
 	_uid = _this select 2;
+	_owner = _this select 3;
 
 	if (_name == "__SERVER__" || _uid == "") exitWith {
 
@@ -40,11 +41,12 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 
 	// If not server then wait for server to load data, wait for player to connect and player object to get assigned then proceed
 
-	[_uid, _name] spawn {
+	[_uid, _name, _owner] spawn {
 		private ["_owner","_data","_unit","_uid","_name","_check"];
 
 		_uid = _this select 0;
 		_name = _this select 1;
+		_owner = _this select 2;
 
 		_unit = objNull;
 
@@ -64,25 +66,10 @@ if (!isNil QMOD(sys_player) && isDedicated) then {
 		sleep 0.2;
 		TRACE_3("Player connected",_name, _uid, _check);
 
-		_unit = [_uid] call ALIVE_fnc_getPlayerByUIDOnConnect;
-		_owner = owner _unit;
+		TRACE_1("Playable Units", playableUnits);
 
-/*		// If player connecting then get player data from memory and update player object
-		{
-			private ["_playerGUID","_tmp"];
-			_tmp = _x;
-			_playerGUID = getPlayerUID _tmp;
-			TRACE_1("Waiting for playable unit to get GUID",_playerGUID);
-			waitUntil {sleep 0.3; _playerGUID = getPlayerUID _tmp; TRACE_1("Waiting for GUID",_playerGUID); _playerGUID != ""};
-			sleep 0.2;
-			TRACE_2("SYS_PLAYER PLAYABLEUNITS CHECK",_playerGUID, _uid);
-			if (getPlayerUID _tmp == _uid ) exitwith {
-				_unit = _tmp;
-				_owner = owner _unit;
-				TRACE_2("SYS_PLAYER: PLAYER UNIT FOUND IN PLAYABLEUNITS",_unit, _owner);
-			};
-		} foreach playableUnits;
-*/
+		_unit = [_uid] call ALIVE_fnc_getPlayerByUIDOnConnect;
+
 		if (isNull _unit) then {
 			diag_log[format["SYS_PLAYER: PLAYER UNIT NOT FOUND IN PLAYABLEUNITS(%1)",_name]];
 
