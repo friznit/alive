@@ -887,12 +887,12 @@ switch(_operation) do {
 					//["SPAWN ENTITY [%1] pos: %2 command: %3 cargo: %4",_profileID,_position,_vehiclesInCommandOf,_vehiclesInCargoOf] call ALIVE_fnc_dump;
 
                     _paraDrop = false;
-                    if((_position select 2) > 300) then {
-                        if(((count _vehiclesInCommandOf)==0) && ((count _vehiclesInCargoOf)==0)) then {
+                    if ((_position select 2) > 300) then {
+                        if (((count _vehiclesInCommandOf) == 0) && {(count _vehiclesInCargoOf) == 0}) then {
                             _paraDrop = true;
                         };
-                    }else{
-                        if(((count _vehiclesInCommandOf)==0) && ((count _vehiclesInCargoOf)==0)) then {
+                    } else {
+                        if (((count _vehiclesInCommandOf) == 0) && {(count _vehiclesInCargoOf) == 0}) then {
                             _position set [2,0];
                         };
                     };
@@ -904,7 +904,9 @@ switch(_operation) do {
 							_unitPosition = _positions select _unitCount;
 							_damage = _damages select _unitCount;
 							_rank = _ranks select _unitCount;
-							_unit = _group createUnit [_x, _unitPosition, [], 0 , "NONE"];
+                            
+                            //Creating unit on ground, or they will fall to death with slow-spawn
+							_unit = _group createUnit [_x, [_unitPosition select 0, _unitPosition select 1, 0], [], 0 , "NONE"];
 							
                             //Set name 
 							//_unit setVehicleVarName format["%1_%2",_profileID, _unitCount];
@@ -925,11 +927,14 @@ switch(_operation) do {
 							_unitCount = _unitCount + 1;
 
 							if(_paraDrop) then {
-
-                                _parachute = createvehicle ["Steerable_Parachute_F",position _unit,[],0,"none"];
+								
+                                //Creating parachute on original position
+                                _parachute = createvehicle ["Steerable_Parachute_F",_unitPosition,[],0,"none"];
+                                
+                                //Resetting unit to original position
+                                _unit setpos _unitPosition;
                                 _unit moveindriver _parachute;
 
-                                _parachute setpos position _unit;
                                 _parachute setdir direction _unit;
                                 _parachute setvelocity [0,0,-1];
 
