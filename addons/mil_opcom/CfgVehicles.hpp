@@ -171,6 +171,31 @@ class CfgVehicles {
                                         };
                                 };
                         };
+                        class intelchance
+                        {
+                                displayName = "$STR_ALIVE_OPCOM_INTELCHANCE";
+                                description = "$STR_ALIVE_OPCOM_INTELCHANCE_COMMENT";
+                                typeName = "NUMBER";
+                                class Values
+                                {
+                                        class none
+                                        {
+                                                name = "None";
+                                                value = 0;
+                                                default = 1;
+                                        };
+                                        class seldom
+                                        {
+                                                name = "seldom";
+                                                value = 5;
+                                        };
+                                        class often
+                                        {
+                                                name = "often";
+                                                value = 10;
+                                        };
+                                };
+                        };
                         class faction1
                         {
                                 displayName = "$STR_ALIVE_OPCOM_FACTION";

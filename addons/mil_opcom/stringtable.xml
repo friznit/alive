@@ -59,4 +59,10 @@
 <Key ID="STR_ALIVE_OPCOM_USAGE">
 	<English>Place a Military AI Commander module in the editor and select a faction from the dropdown. Custom factions can be entered in the “override default faction” box. Choose the Control Type in the drop down menu. By default, the AI Commander will take command of all available virtual units (profiles) for its faction. Therefore, it requires a minimum of one synced Placement Module and the Virtual AI module.</English>
 </Key>
+<Key ID="STR_ALIVE_OPCOM_INTELCHANCE">
+	<English>INTEL:</English>
+</Key>
+<Key ID="STR_ALIVE_OPCOM_INTELCHANCE_COMMENT">
+	<English>Some soldiers can carry viable information about nearby installations</English>
+</Key>
 </Container></Package></Project>

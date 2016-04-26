@@ -51,6 +51,11 @@ class cfgFunctions {
                                 file = "\x\alive\addons\mil_opcom\fnc_INS_helpers.sqf";
 								recompile = RECOMPILE;
                         };
+                        class OPCOMDropIntel {
+                                description = "Drops Intel by chance";
+                                file = "\x\alive\addons\mil_opcom\fnc_OPCOMDropIntel.sqf";
+								recompile = RECOMPILE;
+                        };                        
                 };
         };
 };

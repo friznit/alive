@@ -130,6 +130,7 @@ switch(_operation) do {
 					//Retrieve module-object variables
                     _type = _logic getvariable ["controltype","invasion"];
                     _occupation = (_logic getvariable ["asym_occupation",-100])/100;
+                    _intelChance = (_logic getvariable ["intelchance",-100])/100;
                     _faction1 = _logic getvariable ["faction1","OPF_F"];
                     _faction2 = _logic getvariable ["faction2","NONE"];
                     _faction3 = _logic getvariable ["faction3","NONE"];
@@ -139,6 +140,10 @@ switch(_operation) do {
                     _debug = call compile (_logic getvariable ["debug","false"]);
                     _persistent = call compile (_logic getvariable ["persistent","false"]);
                     _reinforcements = call compile (_logic getvariable ["reinforcements","0.9"]);
+                    
+                    //Spread Intel Information
+                    GVAR(INTELCHANCE) = _intelChance;
+                    PublicVariable QGVAR(INTELCHANCE);
                     
                     //Get position
                     _position = getposATL _logic;
