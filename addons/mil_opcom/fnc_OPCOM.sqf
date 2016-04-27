@@ -140,11 +140,7 @@ switch(_operation) do {
                     _debug = call compile (_logic getvariable ["debug","false"]);
                     _persistent = call compile (_logic getvariable ["persistent","false"]);
                     _reinforcements = call compile (_logic getvariable ["reinforcements","0.9"]);
-                    
-                    //Spread Intel Information
-                    GVAR(INTELCHANCE) = _intelChance;
-                    PublicVariable QGVAR(INTELCHANCE);
-                    
+
                     //Get position
                     _position = getposATL _logic;
                     
@@ -202,7 +198,12 @@ switch(_operation) do {
                     [_handler, "reinforcements",_reinforcements] call ALiVE_fnc_HashSet;
                     [_handler, "asym_occupation",_occupation] call ALiVE_fnc_HashSet;
                     [_handler, "controltype",_type] call ALiVE_fnc_HashSet;
-                    
+                    [_handler, "intelchance",_intelChance] call ALiVE_fnc_HashSet;
+
+                    //Spread Intel Information for this OPCOMs side
+                    call compile (format["ALiVE_MIL_OPCOM_INTELCHANCE_%1 = _intelChance",[_side] call ALiVE_fnc_SideTextToObject]);
+                    call compile (format["PublicVariable 'ALiVE_MIL_OPCOM_INTELCHANCE_%1'",[_side] call ALiVE_fnc_SideTextToObject]);
+                                  
                     //Get CQB modules and save them
 					{if (typeof _x == "ALiVE_mil_cqb") then {
                         waituntil {_x getVariable ["startupComplete",false]};
