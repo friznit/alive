@@ -152,8 +152,8 @@ switch(_operation) do {
 	                                    _rockets = ["ROCKETS",parsenumber(_entry getvariable ["CS_artillery_rockets","16"])];
 
 	                                    _ordnance = [_he,_illum,_smoke,_guided,_cluster,_lg,_mine,_atmine, _rockets];
-
-	                                    _artyArray = [_position,_class, _callsign,3,_ordnance,{}];
+										_code = "";
+	                                    _artyArray = [_position,_class, _callsign,3,_ordnance,_code];
 	                                    _artyArrays set [count _artyArrays,_artyArray];
                                     };
                                 };
