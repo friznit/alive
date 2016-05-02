@@ -257,9 +257,9 @@ switch(_operation) do {
 			waituntil {!(isnil "ALiVE_ProfileHandler") && {[ALiVE_ProfileSystem,"startupComplete",false] call ALIVE_fnc_hashGet}};
 			waituntil {!(isnil "ALIVE_clusterHandler")};
 
-			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {				
-				_worldName = toLower(worldName);			
-				_file = format["\x\alive\addons\civ_placement\clusters\clusters.%1_civ.sqf", _worldName];				
+			if(isNil "ALIVE_clustersCiv" && isNil "ALIVE_loadedCivClusters") then {
+				_worldName = toLower(worldName);
+				_file = format["x\alive\addons\civ_placement\clusters\clusters.%1_civ.sqf", _worldName];
 				call compile preprocessFileLineNumbers _file;
 				ALIVE_loadedCIVClusters = true;
 			};
