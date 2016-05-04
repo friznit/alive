@@ -321,6 +321,13 @@ class configGetRandomGroup
 	recompile = RECOMPILE;
 };
 
+class configFindEntries
+{
+	file = "\x\alive\addons\x_lib\functions\config\fnc_configFindEntries.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
 class configGetVehicleClass
 {
 	file = "\x\alive\addons\x_lib\functions\config\fnc_configGetVehicleClass.sqf";
@@ -779,6 +786,13 @@ class groupGenerateConfigData
 class groupIsReady
 {
 	file = "\x\alive\addons\x_lib\functions\groups\fnc_groupIsReady.sqf";
+	ext = ".sqf";
+	recompile = RECOMPILE;
+};
+
+class groupFinder
+{
+	file = "\x\alive\addons\x_lib\functions\groups\fnc_groupFinder.sqf";
 	ext = ".sqf";
 	recompile = RECOMPILE;
 };
