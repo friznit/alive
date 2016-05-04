@@ -92,7 +92,7 @@ if(!isNil "_facs") then {
         _facx = [];
         {
                 _s = switch(_x) do {
-                        case resistance: {"Guerrila";};
+                        case resistance: {"Indep";};
                         case civilian: {"Civilian";};
                         default {str _x;};
                 };
