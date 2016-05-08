@@ -1845,12 +1845,13 @@ switch(_operation) do {
 						_m setMarkerTypeLocal "mil_dot";
 						_m setMarkerColorLocal "ColorYellow";
                         
-                        ///*
+                        /*
+                        // Must define _side above before using this switch
                         switch (_side) do {
                             //case "EAST" : {_m setMarkerTextLocal format["Objective %2 Global Priority %1",_foreachIndex,_side]};
                             //case "WEST" : {_m setMarkerTextLocal format["Objective %2 Global Priority %1",_foreachIndex,_side]};
                         };
-                        //*/
+                        */
 					};
                     
                     _objectives = [_logic,"objectives",[]] call ALiVE_fnc_HashGet;
